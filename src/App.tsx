@@ -13,8 +13,8 @@ import SetupScreen from './screens/SetupScreen';
 function App(): JSX.Element {
 
   return (
-    // <SetupScreen />
-    <WelcomeScreen />
+    <SetupScreen />
+    // <WelcomeScreen />
   );
 }
 

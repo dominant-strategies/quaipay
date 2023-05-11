@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import type {PropsWithChildren} from 'react';
 import {
@@ -20,6 +20,8 @@ import {
   View,
 } from 'react-native';
 import { Colors, } from 'react-native/Libraries/NewAppScreen';
+
+import { quais } from "quais";
 
 interface State {
   selectedImage: string | null;
@@ -56,6 +58,11 @@ function SetupScreen(): JSX.Element {
     alignItem: 'center'
   };
   
+  useEffect(() => {
+    const wallet = quais.Wallet.createRandom();
+    console.log("Wallet: ", wallet);
+  }, []);
+
   const pickImage = () => {
     launchImageLibrary(
       {

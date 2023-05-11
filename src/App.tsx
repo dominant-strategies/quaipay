@@ -9,6 +9,7 @@ import React, { Children } from 'react';
 
 import WelcomeScreen from './screens/WelcomeScreen';
 import SetupScreen from './screens/SetupScreen';
+import '@ethersproject/shims';
 
 function App(): JSX.Element {
 

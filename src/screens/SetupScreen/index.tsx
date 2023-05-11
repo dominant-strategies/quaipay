@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import { Colors, } from 'react-native/Libraries/NewAppScreen';
 import { storeItem } from '../../storage/keychain'
+import { KeychainKeys } from '../../storage/constants'
 
 interface State {
   selectedImage: string | null;
@@ -60,7 +61,7 @@ function SetupScreen(): JSX.Element {
 
   const saveUserName = useCallback(async (userName: string) => {
     try {
-      await storeItem({ key: 'userName', value: userName })
+      await storeItem({ key: KeychainKeys.username, value: userName })
     } catch (error) {
       console.log(error)
     }

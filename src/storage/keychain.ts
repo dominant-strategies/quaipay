@@ -5,10 +5,14 @@ type KeychainItem = { key: string; value: string };
 export const storeItem = async ({ key, value }: KeychainItem) => {
     await Keychain.setGenericPassword('Quaipay', value, {
         accessControl: ACCESS_CONTROL.DEVICE_PASSCODE,
+        // ios only
         accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+        // ios only
         authenticationType: AUTHENTICATION_TYPE.DEVICE_PASSCODE_OR_BIOMETRICS,
+        // android only
         securityLevel: SECURITY_LEVEL.SECURE_HARDWARE,
         service: key,
+        // android only
         storage: STORAGE_TYPE.AES
     })
 

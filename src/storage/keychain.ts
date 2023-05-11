@@ -25,9 +25,9 @@ export const storeItem = async ({ key, value }: KeychainItem) => {
 export const retrieveStoredItem = async (key: string) => {
     const credentials = await Keychain.getGenericPassword({
         authenticationPrompt: {
-            title: 'Authenticate to retrieve your mnemonic',
+            title: `Authenticate to retrieve your ${key}`,
             subtitle: 'Please use your device credentials',
-            description: 'This is needed to decrypt your mnemonic',
+            description: `This is needed to decrypt your ${key}`,
             cancel: 'Cancel'
         },
         authenticationType: AUTHENTICATION_TYPE.DEVICE_PASSCODE_OR_BIOMETRICS,

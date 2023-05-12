@@ -5,10 +5,11 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   Image,
   SafeAreaView,
   StatusBar,
@@ -20,13 +21,15 @@ import {
   View,
 } from 'react-native';
 import { Colors, } from 'react-native/Libraries/NewAppScreen';
+import { storeItem } from '../../storage/keychain'
+import { KeychainKeys } from '../../storage/constants'
 
 interface State {
   selectedImage: string | null;
 }
 
 type TextDescriptionProps = PropsWithChildren<{
-  
+
 }>;
 
 function TextDescription({children}: TextDescriptionProps): JSX.Element {
@@ -55,7 +58,15 @@ function SetupScreen(): JSX.Element {
     marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto',
     alignItem: 'center'
   };
-  
+
+  const saveUserName = useCallback(async (userName: string) => {
+    try {
+      await storeItem({ key: KeychainKeys.username, value: userName })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   const pickImage = () => {
     launchImageLibrary(
       {
@@ -89,13 +100,13 @@ function SetupScreen(): JSX.Element {
             style={styles.buttonStyle}
             onPress={pickImage}>
               {selectedImage && (
-                <Image 
+                <Image
                   source={{ uri: selectedImage }}
                   style={{width: 200, height: 200, borderRadius:100, alignContent: 'center'}}
                 />
               )}
               {!selectedImage &&  (
-                <Image 
+                <Image
                   source={require('./avatar.png')}
                   style={{width: 200, height: 200, borderRadius:100, alignContent: 'center'}}
                 />
@@ -113,6 +124,13 @@ function SetupScreen(): JSX.Element {
         <TextDescription>
           Choose a Username and Profile Picture.
         </TextDescription>
+        <Button
+          onPress={() => {
+            saveUserName(userName);
+          }}
+          title="Save"
+          color={Colors.black}
+        />
       </View>
     </SafeAreaView>
   );
@@ -128,7 +146,7 @@ const styles = StyleSheet.create({
   },
   textDescriptionView: {
     marginTop: 10,
-  }, 
+  },
   textDescription: {
     color: Colors.light,
     verticalAlign: 'middle',

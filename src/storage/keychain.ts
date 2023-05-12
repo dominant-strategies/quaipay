@@ -1,5 +1,5 @@
 import * as Keychain from 'react-native-keychain';
-import { ACCESS_CONTROL, ACCESSIBLE, AUTHENTICATION_TYPE, SECURITY_LEVEL, STORAGE_TYPE } from 'react-native-keychain';
+const { ACCESS_CONTROL, ACCESSIBLE, AUTHENTICATION_TYPE, SECURITY_LEVEL, STORAGE_TYPE } = Keychain;
 
 type KeychainItem = { key: string; value: string };
 

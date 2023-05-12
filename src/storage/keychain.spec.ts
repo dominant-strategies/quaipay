@@ -16,6 +16,7 @@ jest.mock('react-native-keychain', () => {
     }
   }
 });
+
 describe('storeItem', () => {
   it('should fall back to security level software if hardware is not available', async () => {
     const setGenericPasswordSpy = jest.spyOn(require('react-native-keychain'), 'setGenericPassword');

@@ -16,6 +16,9 @@ jobs:
   setup:
     name: Setup code and environment needed for linting and tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
     timeout-minutes: 5
     steps:
       - name: Check out Git repository
@@ -23,7 +26,7 @@ jobs:
       - name: Set up Node environment
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ matrix.node-version }}
       - name: Cache node modules
         uses: actions/cache@v3
         id: cache-node-modules

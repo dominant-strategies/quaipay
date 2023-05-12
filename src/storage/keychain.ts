@@ -46,7 +46,7 @@ export const retrieveStoredItem = async (key: string) => {
         authenticationType: AUTHENTICATION_TYPE.DEVICE_PASSCODE_OR_BIOMETRICS,
         securityLevel: SECURITY_LEVEL.SECURE_HARDWARE,
         service: key,
-        storage: STORAGE_TYPE.RSA
+        storage: STORAGE_TYPE.AES
     });
     if (credentials) {
         return credentials.password;

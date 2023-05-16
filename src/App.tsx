@@ -5,14 +5,13 @@
  * @format
  */
 
-import React, { Children } from 'react';
+import React from 'react';
 
-import WelcomeScreen from './screens/WelcomeScreen';
+// import WelcomeScreen from './screens/WelcomeScreen';
 import SetupScreen from './screens/SetupScreen';
 import '@ethersproject/shims';
 
 function App(): JSX.Element {
-
   return (
     <SetupScreen />
     // <WelcomeScreen />

@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   Button,
   SafeAreaView,
@@ -23,13 +23,11 @@ import {
 // import { useNavigation } from '@react-navigation/native';
 // import { HomeScreenNavigationProp } from '../navigation/types';
 
-type WelcomeTitleProps = PropsWithChildren<{
-}>;
+type WelcomeTitleProps = PropsWithChildren<{}>;
 
-function WelcomeTitle({children}: WelcomeTitleProps): JSX.Element {
+function WelcomeTitle({ children }: WelcomeTitleProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const textColor = {
-  };
+  const textColor = {};
   return (
     <View style={styles.welcomeTitleView}>
       <Text style={styles.welcomeTitle}>
@@ -39,13 +37,16 @@ function WelcomeTitle({children}: WelcomeTitleProps): JSX.Element {
   );
 }
 
-type WelcomeDescriptionProps = PropsWithChildren<{
-}>;
+import { NativeModules } from 'react-native'
+import { storeItem } from '../../storage/keychain'
 
-function WelcomeDescription({children}: WelcomeDescriptionProps): JSX.Element {
+const { RNRandomBytes } = NativeModules
+
+type WelcomeDescriptionProps = PropsWithChildren<{}>;
+
+function WelcomeDescription({ children }: WelcomeDescriptionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const textColor = {
-  };
+  const textColor = {};
   return (
     <View style={styles.welcomeDescriptionView}>
       <Text style={styles.welcomeDescription}>
@@ -54,14 +55,13 @@ function WelcomeDescription({children}: WelcomeDescriptionProps): JSX.Element {
     </View>
   );
 }
-type LoginActionSectionProps = PropsWithChildren<{
-}>;
 
-function LoginActionSection({children}: LoginActionSectionProps): JSX.Element {
-    // const navigation = useNavigation<HomeScreenNavigationProp>();
+type LoginActionSectionProps = PropsWithChildren<{}>;
+
+function LoginActionSection({ children }: LoginActionSectionProps): JSX.Element {
+  // const navigation = useNavigation<HomeScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
-  const textColor = {
-  };
+  const textColor = {};
 
   const onPressLogin = () => {
 
@@ -69,21 +69,31 @@ function LoginActionSection({children}: LoginActionSectionProps): JSX.Element {
 
   return (
     <View style={styles.loginActionSectionView}>
-        <Button
-            onPress={() => {
-                // navigation.navigate('Setup');
-              }}
-            title="Setup"
-            color={Colors.black}
-        />
-        <Text 
-            style={styles.loginSection} 
-            onPress={onPressLogin}>
-            Already have an account? Click here to login.
-        </Text>
+      <Button
+        onPress={() => {
+          // TODO: Promisify when we add node-libs-react-native
+          RNRandomBytes.randomBytes(32, (err: any, bytes: string) => {
+            if (err) {
+              console.log(err)
+            } else {
+              storeItem({ key: 'entropy', value: bytes })
+                .then(console.log)
+                .catch(console.log)
+            }
+          })
+        }}
+        title="Setup"
+        color={Colors.black}
+      />
+      <Text
+        style={styles.loginSection}
+        onPress={onPressLogin}>
+        Already have an account? Click here to login.
+      </Text>
     </View>
   );
 }
+
 function WelcomeScreen(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -101,14 +111,14 @@ function WelcomeScreen(): JSX.Element {
       <View style={backgroundStyle}>
         <WelcomeTitle>Welcome to Quai Pay.</WelcomeTitle>
         <WelcomeDescription>
-          Lorem ipsum dolor sit amet, consectetur 
-          adipiscing elit. Etiam eu turpis molestie, dictum 
-          est a, mattis tellus. Sed dignissim, metus nec 
-          fringilla accumsan, risus sem sollicitudin lacus, ut 
-          interdum tellus elit sed risus. Maecenas eget 
+          Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Etiam eu turpis molestie, dictum
+          est a, mattis tellus. Sed dignissim, metus nec
+          fringilla accumsan, risus sem sollicitudin lacus, ut
+          interdum tellus elit sed risus. Maecenas eget
           condimentum
         </WelcomeDescription>
-        <LoginActionSection />
+        <LoginActionSection/>
       </View>
     </SafeAreaView>
   );
@@ -118,8 +128,7 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-  welcomeTitleView: {
-  },
+  welcomeTitleView: {},
   welcomeTitle: {
     color: Colors.black,
     verticalAlign: 'middle',
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
   },
   welcomeDescriptionView: {
     marginTop: 40,
-  }, 
+  },
   welcomeDescription: {
     color: Colors.light,
     verticalAlign: 'middle',

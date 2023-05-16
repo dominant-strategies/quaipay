@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import type {PropsWithChildren} from 'react';
 import {
@@ -23,6 +23,8 @@ import {
 import { Colors, } from 'react-native/Libraries/NewAppScreen';
 import { storeItem } from '../../storage/keychain'
 import { KeychainKeys } from '../../storage/constants'
+
+import { quais } from "quais";
 
 interface State {
   selectedImage: string | null;
@@ -58,6 +60,12 @@ function SetupScreen(): JSX.Element {
     marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto',
     alignItem: 'center'
   };
+
+  useEffect(() => {
+    const wallet = quais.Wallet.createRandom();
+    console.log("Wallet: ", wallet);
+  }, []);
+
 
   const saveUserName = useCallback(async (userName: string) => {
     try {

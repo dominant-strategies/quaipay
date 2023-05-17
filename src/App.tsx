@@ -7,16 +7,16 @@
 
 import React from 'react';
 
-import WelcomeScreen from './screens/WelcomeScreen';
+// import WelcomeScreen from './screens/WelcomeScreen';
 // import SetupScreen from './screens/SetupScreen';
-// import LocationSetupScreen from './screens/LocationSetupScreen';
+import LocationSetupScreen from './screens/LocationSetupScreen';
 // import LoginScreen from './screens/LoginScreen';
 
 function App() {
   return (
-    <WelcomeScreen />
+    // <WelcomeScreen />
     // <SetupScreen />
-    // <LocationSetupScreen />
+    <LocationSetupScreen />
     // <LoginScreen />
   );
 }

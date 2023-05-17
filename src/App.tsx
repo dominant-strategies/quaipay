@@ -8,13 +8,16 @@
 import React from 'react';
 
 // import WelcomeScreen from './screens/WelcomeScreen';
-import SetupScreen from './screens/SetupScreen';
-import '@ethersproject/shims';
+// import SetupScreen from './screens/SetupScreen';
+import LocationSetupScreen from './screens/LocationSetupScreen';
+// import LoginScreen from './screens/LoginScreen';
 
-function App(): JSX.Element {
+function App() {
   return (
-    <SetupScreen />
     // <WelcomeScreen />
+    // <SetupScreen />
+    <LocationSetupScreen />
+    // <LoginScreen />
   );
 }
 

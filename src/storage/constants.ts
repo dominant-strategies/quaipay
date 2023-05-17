@@ -4,4 +4,4 @@ export const KeychainKeys = {
   location: 'location',
   entropy: 'entropy',
   wallets: 'wallets',
-}
+};

@@ -1,4 +1,4 @@
-const { defaults: tsjPreset } = require('ts-jest/presets')
+const { defaults: tsjPreset } = require('ts-jest/presets');
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)'
+    'node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-}
+};

@@ -26,17 +26,17 @@ import { TouchableOpacity } from 'react-native';
 // import { HomeScreenNavigationProp } from '../navigation/types';
 
 function LocationSetupScreen() {
-  const isDarkMode = (useColorScheme() === 'dark');
+  const isDarkMode = useColorScheme() === 'dark';
   const [location, setLocation] = useState<Geolocation.GeoPosition | boolean>();
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
-        // Geolocation.setRNConfiguration({
-        //   authorizationLevel: 'whenInUse',
-        // });
-        // Geolocation.requestAuthorization();
-        // // IOS permission request does not offer a callback :/
-        // return null;
+      // Geolocation.setRNConfiguration({
+      //   authorizationLevel: 'whenInUse',
+      // });
+      // Geolocation.requestAuthorization();
+      // // IOS permission request does not offer a callback :/
+      // return null;
     } else if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -88,12 +88,16 @@ function LocationSetupScreen() {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%', height: '100%',
+    width: '100%',
+    height: '100%',
   };
 
   const topViewStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10, marginRight: 10, marginTop: 'auto', marginBottom: 'auto',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 'auto',
+    marginBottom: 'auto',
   };
 
   return (
@@ -103,11 +107,22 @@ function LocationSetupScreen() {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={topViewStyle}>
-        <Text style={{ ...fontStyle.fontH1, ...styles.locationSetupTitle, color: isDarkMode ? Colors.white : Colors.black }}>
+        <Text
+          style={{
+            ...fontStyle.fontH1,
+            ...styles.locationSetupTitle,
+            color: isDarkMode ? Colors.white : Colors.black,
+          }}
+        >
           Quai uses your location to determine the most efficient
         </Text>
         <View style={styles.locationSetupDescriptionView}>
-          <Text style={{ ...fontStyle.fontSmallText, ...styles.locationSetupDescription }}>
+          <Text
+            style={{
+              ...fontStyle.fontSmallText,
+              ...styles.locationSetupDescription,
+            }}
+          >
             Lorem ipsum dolor sit amet, consecteturadipiscing elit. Etiam eu
             turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
             nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
@@ -115,13 +130,29 @@ function LocationSetupScreen() {
           </Text>
         </View>
         <View style={styles.locationSetupDescriptionView}>
-          <Text style={{ ...fontStyle.fontSmallText, ...styles.locationSetupDescription }}>
-          Learn More
+          <Text
+            style={{
+              ...fontStyle.fontSmallText,
+              ...styles.locationSetupDescription,
+            }}
+          >
+            Learn More
           </Text>
         </View>
-        <TouchableOpacity style={{ marginLeft: 21, marginRight: 21, marginTop: 40 }}
-              onPress={getLocation}>
-            <Text style={{ ...fontStyle.fontH3, ...isDarkMode ? buttonStyle.white : buttonStyle.normal, borderRadius: 30 }}> Setup </Text>
+        <TouchableOpacity
+          style={{ marginLeft: 21, marginRight: 21, marginTop: 40 }}
+          onPress={getLocation}
+        >
+          <Text
+            style={{
+              ...fontStyle.fontH3,
+              ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
+              borderRadius: 30,
+            }}
+          >
+            {' '}
+            Setup{' '}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

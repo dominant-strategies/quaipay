@@ -12,7 +12,7 @@ module.exports = {
     'react/require-default-props': ['error'],
     'react/default-props-match-prop-types': ['error'],
     'react/sort-prop-types': ['error'],
-    'prettier/prettier': 0,
+    'prettier/prettier': 1,
   },
   settings: {
     'import/resolver': {

@@ -13,9 +13,7 @@ import {
   Image,
 } from 'react-native';
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-// import Slider from 'react-native-slider';
-import { buttonStyle, fontStyle } from '../../theme/styles';
+import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
 import { storeItem } from '../../storage/keychain';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -25,16 +23,16 @@ function LoginScreen() {
   const isDarkMode = (useColorScheme() === 'dark');
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     width: '100%', height: '100%',
   };
 
   const topViewStyle = {
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     width: '100%', height: '100%',
   };
 
-  const textColor = isDarkMode ? Colors.white : Colors.black;
+  const textColor = isDarkMode ? styledColors.white : styledColors.black;
 
   const [email, setEmail] = useState('');
 //   const [qrcode, setQrcode] = useState('');
@@ -112,7 +110,7 @@ function LoginScreen() {
                 </TouchableOpacity>
                 { expandedIndex === 2 && (
                     <>
-                        <View style={{ height: 200, backgroundColor: Colors.black }}>
+                        <View style={{ height: 200, backgroundColor: styledColors.black }}>
                             <Image source={require('./Camera.png')}
                                 style={{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto' }} />
                         </View>

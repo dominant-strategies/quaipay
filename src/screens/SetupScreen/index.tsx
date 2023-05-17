@@ -1,6 +1,12 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useCallback } from 'react';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import React, { useCallback, useEffect, useState } from 'react';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import {
   Image,
@@ -13,10 +19,10 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { storeItem } from '../../storage/keychain';
 import { KeychainKeys } from '../../storage/constants';
-import { buttonStyle, fontStyle } from '../../theme/styles';
+import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { quais } from 'quais';
 
 interface State {
   selectedImage: string | null;
@@ -32,14 +38,20 @@ function SetupScreen() {
   const [selectedImage, setSelectedImage] = useState<State['selectedImage']>(null);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     width: '100%', height: '100%',
   };
 
   const topViewStyle = {
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     marginLeft: 10, marginRight: 10, marginTop: 'auto', marginBottom: 'auto',
   };
+
+  useEffect(() => {
+    const wallet = quais.Wallet.createRandom();
+    console.log('Wallet: ', wallet);
+  }, []);
+
 
   const saveUserName = useCallback(async (userName: string) => {
     try {
@@ -77,13 +89,13 @@ function SetupScreen() {
       />
       <View style={topViewStyle} >
         <View style={styles.welcomeTitleView}>
-          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? Colors.white : Colors.black }}>
+          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? styledColors.white : styledColors.black }}>
             Choose a
           </Text>
-          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? Colors.white : Colors.black }}>
+          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? styledColors.white : styledColors.black }}>
             username and
           </Text>
-          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? Colors.white : Colors.black }}>
+          <Text style={{ ...fontStyle.fontH1, ...styles.welcomeTitle, color: isDarkMode ? styledColors.white : styledColors.black }}>
             profile picture
           </Text>
         </View>
@@ -109,7 +121,7 @@ function SetupScreen() {
         <TextInput
           placeholder="User Name"
           textAlign="center"
-          style={{ ...fontStyle.fontH2, marginTop: 20, textAlign: 'center', color: isDarkMode ? Colors.white : Colors.black }}
+          style={{ ...fontStyle.fontH2, marginTop: 20, textAlign: 'center', color: isDarkMode ? styledColors.white : styledColors.black }}
           value={userName}
           onChangeText={(text) => setUserName(text)}
           onSubmitEditing={() => {}}

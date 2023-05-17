@@ -15,12 +15,8 @@ import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 import { fontStyle, buttonStyle, styledColors } from '../../theme/styles';
+// import { NativeModules } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
-// import { HomeScreenNavigationProp } from '../navigation/types';
-import { NativeModules } from 'react-native';
-import { storeItem } from '../../storage/keychain';
-
-const { RNRandomBytes } = NativeModules;
 
 function WelcomeScreen() {
   const isDarkMode = (useColorScheme() === 'dark');
@@ -35,10 +31,7 @@ function WelcomeScreen() {
     marginLeft: 10, marginRight: 10, marginTop: 'auto', marginBottom: 'auto',
   };
 
-  const onPressLogin = () => {
-
-  };
-
+  // const navigation = useNavigation();
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -73,23 +66,16 @@ function WelcomeScreen() {
         <View style={styles.loginActionSectionView}>
           <TouchableOpacity style={{ marginLeft: 21, marginRight: 21 }}
               onPress={() => {
-              // TODO: Promisify when we add node-libs-react-native
-              RNRandomBytes.randomBytes(32, (err: any, bytes: string) => {
-                  if (err) {
-                  console.log(err);
-                  } else {
-                  storeItem({ key: 'entropy', value: bytes })
-                      .then(console.log)
-                      .catch(console.log);
-                  }
-              });
+                // navigation.navigate('Setup');
               }}
               >
             <Text style={{ ...fontStyle.fontH3, ...isDarkMode ? buttonStyle.white : buttonStyle.normal, borderRadius: 30 }}> Setup </Text>
           </TouchableOpacity>
           <Text
             style={{ ...fontStyle.fontSmallText, ...styles.loginSection }}
-            onPress={onPressLogin}>
+            onPress={() => {
+              // navigation.navigate('Login');
+            }}>
             Already have an account? Click here to login.
           </Text>
         </View>

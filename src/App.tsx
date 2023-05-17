@@ -5,16 +5,19 @@
  * @format
  */
 
-import React, { Children } from 'react';
+import React from 'react';
 
 import WelcomeScreen from './screens/WelcomeScreen';
-import SetupScreen from './screens/SetupScreen';
+// import SetupScreen from './screens/SetupScreen';
+// import LocationSetupScreen from './screens/LocationSetupScreen';
+// import LoginScreen from './screens/LoginScreen';
 
-function App(): JSX.Element {
-
+function App() {
   return (
-    <SetupScreen />
-    // <WelcomeScreen />
+    <WelcomeScreen />
+    // <SetupScreen />
+    // <LocationSetupScreen />
+    // <LoginScreen />
   );
 }
 

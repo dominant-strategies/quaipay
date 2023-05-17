@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/ClashDisplay-Variable.ttf",
+      "sha1": "63e020df60007f8077f7d2b86a5cc2573fb26022"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Variable.ttf",
+      "sha1": "d49872a745842f389bc9d24b73d0a3090fce50b1"
+    },
+    {
+      "path": "assets/fonts/Satoshi-VariableItalic.ttf",
+      "sha1": "62c34444221ff17e93a8e1cadfea5a8c68ea705b"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
  * @format
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ImagePickerResponse,
   launchImageLibrary,
@@ -25,7 +25,6 @@ import {
 import { storeItem } from '../../storage/keychain';
 import { KeychainKeys } from '../../storage/constants';
 import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
-import { quais } from 'quais';
 
 interface State {
   selectedImage: string | null;

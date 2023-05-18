@@ -57,7 +57,9 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
     }
   }, [navigation]);
 
-  if (settingUpWallet) return <Loader text="Setting up wallet" />;
+  if (settingUpWallet) {
+    return <Loader text="Setting up wallet" />;
+  }
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar

@@ -4,6 +4,7 @@ import { storeItem } from '../storage/keychain';
 import { KeychainKeys } from '../storage/constants';
 import { quais } from 'quais';
 
+// eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
 export async function setUpWallet() {

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -13,11 +13,18 @@ import {
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { fontStyle, buttonStyle, styledColors } from '../../theme/styles';
+import Loader from '../../Components/Loader';
+import { setUpWallet } from '../../wallet/setUpWallet';
 // import { NativeModules } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 
-function WelcomeScreen() {
+type WelcomeScreenProps = {
+  navigation: any;
+};
+
+function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
+  const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
@@ -33,7 +40,24 @@ function WelcomeScreen() {
     marginBottom: 'auto',
   };
 
-  // const navigation = useNavigation();
+  const onPressSetup = useCallback(async () => {
+    try {
+      setSettingUpWallet(true);
+      await setUpWallet();
+
+      navigation.navigate('Setup');
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log('failed to set up wallet', err.message, err.stack);
+      } else {
+        console.log('failed to set up wallet', err);
+      }
+    } finally {
+      setSettingUpWallet(false);
+    }
+  }, [navigation]);
+
+  if (settingUpWallet) return <Loader text="Setting up wallet" />;
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -80,9 +104,7 @@ function WelcomeScreen() {
         <View style={styles.loginActionSectionView}>
           <TouchableOpacity
             style={{ marginLeft: 21, marginRight: 21 }}
-            onPress={() => {
-              // navigation.navigate('Setup');
-            }}
+            onPress={onPressSetup}
           >
             <Text
               style={{

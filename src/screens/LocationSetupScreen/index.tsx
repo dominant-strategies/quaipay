@@ -25,6 +25,7 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
 import { TouchableOpacity } from 'react-native';
+import { request, PERMISSIONS } from 'react-native-permissions';
 import { storeItem } from '../../storage/keychain';
 import { KeychainKeys } from '../../storage/constants';
 import Loader from '../../Components/Loader';
@@ -42,12 +43,12 @@ function LocationSetupScreen({ navigation }: any) {
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
-      // Geolocation.setRNConfiguration({
-      //   authorizationLevel: 'whenInUse',
-      // });
-      // Geolocation.requestAuthorization();
-      // // IOS permission request does not offer a callback :/
-      // return null;
+      const permission =
+        parseInt(Platform.Version, 10) < 13
+          ? PERMISSIONS.IOS.LOCATION_ALWAYS
+          : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+      var result = await request(permission);
+      return result;
     } else if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(

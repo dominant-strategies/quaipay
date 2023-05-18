@@ -31,11 +31,10 @@ interface State {
   selectedImage: string | null;
 }
 
-interface State {
-  selectedImage: string | null;
-}
-
-function SetupScreen() {
+type SetupScreenProps = {
+  navigation: any;
+};
+function SetupScreen({ navigation }: SetupScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [userName, setUserName] = useState('');
   const [selectedImage, setSelectedImage] =
@@ -55,24 +54,27 @@ function SetupScreen() {
     marginBottom: 'auto',
   };
 
-  useEffect(() => {
-    const wallet = quais.Wallet.createRandom();
-    console.log('Wallet: ', wallet);
-  }, []);
-
-  const saveUserName = useCallback(async (_username: string) => {
-    try {
-      await storeItem({ key: KeychainKeys.username, value: _username });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const saveUserName = useCallback(
+    async (_username: string, _selectedImage: string) => {
+      try {
+        await storeItem({ key: KeychainKeys.username, value: _username });
+        await storeItem({
+          key: KeychainKeys.profilePicture,
+          value: _selectedImage,
+        });
+        navigation.navigate('LocationSetup');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [],
+  );
 
   const pickImage = () => {
     launchImageLibrary(
       {
         mediaType: 'photo',
-        includeBase64: false,
+        includeBase64: true,
         maxHeight: 300,
         maxWidth: 300,
       },
@@ -80,9 +82,7 @@ function SetupScreen() {
         if (!response.didCancel && !response.errorCode) {
           if (response.assets && response.assets[0]) {
             setSelectedImage(
-              response.assets[0].uri === undefined
-                ? null
-                : response.assets[0].uri,
+              `data:${response.assets[0].type};base64,${response.assets[0].base64}}`,
             );
           } else {
             setSelectedImage(null);
@@ -145,8 +145,8 @@ function SetupScreen() {
               <Image
                 source={{ uri: selectedImage }}
                 style={{
-                  width: 200,
-                  height: 200,
+                  width: 150,
+                  height: 150,
                   borderRadius: 100,
                   alignContent: 'center',
                 }}
@@ -156,8 +156,8 @@ function SetupScreen() {
               <Image
                 source={require('./avatar.png')}
                 style={{
-                  width: 200,
-                  height: 200,
+                  width: 150,
+                  height: 150,
                   borderRadius: 100,
                   alignContent: 'center',
                 }}
@@ -189,7 +189,7 @@ function SetupScreen() {
           <TouchableOpacity
             style={{ marginLeft: 21, marginRight: 21 }}
             onPress={() => {
-              saveUserName(userName);
+              saveUserName(userName, selectedImage!);
             }}
           >
             <Text
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
   buttonStyle: {
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 100,
   },
   welcomeTitleView: {

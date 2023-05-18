@@ -6,8 +6,11 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import Geolocation from 'react-native-geolocation-service';
+import React, { useCallback, useState } from 'react';
+import Geolocation, {
+  GeoOptions,
+  GeoPosition,
+} from 'react-native-geolocation-service';
 import {
   SafeAreaView,
   StatusBar,
@@ -23,12 +26,20 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
 import { TouchableOpacity } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
+import { storeItem } from '../../storage/keychain';
+import { KeychainKeys } from '../../storage/constants';
+import Loader from '../../Components/Loader';
 // import { useNavigation } from '@react-navigation/native';
 // import { HomeScreenNavigationProp } from '../navigation/types';
 
-function LocationSetupScreen() {
+async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
+  return new Promise((resolve, reject) =>
+    Geolocation.getCurrentPosition(resolve, reject, options),
+  );
+}
+function LocationSetupScreen({ navigation }: any) {
   const isDarkMode = useColorScheme() === 'dark';
-  const [location, setLocation] = useState<Geolocation.GeoPosition | boolean>();
+  const [gettingLocation, setGettingLocation] = useState(false);
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
@@ -65,27 +76,25 @@ function LocationSetupScreen() {
     }
   };
 
-  const getLocation = () => {
-    const result = requestLocationPermission();
-    result.then(res => {
-      console.log('res is:', res);
-      if (res) {
-        Geolocation.getCurrentPosition(
-          position => {
-            console.log(position);
-            setLocation(position);
-          },
-          error => {
-            // See error code charts below.
-            console.log(error.code, error.message);
-            setLocation(false);
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-        );
-      }
-    });
-    console.log(location);
-  };
+  const getLocation = useCallback(async () => {
+    setGettingLocation(true);
+    const result = await requestLocationPermission();
+    if (result) {
+      const position = await getPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      });
+      await storeItem({
+        key: KeychainKeys.location,
+        value: JSON.stringify(position),
+      });
+
+      setGettingLocation(false);
+      // TODO: navigate to receive screen, when available
+      navigation.navigate('Login');
+    }
+  }, []);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
@@ -101,6 +110,10 @@ function LocationSetupScreen() {
     marginBottom: 'auto',
   };
 
+  if (gettingLocation) {
+    return <Loader text="Almost there!" />;
+  }
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -115,7 +128,7 @@ function LocationSetupScreen() {
             color: isDarkMode ? Colors.white : Colors.black,
           }}
         >
-          Quai uses your location to determine the most efficient
+          QuaiPay{'\n'}uses your location
         </Text>
         <View style={styles.locationSetupDescriptionView}>
           <Text

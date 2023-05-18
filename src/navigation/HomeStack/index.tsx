@@ -17,9 +17,21 @@ const HomeStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="LocationSetup" component={LocationSetupScreen} />
-        <Stack.Screen name="Setup" component={SetupScreen} />
+        <Stack.Screen
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+          name="Welcome"
+        />
+        <Stack.Screen
+          name="LocationSetup"
+          options={{ headerShown: false }}
+          component={LocationSetupScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Setup"
+          component={SetupScreen}
+        />
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>

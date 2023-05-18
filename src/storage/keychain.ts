@@ -41,7 +41,7 @@ export const storeItem = async ({ key, value }: KeychainItem) => {
 
   const retrievedValue = await retrieveStoredItem(key);
   if (value !== retrievedValue) {
-    throw new Error('Stored item does not match passed item');
+    throw new Error(`Stored item does not match passed item for key ${key}`);
   }
 };
 

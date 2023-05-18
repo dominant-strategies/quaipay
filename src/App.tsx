@@ -6,19 +6,11 @@
  */
 
 import React from 'react';
-
-// import WelcomeScreen from './screens/WelcomeScreen';
-// import SetupScreen from './screens/SetupScreen';
-import LocationSetupScreen from './screens/LocationSetupScreen';
-// import LoginScreen from './screens/LoginScreen';
+import '@ethersproject/shims';
+import HomeStack from './navigation/HomeStack';
 
 function App() {
-  return (
-    // <WelcomeScreen />
-    // <SetupScreen />
-    <LocationSetupScreen />
-    // <LoginScreen />
-  );
+  return <HomeStack />;
 }
 
 export default App;

@@ -106,25 +106,7 @@ function SetupScreen({ navigation }: SetupScreenProps) {
               color: isDarkMode ? styledColors.white : styledColors.black,
             }}
           >
-            Choose a
-          </Text>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? styledColors.white : styledColors.black,
-            }}
-          >
-            username and
-          </Text>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? styledColors.white : styledColors.black,
-            }}
-          >
-            profile picture
+            Choose a{'\n'}username and{'\n'}profile picture
           </Text>
         </View>
         <View

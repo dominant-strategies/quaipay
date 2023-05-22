@@ -28,9 +28,7 @@ import { TouchableOpacity } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import { storeItem } from '../../storage/keychain';
 import { KeychainKeys } from '../../storage/constants';
-import Loader from '../../Components/Loader';
-// import { useNavigation } from '@react-navigation/native';
-// import { HomeScreenNavigationProp } from '../navigation/types';
+import Loader from '../../components/Loader';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>

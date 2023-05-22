@@ -55,6 +55,7 @@ export const fontStyle = StyleSheet.create({
 export const styledColors = {
   normal: '#0066FF',
   black: '#000000',
+  dark: '#161616',
   darkGray: '#303030',
   gray: '#808080',
   lightGray: '#D4D4D4',
@@ -82,6 +83,11 @@ export const buttonStyle = StyleSheet.create({
   gray: {
     backgroundColor: '#FFFFFF',
     color: '#000000',
+    padding: 13,
+  },
+  dark: {
+    backgroundColor: '#161616',
+    color: '#FFFFFF',
     padding: 13,
   },
 });

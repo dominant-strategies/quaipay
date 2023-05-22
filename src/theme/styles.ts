@@ -2,6 +2,12 @@
 import { StyleSheet } from 'react-native';
 
 export const fontStyle = StyleSheet.create({
+  fontH: {
+    fontFamily: 'Clash Display Variable',
+    fontSize: 48,
+    fontWeight: '700',
+    lineHeight: 64.8,
+  },
   fontH1: {
     fontFamily: 'Clash Display Variable',
     fontSize: 32,

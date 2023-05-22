@@ -2,6 +2,7 @@ import React from 'react';
 import WelcomeScreen from '../../screens/WelcomeScreen';
 import SetupScreen from '../../screens/SetupScreen';
 import LocationSetupScreen from '../../screens/LocationSetupScreen';
+import RequestFlow from '../../screens/RequestFlow';
 import LoginScreen from '../../screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 type HomeStackParamList = {
   Welcome: any;
   LocationSetup: any;
+  RequestFlow: any;
   Setup: any;
   Login: any;
 };
@@ -18,7 +20,7 @@ const HomeStack = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen
-          component={WelcomeScreen}
+          component={RequestFlow}
           options={{ headerShown: false }}
           name="Welcome"
         />
@@ -26,6 +28,11 @@ const HomeStack = () => {
           name="LocationSetup"
           options={{ headerShown: false }}
           component={LocationSetupScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="RequestFlow"
+          component={RequestFlow}
         />
         <Stack.Screen
           options={{ headerShown: false }}

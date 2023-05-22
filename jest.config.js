@@ -4,6 +4,7 @@ const { defaults: tsjPreset } = require('ts-jest/presets');
 module.exports = {
   ...tsjPreset,
   preset: 'react-native',
+  setupFilesAfterEnv: ['./jest-setup.ts'],
   transform: {
     '^.+\\.jsx$': 'babel-jest',
     '^.+\\.tsx?$': [
@@ -14,7 +15,7 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native(-.*)?|@react-native(-community)?)/)',
+    'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };

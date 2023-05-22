@@ -15,8 +15,6 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { fontStyle, buttonStyle, styledColors } from '../../theme/styles';
 import Loader from '../../components/Loader';
 import { setUpWallet } from '../../wallet/setUpWallet';
-// import { NativeModules } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
 
 type WelcomeScreenProps = {
   navigation: any;
@@ -81,16 +79,7 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
               color: isDarkMode ? Colors.white : Colors.black,
             }}
           >
-            Welcome to
-          </Text>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? Colors.white : Colors.black,
-            }}
-          >
-            QuaiPay.
+            Welcome to{'\n'}QuaiPay.
           </Text>
         </View>
         <View style={styles.welcomeDescriptionView}>

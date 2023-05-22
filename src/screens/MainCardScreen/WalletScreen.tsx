@@ -56,8 +56,8 @@ function WalletScreen({ navigation }: WalletScreenProps) {
             hasPadding
             buttonMargin={2}
             options={[
-              { label: 'Receive', value: 'r', imageIcon: undefined }, //images.masculino = require('./path_to/assets/img/masculino.png')
-              { label: 'Send', value: 's', imageIcon: undefined }, //images.feminino = require('./path_to/assets/img/feminino.png')
+              { label: 'Receive', value: 'r', imageIcon: undefined },
+              { label: 'Send', value: 's', imageIcon: undefined },
             ]}
             testID="gender-switch-selector"
             accessibilityLabel="gender-switch-selector"
@@ -87,7 +87,6 @@ function WalletScreen({ navigation }: WalletScreenProps) {
             <View style={styles.buttonAreaInfo}>
               <TouchableOpacity onPress={() => {}}>
                 <Text
-                  // eslint-disable-next-line react-native/no-inline-styles
                   style={{
                     ...fontStyle.fontH3,
                     ...(isDarkMode ? buttonStyle.dark : buttonStyle.white),
@@ -101,7 +100,6 @@ function WalletScreen({ navigation }: WalletScreenProps) {
             <View style={styles.learnMoreAreaInfo}>
               <TouchableOpacity onPress={() => {}}>
                 <Text
-                  // eslint-disable-next-line react-native/no-inline-styles
                   style={{
                     ...fontStyle.fontSmallText,
                     color: styledColors.gray,

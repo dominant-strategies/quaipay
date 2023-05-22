@@ -79,16 +79,7 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
               color: isDarkMode ? Colors.white : Colors.black,
             }}
           >
-            Welcome to
-          </Text>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? Colors.white : Colors.black,
-            }}
-          >
-            QuaiPay.
+            Welcome to{'\n'}QuaiPay.
           </Text>
         </View>
         <View style={styles.welcomeDescriptionView}>

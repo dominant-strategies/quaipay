@@ -4,11 +4,10 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { styledColors } from '../../theme/styles';
 
 type HomeScreenProps = {
   navigation: any;

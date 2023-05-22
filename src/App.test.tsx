@@ -9,7 +9,7 @@ jest.mock('./wallet/setUpWallet', () => ({
   setUpWallet: jest.fn(),
 }));
 
-describe.only('Testing react navigation', () => {
+describe('Testing react navigation', () => {
   test('app goes from welcome to username/profile picture screen', async () => {
     const component = <App />;
 

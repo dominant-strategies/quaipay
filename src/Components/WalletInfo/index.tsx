@@ -1,14 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-} from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { fontStyle, styledColors } from '../../theme/styles';
 import ShareControl from '../ShareControl';
 
@@ -17,11 +8,10 @@ type WalletInfoProps = {
   textColor: string;
   ownerName: string;
   walletAddress: string;
-  style: any,
+  style: any;
 };
 
 function WalletInfo({
-  darkMode,
   textColor,
   ownerName,
   walletAddress,
@@ -60,7 +50,7 @@ const styles = StyleSheet.create({
   },
   shareControlStyle: {
     marginTop: 20,
-  }
+  },
 });
 
 export default WalletInfo;

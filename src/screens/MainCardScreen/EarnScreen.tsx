@@ -4,17 +4,16 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { styledColors } from '../../theme/styles';
 
 type EarnScreenProps = {
   navigation: any;
 };
 
-function EarnScreen({ navigation }: EarnScreenProps) {
+function EarnScreen({}: EarnScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

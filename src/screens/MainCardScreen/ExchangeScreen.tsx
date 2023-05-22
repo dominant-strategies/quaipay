@@ -13,7 +13,7 @@ type ExchangeScreenProps = {
   navigation: any;
 };
 
-function ExchangeScreen({ navigation }: ExchangeScreenProps) {
+function ExchangeScreen({}: ExchangeScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

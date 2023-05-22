@@ -13,7 +13,7 @@ type HomeScreenProps = {
   navigation: any;
 };
 
-function HomeScreen({ navigation }: HomeScreenProps) {
+function HomeScreen({}: HomeScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

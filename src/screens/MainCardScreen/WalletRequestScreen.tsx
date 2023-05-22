@@ -4,17 +4,16 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { styledColors } from '../../theme/styles';
 
 type WalletRequestScreenProps = {
   navigation: any;
 };
 
-function WalletRequestScreen({ navigation }: WalletRequestScreenProps) {
+function WalletRequestScreen({}: WalletRequestScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

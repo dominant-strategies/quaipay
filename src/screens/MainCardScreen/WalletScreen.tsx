@@ -16,7 +16,7 @@ type WalletScreenProps = {
   navigation: any;
 };
 
-function WalletScreen({ navigation }: WalletScreenProps) {
+function WalletScreen({}: WalletScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [sendPad, setSendPad] = useState<boolean>(true);
 
@@ -90,7 +90,6 @@ function WalletScreen({ navigation }: WalletScreenProps) {
                   style={{
                     ...fontStyle.fontH3,
                     ...(isDarkMode ? buttonStyle.dark : buttonStyle.white),
-                    borderRadius: 8,
                   }}
                 >
                   Request
@@ -102,8 +101,7 @@ function WalletScreen({ navigation }: WalletScreenProps) {
                 <Text
                   style={{
                     ...fontStyle.fontSmallText,
-                    color: styledColors.gray,
-                    textDecorationLine: 'underline',
+                    ...styles.learnMoreText,
                   }}
                 >
                   Learn more about QuaiPay
@@ -138,6 +136,10 @@ const styles = StyleSheet.create({
   },
   learnMoreAreaInfo: {
     marginTop: 15,
+  },
+  learnMoreText: {
+    color: styledColors.gray,
+    textDecorationLine: 'underline',
   },
 });
 

@@ -85,9 +85,8 @@ function RequestFlow() {
           <Image source={require('./left_arrow.png')} />
         </TouchableOpacity>
         <View style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-          <Text style={[textColor, { fontSize: 24, fontWeight: '700' }]}>
-            {' '}
-            Request
+          <Text style={[textColor, { ...fontStyle.fontH, fontSize: 24, fontWeight: '700' }]}>
+            {'R\u200Ae\u200Aq\u200Au\u200Ae\u200As\u200At'}
           </Text>
         </View>
         <Text> </Text>
@@ -119,9 +118,6 @@ function RequestFlow() {
         <View
           style={{
             flexDirection: 'row',
-            borderBottomWidth: 5,
-            borderColor: '#0066FF',
-            borderRadius: 2,
           }}
         >
           <Text
@@ -142,6 +138,7 @@ function RequestFlow() {
             style={[
               textColor,
               {
+              ...fontStyle.fontH,
                 marginTop: 8,
                 fontSize: 48,
                 height: 80,
@@ -167,7 +164,7 @@ function RequestFlow() {
             USD
           </Text>
         </View>
-
+        <View style={{width: '70%',backgroundColor: '#0066FF', marginTop:-14, height: 5, borderRadius: 5}}></View>
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
           <Text style={[textColor, { textAlign: 'right', fontSize: 14 }]}>
             XXX.XXXXX QUAI{' '}

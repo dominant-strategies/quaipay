@@ -5,12 +5,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import React from 'react';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
-// import { default as EntypoIcon } from 'react-native-vector-icons/Entypo';
-// import { default as FontAwesomeIcon } from 'react-native-vector-icons/FontAwesome5';
-// import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
 import { styledColors } from '../../theme/styles';
 
 export default function ShareControl() {

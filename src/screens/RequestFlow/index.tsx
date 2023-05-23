@@ -50,7 +50,7 @@ function RequestFlow() {
           <Image source={require('./left_arrow.png')} />
         </TouchableOpacity>
         <View style={styles.alignCenter}>
-          <Text style={[textColor, styles.topRequest, { ...fontStyle.fontH }]}>
+          <Text style={[{ ...fontStyle.fontH }, textColor, styles.topRequest]}>
             {'R\u200Ae\u200Aq\u200Au\u200Ae\u200As\u200At'}
           </Text>
         </View>

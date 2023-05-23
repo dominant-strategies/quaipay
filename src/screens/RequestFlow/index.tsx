@@ -29,13 +29,19 @@ function RequestFlow() {
     height: '100%',
   };
 
+  const backgroundImage = {
+    backgroundColor: isDarkMode ? styledColors.normalGray: styledColors.black,
+  };
+
   const topViewStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     width: '100%',
     height: '100%',
   };
 
-  const textColor = isDarkMode ? styledColors.white : styledColors.black;
+  const textColor = {
+    color: isDarkMode ? styledColors.white : styledColors.black,
+  };
 
   const [email, setEmail] = useState('');
   //   const [qrcode, setQrcode] = useState('');
@@ -54,6 +60,10 @@ function RequestFlow() {
 
   const onBack = () => {
     console.log(20230522, `onBack`);
+  };
+
+  const onContinue = () => {
+    console.log(20230522, `onContinue`);
   };
 
   return (
@@ -75,7 +85,10 @@ function RequestFlow() {
           <Image source={require('./left_arrow.png')} />
         </TouchableOpacity>
         <View style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-          <Text style={styles.title}>Request</Text>
+          <Text style={[textColor, { fontSize: 24, fontWeight: '700' }]}>
+            {' '}
+            Request
+          </Text>
         </View>
         <Text> </Text>
       </View>
@@ -98,24 +111,73 @@ function RequestFlow() {
             alignContent: 'center',
           }}
         /> */}
-        <View style={{backgroundColor: '#000', width: 60, height: 60, borderRadius: 60 }}></View>
-        <Text style={{color: '#000', marginTop: 8}}>Alan Orwick</Text>
-        <Text>0x123453.....0934823</Text>
-        <View style={{ flexDirection: 'row', borderBottomWidth: 5, borderColor: '#0066FF'}}>
-          <Text style={{...fontStyle.fontH, textAlign: 'right', color: '#000', fontSize: 26, height: 70, marginTop: 10}}>$</Text>
+        <View
+          style={[backgroundImage, { width: 60, height: 60, borderRadius: 60 }]}
+        ></View>
+        <Text style={[textColor, { marginTop: 8 }]}>Alan Orwick</Text>
+        <Text style={textColor}>0x123453.....0934823</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: 5,
+            borderColor: '#0066FF',
+            borderRadius: 2,
+          }}
+        >
+          <Text
+            style={[
+              textColor,
+              {
+                ...fontStyle.fontH,
+                textAlign: 'right',
+                fontSize: 26,
+                height: 70,
+                marginTop: 10,
+              },
+            ]}
+          >
+            $
+          </Text>
           <TextInput
-          style={{ color: '#808080', marginTop: 8, fontSize: 48, height: 80, width: 140, textAlign: 'center'}}
-          placeholder="Type here to translate!"
-          onChangeText={newText => setAmount(newText)}
+            style={[
+              textColor,
+              {
+                marginTop: 8,
+                fontSize: 48,
+                height: 80,
+                width: 140,
+                textAlign: 'center',
+              },
+            ]}
+            placeholder="Type here to translate!"
+            onChangeText={newText => setAmount(newText)}
             defaultValue={amount}
           />
-          <Text style={{...fontStyle.fontH,textAlign: 'left', color: '#808080', marginTop: 8, height: 80, fontSize: 48, verticalAlign:'middle'}}>USD</Text>
+          <Text
+            style={{
+              ...fontStyle.fontH,
+              textAlign: 'left',
+              color: '#808080',
+              marginTop: 8,
+              height: 80,
+              fontSize: 48,
+              verticalAlign: 'middle',
+            }}
+          >
+            USD
+          </Text>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 30}}>
-          <Text style={{ textAlign: 'right', color: '#000', fontSize: 14}}>XXX.XXXXX QUAI </Text>
+        <View style={{ flexDirection: 'row', marginTop: 30 }}>
+          <Text style={[textColor, { textAlign: 'right', fontSize: 14 }]}>
+            XXX.XXXXX QUAI{' '}
+          </Text>
           <Image
-            source={require('./exchange.png')}
+            source={
+              isDarkMode
+                ? require('./exchange_white.png')
+                : require('./exchange.png')
+            }
             style={{
               width: 90,
               height: 24,
@@ -125,23 +187,54 @@ function RequestFlow() {
           />
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 44, gap: 8}}>
-          <View style={{width: 44, height: 44, borderRadius: 8, borderWidth: 1, borderColor: '#D5D5D5'}}>
-            <Image
-            source={require('./pen.png')}
+        <View style={{ flexDirection: 'row', marginTop: 44, gap: 8 }}>
+          <View
             style={{
-              borderRadius: 100,
-              alignContent: 'center',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 'auto',
-              marginBottom: 'auto'
+              width: 44,
+              height: 44,
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: '#D5D5D5',
             }}
+          >
+            <Image
+              source={
+                isDarkMode ? require('./pen_white.png') : require('./pen.png')
+              }
+              style={{
+                borderRadius: 100,
+                alignContent: 'center',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+              }}
             />
           </View>
-          <View style={{backgroundColor: '#0066FF', width: 275, height: 42, borderRadius: 8}}><Text style={{color: '#fff', fontSize: 14, textAlign: 'center', marginTop: 'auto', marginBottom: 'auto'}}>Continue</Text></View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#0066FF',
+              width: 275,
+              height: 42,
+              borderRadius: 8,
+            }}
+            onPress={() => {
+              onContinue();
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 14,
+                textAlign: 'center',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+              }}
+            >
+              Continue
+            </Text>
+          </TouchableOpacity>
         </View>
-
       </View>
     </SafeAreaView>
   );

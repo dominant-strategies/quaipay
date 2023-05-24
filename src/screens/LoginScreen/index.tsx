@@ -75,7 +75,6 @@ function LoginScreen() {
             Complete two to sign in.
           </Text>
           {/* <Slider
-            // eslint-disable-next-line react-native/no-inline-styles
             style={{ width: '100%', height: 40 }}
             minimumValue={0}
             maximumValue={10}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WalletScreen } from '../../screens/MainCardScreen';
-import WalletRequestScreen from '../../screens/MainCardScreen/WalletRequestScreen';
+import WalletRequestScreen from './WalletRequestScreen';
+import WalletScreen from '../wallet/WalletScreen';
 
 type WalletStackParamList = {
   Wallet: any;

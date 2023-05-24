@@ -7,13 +7,13 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../theme/styles';
+import { styledColors } from '../../styles';
 
-type WalletRequestScreenProps = {
+type EarnScreenProps = {
   navigation: any;
 };
 
-function WalletRequestScreen({}: WalletRequestScreenProps) {
+function EarnScreen({}: EarnScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -37,7 +37,7 @@ function WalletRequestScreen({}: WalletRequestScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Home Screen</Text>
+          <Text>Earn Screen</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default WalletRequestScreen;
+export default EarnScreen;

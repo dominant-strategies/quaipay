@@ -8,9 +8,9 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
 import SwitchSelector from 'react-native-switch-selector';
-import WalletInfo from '../../Components/WalletInfo';
+import { WalletInfo } from './WalletInfo';
 
 type WalletScreenProps = {
   navigation: any;

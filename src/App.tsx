@@ -7,7 +7,7 @@
 
 import React from 'react';
 import '@ethersproject/shims';
-import OnboardingStack from './onboarding/navigation/OnboardingStack';
+import OnboardingStack from './onboarding/OnboardingStack';
 import MainStack from './main/MainStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';

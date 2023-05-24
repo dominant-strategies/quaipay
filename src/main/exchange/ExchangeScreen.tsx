@@ -7,13 +7,13 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../theme/styles';
+import { styledColors } from '../../styles';
 
-type EarnScreenProps = {
+type ExchangeScreenProps = {
   navigation: any;
 };
 
-function EarnScreen({}: EarnScreenProps) {
+function ExchangeScreen({}: ExchangeScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -37,7 +37,7 @@ function EarnScreen({}: EarnScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Earn Screen</Text>
+          <Text>Exchange Screen</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default EarnScreen;
+export default ExchangeScreen;

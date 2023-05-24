@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { fontStyle, styledColors } from '../../theme/styles';
-import ShareControl from '../ShareControl';
+import { fontStyle, styledColors } from '../../styles';
+import ShareControl from './ShareControl';
 import QRIcon from '../../../assets/icons/QR.svg';
 
 type WalletInfoProps = {
@@ -13,11 +13,11 @@ type WalletInfoProps = {
 };
 
 export const WalletInfo = ({
-    textColor,
-    ownerName,
-    walletAddress,
-    style,
-  }: WalletInfoProps) => {
+  textColor,
+  ownerName,
+  walletAddress,
+  style,
+}: WalletInfoProps) => {
   return (
     <View style={{ ...style, ...styles.switchStyle }}>
       <View style={styles.qrcodeStyle}>
@@ -37,7 +37,7 @@ export const WalletInfo = ({
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   ownerName: {

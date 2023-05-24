@@ -7,13 +7,13 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../theme/styles';
+import { styledColors } from '../../styles';
 
-type HomeScreenProps = {
+type SettingScreenProps = {
   navigation: any;
 };
 
-function HomeScreen({}: HomeScreenProps) {
+function SettingScreen({}: SettingScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -37,7 +37,7 @@ function HomeScreen({}: HomeScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Home Screen</Text>
+          <Text>Setting Screen</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default HomeScreen;
+export default SettingScreen;

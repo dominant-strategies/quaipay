@@ -13,8 +13,8 @@ import {
   Image,
 } from 'react-native';
 
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
-import { storeItem } from '../../storage/keychain';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import { storeItem } from '../storage/keychain';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { RNRandomBytes } = NativeModules;

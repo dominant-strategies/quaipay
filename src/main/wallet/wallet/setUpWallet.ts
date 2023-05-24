@@ -1,7 +1,7 @@
 import { generateSecureRandom } from 'react-native-securerandom';
 import buffer from 'buffer';
-import { storeItem } from '../storage/keychain';
-import { KeychainKeys } from '../storage/constants';
+import { storeItem } from '../../../onboarding/storage/keychain';
+import { KeychainKeys } from '../../../onboarding/storage/constants';
 import { quais } from 'quais';
 
 // eslint-disable-next-line quotes

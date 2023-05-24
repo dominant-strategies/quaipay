@@ -1,4 +1,4 @@
-import { retrieveStoredItem } from '../storage/keychain';
+import { retrieveStoredItem } from '../../../onboarding/storage/keychain';
 import buffer from 'buffer';
 
 export async function retrieveEntropy() {

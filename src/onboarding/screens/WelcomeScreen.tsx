@@ -12,9 +12,9 @@ import {
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { fontStyle, buttonStyle, styledColors } from '../../theme/styles';
-import Loader from '../../components/Loader';
-import { setUpWallet } from '../../wallet/setUpWallet';
+import { fontStyle, buttonStyle, styledColors } from '../../styles';
+import Loader from '../../shared/Loader';
+import { setUpWallet } from '../../main/wallet/wallet/setUpWallet';
 
 type WelcomeScreenProps = {
   navigation: any;

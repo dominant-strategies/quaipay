@@ -1,18 +1,16 @@
-/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/no-unstable-nested-shared */
 import React from 'react';
-import {
-  WalletScreen,
-  ExchangeScreen,
-  HomeScreen,
-  SettingScreen,
-  EarnScreen,
-} from '../../screens/MainCardScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { styledColors } from '../../theme/styles';
+import { styledColors } from '../styles';
 import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
+import WalletScreen from './wallet/WalletScreen';
+import ExchangeScreen from './exchange/ExchangeScreen';
+import HomeScreen from './home/HomeScreen';
+import EarnScreen from './earn/EarnScreen';
+import SettingScreen from './settings/SettingScreen';
 
 type MainTabStackParamList = {
   Wallet: any;

@@ -24,11 +24,11 @@ import {
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import { storeItem } from '../../storage/keychain';
-import { KeychainKeys } from '../../storage/constants';
-import Loader from '../../components/Loader';
+import { storeItem } from '../storage/keychain';
+import { KeychainKeys } from '../storage/constants';
+import Loader from '../../shared/Loader';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>

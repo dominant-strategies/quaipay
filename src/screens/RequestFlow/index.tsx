@@ -12,7 +12,9 @@ import {
 
 import { fontStyle, styledColors } from '../../theme/styles';
 import ExchangeIcon from '../../../assets/icons/exchange.svg';
+import ExchangeWhiteIcon from '../../../assets/icons/exchange_white.svg';
 import PenIcon from '../../../assets/icons/pen.svg';
+import PenWhiteIcon from '../../../assets/icons/pen_white.svg';
 import LeftArrow from '../../../assets/icons/left_arrow.svg';
 function RequestFlow() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -115,13 +117,13 @@ function RequestFlow() {
           >
             <Text style={textColor}>
               {unit}</Text>
-              <ExchangeIcon width={14} height={11} />
+             { isDarkMode ?  <ExchangeWhiteIcon width={14} height={11} /> : <ExchangeIcon width={14} height={11} /> } 
           </TouchableOpacity>
         </View>
 
         <View style={styles.penView}>
           <View style={styles.pen}>
-            <PenIcon style={styles.penImage} width={18.75} height={18.75} />
+             { isDarkMode ? <PenWhiteIcon style={styles.penImage} width={18.75} height={18.75} /> : <PenIcon style={styles.penImage} width={18.75} height={18.75} /> } 
           </View>
           <TouchableOpacity
             style={styles.continueView}

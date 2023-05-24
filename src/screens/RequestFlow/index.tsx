@@ -65,10 +65,10 @@ function RequestFlow() {
           <Text
             style={[
               textColor,
-              styles.dollarSign,
               {
                 ...fontStyle.fontH,
               },
+              styles.dollarSign,
             ]}
           >
             $

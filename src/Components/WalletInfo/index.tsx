@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { fontStyle, styledColors } from '../../theme/styles';
 import ShareControl from '../ShareControl';
+import QRIcon from '../../../assets/icons/QR.svg';
 
 type WalletInfoProps = {
   darkMode: boolean;
@@ -20,7 +21,7 @@ function WalletInfo({
   return (
     <View style={{ ...style, ...styles.switchStyle }}>
       <View style={styles.qrcodeStyle}>
-        <Image source={require('./Vector.png')} />
+        <QRIcon width={136} height={136}></QRIcon>
       </View>
       <Text style={{ ...fontStyle.fontH2, color: textColor, fontSize: 20 }}>
         {ownerName}
@@ -47,6 +48,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: styledColors.lightGray,
+    width: 156,
+    height: 156,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   shareControlStyle: {
     marginTop: 20,

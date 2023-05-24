@@ -7,6 +7,10 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styledColors } from '../../theme/styles';
+import ChatIcon from '../../../assets/icons/chat.svg';
+import UploadIcon from '../../../assets/icons/upload.svg';
+import EmailIcon from '../../../assets/icons/email.svg';
+import PrinterIcon from '../../../assets/icons/printer.svg';
 
 export default function ShareControl() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -15,22 +19,22 @@ export default function ShareControl() {
     <View style={styles.container}>
       <View style={styles.item}>
         <TouchableOpacity>
-          <Icon name="print" size={16} color={color} />
+          <PrinterIcon width={32} height={32}></PrinterIcon>
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <Icon name="envelope-o" size={16} color={color} />
+          <EmailIcon width={32} height={32}></EmailIcon>
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <Icon name="comment-o" size={16} color={color} />
+          <ChatIcon width={32} height={32}></ChatIcon>
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <Icon name="arrow-up" size={16} color={color} />
+          <UploadIcon width={32} height={32}></UploadIcon>
         </TouchableOpacity>
       </View>
     </View>
@@ -45,7 +49,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderColor: styledColors.gray,
-    borderWidth: 1,
     borderRadius: 16,
     paddingLeft: 'auto',
     paddingRight: 'auto',

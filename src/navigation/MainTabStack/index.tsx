@@ -22,7 +22,7 @@ type MainTabStackParamList = {
   Setting: any;
 };
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
-const HomeStack = () => {
+const MainStack = () => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <Tab.Navigator
@@ -84,4 +84,4 @@ const HomeStack = () => {
   );
 };
 
-export default HomeStack;
+export default MainStack;

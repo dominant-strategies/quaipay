@@ -12,7 +12,7 @@ type HomeStackParamList = {
   Login: any;
 };
 const Stack = createNativeStackNavigator<HomeStackParamList>();
-const HomeStack = () => {
+const OnboardingStack = () => {
   return (
     <Stack.Navigator initialRouteName="Welcome">
       <Stack.Screen
@@ -35,4 +35,4 @@ const HomeStack = () => {
   );
 };
 
-export default HomeStack;
+export default OnboardingStack;

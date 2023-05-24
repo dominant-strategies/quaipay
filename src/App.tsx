@@ -7,8 +7,8 @@
 
 import React from 'react';
 import '@ethersproject/shims';
-import HomeStack from './navigation/HomeStack';
-import MainTabStack from './navigation/MainTabStack';
+import OnboardingStack from './navigation/HomeStack';
+import MainStack from './navigation/MainTabStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -24,18 +24,18 @@ function App() {
         }}
       >
         <Tab.Screen
-          name="Home"
-          component={HomeStack}
+          name="Onboarding"
+          component={OnboardingStack}
           options={{
-            title: 'Home',
+            title: 'Onboarding',
             tabBarStyle: { display: 'none' },
           }}
         />
         <Tab.Screen
-          name="MainTabStack"
-          component={MainTabStack}
+          name="Main"
+          component={MainStack}
           options={{
-            title: 'MainTabStack',
+            title: 'Main',
             tabBarStyle: { display: 'none' },
           }}
         />

@@ -12,20 +12,20 @@ import Geolocation, {
   GeoPosition,
 } from 'react-native-geolocation-service';
 import {
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  View,
-  PermissionsAndroid,
+  TouchableOpacity,
   useColorScheme,
-  Platform,
+  View,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
-import { TouchableOpacity } from 'react-native';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import { storeItem } from '../../storage/keychain';
 import { KeychainKeys } from '../../storage/constants';
 import Loader from '../../components/Loader';
@@ -45,8 +45,7 @@ function LocationSetupScreen({ navigation }: any) {
         parseInt(Platform.Version, 10) < 13
           ? PERMISSIONS.IOS.LOCATION_ALWAYS
           : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
-      var result = await request(permission);
-      return result;
+      return await request(permission);
     } else if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(

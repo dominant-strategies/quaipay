@@ -7,10 +7,12 @@
 
 import React from 'react';
 import '@ethersproject/shims';
-import HomeStack from './navigation/HomeStack';
+// import HomeStack from './navigation/HomeStack';
+import MainTabStack from './navigation/MainTabStack';
 
 function App() {
-  return <HomeStack />;
+  // return <HomeStack />;
+  return <MainTabStack />;
 }
 
 export default App;

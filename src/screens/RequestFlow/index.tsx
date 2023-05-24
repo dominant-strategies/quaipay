@@ -12,6 +12,8 @@ import {
 
 import { fontStyle, styledColors } from '../../theme/styles';
 import ExchangeIcon from '../../../assets/icons/exchange.svg';
+import PenIcon from '../../../assets/icons/pen.svg';
+import LeftArrow from '../../../assets/icons/left_arrow.svg';
 function RequestFlow() {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -54,7 +56,7 @@ function RequestFlow() {
             onBack();
           }}
         >
-          <Image source={require('./left_arrow.png')} />
+          <LeftArrow />
         </TouchableOpacity>
         <View style={styles.alignCenter}>
           <Text style={[{ ...fontStyle.fontH }, textColor, styles.topRequest]}>
@@ -119,12 +121,7 @@ function RequestFlow() {
 
         <View style={styles.penView}>
           <View style={styles.pen}>
-            <Image
-              source={
-                isDarkMode ? require('./pen_white.png') : require('./pen.png')
-              }
-              style={styles.penImage}
-            />
+            <PenIcon style={styles.penImage} width={18.75} height={18.75} />
           </View>
           <TouchableOpacity
             style={styles.continueView}

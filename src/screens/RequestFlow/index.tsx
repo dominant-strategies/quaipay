@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { fontStyle, styledColors } from '../../theme/styles';
-
+import ExchangeIcon from '../../../assets/icons/exchange.svg';
 function RequestFlow() {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -30,9 +30,16 @@ function RequestFlow() {
   };
 
   const [amount, setAmount] = useState('25.34');
+  const [unit, setUnit] = useState('QUAI');
 
   const onBack = () => {
     console.log('onBack');
+  };
+
+  const onExchange = () => {
+    console.log('onExchange');
+    const result = unit === 'QUAI' ? 'USD' : 'QUAI';
+    setUnit(result);
   };
 
   const onContinue = () => {
@@ -97,15 +104,17 @@ function RequestFlow() {
         </View>
         <View style={styles.quai} />
         <View style={styles.quaiView}>
-          <Text style={[textColor, styles.xxxquai]}>XXX.XXXXX QUAI </Text>
-          <Image
-            source={
-              isDarkMode
-                ? require('./exchange_white.png')
-                : require('./exchange.png')
-            }
-            style={styles.exchangeImage}
-          />
+          <Text style={[textColor, styles.xxxquai]}>XXX.XXXXX {unit} </Text>
+          <TouchableOpacity
+            onPress={() => {
+              onExchange();
+            }}
+            style={styles.exchangeUnit}
+          >
+            <Text style={textColor}>
+              {unit}</Text>
+              <ExchangeIcon width={14} height={11} />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.penView}>
@@ -179,11 +188,17 @@ const styles = StyleSheet.create({
   },
   quaiView: { flexDirection: 'row', marginTop: 30 },
   xxxquai: { textAlign: 'right', fontSize: 14 },
-  exchangeImage: {
+  exchangeUnit: {
     width: 90,
     height: 24,
-    borderRadius: 100,
-    alignContent: 'center',
+    borderRadius: 42,
+    borderWidth: 1,
+    borderColor: '#D5D5D5',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 3,
+
   },
   pen: {
     width: 44,

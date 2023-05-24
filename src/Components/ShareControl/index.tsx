@@ -22,36 +22,37 @@ export default function ShareControl() {
       <View style={styles.item}>
         <TouchableOpacity>
           {isDarkMode ? (
-            <PrinterIcon width={32} height={32} />
-          ) : (
             <PrinterWhiteIcon width={32} height={32} />
+            
+          ) : (
+            <PrinterIcon width={32} height={32} />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
           {isDarkMode ? (
-            <EmailIcon width={32} height={32} />
-          ) : (
             <EmailWhiteIcon width={32} height={32} />
+          ) : (
+            <EmailIcon width={32} height={32} />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
           {isDarkMode ? (
-            <ChatIcon width={32} height={32} />
-          ) : (
             <ChatWhiteIcon width={32} height={32} />
+          ) : (
+            <ChatIcon width={32} height={32} />
           )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
           {isDarkMode ? (
-            <UploadIcon width={32} height={32} />
-          ) : (
             <UploadWhiteIcon width={32} height={32} />
+          ) : (
+            <UploadIcon width={32} height={32} />
           )}
         </TouchableOpacity>
       </View>

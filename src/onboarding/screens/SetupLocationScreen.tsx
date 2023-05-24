@@ -29,6 +29,7 @@ import { PERMISSIONS, request } from 'react-native-permissions';
 import { storeItem } from '../services/keychain';
 import { KeychainKeys } from '../services/constants';
 import Loader from '../../shared/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
@@ -82,14 +83,15 @@ function SetupLocationScreen({ navigation }: any) {
         timeout: 15000,
         maximumAge: 10000,
       });
+      const { latitude, longitude } = position.coords;
       await storeItem({
         key: KeychainKeys.location,
-        value: JSON.stringify(position),
+        value: JSON.stringify({ latitude, longitude }),
       });
 
       setGettingLocation(false);
-      // TODO: navigate to receive screen, when available
-      navigation.navigate('Login');
+      await AsyncStorage.setItem('onboarded', 'true');
+      navigation.navigate('Main');
     }
   }, []);
 

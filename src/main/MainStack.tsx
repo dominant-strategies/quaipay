@@ -24,6 +24,7 @@ const MainStack = () => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'Wallet') {

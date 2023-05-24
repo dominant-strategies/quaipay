@@ -41,9 +41,9 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const onPressSetup = useCallback(async () => {
     try {
       setSettingUpWallet(true);
-      await setUpWallet();
+      // await setUpWallet();
 
-      navigation.navigate('Setup');
+      navigation.navigate('SetupNameAndPFP');
     } catch (err) {
       if (err instanceof Error) {
         console.log('failed to set up wallet', err.message, err.stack);

@@ -1,8 +1,7 @@
 import React from 'react';
-import SetupWalletScreen from './screens/WelcomeScreen';
-import SetupNameAndPFPScreen from './screens/SetupScreen';
-import SetupLocationScreen from './screens/LocationsSetupScreen';
-import LoginScreen from './screens/RecoveryScreen';
+import SetupWalletScreen from './screens/SetupWalletScreen';
+import SetupNameAndPFPScreen from './screens/SetupNameAndPFPScreen';
+import SetupLocationScreen from './screens/SetupLocationScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 type HomeStackParamList = {
@@ -30,7 +29,6 @@ const OnboardingStack = () => {
         name="SetupNameAndPFP"
         component={SetupNameAndPFPScreen}
       />
-      <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
 };

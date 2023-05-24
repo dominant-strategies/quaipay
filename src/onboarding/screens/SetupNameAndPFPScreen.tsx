@@ -61,7 +61,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
           key: KeychainKeys.profilePicture,
           value: _selectedImage,
         });
-        navigation.navigate('LocationSetup');
+        navigation.navigate('SetupLocation');
       } catch (error) {
         console.log(error);
       }

@@ -135,7 +135,7 @@ function SetupScreen({ navigation }: SetupScreenProps) {
             )}
             {!selectedImage && (
               <Image
-                source={require('./avatar.png')}
+                source={require('../assets/avatar.png')}
                 style={{
                   width: 150,
                   height: 150,

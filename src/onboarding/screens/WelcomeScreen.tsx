@@ -67,7 +67,7 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
       <View style={topViewStyle}>
         <View style={styles.welcomeLogoView}>
           <Image
-            source={require('./logo.png')}
+            source={require('../assets/logo.png')}
             style={{ width: 160, height: 160, alignContent: 'center' }}
           />
         </View>

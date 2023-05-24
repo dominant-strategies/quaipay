@@ -7,8 +7,8 @@
 
 import React from 'react';
 import '@ethersproject/shims';
-import OnboardingStack from './navigation/HomeStack';
-import MainStack from './navigation/MainTabStack';
+import OnboardingStack from './onboarding/navigation/OnboardingStack';
+import MainStack from './main/MainStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -27,7 +27,7 @@ function App() {
           name="Onboarding"
           component={OnboardingStack}
           options={{
-            title: 'Onboarding',
+            title: 'onboarding',
             tabBarStyle: { display: 'none' },
           }}
         />

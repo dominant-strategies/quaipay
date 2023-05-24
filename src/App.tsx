@@ -23,14 +23,14 @@ function App() {
           tabBarShowLabel: false,
         }}
       >
-        <Tab.Screen
-          name="Onboarding"
-          component={OnboardingStack}
-          options={{
-            title: 'onboarding',
-            tabBarStyle: { display: 'none' },
-          }}
-        />
+        {/*<Tab.Screen*/}
+        {/*  name="Onboarding"*/}
+        {/*  component={OnboardingStack}*/}
+        {/*  options={{*/}
+        {/*    title: 'onboarding',*/}
+        {/*    tabBarStyle: { display: 'none' },*/}
+        {/*  }}*/}
+        {/*/>*/}
         <Tab.Screen
           name="Main"
           component={MainStack}

@@ -6,11 +6,10 @@ import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
-import WalletScreen from './wallet/WalletScreen';
 import ExchangeScreen from './exchange/ExchangeScreen';
-import HomeScreen from './home/HomeScreen';
 import EarnScreen from './earn/EarnScreen';
 import SettingScreen from './settings/SettingScreen';
+import HomeScreen from './home/HomeScreen';
 
 type MainTabStackParamList = {
   Wallet: any;
@@ -53,11 +52,11 @@ const MainStack = () => {
           : styledColors.light,
       })}
     >
-      <Tab.Screen
-        name="Wallet"
-        options={{ headerShown: false }}
-        component={WalletScreen}
-      />
+      {/*<Tab.Screen*/}
+      {/*  name="Wallet"*/}
+      {/*  options={{ headerShown: false }}*/}
+      {/*  component={QRScreen}*/}
+      {/*/>*/}
       <Tab.Screen
         name="Exchange"
         options={{ headerShown: false }}

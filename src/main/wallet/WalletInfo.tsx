@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { fontStyle, styledColors } from '../../styles';
-import ShareControl from './ShareControl';
+import ShareControl from '../home/receive/ShareControl';
 import QRIcon from '../../../assets/icons/QR.svg';
 
 type WalletInfoProps = {

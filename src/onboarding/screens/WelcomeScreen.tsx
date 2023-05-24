@@ -16,11 +16,11 @@ import { fontStyle, buttonStyle, styledColors } from '../../styles';
 import Loader from '../../shared/Loader';
 import { setUpWallet } from '../../main/wallet/wallet/setUpWallet';
 
-type WelcomeScreenProps = {
+type SetupWalletScreenProps = {
   navigation: any;
 };
 
-function WelcomeScreen({ navigation }: WelcomeScreenProps) {
+function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default SetupWalletScreen;

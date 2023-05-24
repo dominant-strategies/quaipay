@@ -148,7 +148,7 @@ function LoginScreen() {
                   style={{ height: 200, backgroundColor: styledColors.black }}
                 >
                   <Image
-                    source={require('./Camera.png')}
+                    source={require('../assets/Camera.png')}
                     style={{
                       marginTop: 'auto',
                       marginBottom: 'auto',

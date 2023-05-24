@@ -35,7 +35,7 @@ async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
     Geolocation.getCurrentPosition(resolve, reject, options),
   );
 }
-function LocationSetupScreen({ navigation }: any) {
+function SetupLocationScreen({ navigation }: any) {
   const isDarkMode = useColorScheme() === 'dark';
   const [gettingLocation, setGettingLocation] = useState(false);
 
@@ -201,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationSetupScreen;
+export default SetupLocationScreen;

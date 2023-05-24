@@ -30,10 +30,10 @@ interface State {
   selectedImage: string | null;
 }
 
-type SetupScreenProps = {
+type SetupNameAndPFPScreenProps = {
   navigation: any;
 };
-function SetupScreen({ navigation }: SetupScreenProps) {
+function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [userName, setUserName] = useState('');
   const [selectedImage, setSelectedImage] =
@@ -225,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetupScreen;
+export default SetupNameAndPFPScreen;

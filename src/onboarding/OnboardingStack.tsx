@@ -1,34 +1,34 @@
 import React from 'react';
-import WelcomeScreen from './screens/WelcomeScreen';
-import SetupScreen from './screens/SetupScreen';
-import LocationSetupScreen from './screens/LocationsSetupScreen';
-import LoginScreen from './LoginScreen';
+import SetupWalletScreen from './screens/WelcomeScreen';
+import SetupNameAndPFPScreen from './screens/SetupScreen';
+import SetupLocationScreen from './screens/LocationsSetupScreen';
+import LoginScreen from './screens/RecoveryScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 type HomeStackParamList = {
-  Welcome: any;
-  LocationSetup: any;
-  Setup: any;
+  SetupWallet: any;
+  SetupLocation: any;
+  SetupNameAndPFP: any;
   Login: any;
 };
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const OnboardingStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Welcome">
+    <Stack.Navigator initialRouteName="SetupWallet">
       <Stack.Screen
-        component={WelcomeScreen}
+        component={SetupWalletScreen}
         options={{ headerShown: false }}
-        name="Welcome"
+        name="SetupWallet"
       />
       <Stack.Screen
-        name="LocationSetup"
+        name="SetupLocation"
         options={{ headerShown: false }}
-        component={LocationSetupScreen}
+        component={SetupLocationScreen}
       />
       <Stack.Screen
         options={{ headerShown: false }}
-        name="Setup"
-        component={SetupScreen}
+        name="SetupNameAndPFP"
+        component={SetupNameAndPFPScreen}
       />
       <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>

@@ -22,8 +22,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { storeItem } from '../storage/keychain';
-import { KeychainKeys } from '../storage/constants';
+import { storeItem } from '../services/keychain';
+import { KeychainKeys } from '../services/constants';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 
 interface State {

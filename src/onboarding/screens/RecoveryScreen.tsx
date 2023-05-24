@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
-import { storeItem } from '../storage/keychain';
+import { storeItem } from '../services/keychain';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { RNRandomBytes } = NativeModules;

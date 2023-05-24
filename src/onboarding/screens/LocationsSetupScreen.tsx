@@ -26,8 +26,8 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import { storeItem } from '../storage/keychain';
-import { KeychainKeys } from '../storage/constants';
+import { storeItem } from '../services/keychain';
+import { KeychainKeys } from '../services/constants';
 import Loader from '../../shared/Loader';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {

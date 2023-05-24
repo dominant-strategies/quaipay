@@ -20,7 +20,7 @@ const HomeStack = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen
-          component={RequestFlow}
+          component={WelcomeScreen}
           options={{ headerShown: false }}
           name="Welcome"
         />
@@ -32,7 +32,7 @@ const HomeStack = () => {
         <Stack.Screen
           options={{ headerShown: false }}
           name="RequestFlow"
-          component={WelcomeScreen}
+          component={RequestFlow}
         />
         <Stack.Screen
           options={{ headerShown: false }}

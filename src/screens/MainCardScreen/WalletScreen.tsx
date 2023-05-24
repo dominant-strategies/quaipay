@@ -12,7 +12,6 @@ import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
 import SwitchSelector from 'react-native-switch-selector';
 import WalletInfo from '../../components/WalletInfo';
 
-
 type WalletScreenProps = {
   navigation: any;
 };

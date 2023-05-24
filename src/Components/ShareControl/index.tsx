@@ -5,36 +5,54 @@ import {
   useColorScheme,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { styledColors } from '../../theme/styles';
 import ChatIcon from '../../../assets/icons/chat.svg';
 import UploadIcon from '../../../assets/icons/upload.svg';
 import EmailIcon from '../../../assets/icons/email.svg';
 import PrinterIcon from '../../../assets/icons/printer.svg';
+import ChatWhiteIcon from '../../../assets/icons/chat_white.svg';
+import UploadWhiteIcon from '../../../assets/icons/upload_white.svg';
+import EmailWhiteIcon from '../../../assets/icons/email_white.svg';
+import PrinterWhiteIcon from '../../../assets/icons/printer_white.svg';
 
 export default function ShareControl() {
   const isDarkMode = useColorScheme() === 'dark';
-  const color = isDarkMode ? styledColors.white : styledColors.black;
   return (
     <View style={styles.container}>
       <View style={styles.item}>
         <TouchableOpacity>
-          <PrinterIcon width={32} height={32}></PrinterIcon>
+          {isDarkMode ? (
+            <PrinterIcon width={32} height={32} />
+          ) : (
+            <PrinterWhiteIcon width={32} height={32} />
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <EmailIcon width={32} height={32}></EmailIcon>
+          {isDarkMode ? (
+            <EmailIcon width={32} height={32} />
+          ) : (
+            <EmailWhiteIcon width={32} height={32} />
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <ChatIcon width={32} height={32}></ChatIcon>
+          {isDarkMode ? (
+            <ChatIcon width={32} height={32} />
+          ) : (
+            <ChatWhiteIcon width={32} height={32} />
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
         <TouchableOpacity>
-          <UploadIcon width={32} height={32}></UploadIcon>
+          {isDarkMode ? (
+            <UploadIcon width={32} height={32} />
+          ) : (
+            <UploadWhiteIcon width={32} height={32} />
+          )}
         </TouchableOpacity>
       </View>
     </View>

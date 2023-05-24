@@ -10,6 +10,7 @@ import ExchangeScreen from './exchange/ExchangeScreen';
 import EarnScreen from './earn/EarnScreen';
 import SettingScreen from './settings/SettingScreen';
 import HomeScreen from './home/HomeScreen';
+import WalletScreen from './wallet/WalletScreen';
 
 type MainTabStackParamList = {
   Wallet: any;
@@ -52,11 +53,11 @@ const MainStack = () => {
           : styledColors.light,
       })}
     >
-      {/*<Tab.Screen*/}
-      {/*  name="Wallet"*/}
-      {/*  options={{ headerShown: false }}*/}
-      {/*  component={QRScreen}*/}
-      {/*/>*/}
+      <Tab.Screen
+        name="Wallet"
+        options={{ headerShown: false }}
+        component={WalletScreen}
+      />
       <Tab.Screen
         name="Exchange"
         options={{ headerShown: false }}

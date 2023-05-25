@@ -16,6 +16,7 @@ import ExchangeWhiteIcon from '../../../assets/icons/exchange_white.svg';
 import PenIcon from '../../../assets/icons/pen.svg';
 import PenWhiteIcon from '../../../assets/icons/pen_white.svg';
 import LeftArrow from '../../../assets/icons/left_arrow.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type WalletRequestScreenProps = {
   navigation: any;
@@ -54,6 +55,9 @@ function WalletRequestScreen({navigation }: WalletRequestScreenProps) {
 
   const onContinue = () => {
     console.log('onContinue');
+    AsyncStorage.setItem('amount', amount);
+    AsyncStorage.setItem('unit', unit);
+    navigation.navigate('WalletShareScreen');
   };
 
   return (
@@ -203,7 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 3,
-
   },
   pen: {
     width: 44,

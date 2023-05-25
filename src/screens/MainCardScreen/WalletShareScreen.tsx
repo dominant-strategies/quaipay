@@ -103,10 +103,17 @@ function WalletShareScreen({}: WalletShareScreenProps) {
                   : styledColors.lightGray,
               }}
             >
-              <Text style={[styles.amountunit, {color: isDarkMode ? styledColors.gray : styledColors.black}]}>
+              <Text
+                style={[
+                  styles.amountunit,
+                  {
+                    color: isDarkMode ? styledColors.gray : styledColors.black,
+                  },
+                ]}
+              >
                 ${amount} {unit}
               </Text>
-              <Text style={[styles.xunit,textColor]}>XXX.XXX {unit}</Text>
+              <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
               <TouchableOpacity
                 onPress={() => {
                   onExchange();

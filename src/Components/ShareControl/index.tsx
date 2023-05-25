@@ -23,7 +23,6 @@ export default function ShareControl() {
         <TouchableOpacity>
           {isDarkMode ? (
             <PrinterWhiteIcon width={32} height={32} />
-            
           ) : (
             <PrinterIcon width={32} height={32} />
           )}

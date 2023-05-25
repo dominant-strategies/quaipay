@@ -8,10 +8,9 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { fontStyle, styledColors } from '../../theme/styles';
 import SwitchSelector from 'react-native-switch-selector';
 import WalletInfo from '../../components/WalletInfo';
-import UploadWhiteIcon from '../../../assets/icons/upload_white.svg';
 import ShareIcon from '../../../assets/icons/share.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExchangeIcon from '../../../assets/icons/exchange.svg';
@@ -21,7 +20,7 @@ type WalletShareScreenProps = {
   navigation: any;
 };
 
-function WalletShareScreen({navigation }: WalletShareScreenProps) {
+function WalletShareScreen({}: WalletShareScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [sendPad, setSendPad] = useState<boolean>(true);
   const [amount, setAmount] = useState<string | null>('');
@@ -104,18 +103,23 @@ function WalletShareScreen({navigation }: WalletShareScreenProps) {
                   : styledColors.lightGray,
               }}
             >
-                <Text style={styles.amountunit} >${amount} {unit}</Text>
-                <Text style={styles.xunit} >XXX.XXX {unit}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    onExchange();
-                  }}
-                  style={[styles.exchangeUnit ]}
-                >
-                  <Text style={textColor}>
-                    {unit}</Text>
-                  { isDarkMode ?  <ExchangeWhiteIcon width={14} height={11} /> : <ExchangeIcon width={14} height={11} /> } 
-                </TouchableOpacity>
+              <Text style={styles.amountunit}>
+                ${amount} {unit}
+              </Text>
+              <Text style={styles.xunit}>XXX.XXX {unit}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  onExchange();
+                }}
+                style={[styles.exchangeUnit]}
+              >
+                <Text style={textColor}>{unit}</Text>
+                {isDarkMode ? (
+                  <ExchangeWhiteIcon width={14} height={11} />
+                ) : (
+                  <ExchangeIcon width={14} height={11} />
+                )}
+              </TouchableOpacity>
               <WalletInfo
                 darkMode={isDarkMode}
                 textColor={isDarkMode ? styledColors.white : styledColors.black}
@@ -125,10 +129,8 @@ function WalletShareScreen({navigation }: WalletShareScreenProps) {
               />
             </View>
             <View style={styles.buttonAreaInfo}>
-              <TouchableOpacity onPress={() => {} } style={styles.requestView}>
-                <Text style={styles.shareTxt}>
-                  Share
-                </Text>
+              <TouchableOpacity onPress={() => {}} style={styles.requestView}>
+                <Text style={styles.shareTxt}>Share</Text>
                 <ShareIcon width={12} height={16.18} />
               </TouchableOpacity>
             </View>
@@ -204,10 +206,10 @@ const styles = StyleSheet.create({
     gap: 3,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 9.5
+    marginTop: 9.5,
   },
-  amountunit: {textAlign: 'center', marginTop: 35},
-  xunit: {textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000'}
+  amountunit: { textAlign: 'center', marginTop: 35 },
+  xunit: { textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000' },
 });
 
 export default WalletShareScreen;

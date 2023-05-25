@@ -13,7 +13,7 @@ type WalletStackParamList = {
 const Stack = createNativeStackNavigator<WalletStackParamList>();
 const WalletStack = () => {
   return (
-    <NavigationContainer  independent={true}>
+    <NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName="Wallet">
         <Stack.Screen
           component={WalletScreen}

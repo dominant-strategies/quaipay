@@ -14,7 +14,6 @@ import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 type MainTabStackParamList = {
   Wallet: any;

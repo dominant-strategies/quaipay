@@ -13,11 +13,11 @@ type WalletInfoProps = {
 };
 
 export const WalletInfo = ({
-    textColor,
-    ownerName,
-    walletAddress,
-    style,
-  }: WalletInfoProps) => {
+  textColor,
+  ownerName,
+  walletAddress,
+  style,
+}: WalletInfoProps) => {
   return (
     <View style={{ ...style, ...styles.switchStyle }}>
       <View style={styles.qrcodeStyle}>
@@ -37,7 +37,7 @@ export const WalletInfo = ({
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   ownerName: {

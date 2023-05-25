@@ -7,7 +7,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Image,
 } from 'react-native';
 
 import { fontStyle, styledColors } from '../../theme/styles';
@@ -22,7 +21,7 @@ type WalletRequestScreenProps = {
   navigation: any;
 };
 
-function WalletRequestScreen({navigation }: WalletRequestScreenProps) {
+function WalletRequestScreen({ navigation }: WalletRequestScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -125,15 +124,26 @@ function WalletRequestScreen({navigation }: WalletRequestScreenProps) {
             }}
             style={styles.exchangeUnit}
           >
-            <Text style={textColor}>
-              {unit}</Text>
-             { isDarkMode ?  <ExchangeWhiteIcon width={14} height={11} /> : <ExchangeIcon width={14} height={11} /> } 
+            <Text style={textColor}>{unit}</Text>
+            {isDarkMode ? (
+              <ExchangeWhiteIcon width={14} height={11} />
+            ) : (
+              <ExchangeIcon width={14} height={11} />
+            )}
           </TouchableOpacity>
         </View>
 
         <View style={styles.penView}>
           <View style={styles.pen}>
-             { isDarkMode ? <PenWhiteIcon style={styles.penImage} width={18.75} height={18.75} /> : <PenIcon style={styles.penImage} width={18.75} height={18.75} /> } 
+            {isDarkMode ? (
+              <PenWhiteIcon
+                style={styles.penImage}
+                width={18.75}
+                height={18.75}
+              />
+            ) : (
+              <PenIcon style={styles.penImage} width={18.75} height={18.75} />
+            )}
           </View>
           <TouchableOpacity
             style={styles.continueView}

@@ -3,13 +3,11 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
-import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import { fontStyle, styledColors } from '../../styles';
 import ReceiveStack from './receive/ReceiveStack';
 import SendStack from './send/SendStack';
 

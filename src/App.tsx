@@ -21,7 +21,9 @@ function App() {
     })();
   }, []);
 
-  if (onboarded === null || loading) return <Loader text={'Welcome'} />;
+  if (onboarded === null || loading) {
+    return <Loader text={'Welcome'} />;
+  }
   return (
     <NavigationContainer>
       <Tab.Navigator

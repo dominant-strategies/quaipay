@@ -16,7 +16,7 @@ type WalletScreenProps = {
   navigation: any;
 };
 
-function WalletScreen({}: WalletScreenProps) {
+function WalletScreen({navigation }: WalletScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [sendPad, setSendPad] = useState<boolean>(true);
 
@@ -85,8 +85,8 @@ function WalletScreen({}: WalletScreenProps) {
               />
             </View>
             <View style={styles.buttonAreaInfo}>
-              <TouchableOpacity onPress={() => {}}>
-                <Text
+              <TouchableOpacity onPress={() => navigation.navigate('WalletRequest') }>
+                <Text 
                   style={{
                     ...fontStyle.fontH3,
                     ...(isDarkMode ? buttonStyle.dark : buttonStyle.white),

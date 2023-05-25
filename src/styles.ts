@@ -61,6 +61,7 @@ export const styledColors = {
   lightGray: '#D4D4D4',
   light: '#EFEFEF',
   white: '#FFFFFF',
+  border: '#D5D5D5',
 };
 
 export const buttonStyle = StyleSheet.create({

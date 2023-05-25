@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,8 +20,21 @@ const walletAddress = '0x1462b732315cA025ab6351Ce1FB6F4F5d5748F0f';
 export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
-    <>
-      <View style={{ ...styles.walletView, ...styles.switchStyle }}>
+    <View style={styles.container}>
+      <View
+        style={[
+          styles.walletView,
+          styles.switchStyle,
+          {
+            backgroundColor: isDarkMode
+              ? styledColors.dark
+              : styledColors.white,
+            borderColor: isDarkMode
+              ? styledColors.darkGray
+              : styledColors.border,
+          },
+        ]}
+      >
         <View style={styles.qrcodeStyle}>
           <QRIcon width={136} height={136} />
         </View>
@@ -67,11 +81,15 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
   ownerName: {
     fontSize: 20,
   },
@@ -94,7 +112,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   walletView: {
-    marginTop: 50,
+    height: Dimensions.get('window').height / 2,
+    marginTop: 120,
+    backgroundColor: 'red',
+    width: '100%',
+    paddingVertical: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+    borderWidth: 1,
   },
   buttonAreaInfo: {
     marginTop: 15,

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+<<<<<<< HEAD:src/screens/MainCardScreen/WalletRequestScreen.tsx
 
 import { fontStyle, styledColors } from '../../theme/styles';
 import ExchangeIcon from '../../../assets/icons/exchange.svg';
@@ -16,12 +17,19 @@ import PenIcon from '../../../assets/icons/pen.svg';
 import PenWhiteIcon from '../../../assets/icons/pen_white.svg';
 import LeftArrow from '../../../assets/icons/left_arrow.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+=======
+import { styledColors } from '../../../styles';
+>>>>>>> cddd1567edc3c5d5c348d181808e3d918c0d362b:src/main/home/send/SendAmount.tsx
 
-type WalletRequestScreenProps = {
+type SendAmountScreenProps = {
   navigation: any;
 };
 
+<<<<<<< HEAD:src/screens/MainCardScreen/WalletRequestScreen.tsx
 function WalletRequestScreen({ navigation }: WalletRequestScreenProps) {
+=======
+function SendAmountScreen({}: SendAmountScreenProps) {
+>>>>>>> cddd1567edc3c5d5c348d181808e3d918c0d362b:src/main/home/send/SendAmount.tsx
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -61,6 +69,7 @@ function WalletRequestScreen({ navigation }: WalletRequestScreenProps) {
 
   return (
     <SafeAreaView style={backgroundStyle}>
+<<<<<<< HEAD:src/screens/MainCardScreen/WalletRequestScreen.tsx
       <View style={styles.viewStyle}>
         <TouchableOpacity
           onPress={() => {
@@ -153,6 +162,15 @@ function WalletRequestScreen({ navigation }: WalletRequestScreenProps) {
           >
             <Text style={styles.continueText}>Continue</Text>
           </TouchableOpacity>
+=======
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <View style={topViewStyle}>
+        <View style={styles.switchStyle}>
+          <Text>Amount Input</Text>
+>>>>>>> cddd1567edc3c5d5c348d181808e3d918c0d362b:src/main/home/send/SendAmount.tsx
         </View>
       </View>
     </SafeAreaView>
@@ -248,4 +266,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WalletRequestScreen;
+export default SendAmountScreen;

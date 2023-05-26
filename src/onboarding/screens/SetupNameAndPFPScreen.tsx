@@ -22,18 +22,18 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { storeItem } from '../../storage/keychain';
-import { KeychainKeys } from '../../storage/constants';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
+import { storeItem } from '../services/keychain';
+import { KeychainKeys } from '../services/constants';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
 
 interface State {
   selectedImage: string | null;
 }
 
-type SetupScreenProps = {
+type SetupNameAndPFPScreenProps = {
   navigation: any;
 };
-function SetupScreen({ navigation }: SetupScreenProps) {
+function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [userName, setUserName] = useState('');
   const [selectedImage, setSelectedImage] =
@@ -61,7 +61,7 @@ function SetupScreen({ navigation }: SetupScreenProps) {
           key: KeychainKeys.profilePicture,
           value: _selectedImage,
         });
-        navigation.navigate('LocationSetup');
+        navigation.navigate('SetupLocation');
       } catch (error) {
         console.log(error);
       }
@@ -135,7 +135,7 @@ function SetupScreen({ navigation }: SetupScreenProps) {
             )}
             {!selectedImage && (
               <Image
-                source={require('./avatar.png')}
+                source={require('../assets/avatar.png')}
                 style={{
                   width: 150,
                   height: 150,
@@ -225,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetupScreen;
+export default SetupNameAndPFPScreen;

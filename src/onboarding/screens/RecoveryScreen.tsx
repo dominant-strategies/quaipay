@@ -13,8 +13,8 @@ import {
   Image,
 } from 'react-native';
 
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
-import { storeItem } from '../../storage/keychain';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import { storeItem } from '../services/keychain';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { RNRandomBytes } = NativeModules;
@@ -148,7 +148,7 @@ function LoginScreen() {
                   style={{ height: 200, backgroundColor: styledColors.black }}
                 >
                   <Image
-                    source={require('./Camera.png')}
+                    source={require('../assets/Camera.png')}
                     style={{
                       marginTop: 'auto',
                       marginBottom: 'auto',

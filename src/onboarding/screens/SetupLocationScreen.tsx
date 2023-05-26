@@ -12,30 +12,31 @@ import Geolocation, {
   GeoPosition,
 } from 'react-native-geolocation-service';
 import {
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  View,
-  PermissionsAndroid,
+  TouchableOpacity,
   useColorScheme,
-  Platform,
+  View,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { buttonStyle, fontStyle, styledColors } from '../../theme/styles';
-import { TouchableOpacity } from 'react-native';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import { storeItem } from '../../storage/keychain';
-import { KeychainKeys } from '../../storage/constants';
-import Loader from '../../components/Loader';
+import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import { PERMISSIONS, request } from 'react-native-permissions';
+import { storeItem } from '../services/keychain';
+import { KeychainKeys } from '../services/constants';
+import Loader from '../../shared/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
     Geolocation.getCurrentPosition(resolve, reject, options),
   );
 }
-function LocationSetupScreen({ navigation }: any) {
+function SetupLocationScreen({ navigation }: any) {
   const isDarkMode = useColorScheme() === 'dark';
   const [gettingLocation, setGettingLocation] = useState(false);
 
@@ -45,8 +46,7 @@ function LocationSetupScreen({ navigation }: any) {
         parseInt(Platform.Version, 10) < 13
           ? PERMISSIONS.IOS.LOCATION_ALWAYS
           : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
-      var result = await request(permission);
-      return result;
+      return await request(permission);
     } else if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -83,14 +83,15 @@ function LocationSetupScreen({ navigation }: any) {
         timeout: 15000,
         maximumAge: 10000,
       });
+      const { latitude, longitude } = position.coords;
       await storeItem({
         key: KeychainKeys.location,
-        value: JSON.stringify(position),
+        value: JSON.stringify({ latitude, longitude }),
       });
 
       setGettingLocation(false);
-      // TODO: navigate to receive screen, when available
-      navigation.navigate('Login');
+      await AsyncStorage.setItem('onboarded', 'true');
+      navigation.navigate('Main');
     }
   }, []);
 
@@ -202,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationSetupScreen;
+export default SetupLocationScreen;

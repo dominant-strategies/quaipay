@@ -12,15 +12,14 @@ import {
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { fontStyle, buttonStyle, styledColors } from '../../theme/styles';
-import Loader from '../../components/Loader';
-import { setUpWallet } from '../../wallet/setUpWallet';
+import { fontStyle, buttonStyle, styledColors } from '../../styles';
+import Loader from '../../shared/Loader';
 
-type WelcomeScreenProps = {
+type SetupWalletScreenProps = {
   navigation: any;
 };
 
-function WelcomeScreen({ navigation }: WelcomeScreenProps) {
+function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
@@ -41,9 +40,9 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const onPressSetup = useCallback(async () => {
     try {
       setSettingUpWallet(true);
-      await setUpWallet();
+      // await setUpWallet();
 
-      navigation.navigate('Setup');
+      navigation.navigate('SetupNameAndPFP');
     } catch (err) {
       if (err instanceof Error) {
         console.log('failed to set up wallet', err.message, err.stack);
@@ -67,7 +66,7 @@ function WelcomeScreen({ navigation }: WelcomeScreenProps) {
       <View style={topViewStyle}>
         <View style={styles.welcomeLogoView}>
           <Image
-            source={require('./logo.png')}
+            source={require('../assets/logo.png')}
             style={{ width: 160, height: 160, alignContent: 'center' }}
           />
         </View>
@@ -170,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default SetupWalletScreen;

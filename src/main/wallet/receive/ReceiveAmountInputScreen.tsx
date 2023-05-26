@@ -7,13 +7,13 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../theme/styles';
+import { styledColors } from '../../../styles';
 
-type SettingScreenProps = {
+type ReceiveAmountInputScreenProps = {
   navigation: any;
 };
 
-function SettingScreen({}: SettingScreenProps) {
+function ReceiveAmountInputScreen({}: ReceiveAmountInputScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -37,7 +37,7 @@ function SettingScreen({}: SettingScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Setting Screen</Text>
+          <Text>Amount Input</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default SettingScreen;
+export default ReceiveAmountInputScreen;

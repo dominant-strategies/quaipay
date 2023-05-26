@@ -73,7 +73,7 @@ function SendScanScreen({}: SendScanScreenProps) {
   return (
     <SafeAreaView
       style={{
-        flex: 1,
+        ...styles.container,
         backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
       }}
     >

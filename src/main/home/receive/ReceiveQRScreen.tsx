@@ -54,7 +54,6 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
             value={JSON.stringify({
               address: wallet.address,
               username,
-              PFP: profilePicture,
             })}
             logo={{ uri: profilePicture }}
             logoSize={50}

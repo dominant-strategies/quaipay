@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { fontStyle, styledColors } from '../../theme/styles';
 import SwitchSelector from 'react-native-switch-selector';
-import WalletInfo from '../../components/WalletInfo';
+import WalletInfo from '../../Components/WalletInfo';
 import ShareIcon from '../../../assets/icons/share.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExchangeIcon from '../../../assets/icons/exchange.svg';

@@ -24,8 +24,9 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();
-  if (!profilePicture || !username || !wallet)
+  if (!profilePicture || !username || !wallet) {
     return <Loader text={'Loading...'} />;
+  }
   return (
     <View
       style={[

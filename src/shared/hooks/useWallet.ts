@@ -7,7 +7,7 @@ export const useWallet = () => {
     const retrieve = async () => {
       const retrievedWallet = await retrieveWallet();
       if (!retrievedWallet) {
-        throw new Error(`Wallet not found`);
+        throw new Error('Wallet not found');
       }
       setWallet(retrievedWallet);
     };

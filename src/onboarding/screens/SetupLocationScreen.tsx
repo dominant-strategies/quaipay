@@ -26,7 +26,7 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import { storeItem } from '../services/keychain';
+import { storeItem } from '../../shared/services/keychain';
 import { KeychainKeys } from '../services/constants';
 import Loader from '../../shared/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';

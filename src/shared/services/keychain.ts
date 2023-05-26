@@ -38,11 +38,6 @@ export const storeItem = async ({ key, value }: KeychainItem) => {
       }
     }
   }
-
-  const retrievedValue = await retrieveStoredItem(key);
-  if (value !== retrievedValue) {
-    throw new Error(`Stored item does not match passed item for key ${key}`);
-  }
 };
 
 export const retrieveStoredItem = async (key: string) => {
@@ -58,8 +53,8 @@ export const retrieveStoredItem = async (key: string) => {
     service: key,
     storage: STORAGE_TYPE.AES,
   });
-  if (credentials) {
-    return credentials.password;
+  if (!credentials) {
+    throw new Error(`No ${key} found`);
   }
-  return null;
+  return credentials.password;
 };

@@ -22,7 +22,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { storeItem } from '../services/keychain';
+import { storeItem } from '../../shared/services/keychain';
 import { KeychainKeys } from '../services/constants';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 

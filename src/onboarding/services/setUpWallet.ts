@@ -1,6 +1,6 @@
 import { generateSecureRandom } from 'react-native-securerandom';
 import buffer from 'buffer';
-import { storeItem } from './keychain';
+import { storeItem } from '../../shared/services/keychain';
 import { KeychainKeys } from './constants';
 import { quais } from 'quais';
 

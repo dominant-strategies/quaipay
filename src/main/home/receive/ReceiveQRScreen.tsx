@@ -7,18 +7,26 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import QRIcon from './QR.svg';
 import { buttonStyle, fontStyle, styledColors } from '../../../styles';
 import ShareControl from './ShareControl';
+import QRCode from 'react-native-qrcode-svg';
+import { useProfilePicture } from '../../../shared/hooks/useProfilePicture';
+import { useUsername } from '../../../shared/hooks/useUsername';
+import { useWallet } from '../../../shared/hooks/useWallet';
+import Loader from '../../../shared/Loader';
 
 type ReceiveQRScreenProps = {
   navigation: any;
 };
 
-const walletAddress = '0x1462b732315cA025ab6351Ce1FB6F4F5d5748F0f';
-
 export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const profilePicture = useProfilePicture();
+  const username = useUsername();
+  const wallet = useWallet();
+  if (!profilePicture || !username || !wallet) {
+    return <Loader text={'Loading...'} />;
+  }
   return (
     <View
       style={[
@@ -43,7 +51,16 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
         ]}
       >
         <View style={styles.qrcodeStyle}>
-          <QRIcon width={136} height={136} />
+          <QRCode
+            value={JSON.stringify({
+              address: wallet.address,
+              username,
+            })}
+            logo={{ uri: profilePicture }}
+            logoSize={50}
+            logoBackgroundColor="transparent"
+            size={140}
+          />
         </View>
         <Text
           style={[
@@ -54,11 +71,10 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
             },
           ]}
         >
-          Alan Orwick
+          {username}
         </Text>
         <Text style={{ ...fontStyle.fontParagraph, color: styledColors.gray }}>
-          {walletAddress.slice(0, 8)}...
-          {walletAddress.slice(walletAddress.length - 8, walletAddress.length)}
+          {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
         </Text>
         <View style={styles.shareControlStyle}>
           <ShareControl />

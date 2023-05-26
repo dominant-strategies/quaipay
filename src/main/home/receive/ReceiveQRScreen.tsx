@@ -20,7 +20,14 @@ const walletAddress = '0x1462b732315cA025ab6351Ce1FB6F4F5d5748F0f';
 export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+        },
+      ]}
+    >
       <View
         style={[
           styles.walletView,

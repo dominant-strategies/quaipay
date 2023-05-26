@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
-  Dimensions,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -38,6 +35,7 @@ function SendScanScreen({}: SendScanScreenProps) {
   const handleSnapPress = useCallback((index: number) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleClosePress = useCallback(() => {
     sheetRef.current?.close();
   }, []);
@@ -49,6 +47,10 @@ function SendScanScreen({}: SendScanScreenProps) {
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
+
+  useEffect(() => {
+    console.log('barcodes', barcodes);
+  }, [barcodes]);
 
   // Alternatively you can use the underlying function:
   //
@@ -69,7 +71,12 @@ function SendScanScreen({}: SendScanScreenProps) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+      }}
+    >
       <View
         style={{
           flex: 1,
@@ -103,8 +110,8 @@ function SendScanScreen({}: SendScanScreenProps) {
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
-                backgroundColor: '#000000',
-                opacity: 0.5,
+                backgroundColor: styledColors.black,
+                opacity: 0.6,
               }}
               holes={[
                 {
@@ -120,35 +127,87 @@ function SendScanScreen({}: SendScanScreenProps) {
         )}
       </View>
       <BottomSheet
+        backgroundStyle={{
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
+        }}
         ref={sheetRef}
         snapPoints={snapPoints}
         onChange={handleSheetChange}
+        style={{
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+        }}
       >
-        <BottomSheetView style={{ paddingHorizontal: 24 }}>
+        <BottomSheetView
+          style={{
+            paddingHorizontal: 24,
+            backgroundColor: isDarkMode
+              ? styledColors.black
+              : styledColors.light,
+          }}
+        >
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
+              backgroundColor: isDarkMode
+                ? styledColors.black
+                : styledColors.light,
             }}
           >
-            {['P', 'P', 'P', 'P', 'P', 'P', 'P'].map((item, index) => {
+            {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
               return (
-                <View
-                  key={index}
-                  style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 20,
-                    borderColor: '#D5D5D5',
-                    borderWidth: 1,
-                    alignSelf: 'flex-start',
-                    margin: 4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                  }}
-                >
-                  <Text style={{ color: '#000000' }}>{item}</Text>
+                <View>
+                  <View
+                    key={index}
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      borderColor: '#D5D5D5',
+                      borderWidth: 1,
+                      alignSelf: 'flex-start',
+                      margin: 4,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                    }}
+                  >
+                    {item === 'View All' ? (
+                      <AntIcon
+                        color={
+                          isDarkMode ? styledColors.white : styledColors.black
+                        }
+                        name="down"
+                        size={24}
+                      />
+                    ) : (
+                      <Text
+                        style={{
+                          color: isDarkMode
+                            ? styledColors.white
+                            : styledColors.black,
+                        }}
+                      >
+                        {item}
+                      </Text>
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      fontFamily: 'Satoshi Variable',
+                      fontSize: 10,
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      color: isDarkMode
+                        ? styledColors.white
+                        : styledColors.black,
+                    }}
+                  >
+                    {item === 'View All' ? 'View All' : 'Phone'}
+                  </Text>
                 </View>
               );
             })}
@@ -184,9 +243,9 @@ function SendScanScreen({}: SendScanScreenProps) {
               style={{
                 height: 40,
                 width: '96%',
-                paddingLeft: 32,
+                paddingLeft: 36,
                 borderRadius: 4,
-                borderColor: 'blue',
+                borderColor: '#0066FF',
                 borderWidth: 2,
                 alignSelf: 'center',
                 justifyContent: 'center',

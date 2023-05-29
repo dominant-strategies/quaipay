@@ -135,7 +135,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             )}
             {!selectedImage && (
               <Image
-                source={require('../assets/avatar.png')}
+                source={require('../../shared/assets/avatar.png')}
                 style={{
                   width: 150,
                   height: 150,

@@ -24,7 +24,7 @@ type ReceiveQRScreenProps = NativeStackScreenProps<
   'ReceiveQR'
 >;
 
-export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
+export const ReceiveQRScreen = ({ navigation }: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();
   const username = useUsername();
@@ -86,7 +86,11 @@ export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
         </View>
       </View>
       <View style={styles.buttonAreaInfo}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push('ReceiveAmountInput');
+          }}
+        >
           <Text
             style={{
               ...fontStyle.fontH3,

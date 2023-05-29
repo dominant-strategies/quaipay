@@ -10,9 +10,11 @@ import {
 import { buttonStyle, fontStyle, styledColors } from '../../../styles';
 import ShareControl from './ShareControl';
 import QRCode from 'react-native-qrcode-svg';
-import { useProfilePicture } from '../../../shared/hooks/useProfilePicture';
-import { useUsername } from '../../../shared/hooks/useUsername';
-import { useWallet } from '../../../shared/hooks/useWallet';
+import {
+  useProfilePicture,
+  useUsername,
+  useWallet,
+} from '../../../shared/hooks';
 import Loader from '../../../shared/Loader';
 
 type ReceiveQRScreenProps = {

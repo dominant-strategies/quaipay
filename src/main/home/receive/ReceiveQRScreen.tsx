@@ -16,10 +16,13 @@ import {
   useWallet,
 } from '../../../shared/hooks';
 import Loader from '../../../shared/Loader';
+import { ReceiveStackParamList } from './ReceiveStack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type ReceiveQRScreenProps = {
-  navigation: any;
-};
+type ReceiveQRScreenProps = NativeStackScreenProps<
+  ReceiveStackParamList,
+  'ReceiveQR'
+>;
 
 export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';

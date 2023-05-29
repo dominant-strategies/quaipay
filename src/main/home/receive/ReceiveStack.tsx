@@ -1,13 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import ReceiveQRWithAmountScreen from './ReceiveQRWithAmount';
 import ReceiveAmountInputScreen from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
 
-type ReceiveStackParamList = {
-  ReceiveQR: any;
-  ReceiveAmountInput: any;
-  ReceiveQRWithAmount: any;
+export type ReceiveStackParamList = {
+  ReceiveQR: undefined;
+  ReceiveAmountInput: { amount: string } | undefined;
 };
 
 const Stack = createNativeStackNavigator<ReceiveStackParamList>();
@@ -23,11 +21,6 @@ const ReceiveStack = () => {
         name="ReceiveAmountInput"
         options={{ headerShown: false }}
         component={ReceiveAmountInputScreen}
-      />
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ReceiveQRWithAmount"
-        component={ReceiveQRWithAmountScreen}
       />
     </Stack.Navigator>
   );

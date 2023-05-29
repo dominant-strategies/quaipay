@@ -8,13 +8,17 @@ import {
   useColorScheme,
 } from 'react-native';
 import { styledColors } from '../../../styles';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SendStackStackParamList } from './SendStack';
 
-type SendAmountScreenProps = {
-  navigation: any;
-};
+type SendAmountScreenProps = NativeStackScreenProps<
+  SendStackStackParamList,
+  'SendAmount'
+>;
 
-function SendAmountScreen({}: SendAmountScreenProps) {
+function SendAmountScreen({ route }: SendAmountScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
+  console.log('route.params', route.params);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,

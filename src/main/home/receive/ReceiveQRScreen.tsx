@@ -10,14 +10,19 @@ import {
 import { buttonStyle, fontStyle, styledColors } from '../../../styles';
 import ShareControl from './ShareControl';
 import QRCode from 'react-native-qrcode-svg';
-import { useProfilePicture } from '../../../shared/hooks/useProfilePicture';
-import { useUsername } from '../../../shared/hooks/useUsername';
-import { useWallet } from '../../../shared/hooks/useWallet';
+import {
+  useProfilePicture,
+  useUsername,
+  useWallet,
+} from '../../../shared/hooks';
 import Loader from '../../../shared/Loader';
+import { ReceiveStackParamList } from './ReceiveStack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type ReceiveQRScreenProps = {
-  navigation: any;
-};
+type ReceiveQRScreenProps = NativeStackScreenProps<
+  ReceiveStackParamList,
+  'ReceiveQR'
+>;
 
 export const ReceiveQRScreen = ({}: ReceiveQRScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';

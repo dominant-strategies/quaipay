@@ -15,12 +15,15 @@ import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
 import { styledColors } from '../../../styles';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SendStackStackParamList } from './SendStack';
 
-type SendScanScreenProps = {
-  navigation: any;
-};
+type SendScanScreenProps = NativeStackScreenProps<
+  SendStackStackParamList,
+  'SendScan'
+>;
 
-function SendScanScreen({}: SendScanScreenProps) {
+function SendScanScreen({ navigation }: SendScanScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -50,6 +53,16 @@ function SendScanScreen({}: SendScanScreenProps) {
 
   useEffect(() => {
     console.log('barcodes', barcodes);
+    if (barcodes.length > 0 && barcodes[0].content.data) {
+      const { address, amount, username } = JSON.parse(
+        barcodes[0].content.data as string,
+      );
+      navigation.push('SendAmount', {
+        address,
+        amount,
+        username,
+      });
+    }
   }, [barcodes]);
 
   // Alternatively you can use the underlying function:
@@ -159,7 +172,7 @@ function SendScanScreen({}: SendScanScreenProps) {
           >
             {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
               return (
-                <View>
+                <View key={index}>
                   <View
                     key={index}
                     style={{

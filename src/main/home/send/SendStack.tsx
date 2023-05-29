@@ -5,11 +5,11 @@ import SendAmountScreen from './SendAmount';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
 
-type SendStackStackParamList = {
-  SendScan: any;
-  SendAmount: any;
-  SendOverview: any;
-  SendConfirmation: any;
+export type SendStackStackParamList = {
+  SendScan: undefined;
+  SendAmount: { address: string; amount?: string; username: string };
+  SendOverview: undefined;
+  SendConfirmation: undefined;
 };
 
 const Stack = createNativeStackNavigator<SendStackStackParamList>();

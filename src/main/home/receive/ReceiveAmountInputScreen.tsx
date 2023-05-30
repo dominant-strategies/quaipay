@@ -18,7 +18,7 @@ import ExchangeWhiteIcon from '../../../shared/assets/exchange_white.svg';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
-  'ReceiveQR'
+  'ReceiveAmountInput'
 >;
 
 function ReceiveAmountInputScreen({}: ReceiveAmountInputProps) {

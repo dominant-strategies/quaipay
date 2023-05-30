@@ -65,7 +65,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [username, selectedImage]);
 
   return (
     <SafeAreaView style={backgroundStyle}>

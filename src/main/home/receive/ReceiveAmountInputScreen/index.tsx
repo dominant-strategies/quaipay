@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ReceiveStackParamList } from '../ReceiveStack';
-import { fontStyle, styledColors } from 'src/styles';
-import ShareIcon from 'src/shared/assets/share.svg';
+import { styledColors } from 'src/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import ExchangeWhiteIcon from 'src/shared/assets/exchange_white.svg';
 import { EUnit } from './types';
@@ -23,7 +22,6 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [sendPad] = useState(true);
   const [amount] = useState('0.00');
   const [unit, setUnit] = useState(EUnit.USD);
 
@@ -53,63 +51,35 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={topViewStyle}>
-        {sendPad ? (
-          <>
-            <View
-              style={{
-                ...styles.walletCardStyle,
-                backgroundColor: isDarkMode
-                  ? styledColors.dark
-                  : styledColors.white,
-                borderColor: isDarkMode
-                  ? styledColors.darkGray
-                  : styledColors.lightGray,
-              }}
-            >
-              <Text
-                style={[
-                  styles.amountunit,
-                  {
-                    color: isDarkMode ? styledColors.gray : styledColors.black,
-                  },
-                ]}
-              >
-                ${amount} {unit}
-              </Text>
-              <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
+      <View
+        style={{
+          ...topViewStyle,
+          ...styles.walletCardStyle,
+          backgroundColor: isDarkMode ? styledColors.dark : styledColors.white,
+          borderColor: isDarkMode
+            ? styledColors.darkGray
+            : styledColors.lightGray,
+        }}
+      >
+        <Text
+          style={[
+            styles.amountunit,
+            {
+              color: isDarkMode ? styledColors.gray : styledColors.black,
+            },
+          ]}
+        >
+          ${amount} {unit}
+        </Text>
+        <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-                <Text style={[textColor]}>{unit}</Text>
-                {isDarkMode ? (
-                  <ExchangeWhiteIcon width={14} height={11} />
-                ) : (
-                  <ExchangeIcon width={14} height={11} />
-                )}
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonAreaInfo}>
-              <TouchableOpacity onPress={() => {}} style={styles.requestView}>
-                <Text style={styles.shareTxt}>Share</Text>
-                <ShareIcon width={12} height={16.18} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.learnMoreAreaInfo}>
-              <TouchableOpacity onPress={() => {}}>
-                <Text
-                  style={{
-                    ...fontStyle.fontSmallText,
-                    ...styles.learnMoreText,
-                  }}
-                >
-                  Learn more about QuaiPay
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <></>
-        )}
+          <Text style={[textColor]}>{unit}</Text>
+          {isDarkMode ? (
+            <ExchangeWhiteIcon width={14} height={11} />
+          ) : (
+            <ExchangeIcon width={14} height={11} />
+          )}
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

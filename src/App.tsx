@@ -3,14 +3,18 @@ import '@ethersproject/shims';
 import React, { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+
 import OnboardingStack from './onboarding/OnboardingStack';
 import MainStack from './main/MainStack';
 import Loader from './shared/Loader';
 import './shared/locales';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function App() {
   // TODO: use redux persist instead of AsyncStorage
@@ -30,30 +34,29 @@ function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
-        <Tab.Navigator
+        <Stack.Navigator
           initialRouteName={onboarded ? 'Main' : 'Onboarding'}
           screenOptions={{
             headerShown: false,
-            tabBarShowLabel: false,
           }}
         >
-          <Tab.Screen
+          <Stack.Screen
             name="Onboarding"
             component={OnboardingStack}
             options={{
+              ...TransitionPresets.ModalPresentationIOS,
               title: 'onboarding',
-              tabBarStyle: { display: 'none' },
             }}
           />
-          <Tab.Screen
+          <Stack.Screen
             name="Main"
             component={MainStack}
             options={{
+              gestureEnabled: false,
               title: 'Main',
-              tabBarStyle: { display: 'none' },
             }}
           />
-        </Tab.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
   );

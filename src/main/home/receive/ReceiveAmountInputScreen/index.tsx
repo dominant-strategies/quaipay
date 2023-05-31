@@ -14,6 +14,7 @@ import { fontStyle, styledColors } from 'src/styles';
 import ShareIcon from 'src/shared/assets/share.svg';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import ExchangeWhiteIcon from 'src/shared/assets/exchange_white.svg';
+import { EUnit } from './types';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -24,7 +25,7 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [sendPad] = useState(true);
   const [amount] = useState('0.00');
-  const [unit, setUnit] = useState<string | null>('');
+  const [unit, setUnit] = useState(EUnit.USD);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -41,8 +42,8 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
     color: isDarkMode ? styledColors.white : styledColors.black,
   };
 
-  const onExchange = () => {
-    const result = unit === 'QUAI' ? 'USD' : 'QUAI';
+  const onSwap = () => {
+    const result = unit === EUnit.USD ? EUnit.QUAI : EUnit.USD;
     setUnit(result);
   };
 
@@ -77,12 +78,7 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
                 ${amount} {unit}
               </Text>
               <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  onExchange();
-                }}
-                style={[styles.exchangeUnit]}
-              >
+        <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
                 <Text style={[textColor]}>{unit}</Text>
                 {isDarkMode ? (
                   <ExchangeWhiteIcon width={14} height={11} />

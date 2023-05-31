@@ -6,6 +6,7 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import { fontStyle, styledColors } from '../../styles';
 import ReceiveStack from './receive/ReceiveStack';
@@ -21,6 +22,7 @@ enum SwitchValue {
 }
 
 function HomeScreen({}: HomeScreenProps) {
+  const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const [switchValue, setSwitchValue] = useState<SwitchValue>(
     SwitchValue.Receive,
@@ -63,11 +65,15 @@ function HomeScreen({}: HomeScreenProps) {
             buttonMargin={2}
             options={[
               {
-                label: 'Receive',
+                label: t('home.receive.label'),
                 value: SwitchValue.Receive,
                 imageIcon: undefined,
               },
-              { label: 'Send', value: SwitchValue.Send, imageIcon: undefined },
+              {
+                label: t('home.send.label'),
+                value: SwitchValue.Send,
+                imageIcon: undefined,
+              },
             ]}
             testID="gender-switch-selector"
             accessibilityLabel="gender-switch-selector"

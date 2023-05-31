@@ -67,7 +67,7 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         </Text>
         <Text style={[styles.xUnit, textColor]}>XXX.XXX {unit}</Text>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-          <Text style={[textColor]}>{unit}</Text>
+          <Text style={textColor}>{unit}</Text>
           <ExchangeIcon
             color={isDarkMode ? styledColors.white : styledColors.black}
           />
@@ -78,9 +78,6 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
 };
 
 const styles = StyleSheet.create({
-  switchStyle: {
-    marginTop: 40,
-  },
   walletCardStyle: {
     marginTop: 66,
     marginHorizontal: 16,
@@ -88,33 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: styledColors.lightGray,
     height: 426,
-  },
-  walletView: {
-    marginTop: 16.5,
-  },
-  buttonAreaInfo: {
-    marginTop: 15,
-  },
-  learnMoreAreaInfo: {
-    marginTop: 15,
-  },
-  learnMoreText: {
-    color: styledColors.gray,
-    textDecorationLine: 'underline',
-  },
-  requestView: {
-    backgroundColor: '#0066FF',
-    height: 42,
-    borderRadius: 8,
-    verticalAlign: 'middle',
-    color: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 5,
-  },
-  shareTxt: {
-    color: '#fff',
   },
   exchangeUnit: {
     width: 90,

@@ -1,0 +1,13 @@
+{
+  "title": "Welcome to react using react-i18next",
+  "description": {
+    "part1": "To get started, edit <1>src/App.js</1> and save to reload.",
+    "part2": "Switch language between english and german using buttons above."
+  },
+  "setup": {
+    "wallet": {
+      "title": "Wallet",
+      "description": "Wallet is a place where you can store your money."
+    },
+  }
+}

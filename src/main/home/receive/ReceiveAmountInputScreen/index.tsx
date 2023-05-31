@@ -74,11 +74,9 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
           <Text style={[textColor]}>{unit}</Text>
-          {isDarkMode ? (
-            <ExchangeWhiteIcon width={14} height={11} />
-          ) : (
-            <ExchangeIcon width={14} height={11} />
-          )}
+          <ExchangeIcon
+            color={isDarkMode ? styledColors.white : styledColors.black}
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

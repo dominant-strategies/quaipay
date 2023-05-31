@@ -1,13 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
 import '@ethersproject/shims';
+import React, { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import OnboardingStack from './onboarding/OnboardingStack';
 import MainStack from './main/MainStack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Loader from './shared/Loader';
+import './shared/locales';
 
 const Tab = createBottomTabNavigator();
 

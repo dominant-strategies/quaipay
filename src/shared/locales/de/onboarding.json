@@ -1,0 +1,8 @@
+{
+  "setup": {
+    "wallet": {
+      "title": "Wallet",
+      "description": "Wallet is a place where you can store your money."
+    },
+  }
+}

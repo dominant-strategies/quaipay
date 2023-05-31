@@ -1,0 +1,12 @@
+{
+  "receive": {
+    "label": "Erhalten",
+    "amount": "Betrag",
+    "address": "Adresse"
+  },
+  "send": {
+    "label": "Senden",
+    "amount": "Betrag",
+    "address": "Adresse"
+  }
+}

@@ -12,7 +12,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ReceiveStackParamList } from '../ReceiveStack';
 import { styledColors } from 'src/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import ExchangeWhiteIcon from 'src/shared/assets/exchange_white.svg';
 import { EUnit } from './types';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
@@ -31,13 +30,12 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
     height: '100%',
   };
 
-  const topViewStyle = {
-    marginLeft: 16,
-    marginRight: 16,
-  };
-
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
+  };
+
+  const equivalentUnitTextColorStyle = {
+    color: isDarkMode ? styledColors.gray : styledColors.black,
   };
 
   const onSwap = () => {
@@ -52,26 +50,22 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View
-        style={{
-          ...topViewStyle,
-          ...styles.walletCardStyle,
-          backgroundColor: isDarkMode ? styledColors.dark : styledColors.white,
-          borderColor: isDarkMode
-            ? styledColors.darkGray
-            : styledColors.lightGray,
-        }}
+        style={[
+          styles.walletCardStyle,
+          {
+            backgroundColor: isDarkMode
+              ? styledColors.dark
+              : styledColors.white,
+            borderColor: isDarkMode
+              ? styledColors.darkGray
+              : styledColors.lightGray,
+          },
+        ]}
       >
-        <Text
-          style={[
-            styles.amountunit,
-            {
-              color: isDarkMode ? styledColors.gray : styledColors.black,
-            },
-          ]}
-        >
+        <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
           ${amount} {unit}
         </Text>
-        <Text style={[styles.xunit, textColor]}>XXX.XXX {unit}</Text>
+        <Text style={[styles.xUnit, textColor]}>XXX.XXX {unit}</Text>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
           <Text style={[textColor]}>{unit}</Text>
           <ExchangeIcon
@@ -89,6 +83,7 @@ const styles = StyleSheet.create({
   },
   walletCardStyle: {
     marginTop: 66,
+    marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: styledColors.lightGray,
@@ -135,6 +130,6 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: 9.5,
   },
-  amountunit: { textAlign: 'center', marginTop: 35 },
-  xunit: { textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000' },
+  amountUnit: { textAlign: 'center', marginTop: 35 },
+  xUnit: { textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000' },
 });

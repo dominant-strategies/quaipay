@@ -8,13 +8,12 @@ import {
   useColorScheme,
   TouchableOpacity,
 } from 'react-native';
-import { fontStyle, styledColors } from '../../../styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ReceiveStackParamList } from './ReceiveStack';
-import SwitchSelector from 'react-native-switch-selector';
-import ShareIcon from '../../../shared/assets/share.svg';
-import ExchangeIcon from '../../../shared/assets/exchange.svg';
-import ExchangeWhiteIcon from '../../../shared/assets/exchange_white.svg';
+import { ReceiveStackParamList } from '../ReceiveStack';
+import { fontStyle, styledColors } from 'src/styles';
+import ShareIcon from 'src/shared/assets/share.svg';
+import ExchangeIcon from 'src/shared/assets/exchange.svg';
+import ExchangeWhiteIcon from 'src/shared/assets/exchange_white.svg';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -23,8 +22,8 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [sendPad, setSendPad] = useState<boolean>(true);
-  const [amount, setAmount] = useState<string | null>('');
+  const [sendPad] = useState(true);
+  const [amount] = useState('0.00');
   const [unit, setUnit] = useState<string | null>('');
 
   const backgroundStyle = {
@@ -43,7 +42,6 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   };
 
   const onExchange = () => {
-    console.log('onExchange');
     const result = unit === 'QUAI' ? 'USD' : 'QUAI';
     setUnit(result);
   };
@@ -55,31 +53,6 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={topViewStyle}>
-        <View style={styles.switchStyle}>
-          <SwitchSelector
-            initial={0}
-            onPress={(value: boolean | ((prevState: boolean) => boolean)) =>
-              setSendPad(value)
-            }
-            textColor={isDarkMode ? styledColors.white : styledColors.black}
-            selectedColor={styledColors.black}
-            buttonColor={styledColors.white}
-            borderColor={styledColors.gray}
-            backgroundColor={
-              !isDarkMode ? styledColors.lightGray : styledColors.black
-            }
-            textStyle={fontStyle.fontParagraph}
-            selectedTextStyle={fontStyle.fontParagraph}
-            hasPadding
-            buttonMargin={2}
-            options={[
-              { label: 'Receive', value: 'r', imageIcon: undefined },
-              { label: 'Send', value: 's', imageIcon: undefined },
-            ]}
-            testID="gender-switch-selector"
-            accessibilityLabel="gender-switch-selector"
-          />
-        </View>
         {sendPad ? (
           <>
             <View

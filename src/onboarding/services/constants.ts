@@ -12,4 +12,5 @@ export const KeychainKeys = {
   'zone-2-0': 'zone-2-0',
   'zone-2-1': 'zone-2-1',
   'zone-2-2': 'zone-2-2',
+  contacts: 'contacts',
 };

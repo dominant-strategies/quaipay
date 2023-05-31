@@ -4,14 +4,21 @@ import { retrieveStoredItem } from '../services/keychain';
 export const useRetrieve = (key: string) => {
   const [retrieved, setRetrieved] = useState<any>();
   useEffect(() => {
-    const retrieve = async () => {
+    (async () => {
       const retrievedItem = await retrieveStoredItem(key);
       if (!retrievedItem) {
         throw new Error(`No ${key} found`);
       }
-      setRetrieved(retrievedItem);
-    };
-    retrieve();
+      setRetrieved(parseIfParsable(retrievedItem));
+    })();
   }, [key]);
   return retrieved;
+};
+
+const parseIfParsable = (value: string) => {
+  try {
+    return JSON.parse(value);
+  } catch (_) {
+    return value;
+  }
 };

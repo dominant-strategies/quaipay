@@ -20,6 +20,7 @@ type MainTabStackParamList = {
   Setting: any;
 };
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
+
 const MainStack = () => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -52,33 +53,14 @@ const MainStack = () => {
         tabBarInactiveBackgroundColor: isDarkMode
           ? styledColors.black
           : styledColors.light,
+        headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Wallet"
-        options={{ headerShown: false }}
-        component={WalletScreen}
-      />
-      <Tab.Screen
-        name="Exchange"
-        options={{ headerShown: false }}
-        component={ExchangeScreen}
-      />
-      <Tab.Screen
-        name="Home"
-        options={{ headerShown: false }}
-        component={HomeScreen}
-      />
-      <Tab.Screen
-        name="Earn"
-        options={{ headerShown: false }}
-        component={EarnScreen}
-      />
-      <Tab.Screen
-        name="Setting"
-        options={{ headerShown: false }}
-        component={SettingScreen}
-      />
+      <Tab.Screen name="Wallet" component={WalletScreen} />
+      <Tab.Screen name="Exchange" component={ExchangeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Earn" component={EarnScreen} />
+      <Tab.Screen name="Setting" component={SettingScreen} />
     </Tab.Navigator>
   );
 };

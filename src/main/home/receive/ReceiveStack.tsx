@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import ReceiveAmountInputScreen from './ReceiveAmountInputScreen';
+import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
 
 export type ReceiveStackParamList = {

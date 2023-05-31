@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -21,7 +21,7 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
   'ReceiveAmountInput'
 >;
 
-function ReceiveAmountInputScreen({}: ReceiveAmountInputProps) {
+export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [sendPad, setSendPad] = useState<boolean>(true);
   const [amount, setAmount] = useState<string | null>('');
@@ -34,7 +34,6 @@ function ReceiveAmountInputScreen({}: ReceiveAmountInputProps) {
   };
 
   const topViewStyle = {
-    // backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     marginLeft: 16,
     marginRight: 16,
   };
@@ -118,13 +117,6 @@ function ReceiveAmountInputScreen({}: ReceiveAmountInputProps) {
                   <ExchangeIcon width={14} height={11} />
                 )}
               </TouchableOpacity>
-              {/*<WalletInfo*/}
-              {/*  darkMode={isDarkMode}*/}
-              {/*  textColor={isDarkMode ? styledColors.white : styledColors.black}*/}
-              {/*  style={styles.walletView}*/}
-              {/*  ownerName="Alan Orwick"*/}
-              {/*  walletAddress="0x1462b732315cA025ab6351Ce1FB6F4F5d5748F0f"*/}
-              {/*/>*/}
             </View>
             <View style={styles.buttonAreaInfo}>
               <TouchableOpacity onPress={() => {}} style={styles.requestView}>
@@ -152,7 +144,7 @@ function ReceiveAmountInputScreen({}: ReceiveAmountInputProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   switchStyle: {
@@ -209,5 +201,3 @@ const styles = StyleSheet.create({
   amountunit: { textAlign: 'center', marginTop: 35 },
   xunit: { textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000' },
 });
-
-export default ReceiveAmountInputScreen;

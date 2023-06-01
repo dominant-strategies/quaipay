@@ -26,6 +26,7 @@ const MainStack = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      backBehavior="none"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'Wallet') {

@@ -23,7 +23,7 @@ import {
   View,
 } from 'react-native';
 import { storeItem } from '../../shared/services/keychain';
-import { KeychainKeys } from '../services/constants';
+import { KeychainKeys } from '../../shared/constants';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 
 interface State {

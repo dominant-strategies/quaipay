@@ -12,7 +12,7 @@ type KeychainItem = { key: string; value: string };
 const defaultOptions = (key: string) => ({
   accessControl: ACCESS_CONTROL.DEVICE_PASSCODE,
   // ios only
-  accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+  accessible: ACCESSIBLE.WHEN_UNLOCKED,
   // ios only
   authenticationType: AUTHENTICATION_TYPE.DEVICE_PASSCODE_OR_BIOMETRICS,
   // android only
@@ -22,19 +22,30 @@ const defaultOptions = (key: string) => ({
   storage: STORAGE_TYPE.AES,
 });
 
-export const storeItem = async ({ key, value }: KeychainItem) => {
+export const storeItem = async (
+  { key, value }: KeychainItem,
+  passcodeProtected?: boolean,
+) => {
+  const options = passcodeProtected
+    ? {
+        ...defaultOptions(key),
+        accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+      }
+    : defaultOptions(key);
+
   try {
     await Keychain.setGenericPassword('Quaipay', value, defaultOptions(key));
   } catch (error: any) {
     console.log(error);
+
     if (error.message.includes('Insufficient security level')) {
       try {
         await Keychain.setGenericPassword('Quaipay', value, {
-          ...defaultOptions(key),
+          ...options,
           securityLevel: SECURITY_LEVEL.SECURE_SOFTWARE,
         });
-      } catch (error: any) {
-        console.log(error);
+      } catch (err: any) {
+        console.log(err);
       }
     }
   }

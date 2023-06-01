@@ -1,5 +1,5 @@
 import { useRetrieve } from './useRetrieve';
-import { KeychainKeys } from '../../onboarding/services/constants';
+import { KeychainKeys } from '../constants';
 import { Contact } from '../types/Contact';
 import { retrieveStoredItem, storeItem } from '../services/keychain';
 

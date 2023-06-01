@@ -1,9 +1,9 @@
 import { retrieveStoredItem } from './keychain';
-import { KeychainKeys } from '../../onboarding/services/constants';
+import { KeychainKeys } from '../constants';
 
 const getWalletKey = () =>
   // location: string
-  KeychainKeys['zone-0-0'];
+  KeychainKeys['wallet-zone-0-0'];
 
 export const retrieveWallet = async () => {
   // TODO: use location when getWalletKey is updated

@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
+  Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ReceiveStackParamList } from '../ReceiveStack';
-import { styledColors } from 'src/styles';
+import { fontStyle, styledColors } from 'src/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useReceiveInput } from './hooks';
+import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -22,8 +24,12 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 >;
 
 // TODO: implement in-house keyboard
+// TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const profilePicture = useProfilePicture();
+  const username = useUsername();
+  const wallet = useWallet();
   const inputRef = useRef<TextInput>(null);
   const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
 
@@ -57,30 +63,44 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.walletCardStyle}>
-        <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
-          {eqInput.unit === 'USD' && '$'}
-          {eqInput.value} {eqInput.unit}
-        </Text>
-        <View style={styles.column}>
-          <Text style={[styles.xUnit, textColor]}>
-            {input.unit === 'USD' && '$'}
+        <View style={styles.container}>
+          <Image style={styles.image} source={{ uri: profilePicture }} />
+          <Text style={[textColor, styles.username]}>{username}</Text>
+          <Text style={[textColor, styles.wallet]}>
+            {wallet &&
+              `${wallet?.address.slice(0, 8)}...${wallet.address?.slice(-8)}`}
           </Text>
-          <TextInput
-            ref={inputRef}
-            style={[styles.xUnit, textColor]}
-            value={input.value}
-            onChangeText={onInputChange}
-            keyboardAppearance={isDarkMode ? 'dark' : 'light'}
-            keyboardType={Platform.OS === 'android' ? 'numeric' : 'decimal-pad'}
-          />
-          <Text style={[styles.xUnit, textColor]}>{` ${input.unit}`}</Text>
         </View>
-        <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-          <Text style={textColor}>{input.unit}</Text>
-          <ExchangeIcon
-            color={isDarkMode ? styledColors.white : styledColors.black}
-          />
-        </TouchableOpacity>
+        <View>
+          <View style={[styles.row, styles.marginTop16]}>
+            <Text style={[styles.xUnit, textColor]}>
+              {input.unit === 'USD' && '$'}
+            </Text>
+            <TextInput
+              ref={inputRef}
+              style={[styles.xUnit, textColor]}
+              value={input.value}
+              onChangeText={onInputChange}
+              keyboardAppearance={isDarkMode ? 'dark' : 'light'}
+              keyboardType={
+                Platform.OS === 'android' ? 'numeric' : 'decimal-pad'
+              }
+            />
+            <Text style={[styles.xUnit, textColor]}>{` ${input.unit}`}</Text>
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
+            {eqInput.unit === 'USD' && '$'}
+            {eqInput.value} {eqInput.unit}
+          </Text>
+          <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
+            <Text style={textColor}>{input.unit}</Text>
+            <ExchangeIcon
+              color={isDarkMode ? styledColors.white : styledColors.black}
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           onPress={goToGeneratedQR}
           style={[styles.continueButton]}
@@ -96,9 +116,10 @@ const styles = StyleSheet.create({
   walletCardStyle: {
     marginTop: 80,
   },
-  column: {
+  row: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   exchangeUnit: {
     width: 90,
@@ -110,13 +131,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 3,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 9.5,
+    marginLeft: 8,
+    marginTop: 10,
   },
   amountUnit: {
-    textAlign: 'center',
-    marginTop: 35,
+    marginTop: 10,
   },
   xUnit: {
     textAlign: 'center',
@@ -132,5 +151,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     paddingVertical: 16,
     paddingHorizontal: 132,
+  },
+  marginTop16: {
+    marginTop: 16,
+  },
+  image: {
+    borderRadius: 70,
+    height: 60,
+    width: 60,
+  },
+  container: {
+    alignItems: 'center',
+  },
+  username: {
+    ...fontStyle.fontH3,
+    marginTop: 8,
+    fontSize: 14,
+  },
+  wallet: {
+    ...fontStyle.fontSmallText,
   },
 });

@@ -23,7 +23,7 @@ import {
   View,
 } from 'react-native';
 import { storeItem } from '../../shared/services/keychain';
-import { KeychainKeys } from '../../shared/constants';
+import { keychainKeys } from '../../shared/constants/keychainKeys';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 
 interface State {
@@ -56,9 +56,9 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   const saveUserName = useCallback(
     async (_username: string, _selectedImage: string) => {
       try {
-        await storeItem({ key: KeychainKeys.username, value: _username });
+        await storeItem({ key: keychainKeys.username, value: _username });
         await storeItem({
-          key: KeychainKeys.profilePicture,
+          key: keychainKeys.profilePicture,
           value: _selectedImage,
         });
         navigation.navigate('SetupLocation');

@@ -1,6 +1,6 @@
 import { useRetrieve } from './useRetrieve';
-import { KeychainKeys } from '../constants';
+import { keychainKeys } from '../constants/keychainKeys';
 
 export const useProfilePicture = () => {
-  return useRetrieve(KeychainKeys.profilePicture);
+  return useRetrieve(keychainKeys.profilePicture);
 };

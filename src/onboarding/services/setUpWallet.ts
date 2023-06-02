@@ -1,7 +1,7 @@
 import { generateSecureRandom } from 'react-native-securerandom';
 import buffer from 'buffer';
 import { storeItem } from 'src/shared/services/keychain';
-import { KeychainKeys } from 'src/shared/constants';
+import { keychainKeys } from '../../shared/constants/keychainKeys';
 import { quais } from 'quais';
 
 // eslint-disable-next-line quotes
@@ -12,7 +12,7 @@ export async function setUpWallet() {
   const encodedEntropy = buffer.Buffer.from(entropy).toString('base64');
   await storeItem(
     {
-      key: KeychainKeys.entropy,
+      key: keychainKeys.entropy,
       value: encodedEntropy,
     },
     true,
@@ -27,13 +27,13 @@ export async function setUpWallet() {
   await Promise.all(
     childNodes.map((node, ind: number) => {
       type ZoneIndex = Exclude<
-        keyof typeof KeychainKeys,
+        keyof typeof keychainKeys,
         'username' | 'profilePicture' | 'location' | 'entropy'
       >;
       const zoneIndex = `wallet-zone-${Math.floor(ind / 3)}-${ind % 3}`;
       return storeItem(
         {
-          key: KeychainKeys[zoneIndex as ZoneIndex],
+          key: keychainKeys[zoneIndex as ZoneIndex],
           value: JSON.stringify(node),
         },
         true,

@@ -1,6 +1,6 @@
 import { useRetrieve } from './useRetrieve';
-import { KeychainKeys } from '../constants';
+import { keychainKeys } from '../constants/keychainKeys';
 
 export const useUsername = () => {
-  return useRetrieve(KeychainKeys.username);
+  return useRetrieve(keychainKeys.username);
 };

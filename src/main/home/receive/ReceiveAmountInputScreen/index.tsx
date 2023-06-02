@@ -21,6 +21,7 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
   'ReceiveAmountInput'
 >;
 
+// TODO: implement in-house keyboard
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const inputRef = useRef<TextInput>(null);
@@ -39,6 +40,9 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const equivalentUnitTextColorStyle = {
     color: isDarkMode ? styledColors.gray : styledColors.black,
   };
+
+  const goToGeneratedQR = () =>
+    console.log('Continue to QR generated screen (TBD)');
 
   useLayoutEffect(() => {
     if (inputRef) {
@@ -77,6 +81,12 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
             color={isDarkMode ? styledColors.white : styledColors.black}
           />
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={goToGeneratedQR}
+          style={[styles.continueButton]}
+        >
+          <Text style={{ color: styledColors.white }}>Continue</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 42,
     borderWidth: 1,
-    borderColor: '#D5D5D5',
+    borderColor: styledColors.border,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -104,6 +114,23 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: 9.5,
   },
-  amountUnit: { textAlign: 'center', marginTop: 35 },
-  xUnit: { textAlign: 'center', marginTop: 5, fontSize: 24, color: '#000' },
+  amountUnit: {
+    textAlign: 'center',
+    marginTop: 35,
+  },
+  xUnit: {
+    textAlign: 'center',
+    marginTop: 5,
+    fontSize: 24,
+    color: styledColors.black,
+  },
+  continueButton: {
+    borderRadius: 8,
+    backgroundColor: styledColors.normal,
+    marginTop: 44,
+    alignSelf: 'center',
+    marginHorizontal: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 132,
+  },
 });

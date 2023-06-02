@@ -24,7 +24,7 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const inputRef = useRef<TextInput>(null);
-  const { amount, onInputChange, onSwap, unit } = useReceiveInput();
+  const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -54,21 +54,25 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
       />
       <View style={styles.walletCardStyle}>
         <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
-          ${amount} {unit}
+          {eqInput.unit === 'USD' && '$'}
+          {eqInput.value} {eqInput.unit}
         </Text>
         <View style={styles.column}>
+          <Text style={[styles.xUnit, textColor]}>
+            {input.unit === 'USD' && '$'}
+          </Text>
           <TextInput
             ref={inputRef}
             style={[styles.xUnit, textColor]}
-            value={amount}
+            value={input.value}
             onChangeText={onInputChange}
             keyboardAppearance={isDarkMode ? 'dark' : 'light'}
             keyboardType={Platform.OS === 'android' ? 'numeric' : 'decimal-pad'}
           />
-          <Text style={[styles.xUnit, textColor]}>{` ${unit}`}</Text>
+          <Text style={[styles.xUnit, textColor]}>{` ${input.unit}`}</Text>
         </View>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-          <Text style={textColor}>{unit}</Text>
+          <Text style={textColor}>{input.unit}</Text>
           <ExchangeIcon
             color={isDarkMode ? styledColors.white : styledColors.black}
           />

@@ -7,25 +7,21 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { buttonStyle, fontStyle, styledColors } from '../../../styles';
-import ShareControl from './ShareControl';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
-import {
-  useProfilePicture,
-  useUsername,
-  useWallet,
-} from '../../../shared/hooks';
-import Loader from '../../../shared/Loader';
-import { ReceiveStackParamList } from './ReceiveStack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type ReceiveQRScreenProps = NativeStackScreenProps<
-  ReceiveStackParamList,
-  'ReceiveQR'
->;
+import { RootStackParamList } from 'src/App';
+import { buttonStyle, fontStyle, styledColors } from 'src/styles';
+import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+import Loader from 'src/shared/Loader';
 
-export const ReceiveQRScreen = ({ navigation }: ReceiveQRScreenProps) => {
+import ShareControl from './ShareControl';
+
+export const ReceiveQRScreen = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Main'>>();
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();
@@ -88,7 +84,9 @@ export const ReceiveQRScreen = ({ navigation }: ReceiveQRScreenProps) => {
       <View style={styles.buttonAreaInfo}>
         <TouchableOpacity
           onPress={() => {
-            navigation.push('ReceiveAmountInput');
+            navigation.navigate('ReceiveStack', {
+              screen: 'ReceiveAmountInput',
+            });
           }}
         >
           <Text

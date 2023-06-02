@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -14,7 +14,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ReceiveStackParamList } from '../ReceiveStack';
 import { styledColors } from 'src/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { EUnit } from './types';
+import { useReceiveInput } from './hooks';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -24,8 +24,7 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   const inputRef = useRef<TextInput>(null);
-  const [amount, setAmount] = useState('0.00');
-  const [unit, setUnit] = useState(EUnit.USD);
+  const { amount, onInputChange, onSwap, unit } = useReceiveInput();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -39,11 +38,6 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
 
   const equivalentUnitTextColorStyle = {
     color: isDarkMode ? styledColors.gray : styledColors.black,
-  };
-
-  const onSwap = () => {
-    const result = unit === EUnit.USD ? EUnit.QUAI : EUnit.USD;
-    setUnit(result);
   };
 
   useLayoutEffect(() => {
@@ -62,14 +56,17 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
         <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
           ${amount} {unit}
         </Text>
-        <TextInput
-          ref={inputRef}
-          style={[styles.xUnit, textColor]}
-          value={amount}
-          onChangeText={setAmount}
-          keyboardAppearance={isDarkMode ? 'dark' : 'light'}
-          keyboardType={Platform.OS === 'android' ? 'numeric' : 'decimal-pad'}
-        />
+        <View style={styles.column}>
+          <TextInput
+            ref={inputRef}
+            style={[styles.xUnit, textColor]}
+            value={amount}
+            onChangeText={onInputChange}
+            keyboardAppearance={isDarkMode ? 'dark' : 'light'}
+            keyboardType={Platform.OS === 'android' ? 'numeric' : 'decimal-pad'}
+          />
+          <Text style={[styles.xUnit, textColor]}>{` ${unit}`}</Text>
+        </View>
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
           <Text style={textColor}>{unit}</Text>
           <ExchangeIcon
@@ -84,6 +81,10 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
 const styles = StyleSheet.create({
   walletCardStyle: {
     marginTop: 80,
+  },
+  column: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   exchangeUnit: {
     width: 90,

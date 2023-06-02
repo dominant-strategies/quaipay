@@ -56,9 +56,16 @@ target 'Quai' do
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    installer.pods_project.targets.each do |target|
+      if target.name == 'React-Core-AccessibilityResources'
+        target.remove_from_project
+        puts "Removed #{target.name}"
+      end
+    end
   end
 end
 
 permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways/Permission-LocationAlways.podspec"
 pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
+pod 'OpenSSL-Universal', :modular_headers => true, :configurations => ['Release']

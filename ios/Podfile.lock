@@ -585,6 +585,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - OpenSSL-Universal
   - OpenSSL-Universal (= 1.1.1100)
   - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways/Permission-LocationAlways.podspec`)
   - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse/Permission-LocationWhenInUse.podspec`)
@@ -862,6 +863,6 @@ SPEC CHECKSUMS:
   Yoga: d56980c8914db0b51692f55533409e844b66133c
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 08bdf156cbdf49b69b5fe6e33aa844add6cf0ffe
+PODFILE CHECKSUM: 5c8db71be226de1e580ee156babb7e4b4658ab06
 
 COCOAPODS: 1.12.1

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -7,6 +7,8 @@ import {
   View,
   useColorScheme,
   TouchableOpacity,
+  TextInput,
+  Platform,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -21,7 +23,8 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [amount] = useState('0.00');
+  const inputRef = useRef<TextInput>(null);
+  const [amount, setAmount] = useState('0.00');
   const [unit, setUnit] = useState(EUnit.USD);
 
   const backgroundStyle = {
@@ -43,29 +46,30 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
     setUnit(result);
   };
 
+  useLayoutEffect(() => {
+    if (inputRef) {
+      inputRef.current?.focus();
+    }
+  }, [inputRef]);
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={[
-          styles.walletCardStyle,
-          {
-            backgroundColor: isDarkMode
-              ? styledColors.dark
-              : styledColors.white,
-            borderColor: isDarkMode
-              ? styledColors.darkGray
-              : styledColors.lightGray,
-          },
-        ]}
-      >
+      <View style={styles.walletCardStyle}>
         <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
           ${amount} {unit}
         </Text>
-        <Text style={[styles.xUnit, textColor]}>XXX.XXX {unit}</Text>
+        <TextInput
+          ref={inputRef}
+          style={[styles.xUnit, textColor]}
+          value={amount}
+          onChangeText={setAmount}
+          keyboardAppearance={isDarkMode ? 'dark' : 'light'}
+          keyboardType={Platform.OS === 'android' ? 'numeric' : 'decimal-pad'}
+        />
         <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
           <Text style={textColor}>{unit}</Text>
           <ExchangeIcon
@@ -79,12 +83,7 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
 
 const styles = StyleSheet.create({
   walletCardStyle: {
-    marginTop: 66,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: styledColors.lightGray,
-    height: 426,
+    marginTop: 80,
   },
   exchangeUnit: {
     width: 90,

@@ -3,6 +3,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
@@ -14,6 +15,7 @@ import { fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import QRCode from 'react-native-qrcode-svg';
 import ShareControl from '../ShareControl';
+import { useTranslation } from 'react-i18next';
 
 type ReceiveQRProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -24,9 +26,13 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
   const { amount, unit } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
+  const { t } = useTranslation();
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();
+
+  const share = () => console.log('Share triggered');
+  const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -91,6 +97,12 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
           <ShareControl />
         </View>
       </View>
+      <TouchableOpacity onPress={share} style={styles.shareButton}>
+        <Text style={{ color: styledColors.white }}>{t('common.share')}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
+        <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -102,7 +114,7 @@ const styles = StyleSheet.create({
   },
   walletCard: {
     borderRadius: 8,
-    marginTop: 80,
+    marginTop: 12,
     marginHorizontal: 16,
     paddingVertical: 36,
   },
@@ -135,5 +147,22 @@ const styles = StyleSheet.create({
   shareControl: {
     marginTop: 20,
     alignItems: 'center',
+  },
+  shareButton: {
+    borderRadius: 8,
+    backgroundColor: styledColors.normal,
+    marginTop: 32,
+    alignSelf: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 140,
+  },
+  learnMore: {
+    marginTop: 12,
+    marginBottom: 20,
+  },
+  learnMoreText: {
+    ...fontStyle.fontSmallText,
+    color: styledColors.gray,
+    textDecorationLine: 'underline',
   },
 });

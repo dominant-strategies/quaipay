@@ -16,10 +16,10 @@ import { buttonStyle, fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
 
-import ShareControl from './ShareControl';
+import ShareControl from '../ShareControl';
 import { useTranslation } from 'react-i18next';
 
-export const ReceiveQRScreen = () => {
+export const ReceiveScreen = () => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const navigation =

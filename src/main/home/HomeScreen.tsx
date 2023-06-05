@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import { fontStyle, styledColors } from '../../styles';
 import SendStack from './send/SendStack';
-import { ReceiveQRScreen } from './receive/ReceiveQRScreen';
+import { ReceiveScreen } from './receive/ReceiveScreen/';
 import { RootStackParamList } from 'src/App';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -88,7 +88,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
               ...styles.walletCardStyle,
             }}
           >
-            <ReceiveQRScreen />
+            <ReceiveScreen />
           </View>
         )}
       </View>

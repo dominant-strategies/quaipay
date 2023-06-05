@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import QRCode from 'react-native-qrcode-svg';
+import { useTranslation } from 'react-i18next';
 
-import { ReceiveStackParamList } from '../ReceiveStack';
 import { fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
-import QRCode from 'react-native-qrcode-svg';
+
+import { ReceiveStackParamList } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
-import { useTranslation } from 'react-i18next';
 
 type ReceiveQRProps = NativeStackScreenProps<
   ReceiveStackParamList,

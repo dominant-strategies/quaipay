@@ -28,7 +28,9 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 
 // TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
-export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
+export const ReceiveAmountInputScreen = ({
+  navigation,
+}: ReceiveAmountInputProps) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();
@@ -52,7 +54,7 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   };
 
   const goToGeneratedQR = () =>
-    console.log('Continue to QR generated screen (TBD)');
+    navigation.navigate('ReceiveQR', { amount: input.value, unit: input.unit });
 
   useLayoutEffect(() => {
     if (inputRef) {

@@ -3,14 +3,21 @@ import React, { useCallback } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, useColorScheme } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { styledColors } from 'src/styles';
+
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
-import { useTranslation } from 'react-i18next';
+import { ReceiveQRScreen } from './ReceiveQRScreen';
+import { EUnit } from './ReceiveAmountInputScreen/types';
 
 export type ReceiveStackParamList = {
-  ReceiveAmountInput: { amount: string } | undefined;
+  ReceiveAmountInput: undefined;
+  ReceiveQR: {
+    amount: string;
+    unit: EUnit;
+  };
 };
 
 const Stack = createNativeStackNavigator<ReceiveStackParamList>();
@@ -51,6 +58,24 @@ const ReceiveStack = () => {
           ),
         }}
         component={ReceiveAmountInputScreen}
+      />
+      <Stack.Screen
+        name="ReceiveQR"
+        options={{
+          headerStyle: { backgroundColor },
+          headerShadowVisible: false,
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Text style={textStyle}>{t('common.request')}</Text>
+          ),
+          // TODO: fix goBack functionality
+          headerLeft: () => (
+            <Pressable style={buttonStyle} onPress={goBack}>
+              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
+            </Pressable>
+          ),
+        }}
+        component={ReceiveQRScreen}
       />
     </Stack.Navigator>
   );

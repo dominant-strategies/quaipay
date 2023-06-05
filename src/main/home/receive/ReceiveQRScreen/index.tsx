@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -71,70 +72,74 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={[
-          styles.walletCard,
-          { backgroundColor: walletCardBackgroundColor },
-        ]}
-      >
-        <View style={styles.requestedAmount}>
-          <Text style={{ color: secondaryTextColor }}>
-            {mainUnit !== EUnit.USD && '$'}
-            {eqAmount} {mainUnit === EUnit.USD ? EUnit.QUAI : EUnit.USD}
-          </Text>
-          <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
-            {mainUnit === EUnit.USD && '$'}
-            {mainAmount} {mainUnit}
-          </Text>
-          <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
-            <Text style={{ color: primaryTextColor }}>{EUnit.USD}</Text>
-            <ExchangeIcon
-              color={isDarkMode ? styledColors.white : styledColors.black}
+      <ScrollView>
+        <View
+          style={[
+            styles.walletCard,
+            { backgroundColor: walletCardBackgroundColor },
+          ]}
+        >
+          <View style={styles.requestedAmount}>
+            <Text style={{ color: secondaryTextColor }}>
+              {mainUnit !== EUnit.USD && '$'}
+              {eqAmount} {mainUnit === EUnit.USD ? EUnit.QUAI : EUnit.USD}
+            </Text>
+            <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
+              {mainUnit === EUnit.USD && '$'}
+              {mainAmount} {mainUnit}
+            </Text>
+            <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
+              <Text style={{ color: primaryTextColor }}>{EUnit.USD}</Text>
+              <ExchangeIcon
+                color={isDarkMode ? styledColors.white : styledColors.black}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.qrCode}>
+            <QRCode
+              value={JSON.stringify({
+                address: wallet?.address,
+                username,
+                amount,
+              })}
+              logo={{ uri: profilePicture }}
+              logoSize={50}
+              logoBackgroundColor="transparent"
+              logoBorderRadius={50}
+              size={140}
             />
+          </View>
+          <View style={styles.userInfo}>
+            <Text style={[styles.username, { color: primaryTextColor }]}>
+              {username}
+            </Text>
+            <Text
+              style={[fontStyle.fontParagraph, { color: secondaryTextColor }]}
+            >
+              {wallet && wallet?.address.slice(0, 8)}...
+              {wallet?.address.slice(-8)}
+            </Text>
+          </View>
+          <View style={styles.shareControl}>
+            <ShareControl />
+          </View>
+        </View>
+        <View>
+          <TouchableOpacity onPress={share} style={styles.shareButton}>
+            <Text style={{ color: styledColors.white }}>
+              {t('common.share')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
+            <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.qrCode}>
-          <QRCode
-            value={JSON.stringify({
-              address: wallet?.address,
-              username,
-              amount,
-            })}
-            logo={{ uri: profilePicture }}
-            logoSize={50}
-            logoBackgroundColor="transparent"
-            logoBorderRadius={50}
-            size={140}
-          />
-        </View>
-        <View style={styles.userInfo}>
-          <Text style={[styles.username, { color: primaryTextColor }]}>
-            {username}
+        <TouchableOpacity style={styles.completeButton} onPress={complete}>
+          <Text style={{ color: styledColors.white }}>
+            {t('receive.qrScreen.complete')}
           </Text>
-          <Text
-            style={[fontStyle.fontParagraph, { color: secondaryTextColor }]}
-          >
-            {wallet && wallet?.address.slice(0, 8)}...
-            {wallet?.address.slice(-8)}
-          </Text>
-        </View>
-        <View style={styles.shareControl}>
-          <ShareControl />
-        </View>
-      </View>
-      <View>
-        <TouchableOpacity onPress={share} style={styles.shareButton}>
-          <Text style={{ color: styledColors.white }}>{t('common.share')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
-          <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.completeButton} onPress={complete}>
-        <Text style={{ color: styledColors.white }}>
-          {t('receive.qrScreen.complete')}
-        </Text>
-      </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };

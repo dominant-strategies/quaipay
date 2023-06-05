@@ -75,6 +75,17 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
             size={140}
           />
         </View>
+        <View style={styles.userInfo}>
+          <Text style={[styles.username, { color: primaryTextColor }]}>
+            {username}
+          </Text>
+          <Text
+            style={[fontStyle.fontParagraph, { color: secondaryTextColor }]}
+          >
+            {wallet && wallet?.address.slice(0, 8)}...
+            {wallet?.address.slice(-8)}
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -107,5 +118,14 @@ const styles = StyleSheet.create({
     borderColor: styledColors.lightGray,
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  userInfo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  username: {
+    ...fontStyle.fontH2,
+    fontSize: 20,
   },
 });

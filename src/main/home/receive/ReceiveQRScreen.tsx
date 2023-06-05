@@ -17,8 +17,10 @@ import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
 
 import ShareControl from './ShareControl';
+import { useTranslation } from 'react-i18next';
 
 export const ReceiveQRScreen = () => {
+  const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Main'>>();
@@ -95,7 +97,7 @@ export const ReceiveQRScreen = () => {
               ...(isDarkMode ? buttonStyle.dark : buttonStyle.white),
             }}
           >
-            Request
+            {t('common.request')}
           </Text>
         </TouchableOpacity>
       </View>

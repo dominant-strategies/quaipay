@@ -7,6 +7,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { styledColors } from 'src/styles';
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
+import { useTranslation } from 'react-i18next';
 
 export type ReceiveStackParamList = {
   ReceiveAmountInput: { amount: string } | undefined;
@@ -17,6 +18,7 @@ const Stack = createNativeStackNavigator<ReceiveStackParamList>();
 // TODO: Implement actual header layout to
 //       avoid defining it on every screen
 const ReceiveStack = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -39,7 +41,9 @@ const ReceiveStack = () => {
           headerStyle: { backgroundColor },
           headerShadowVisible: false,
           headerTitleAlign: 'center',
-          headerTitle: () => <Text style={textStyle}>Request</Text>,
+          headerTitle: () => (
+            <Text style={textStyle}>{t('common.request')}</Text>
+          ),
           headerLeft: () => (
             <Pressable style={buttonStyle} onPress={goBack}>
               <FontAwesome5 name="chevron-left" color={textColor} size={24} />

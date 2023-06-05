@@ -12,11 +12,14 @@ import {
   Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ReceiveStackParamList } from '../ReceiveStack';
+import { useTranslation } from 'react-i18next';
+
 import { fontStyle, styledColors } from 'src/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useReceiveInput } from './hooks';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+
+import { useReceiveInput } from './hooks';
+import { ReceiveStackParamList } from '../ReceiveStack';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -26,6 +29,7 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 // TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
+  const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();
   const username = useUsername();
@@ -105,7 +109,9 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
           onPress={goToGeneratedQR}
           style={[styles.continueButton]}
         >
-          <Text style={{ color: styledColors.white }}>Continue</Text>
+          <Text style={{ color: styledColors.white }}>
+            {t('common.continue')}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

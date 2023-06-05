@@ -505,6 +505,8 @@ PODS:
     - TOCropViewController
   - RNKeychain (8.1.1):
     - React-Core
+  - RNLocalize (3.0.0):
+    - React-Core
   - RNPermissions (3.8.0):
     - React-Core
   - RNReanimated (2.17.0):
@@ -628,6 +630,7 @@ DEPENDENCIES:
   - RNHoleView (from `../node_modules/react-native-hole-view`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -760,6 +763,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -850,6 +855,7 @@ SPEC CHECKSUMS:
   RNHoleView: 2a1929191141775058fc0a9fd79836edc200640a
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
+  RNLocalize: 5944c97d2fe8150913a51ddd5eab4e23a82bd80d
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f

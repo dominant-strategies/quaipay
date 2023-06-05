@@ -1,10 +1,16 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View, useColorScheme } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ReceiveStackParamList } from '../ReceiveStack';
-import { styledColors } from 'src/styles';
+import { fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -25,8 +31,13 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
   };
 
-  const walletCardBackgroundColor = isDarkMode
+  const primaryTextColor = isDarkMode ? styledColors.white : styledColors.black;
+  const secondaryTextColor = isDarkMode
     ? styledColors.gray
+    : styledColors.white;
+
+  const walletCardBackgroundColor = isDarkMode
+    ? styledColors.darkGray
     : styledColors.white;
 
   return (
@@ -41,7 +52,14 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
           { backgroundColor: walletCardBackgroundColor },
         ]}
       >
-        <View></View>
+        <View style={styles.requestedAmount}>
+          <Text style={{ color: secondaryTextColor }}>
+            ${amount} {unit}
+          </Text>
+          <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
+            {amount} {unit}
+          </Text>
+        </View>
         <View style={styles.qrCode}>
           <QRCode
             value={JSON.stringify({
@@ -71,6 +89,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 80,
     marginHorizontal: 16,
+    paddingVertical: 36,
+  },
+  requestedAmount: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  mainAmount: {
+    ...fontStyle.fontH2,
   },
   qrCode: {
     padding: 8,

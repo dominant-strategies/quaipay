@@ -23,7 +23,7 @@ type ReceiveQRProps = NativeStackScreenProps<
   'ReceiveQR'
 >;
 
-export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
+export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
   const { amount, unit } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -34,6 +34,7 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
 
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
+  const complete = () => navigation.goBack();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -98,11 +99,18 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
           <ShareControl />
         </View>
       </View>
-      <TouchableOpacity onPress={share} style={styles.shareButton}>
-        <Text style={{ color: styledColors.white }}>{t('common.share')}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
-        <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
+      <View>
+        <TouchableOpacity onPress={share} style={styles.shareButton}>
+          <Text style={{ color: styledColors.white }}>{t('common.share')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
+          <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.completeButton} onPress={complete}>
+        <Text style={{ color: styledColors.white }}>
+          {t('receive.qrScreen.complete')}
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
   shareButton: {
     borderRadius: 8,
     backgroundColor: styledColors.normal,
-    marginTop: 32,
+    marginTop: 16,
     alignSelf: 'center',
     paddingVertical: 16,
     paddingHorizontal: 140,
@@ -165,5 +173,12 @@ const styles = StyleSheet.create({
     ...fontStyle.fontSmallText,
     color: styledColors.gray,
     textDecorationLine: 'underline',
+  },
+  completeButton: {
+    alignItems: 'center',
+    backgroundColor: styledColors.gray,
+    marginHorizontal: 30,
+    borderRadius: 8,
+    paddingVertical: 16,
   },
 });

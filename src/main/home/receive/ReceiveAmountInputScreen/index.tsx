@@ -20,6 +20,7 @@ import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
+import { EUnit } from './types';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -54,7 +55,9 @@ export const ReceiveAmountInputScreen = ({
   };
 
   const goToGeneratedQR = () =>
-    navigation.navigate('ReceiveQR', { amount: input.value, unit: input.unit });
+    navigation.navigate('ReceiveQR', {
+      amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+    });
 
   useLayoutEffect(() => {
     if (inputRef) {

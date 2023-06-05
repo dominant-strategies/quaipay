@@ -10,13 +10,11 @@ import { styledColors } from 'src/styles';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
-import { EUnit } from './ReceiveAmountInputScreen/types';
 
 export type ReceiveStackParamList = {
   ReceiveAmountInput: undefined;
   ReceiveQR: {
-    amount: string;
-    unit: EUnit;
+    amount: number;
   };
 };
 

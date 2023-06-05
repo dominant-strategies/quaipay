@@ -13,6 +13,7 @@ import { ReceiveStackParamList } from '../ReceiveStack';
 import { fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import QRCode from 'react-native-qrcode-svg';
+import ShareControl from '../ShareControl';
 
 type ReceiveQRProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -86,6 +87,9 @@ export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
             {wallet?.address.slice(-8)}
           </Text>
         </View>
+        <View style={styles.shareControl}>
+          <ShareControl />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -127,5 +131,9 @@ const styles = StyleSheet.create({
   username: {
     ...fontStyle.fontH2,
     fontSize: 20,
+  },
+  shareControl: {
+    marginTop: 20,
+    alignItems: 'center',
   },
 });

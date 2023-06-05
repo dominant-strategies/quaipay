@@ -67,6 +67,26 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
     }
   }, [username, selectedImage]);
 
+  const pickImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: true,
+        maxHeight: 300,
+        maxWidth: 300,
+      },
+      (response: ImagePickerResponse) => {
+        if (!response.didCancel && !response.errorCode) {
+          if (response.assets && response.assets[0]) {
+            setSelectedImage(
+              `data:${response.assets[0].type};base64,${response.assets[0].base64}}`,
+            );
+          }
+        }
+      },
+    );
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -85,14 +105,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             Choose a{'\n'}username and{'\n'}profile picture
           </Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
+        <TouchableOpacity onPress={pickImage} style={styles.buttonStyle}>
           <Image
             source={{
               uri: selectedImage,
@@ -104,7 +117,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
               alignContent: 'center',
             }}
           />
-        </View>
+        </TouchableOpacity>
         <TextInput
           placeholder="User Name"
           textAlign="center"
@@ -151,11 +164,10 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
 
 const styles = StyleSheet.create({
   buttonStyle: {
+    width: '100%',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    width: 150,
-    height: 150,
-    borderRadius: 100,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   welcomeTitleView: {
     alignItems: 'center',

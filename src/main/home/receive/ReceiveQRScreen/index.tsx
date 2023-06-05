@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -14,9 +14,12 @@ import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+import ExchangeIcon from 'src/shared/assets/exchange.svg';
 
 import { ReceiveStackParamList } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
+import { EUnit } from '../ReceiveAmountInputScreen/types';
+import { EXCHANGE_RATE } from '../ReceiveAmountInputScreen/hooks';
 
 type ReceiveQRProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -24,7 +27,7 @@ type ReceiveQRProps = NativeStackScreenProps<
 >;
 
 export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
-  const { amount, unit } = route.params;
+  const { amount } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
@@ -32,9 +35,22 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
   const username = useUsername();
   const wallet = useWallet();
 
+  const [mainAmount, setMainAmount] = useState(amount);
+  const [eqAmount, setEqAmount] = useState(amount / EXCHANGE_RATE);
+  const [mainUnit, setMainUnit] = useState(EUnit.USD);
+
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
   const complete = () => navigation.goBack();
+  const onSwap = () => {
+    const pastMain = mainAmount;
+    const pastEq = eqAmount;
+    setMainAmount(pastEq);
+    setEqAmount(pastMain);
+    setMainUnit(prevState =>
+      prevState === EUnit.USD ? EUnit.QUAI : EUnit.USD,
+    );
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -63,11 +79,19 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
       >
         <View style={styles.requestedAmount}>
           <Text style={{ color: secondaryTextColor }}>
-            ${amount} {unit}
+            {mainUnit !== EUnit.USD && '$'}
+            {eqAmount} {mainUnit === EUnit.USD ? EUnit.QUAI : EUnit.USD}
           </Text>
           <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
-            {amount} {unit}
+            {mainUnit === EUnit.USD && '$'}
+            {mainAmount} {mainUnit}
           </Text>
+          <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
+            <Text style={{ color: primaryTextColor }}>{EUnit.USD}</Text>
+            <ExchangeIcon
+              color={isDarkMode ? styledColors.white : styledColors.black}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.qrCode}>
           <QRCode
@@ -75,7 +99,6 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
               address: wallet?.address,
               username,
               amount,
-              unit,
             })}
             logo={{ uri: profilePicture }}
             logoSize={50}
@@ -180,5 +203,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     borderRadius: 8,
     paddingVertical: 16,
+  },
+  exchangeUnit: {
+    width: 90,
+    height: 24,
+    borderRadius: 42,
+    borderWidth: 1,
+    borderColor: styledColors.border,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 3,
+    marginLeft: 8,
+    marginTop: 10,
   },
 });

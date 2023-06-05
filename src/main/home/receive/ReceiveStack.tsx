@@ -3,9 +3,9 @@ import React, { useCallback } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, useColorScheme } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { styledColors } from 'src/styles';
-import LeftChevron from 'src/shared/assets/leftChevron.svg';
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 
 export type ReceiveStackParamList = {
@@ -42,7 +42,7 @@ const ReceiveStack = () => {
           headerTitle: () => <Text style={textStyle}>Request</Text>,
           headerLeft: () => (
             <Pressable style={buttonStyle} onPress={goBack}>
-              <LeftChevron />
+              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
             </Pressable>
           ),
         }}

@@ -67,7 +67,7 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
       <View style={topViewStyle}>
         <View style={styles.welcomeLogoView}>
           <Image
-            source={require('../assets/logo.png')}
+            source={require('../../shared/assets/logo.png')}
             style={{ width: 160, height: 160, alignContent: 'center' }}
           />
         </View>

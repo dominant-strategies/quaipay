@@ -27,7 +27,7 @@ import { KeychainKeys } from '../../shared/constants';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
 
 interface State {
-  selectedImage: string | null;
+  selectedImage: string;
 }
 
 type SetupNameAndPFPScreenProps = {
@@ -35,9 +35,10 @@ type SetupNameAndPFPScreenProps = {
 };
 function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
-  const [userName, setUserName] = useState('');
-  const [selectedImage, setSelectedImage] =
-    useState<State['selectedImage']>(null);
+  const [username, setUsername] = useState('');
+  const [selectedImage, setSelectedImage] = useState<State['selectedImage']>(
+    'https://www.pngfind.com/pngs/m/616-6168267_personblack-jack-kicking-at-camera-jack-black-transparent.png',
+  );
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
@@ -53,21 +54,18 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
     marginBottom: 'auto',
   };
 
-  const saveUserName = useCallback(
-    async (_username: string, _selectedImage: string) => {
-      try {
-        await storeItem({ key: KeychainKeys.username, value: _username });
-        await storeItem({
-          key: KeychainKeys.profilePicture,
-          value: _selectedImage,
-        });
-        navigation.navigate('SetupLocation');
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [],
-  );
+  const saveUserName = useCallback(async () => {
+    try {
+      await storeItem({ key: KeychainKeys.username, value: username });
+      await storeItem({
+        key: KeychainKeys.profilePicture,
+        value: selectedImage,
+      });
+      navigation.navigate('SetupLocation');
+    } catch (error) {
+      console.log(error);
+    }
+  }, [username, selectedImage]);
 
   const pickImage = () => {
     launchImageLibrary(
@@ -83,8 +81,6 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             setSelectedImage(
               `data:${response.assets[0].type};base64,${response.assets[0].base64}}`,
             );
-          } else {
-            setSelectedImage(null);
           }
         }
       },
@@ -109,43 +105,19 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             Choose a{'\n'}username and{'\n'}profile picture
           </Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.buttonStyle}
-            onPress={pickImage}
-          >
-            {selectedImage && (
-              <Image
-                source={{ uri: selectedImage }}
-                style={{
-                  width: 150,
-                  height: 150,
-                  borderRadius: 100,
-                  alignContent: 'center',
-                }}
-              />
-            )}
-            {!selectedImage && (
-              <Image
-                source={require('../assets/avatar.png')}
-                style={{
-                  width: 150,
-                  height: 150,
-                  borderRadius: 100,
-                  alignContent: 'center',
-                }}
-              />
-            )}
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={pickImage} style={styles.buttonStyle}>
+          <Image
+            source={{
+              uri: selectedImage,
+            }}
+            style={{
+              width: 150,
+              height: 150,
+              borderRadius: 100,
+              alignContent: 'center',
+            }}
+          />
+        </TouchableOpacity>
         <TextInput
           placeholder="User Name"
           textAlign="center"
@@ -155,8 +127,8 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             textAlign: 'center',
             color: isDarkMode ? styledColors.white : styledColors.black,
           }}
-          value={userName}
-          onChangeText={text => setUserName(text)}
+          value={username}
+          onChangeText={text => setUsername(text)}
           onSubmitEditing={() => {}}
         />
         <View style={styles.textDescriptionView}>
@@ -170,7 +142,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
           <TouchableOpacity
             style={{ marginLeft: 21, marginRight: 21 }}
             onPress={() => {
-              saveUserName(userName, selectedImage!);
+              saveUserName();
             }}
           >
             <Text
@@ -192,11 +164,10 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
 
 const styles = StyleSheet.create({
   buttonStyle: {
+    width: '100%',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    width: 150,
-    height: 150,
-    borderRadius: 100,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   welcomeTitleView: {
     alignItems: 'center',

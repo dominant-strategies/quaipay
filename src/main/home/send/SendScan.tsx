@@ -14,8 +14,10 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
-import { styledColors } from '../../../styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+import { styledColors } from 'src/shared/styles';
+
 import { SendStackStackParamList } from './SendStack';
 
 type SendScanScreenProps = NativeStackScreenProps<

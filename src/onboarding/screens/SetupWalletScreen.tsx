@@ -10,10 +10,11 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { fontStyle, buttonStyle, styledColors } from '../../styles';
-import Loader from '../../shared/Loader';
+
+import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
+import Loader from 'src/shared/Loader';
+
 import { setUpWallet } from '../services/setUpWallet';
 
 type SetupWalletScreenProps = {

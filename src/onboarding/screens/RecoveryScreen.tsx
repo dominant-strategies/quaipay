@@ -13,8 +13,8 @@ import {
   Image,
 } from 'react-native';
 
-import { buttonStyle, fontStyle, styledColors } from '../../styles';
-import { storeItem } from '../../shared/services/keychain';
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
+import { storeItem } from 'src/shared/services/keychain';
 
 const { RNRandomBytes } = NativeModules;
 

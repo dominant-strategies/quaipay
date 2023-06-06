@@ -7,8 +7,10 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../../styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+import { styledColors } from 'src/shared/styles';
+
 import { SendStackStackParamList } from './SendStack';
 
 type SendAmountScreenProps = NativeStackScreenProps<

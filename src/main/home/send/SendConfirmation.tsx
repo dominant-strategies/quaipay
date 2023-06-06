@@ -7,7 +7,8 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { styledColors } from '../../../styles';
+
+import { styledColors } from 'src/shared/styles';
 
 type SendConfirmationScreenProps = {
   navigation: any;

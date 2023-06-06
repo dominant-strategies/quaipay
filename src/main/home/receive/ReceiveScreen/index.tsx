@@ -12,7 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 
 import { RootStackParamList } from 'src/App';
-import { buttonStyle, fontStyle, styledColors } from 'src/styles';
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
 

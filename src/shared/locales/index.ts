@@ -8,6 +8,8 @@ import home_en from './en/home.json';
 import home_de from './de/home.json';
 import onboarding_en from './en/onboarding.json';
 import onboarding_de from './de/onboarding.json';
+import receive_en from './en/receive.json';
+import receive_de from './de/receive.json';
 
 const fallbackLng = findBestLanguageTag(['en', 'de'])?.languageTag;
 
@@ -18,6 +20,7 @@ i18n.use(initReactI18next).init({
         common: common_en,
         home: home_en,
         onboarding: onboarding_en,
+        receive: receive_en,
       },
     },
     de: {
@@ -25,6 +28,7 @@ i18n.use(initReactI18next).init({
         common: common_de,
         home: home_de,
         onboarding: onboarding_de,
+        receive: receive_de,
       },
     },
   },

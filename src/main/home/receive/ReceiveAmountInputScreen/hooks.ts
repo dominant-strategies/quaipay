@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { EUnit } from './types';
 
 const INITIAL_AMOUNT = '0';
-const EXCHANGE_RATE = 0.005;
+export const EXCHANGE_RATE = 0.005;
 
 // TODO: improve input logic handling
 // TODO: get exchange rate from internet
@@ -25,10 +25,10 @@ export const useReceiveInput = () => {
   const updateInputs = (value: string) => {
     if (unit === EUnit.USD) {
       setAmount(value);
-      setEqValue((Number(value) * EXCHANGE_RATE).toString());
+      setEqValue((Number(value) / EXCHANGE_RATE).toString());
     } else {
       setAmount(value);
-      setEqValue((Number(value) / EXCHANGE_RATE).toString());
+      setEqValue((Number(value) * EXCHANGE_RATE).toString());
     }
   };
 

@@ -20,6 +20,7 @@ import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
+import { EUnit } from './types';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -28,7 +29,9 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 
 // TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
-export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
+export const ReceiveAmountInputScreen = ({
+  navigation,
+}: ReceiveAmountInputProps) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();
@@ -52,7 +55,9 @@ export const ReceiveAmountInputScreen = ({}: ReceiveAmountInputProps) => {
   };
 
   const goToGeneratedQR = () =>
-    console.log('Continue to QR generated screen (TBD)');
+    navigation.navigate('ReceiveQR', {
+      amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+    });
 
   useLayoutEffect(() => {
     if (inputRef) {

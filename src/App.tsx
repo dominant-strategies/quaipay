@@ -7,14 +7,26 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 
 import OnboardingStack from './onboarding/OnboardingStack';
 import MainStack from './main/MainStack';
 import Loader from './shared/Loader';
 import './shared/locales';
+import ReceiveStack, {
+  ReceiveStackParamList,
+} from './main/home/receive/ReceiveStack';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Onboarding: undefined;
+  Main: undefined;
+  ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
   // TODO: use redux persist instead of AsyncStorage
@@ -54,6 +66,13 @@ function App() {
             options={{
               gestureEnabled: false,
               title: 'Main',
+            }}
+          />
+          <Stack.Screen
+            name="ReceiveStack"
+            component={ReceiveStack}
+            options={{
+              title: 'ReceiveStack',
             }}
           />
         </Stack.Navigator>

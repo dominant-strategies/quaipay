@@ -9,19 +9,20 @@ import {
 import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import { fontStyle, styledColors } from '../../styles';
-import ReceiveStack from './receive/ReceiveStack';
 import SendStack from './send/SendStack';
+import { ReceiveQRScreen } from './receive/ReceiveQRScreen';
+import { RootStackParamList } from 'src/App';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type HomeScreenProps = {
-  navigation: any;
-};
+interface HomeScreenProps
+  extends NativeStackScreenProps<RootStackParamList, 'Main'> {}
 
 enum SwitchValue {
   Receive = 0,
   Send = 1,
 }
 
-function HomeScreen({}: HomeScreenProps) {
+const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const [switchValue, setSwitchValue] = useState<SwitchValue>(
@@ -87,13 +88,13 @@ function HomeScreen({}: HomeScreenProps) {
               ...styles.walletCardStyle,
             }}
           >
-            <ReceiveStack />
+            <ReceiveQRScreen />
           </View>
         )}
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   switchStyle: {

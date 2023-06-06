@@ -1,14 +1,15 @@
 import { retrieveStoredItem } from './keychain';
-import { KeychainKeys } from '../constants';
+import { keychainKeys } from '../constants/keychainKeys';
+import { Wallet } from '../types/Wallet';
 
-const getWalletKey = () =>
+export const getZone = () =>
   // location: string
-  KeychainKeys['wallet-zone-0-0'];
+  keychainKeys['wallet-zone-1-0'];
 
-export const retrieveWallet = async () => {
+export const retrieveWallet = async (): Promise<Wallet> => {
   // TODO: use location when getWalletKey is updated
   // const location = await retrieveStoredItem('location');
-  const walletKey = getWalletKey();
+  const walletKey = getZone();
   // location
   const retrievedWallet = await retrieveStoredItem(walletKey);
   return JSON.parse(retrievedWallet);

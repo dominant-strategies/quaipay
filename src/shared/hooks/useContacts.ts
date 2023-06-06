@@ -1,18 +1,18 @@
 import { useRetrieve } from './useRetrieve';
-import { KeychainKeys } from '../constants';
+import { keychainKeys } from '../constants/keychainKeys';
 import { Contact } from '../types/Contact';
 import { retrieveStoredItem, storeItem } from '../services/keychain';
 
 export const useContacts = () => {
-  return useRetrieve(KeychainKeys.contacts);
+  return useRetrieve(keychainKeys.contacts);
 };
 
 export const addContact = async (contact: Contact) => {
-  const contacts = (await retrieveStoredItem(KeychainKeys.contacts)) || '[]';
+  const contacts = (await retrieveStoredItem(keychainKeys.contacts)) || '[]';
   const parsedContacts = JSON.parse(contacts);
   const updatedContacts = [...parsedContacts, contact];
   const stringifiedContacts = JSON.stringify(updatedContacts);
-  await storeItem({ key: KeychainKeys.contacts, value: stringifiedContacts });
+  await storeItem({ key: keychainKeys.contacts, value: stringifiedContacts });
 };
 // Just for testing purposes
 // TODO: Delete after adding contacts is possible in the app
@@ -80,5 +80,5 @@ export const seedContacts = async () => {
     },
   ];
   const stringifiedContacts = JSON.stringify(contacts);
-  await storeItem({ key: KeychainKeys.contacts, value: stringifiedContacts });
+  await storeItem({ key: keychainKeys.contacts, value: stringifiedContacts });
 };

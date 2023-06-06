@@ -1,4 +1,4 @@
-export const KeychainKeys = {
+export const keychainKeys = {
   username: 'username',
   profilePicture: 'profilePicture',
   location: 'location',

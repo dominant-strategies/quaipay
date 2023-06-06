@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { retrieveWallet } from '../services/retrieveWallet';
+import { Wallet } from '../types/Wallet';
 
 export const useWallet = () => {
-  const [wallet, setWallet] = useState<any>();
+  const [wallet, setWallet] = useState<Wallet>();
   useEffect(() => {
     const retrieve = async () => {
       const retrievedWallet = await retrieveWallet();

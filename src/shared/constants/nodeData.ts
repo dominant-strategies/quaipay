@@ -34,7 +34,7 @@ export const allNodeData: AllNodeData = {
   },
   'wallet-zone-0-2': {
     url: 'wss://rpc.cyprus3.colosseum.quaiscan.',
-    provider: 'https://rpc.cyprus2.colosseum.quaiscan.io',
+    provider: 'https://rpc.cyprus3.colosseum.quaiscan.io',
   },
   'wallet-zone-1-0': {
     url: 'wss://rpc.paxos1.colosseum.quaiscan.io',

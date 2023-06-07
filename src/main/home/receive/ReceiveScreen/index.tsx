@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Dimensions,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useColorScheme,
   View,
@@ -12,15 +11,19 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 
 import { RootStackParamList } from 'src/App';
-import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
+import { buttonStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
 
 import ShareControl from '../ShareControl';
 import { useTranslation } from 'react-i18next';
+import { QuaiPayText } from 'src/shared/components';
+import { Theme } from 'src/shared/types';
+import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
+  const styles = useThemedStyle(themedStyle);
   const isDarkMode = useColorScheme() === 'dark';
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Main'>>();
@@ -65,104 +68,89 @@ export const ReceiveScreen = () => {
             size={140}
           />
         </View>
-        <Text
-          style={[
-            styles.ownerName,
-            {
-              ...fontStyle.fontH2,
-              color: isDarkMode ? styledColors.white : styledColors.black,
-            },
-          ]}
-        >
+        <QuaiPayText type="H2" style={styles.ownerName}>
           {username}
-        </Text>
-        <Text style={{ ...fontStyle.fontParagraph, color: styledColors.gray }}>
+        </QuaiPayText>
+        <QuaiPayText type="paragraph" style={styles.walletAddress}>
           {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
-        </Text>
+        </QuaiPayText>
         <View style={styles.shareControlStyle}>
           <ShareControl />
         </View>
       </View>
       <View style={styles.buttonAreaInfo}>
         <TouchableOpacity
+          style={isDarkMode ? buttonStyle.dark : buttonStyle.white}
           onPress={() => {
             navigation.navigate('ReceiveStack', {
               screen: 'ReceiveAmountInput',
             });
           }}
         >
-          <Text
-            style={{
-              ...fontStyle.fontH3,
-              ...(isDarkMode ? buttonStyle.dark : buttonStyle.white),
-            }}
-          >
-            {t('common.request')}
-          </Text>
+          <QuaiPayText type="H3">{t('common.request')}</QuaiPayText>
         </TouchableOpacity>
       </View>
       <View style={styles.learnMoreAreaInfo}>
         <TouchableOpacity onPress={() => {}}>
-          <Text
-            style={{
-              ...fontStyle.fontSmallText,
-              ...styles.learnMoreText,
-            }}
-          >
+          <QuaiPayText style={styles.learnMoreText}>
             Learn more about QuaiPay
-          </Text>
+          </QuaiPayText>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  ownerName: {
-    fontSize: 20,
-  },
-  switchStyle: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  qrcodeStyle: {
-    backgroundColor: '#FFFFFF',
-    padding: 8,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: styledColors.lightGray,
-    width: 156,
-    height: 156,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  shareControlStyle: {
-    marginTop: 20,
-  },
-  walletView: {
-    height: Dimensions.get('window').height / 2,
-    marginTop: 120,
-    backgroundColor: 'red',
-    width: '100%',
-    paddingVertical: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  buttonAreaInfo: {
-    marginTop: 15,
-  },
-  learnMoreAreaInfo: {
-    marginTop: 15,
-  },
-  learnMoreText: {
-    color: styledColors.gray,
-    textDecorationLine: 'underline',
-  },
-});
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 16,
+    },
+    ownerName: {
+      fontSize: 20,
+    },
+    walletAddress: {
+      color: theme.secondary,
+    },
+    switchStyle: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    qrcodeStyle: {
+      backgroundColor: '#FFFFFF',
+      padding: 8,
+      borderWidth: 1,
+      borderRadius: 8,
+      borderColor: styledColors.lightGray,
+      width: 156,
+      height: 156,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    shareControlStyle: {
+      marginTop: 20,
+    },
+    walletView: {
+      height: Dimensions.get('window').height / 2,
+      marginTop: 120,
+      backgroundColor: 'red',
+      width: '100%',
+      paddingVertical: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      borderRadius: 8,
+      borderWidth: 1,
+    },
+    buttonAreaInfo: {
+      marginTop: 15,
+    },
+    learnMoreAreaInfo: {
+      marginTop: 15,
+    },
+    learnMoreText: {
+      color: theme.secondary,
+      textDecorationLine: 'underline',
+    },
+  });

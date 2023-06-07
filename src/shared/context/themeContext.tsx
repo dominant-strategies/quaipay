@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useColorScheme } from 'react-native';
 
 import { createCtx } from '.';
-import { Theme, ThemeType } from '../styles/theming/types';
+import { Theme, ThemeType } from '../types/Theme';
 import { DarkTheme } from '../styles/theming/DarkTheme';
 import { LightTheme } from '../styles/theming/LightTheme';
 

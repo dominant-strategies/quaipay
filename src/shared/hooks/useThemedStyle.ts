@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { Theme } from '../styles/theming/types';
+import { Theme } from '../types/Theme';
 import { useTheme } from '../context/themeContext';
 
 type ThemeAwareStyleGenerator<T extends {}> = (theme: Theme) => T;

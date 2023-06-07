@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { EUnit } from './types';
+import { Currency } from '../../../shared/types/Currency';
 
 const INITIAL_AMOUNT = '0';
 export const EXCHANGE_RATE = 0.005;
@@ -9,7 +9,7 @@ export const EXCHANGE_RATE = 0.005;
 // TODO: get exchange rate from internet
 export const useReceiveInput = () => {
   const [amount, setAmount] = useState(INITIAL_AMOUNT);
-  const [unit, setUnit] = useState(EUnit.USD);
+  const [unit, setUnit] = useState(Currency.USD);
   const [eqValue, setEqValue] = useState(INITIAL_AMOUNT);
 
   const input = {
@@ -19,11 +19,11 @@ export const useReceiveInput = () => {
 
   const eqInput = {
     value: eqValue,
-    unit: unit === EUnit.QUAI ? EUnit.USD : EUnit.QUAI,
+    unit: unit === Currency.QUAI ? Currency.USD : Currency.QUAI,
   };
 
   const updateInputs = (value: string) => {
-    if (unit === EUnit.USD) {
+    if (unit === Currency.USD) {
       setAmount(value);
       setEqValue((Number(value) / EXCHANGE_RATE).toString());
     } else {
@@ -52,7 +52,7 @@ export const useReceiveInput = () => {
   };
 
   const onSwap = () => {
-    const result = unit === EUnit.USD ? EUnit.QUAI : EUnit.USD;
+    const result = unit === Currency.USD ? Currency.QUAI : Currency.USD;
     const pastInput = input.value;
     const pastEq = eqInput.value;
 

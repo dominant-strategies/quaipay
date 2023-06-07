@@ -11,12 +11,16 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 
-import { RootStackParamList } from 'src/App';
-import { buttonStyle, fontStyle, styledColors } from 'src/styles';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
-import Loader from 'src/shared/Loader';
+import { RootStackParamList } from '../../../App';
+import { buttonStyle, fontStyle, styledColors } from '../../../styles';
+import {
+  useProfilePicture,
+  useUsername,
+  useWallet,
+} from '../../../shared/hooks';
+import Loader from '../../../shared/components/Loader';
 
-import ShareControl from '../ShareControl';
+import ShareButtons from '../../../shared/components/ShareButtons';
 import { useTranslation } from 'react-i18next';
 
 export const ReceiveScreen = () => {
@@ -80,7 +84,7 @@ export const ReceiveScreen = () => {
           {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
         </Text>
         <View style={styles.shareControlStyle}>
-          <ShareControl />
+          <ShareButtons />
         </View>
       </View>
       <View style={styles.buttonAreaInfo}>

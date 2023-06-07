@@ -13,14 +13,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
-import { fontStyle, styledColors } from 'src/styles';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
-import ExchangeIcon from 'src/shared/assets/exchange.svg';
+import { fontStyle, styledColors } from '../../../styles';
+import {
+  useProfilePicture,
+  useUsername,
+  useWallet,
+} from '../../../shared/hooks';
+import ExchangeIcon from '../../../shared/assets/exchange.svg';
 
-import { ReceiveStackParamList } from '../ReceiveStack';
-import ShareControl from '../ShareControl';
-import { EUnit } from '../ReceiveAmountInputScreen/types';
-import { EXCHANGE_RATE } from '../ReceiveAmountInputScreen/hooks';
+import { ReceiveStackParamList } from './ReceiveStack';
+import ShareButtons from '../../../shared/components/ShareButtons';
+import { Currency } from '../../../shared/types/Currency';
+import { EXCHANGE_RATE } from './hooks';
 
 type ReceiveQRProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -38,7 +42,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
 
   const [mainAmount, setMainAmount] = useState(amount);
   const [eqAmount, setEqAmount] = useState(amount / EXCHANGE_RATE);
-  const [mainUnit, setMainUnit] = useState(EUnit.USD);
+  const [mainUnit, setMainUnit] = useState(Currency.USD);
 
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
@@ -49,7 +53,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
     setMainAmount(pastEq);
     setEqAmount(pastMain);
     setMainUnit(prevState =>
-      prevState === EUnit.USD ? EUnit.QUAI : EUnit.USD,
+      prevState === Currency.USD ? Currency.QUAI : Currency.USD,
     );
   };
 
@@ -81,15 +85,16 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
         >
           <View style={styles.requestedAmount}>
             <Text style={{ color: secondaryTextColor }}>
-              {mainUnit !== EUnit.USD && '$'}
-              {eqAmount} {mainUnit === EUnit.USD ? EUnit.QUAI : EUnit.USD}
+              {mainUnit !== Currency.USD && '$'}
+              {eqAmount}{' '}
+              {mainUnit === Currency.USD ? Currency.QUAI : Currency.USD}
             </Text>
             <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
-              {mainUnit === EUnit.USD && '$'}
+              {mainUnit === Currency.USD && '$'}
               {mainAmount} {mainUnit}
             </Text>
             <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
-              <Text style={{ color: primaryTextColor }}>{EUnit.USD}</Text>
+              <Text style={{ color: primaryTextColor }}>{Currency.USD}</Text>
               <ExchangeIcon
                 color={isDarkMode ? styledColors.white : styledColors.black}
               />
@@ -121,7 +126,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
             </Text>
           </View>
           <View style={styles.shareControl}>
-            <ShareControl />
+            <ShareButtons />
           </View>
         </View>
         <View>

@@ -13,7 +13,7 @@ import {
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { fontStyle, buttonStyle, styledColors } from '../../styles';
-import Loader from '../../shared/Loader';
+import Loader from '../../shared/components/Loader';
 import { setUpWallet } from '../services/setUpWallet';
 
 type SetupWalletScreenProps = {

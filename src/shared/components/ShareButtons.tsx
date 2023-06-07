@@ -5,17 +5,17 @@ import {
   useColorScheme,
 } from 'react-native';
 import React from 'react';
-import { styledColors } from '../../../styles';
-import ChatIcon from '../../../../assets/icons/chat.svg';
-import UploadIcon from '../../../../assets/icons/upload.svg';
-import EmailIcon from '../../../../assets/icons/email.svg';
-import PrinterIcon from '../../../../assets/icons/printer.svg';
-import ChatWhiteIcon from '../../../../assets/icons/chat_white.svg';
-import UploadWhiteIcon from '../../../../assets/icons/upload_white.svg';
-import EmailWhiteIcon from '../../../../assets/icons/email_white.svg';
-import PrinterWhiteIcon from '../../../../assets/icons/printer_white.svg';
+import { styledColors } from '../../styles';
+import ChatIcon from '../../../assets/icons/chat.svg';
+import UploadIcon from '../../../assets/icons/upload.svg';
+import EmailIcon from '../../../assets/icons/email.svg';
+import PrinterIcon from '../../../assets/icons/printer.svg';
+import ChatWhiteIcon from '../../../assets/icons/chat_white.svg';
+import UploadWhiteIcon from '../../../assets/icons/upload_white.svg';
+import EmailWhiteIcon from '../../../assets/icons/email_white.svg';
+import PrinterWhiteIcon from '../../../assets/icons/printer_white.svg';
 
-export default function ShareControl() {
+export default function ShareButtons() {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.container}>

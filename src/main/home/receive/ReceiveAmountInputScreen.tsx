@@ -14,13 +14,17 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
-import { fontStyle, styledColors } from 'src/styles';
-import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+import { fontStyle, styledColors } from '../../../styles';
+import ExchangeIcon from '../../../shared/assets/exchange.svg';
+import {
+  useProfilePicture,
+  useUsername,
+  useWallet,
+} from '../../../shared/hooks';
 
 import { useReceiveInput } from './hooks';
-import { ReceiveStackParamList } from '../ReceiveStack';
-import { EUnit } from './types';
+import { ReceiveStackParamList } from './ReceiveStack';
+import { Currency } from '../../../shared/types/Currency';
 
 type ReceiveAmountInputProps = NativeStackScreenProps<
   ReceiveStackParamList,
@@ -56,7 +60,7 @@ export const ReceiveAmountInputScreen = ({
 
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
-      amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+      amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
     });
 
   useLayoutEffect(() => {

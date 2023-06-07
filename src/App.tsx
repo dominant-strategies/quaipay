@@ -14,7 +14,7 @@ import {
 
 import OnboardingStack from './onboarding/OnboardingStack';
 import MainStack from './main/MainStack';
-import Loader from './shared/Loader';
+import Loader from './shared/components/Loader';
 import './shared/locales';
 import ReceiveStack, {
   ReceiveStackParamList,

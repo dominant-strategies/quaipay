@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
+import { Typography } from '../types';
 
 export const fontStyle = StyleSheet.create({
   fontH1: {
@@ -50,3 +51,54 @@ export const fontStyle = StyleSheet.create({
     textAlign: 'left',
   },
 });
+
+export const typography: Record<Typography, TextStyle> = {
+  H1: {
+    fontFamily: 'Clash Display Variable',
+    fontSize: 32,
+    fontWeight: '600',
+    lineHeight: 28,
+    letterSpacing: 0.05,
+    textAlign: 'center',
+  },
+  H2: {
+    fontFamily: 'Satoshi Variable',
+    fontSize: 24,
+    fontWeight: '700',
+    lineHeight: 32,
+    letterSpacing: 0.05,
+    textAlign: 'center',
+  },
+  H3: {
+    fontFamily: 'Satoshi Variable',
+    fontSize: 14,
+    fontWeight: '700',
+    lineHeight: 19,
+    letterSpacing: 0,
+    textAlign: 'center',
+  },
+  paragraph: {
+    fontFamily: 'Satoshi Variable',
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 19,
+    letterSpacing: 0,
+    textAlign: 'center',
+  },
+  default: {
+    fontFamily: 'Satoshi Variable',
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16,
+    letterSpacing: 0,
+    textAlign: 'center',
+  },
+  bold: {
+    fontFamily: 'Satoshi Variable',
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 16,
+    letterSpacing: 0,
+    textAlign: 'left',
+  },
+};

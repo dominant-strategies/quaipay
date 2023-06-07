@@ -11,7 +11,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 
 import { RootStackParamList } from 'src/App';
-import { buttonStyle, styledColors } from 'src/shared/styles';
+import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
 
@@ -34,28 +34,8 @@ export const ReceiveScreen = () => {
     return <Loader text={'Loading...'} />;
   }
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-        },
-      ]}
-    >
-      <View
-        style={[
-          styles.walletView,
-          styles.switchStyle,
-          {
-            backgroundColor: isDarkMode
-              ? styledColors.dark
-              : styledColors.white,
-            borderColor: isDarkMode
-              ? styledColors.darkGray
-              : styledColors.border,
-          },
-        ]}
-      >
+    <View style={styles.container}>
+      <View style={[styles.walletView, styles.switchStyle]}>
         <View style={styles.qrcodeStyle}>
           <QRCode
             value={JSON.stringify({
@@ -122,7 +102,7 @@ const themedStyle = (theme: Theme) =>
       padding: 8,
       borderWidth: 1,
       borderRadius: 8,
-      borderColor: styledColors.lightGray,
+      borderColor: theme.border,
       width: 156,
       height: 156,
       marginLeft: 'auto',
@@ -134,7 +114,6 @@ const themedStyle = (theme: Theme) =>
     walletView: {
       height: Dimensions.get('window').height / 2,
       marginTop: 120,
-      backgroundColor: 'red',
       width: '100%',
       paddingVertical: 40,
       justifyContent: 'center',
@@ -142,6 +121,8 @@ const themedStyle = (theme: Theme) =>
       alignSelf: 'center',
       borderRadius: 8,
       borderWidth: 1,
+      backgroundColor: theme.surface,
+      borderColor: theme.border,
     },
     buttonAreaInfo: {
       marginTop: 15,

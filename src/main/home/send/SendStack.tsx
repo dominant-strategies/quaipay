@@ -8,8 +8,8 @@ import SendConfirmationScreen from './SendConfirmation';
 export type SendStackStackParamList = {
   SendScan: undefined;
   SendAmount: { address: string; amount?: string; username: string };
-  SendOverview: undefined;
-  SendConfirmation: undefined;
+  SendOverview: { address: string; amount?: string; username: string}
+  SendConfirmation: { address: string; amount?: string; username: string}
 };
 
 const Stack = createNativeStackNavigator<SendStackStackParamList>();

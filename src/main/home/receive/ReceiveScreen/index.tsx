@@ -64,6 +64,7 @@ export const ReceiveScreen = () => {
           onPress={() => {
             navigation.navigate('ReceiveStack', {
               screen: 'ReceiveAmountInput',
+              params: { wallet },
             });
           }}
         >

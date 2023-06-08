@@ -14,7 +14,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/shared/styles';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -28,13 +28,12 @@ type ReceiveQRProps = NativeStackScreenProps<
 >;
 
 export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
-  const { amount } = route.params;
+  const { amount, wallet } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
   const profilePicture = useProfilePicture();
   const username = useUsername();
-  const wallet = useWallet();
 
   const [mainAmount, setMainAmount] = useState(amount);
   const [eqAmount, setEqAmount] = useState(amount / EXCHANGE_RATE);

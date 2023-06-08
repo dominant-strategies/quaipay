@@ -16,10 +16,11 @@ import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
 import { styledColors } from '../../../styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { SendStackStackParamList } from './SendStack';
+import { SendStackParamList } from './SendStack';
+import { quais } from 'quais';
 
 type SendScanScreenProps = NativeStackScreenProps<
-  SendStackStackParamList,
+  SendStackParamList,
   'SendScan'
 >;
 
@@ -51,17 +52,41 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
     checkInverted: true,
   });
 
+  // universal query for ethereum addresses
+  const parseQrCode = (
+    qrCode: string,
+  ): { address: string; value: number } | null => {
+    const regex = /^(ethereum:)?(0x[a-fA-F0-9]{40})\?value=(\d+)$/;
+
+    const match = qrCode.match(regex);
+
+    if (match) {
+      const address = match[2];
+      const value = parseInt(match[3], 10);
+
+      return { address, value };
+    } else {
+      return null;
+    }
+  };
+
   useEffect(() => {
-    console.log('barcodes', barcodes);
     if (barcodes.length > 0 && barcodes[0].content.data) {
-      const { address, amount, username } = JSON.parse(
-        barcodes[0].content.data as string,
-      );
-      navigation.push('SendAmount', {
-        address,
-        amount,
-        username,
-      });
+      const data = parseQrCode(barcodes[0].content.data as string);
+      console.log(data);
+      if (data) {
+        if (quais.utils.isAddress(data.address)) {
+          // @ts-ignore TODO: fix this after resolving the navigation issue
+          navigation.navigate('SendStack', {
+            screen: 'SenAmount',
+            params: {
+              address: data.address,
+              amount: data.value || 0,
+              username: '', // TODO: contacts
+            },
+          });
+        }
+      }
     }
   }, [barcodes]);
 
@@ -250,6 +275,10 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
               onFocus={() => {
                 console.log('onFocus');
                 handleSnapPress(1);
+                // @ts-ignore TODO: fix this after resolving the navigation issue
+                navigation.navigate('SendStack', {
+                  screen: 'SendAmount',
+                });
               }}
               placeholder="Search by address"
               placeholderTextColor="#808080"

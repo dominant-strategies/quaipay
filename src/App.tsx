@@ -19,11 +19,13 @@ import './shared/locales';
 import ReceiveStack, {
   ReceiveStackParamList,
 } from './main/home/receive/ReceiveStack';
+import SendStack, { SendStackParamList } from './main/home/send/SendStack';
 
 export type RootStackParamList = {
   Onboarding: undefined;
   Main: undefined;
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
+  SendStack: NavigatorScreenParams<SendStackParamList>;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -73,6 +75,13 @@ function App() {
             component={ReceiveStack}
             options={{
               title: 'ReceiveStack',
+            }}
+          />
+          <Stack.Screen
+            name="SendStack"
+            component={SendStack}
+            options={{
+              title: 'SendStack',
             }}
           />
         </Stack.Navigator>

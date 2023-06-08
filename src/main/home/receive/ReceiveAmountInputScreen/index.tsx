@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -38,7 +38,6 @@ export const ReceiveAmountInputScreen = ({
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const { wallet } = route.params;
-  const inputRef = useRef<TextInput>(null);
   const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
 
   const backgroundStyle = {
@@ -61,12 +60,6 @@ export const ReceiveAmountInputScreen = ({
       wallet,
     });
 
-  useLayoutEffect(() => {
-    if (inputRef) {
-      inputRef.current?.focus();
-    }
-  }, [inputRef]);
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -88,7 +81,7 @@ export const ReceiveAmountInputScreen = ({
               {input.unit === 'USD' && '$'}
             </Text>
             <TextInput
-              ref={inputRef}
+              autoFocus
               style={[styles.xUnit, textColor]}
               value={input.value}
               onChangeText={onInputChange}

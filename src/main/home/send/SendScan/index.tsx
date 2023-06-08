@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
@@ -13,12 +14,11 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
-import { Camera } from 'react-native-vision-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
-import { styledColors } from 'src/shared/styles';
-
+import { Camera } from 'react-native-vision-camera';
 import { SendStackParamList } from '../SendStack';
+import { styledColors } from 'src/shared/styles';
+import { quais } from 'quais';
 
 type SendScanScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -31,7 +31,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
   const sheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['30%', '50%'], []);
+  const snapPoints = useMemo(() => ['30%', '70%'], []);
 
   // callbacks
   const handleSheetChange = useCallback((index: any) => {
@@ -54,16 +54,21 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
   });
 
   useEffect(() => {
-    console.log('barcodes', barcodes);
     if (barcodes.length > 0 && barcodes[0].content.data) {
       const { address, amount, username } = JSON.parse(
         barcodes[0].content.data as string,
       );
-      navigation.push('SendAmount', {
-        address,
-        amount,
-        username,
-      });
+      if (quais.utils.isAddress(address)) {
+        // @ts-ignore
+        navigation.navigate('SendStack', {
+          screen: 'SendAmount',
+          params: {
+            address,
+            amount,
+            username,
+          },
+        });
+      }
     }
   }, [barcodes]);
 
@@ -79,9 +84,6 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
     (async () => {
       const status = await Camera.requestCameraPermission();
       setHasPermission(status === 'authorized');
-      console.log('status', status);
-      console.log('hasPermission', hasPermission);
-      console.log(device?.id);
     })();
   }, []);
 
@@ -174,7 +176,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
           >
             {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
               return (
-                <View key={index}>
+                <TouchableOpacity key={index}>
                   <View
                     key={index}
                     style={{
@@ -223,7 +225,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
                   >
                     {item === 'View All' ? 'View All' : 'Phone'}
                   </Text>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -250,7 +252,6 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
             />
             <TextInput
               onFocus={() => {
-                console.log('onFocus');
                 handleSnapPress(1);
               }}
               placeholder="Search by address"

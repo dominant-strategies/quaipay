@@ -5,15 +5,15 @@ import SendAmountScreen from './SendAmount';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
 
-export type SendStackStackParamList = {
+export type SendStackParamList = {
   SendScan: undefined;
   SendAmount: { address: string; amount?: string; username: string };
   SendOverview: { address: string; amount?: string; username: string}
   SendConfirmation: { address: string; amount?: string; username: string}
 };
 
-const Stack = createNativeStackNavigator<SendStackStackParamList>();
-const SendStackStack = () => {
+const Stack = createNativeStackNavigator<SendStackParamList>();
+const SendStack = () => {
   return (
     <Stack.Navigator initialRouteName="SendScan">
       <Stack.Screen
@@ -40,4 +40,4 @@ const SendStackStack = () => {
   );
 };
 
-export default SendStackStack;
+export default SendStack;

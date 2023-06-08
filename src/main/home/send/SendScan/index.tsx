@@ -18,10 +18,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { styledColors } from 'src/shared/styles';
 
-import { SendStackStackParamList } from '../SendStack';
+import { SendStackParamList } from '../SendStack';
 
 type SendScanScreenProps = NativeStackScreenProps<
-  SendStackStackParamList,
+  SendStackParamList,
   'SendScan'
 >;
 

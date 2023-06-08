@@ -22,9 +22,9 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { storeItem } from '../../shared/services/keychain';
-import { keychainKeys } from '../../shared/constants/keychainKeys';
-import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import { storeItem } from 'src/shared/services/keychain';
+import { keychainKeys } from 'src/shared/constants/keychainKeys';
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 
 interface State {
   selectedImage: string;

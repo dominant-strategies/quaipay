@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
-import { fontStyle, styledColors } from 'src/styles';
+import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 

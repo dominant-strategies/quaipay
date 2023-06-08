@@ -5,7 +5,9 @@ import {
   useColorScheme,
 } from 'react-native';
 import React from 'react';
-import { styledColors } from '../../../styles';
+
+import { styledColors } from 'src/shared/styles';
+
 import ChatIcon from '../../../../assets/icons/chat.svg';
 import UploadIcon from '../../../../assets/icons/upload.svg';
 import EmailIcon from '../../../../assets/icons/email.svg';

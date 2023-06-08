@@ -6,7 +6,7 @@ import { Pressable, Text, useColorScheme } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { styledColors } from 'src/styles';
+import { styledColors } from 'src/shared/styles';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';

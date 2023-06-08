@@ -22,14 +22,14 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { buttonStyle, fontStyle, styledColors } from '../../styles';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import { storeItem } from '../../shared/services/keychain';
-import { keychainKeys } from '../../shared/constants/keychainKeys';
-import Loader from '../../shared/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
+import { storeItem } from 'src/shared/services/keychain';
+import { keychainKeys } from 'src/shared/constants/keychainKeys';
+import Loader from 'src/shared/Loader';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>

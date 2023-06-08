@@ -1,11 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { styledColors } from '../styles';
 import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
+
+import { styledColors } from 'src/shared/styles';
+
 import ExchangeScreen from './exchange/ExchangeScreen';
 import EarnScreen from './earn/EarnScreen';
 import SettingScreen from './settings/SettingScreen';

@@ -19,6 +19,7 @@ import './shared/locales';
 import ReceiveStack, {
   ReceiveStackParamList,
 } from './main/home/receive/ReceiveStack';
+import { ThemeProvider } from './shared/context/themeContext';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -44,40 +45,42 @@ function App() {
     return <Loader text={'Welcome'} />;
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={onboarded ? 'Main' : 'Onboarding'}
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="Onboarding"
-            component={OnboardingStack}
-            options={{
-              ...TransitionPresets.ModalPresentationIOS,
-              title: 'onboarding',
+    <ThemeProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={onboarded ? 'Main' : 'Onboarding'}
+            screenOptions={{
+              headerShown: false,
             }}
-          />
-          <Stack.Screen
-            name="Main"
-            component={MainStack}
-            options={{
-              gestureEnabled: false,
-              title: 'Main',
-            }}
-          />
-          <Stack.Screen
-            name="ReceiveStack"
-            component={ReceiveStack}
-            options={{
-              title: 'ReceiveStack',
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+          >
+            <Stack.Screen
+              name="Onboarding"
+              component={OnboardingStack}
+              options={{
+                ...TransitionPresets.ModalPresentationIOS,
+                title: 'onboarding',
+              }}
+            />
+            <Stack.Screen
+              name="Main"
+              component={MainStack}
+              options={{
+                gestureEnabled: false,
+                title: 'Main',
+              }}
+            />
+            <Stack.Screen
+              name="ReceiveStack"
+              component={ReceiveStack}
+              options={{
+                title: 'ReceiveStack',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </ThemeProvider>
   );
 }
 

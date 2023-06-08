@@ -14,7 +14,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
-import { fontStyle, styledColors } from 'src/styles';
+import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 

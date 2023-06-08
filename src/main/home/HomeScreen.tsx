@@ -6,13 +6,15 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
-import { fontStyle, styledColors } from '../../styles';
+
+import { RootStackParamList } from 'src/App';
+import { fontStyle, styledColors } from 'src/shared/styles';
+
 import SendStack from './send/SendStack';
 import { ReceiveScreen } from './receive/ReceiveScreen/';
-import { RootStackParamList } from 'src/App';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 interface HomeScreenProps
   extends NativeStackScreenProps<RootStackParamList, 'Main'> {}

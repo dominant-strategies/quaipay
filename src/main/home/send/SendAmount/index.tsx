@@ -37,7 +37,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
   const { eqInput, input, onInputChange, onSwap } = useSendInput(
-    `${amount}` || '0',
+    amount ? `${amount}` : '0',
   );
 
   const backgroundStyle = {
@@ -55,11 +55,15 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
   };
 
   const goToTip = () => {
-    console.log('Continue to Tip screen (TBD)');
-    // @ts-ignore TODO: fix this after resolving the navigation issue
-    navigation.navigate('SendTip', {
-      amount: eqInput.unit === 'USD' ? eqInput.value : input.value,
-      eqInput: eqInput,
+    // @ts-ignore
+    navigation.navigate('SendStack', {
+      screen: 'SendTip',
+      params: {
+        amount: eqInput.unit === 'USD' ? eqInput.value : input.value,
+        eqInput: eqInput,
+        address,
+        username,
+      },
     });
   };
 

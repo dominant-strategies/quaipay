@@ -1,6 +1,6 @@
-import { useRetrieve } from './useRetrieve';
 import { keychainKeys } from '../constants/keychainKeys';
+import { useAsyncStorage } from './useAsyncStorage';
 
 export const useProfilePicture = () => {
-  return useRetrieve(keychainKeys.profilePicture);
+  return useAsyncStorage(keychainKeys.profilePicture);
 };

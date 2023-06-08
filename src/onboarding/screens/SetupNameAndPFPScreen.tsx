@@ -25,6 +25,7 @@ import {
 import { storeItem } from '../../shared/services/keychain';
 import { keychainKeys } from '../../shared/constants/keychainKeys';
 import { buttonStyle, fontStyle, styledColors } from '../../styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface State {
   selectedImage: string;
@@ -61,6 +62,10 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
         key: keychainKeys.profilePicture,
         value: selectedImage,
       });
+      console.log('username', username);
+      console.log('profilePicture', selectedImage);
+      await AsyncStorage.setItem('username', username);
+      await AsyncStorage.setItem('profilePicture', selectedImage);
       navigation.navigate('SetupLocation');
     } catch (error) {
       console.log(error);

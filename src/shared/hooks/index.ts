@@ -1,3 +1,4 @@
+export { useAsyncStorage } from './useAsyncStorage';
 export { useProfilePicture } from './useProfilePicture';
 export { useRetrieve } from './useRetrieve';
 export { useUsername } from './useUsername';

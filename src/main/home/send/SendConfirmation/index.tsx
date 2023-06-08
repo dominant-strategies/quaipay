@@ -7,12 +7,14 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-
+import { SendStackParamList } from '../SendStack';
 import { styledColors } from 'src/shared/styles';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type SendConfirmationScreenProps = {
-  navigation: any;
-};
+type SendConfirmationScreenProps = NativeStackScreenProps<
+  SendStackParamList,
+  'SendConfirmation'
+>;
 
 function SendConfirmationScreen({}: SendConfirmationScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
@@ -38,7 +40,7 @@ function SendConfirmationScreen({}: SendConfirmationScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Amount Input</Text>
+          <Text>Confirmation Screen</Text>
         </View>
       </View>
     </SafeAreaView>

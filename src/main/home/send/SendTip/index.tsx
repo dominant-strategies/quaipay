@@ -10,11 +10,11 @@ import {
 
 import { styledColors } from 'src/shared/styles';
 
-type SendOverviewScreenProps = {
+type SendTipScreenProps = {
   navigation: any;
 };
 
-function SendOverviewScreen({}: SendOverviewScreenProps) {
+function SendTipScreen({}: SendTipScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -38,7 +38,7 @@ function SendOverviewScreen({}: SendOverviewScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Overview Screen</Text>
+          <Text>Tip Page</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default SendOverviewScreen;
+export default SendTipScreen;

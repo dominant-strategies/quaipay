@@ -49,6 +49,25 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
   const isButtonSelected = (tipPercentage: any) => {
     return selectedTip === tipPercentage;
   };
+
+  const navigateToOverview = () => {
+    // @ts-ignore
+    navigation.navigate('SendStack', {
+      screen: 'SendOverview',
+      params: {
+        amount,
+        address,
+        username,
+        eqInput,
+        input,
+        tip:
+          selectedTip === 'custom'
+            ? customTip
+            : ((amount * selectedTip) / 100).toFixed(2).toString(),
+      },
+    });
+  };
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
@@ -82,18 +101,20 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
         <Text style={[textColor, styles.tipText]}>
           {t('home.send.includeTip')}
         </Text>
-        <View style={styles.balanceContainer}>
-          <Text style={[fontStyle.fontH1, textColor]}>${amount}</Text>
-          <Text style={[fontStyle.fontH1, lightTextColor]}>
-            {input.unit === 'USD' ? ` ${input.unit}` : ` ${eqInput.unit}`}
+        <View style={styles.amountContainer}>
+          <View style={styles.balanceContainer}>
+            <Text style={[fontStyle.fontH1, textColor]}>${amount}</Text>
+            <Text style={[fontStyle.fontH1, lightTextColor]}>
+              {input.unit === 'USD' ? ` ${input.unit}` : ` ${eqInput.unit}`}
+            </Text>
+          </View>
+          <Text style={[textColor, fontStyle.fontParagraph]}>
+            {`$${amount} + `}
+            {selectedTip === 'custom'
+              ? `$${customTip} ${t('home.send.tip')}`
+              : `${calculateTipAmount(Number(amount), Number(selectedTip))}`}
           </Text>
         </View>
-        <Text style={[textColor, fontStyle.fontParagraph]}>
-          {`$${amount} + `}
-          {selectedTip === 'custom'
-            ? `$${customTip} ${t('home.send.tip')}`
-            : `${calculateTipAmount(Number(amount), Number(selectedTip))}`}
-        </Text>
         <View style={styles.container}>
           {/* TODO: Create a reusable component for the buttons */}
           <TouchableOpacity
@@ -206,6 +227,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
+          onPress={() => navigateToOverview()}
           style={[styles.button, styles.selectedButton, styles.continueButton]}
         >
           <Text
@@ -240,6 +262,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+  },
+  amountContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: '#d5d5d5',

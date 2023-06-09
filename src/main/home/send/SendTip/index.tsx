@@ -86,7 +86,6 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.container}>
-          {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
           <Text style={[textColor, styles.username]}>
             {t('common:to')} {username}
           </Text>

@@ -19,11 +19,8 @@ type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
 const SendTipScreen = ({ route }: SendTipScreenProps) => {
   const { amount, address, username, eqInput, input } = route.params;
-  console.log('amount', amount);
-  console.log(route.params);
   const { t } = useTranslation();
   const navigation = useNavigation();
-  console.log('navigation', navigation);
   const isDarkMode = useColorScheme() === 'dark';
 
   const [selectedTip, setSelectedTip] = useState<any>(null);
@@ -35,7 +32,6 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
     } else {
       setSelectedTip(tipPercentage);
     }
-    console.log(`Selected tip: ${tipPercentage}`);
   };
 
   const calculateTipAmount = (_amount: number, tipPercentage: number) => {

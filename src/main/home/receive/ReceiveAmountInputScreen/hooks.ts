@@ -32,8 +32,15 @@ export const useReceiveInput = () => {
     }
   };
 
-  const onInputButtonPress = (value: string) => {
-    alert(value);
+  const onInputButtonPress = (newChar: string) => {
+    const prevValue = amount;
+
+    // Check for initial value
+    if (prevValue.startsWith('0') && !prevValue.includes('.')) {
+      return updateInputs(newChar);
+    }
+
+    return updateInputs(prevValue + newChar);
   };
 
   const onDecimalButtonPress = () => {

@@ -57,25 +57,6 @@ export const useReceiveInput = () => {
     );
   };
 
-  const onInputChange = (value: string) => {
-    const prevValue = value.slice(0, -1);
-    const newValue = value[value.length - 1];
-
-    if (newValue === '.') {
-      return updateInputs(value);
-    }
-
-    if (prevValue === INITIAL_AMOUNT) {
-      return updateInputs(value[value.length - 1]);
-    }
-
-    if (value === '') {
-      return updateInputs(INITIAL_AMOUNT);
-    }
-
-    return updateInputs(value);
-  };
-
   const onSwap = () => {
     const result = unit === EUnit.USD ? EUnit.QUAI : EUnit.USD;
     const pastInput = input.value;
@@ -86,13 +67,16 @@ export const useReceiveInput = () => {
     setAmount(pastEq);
   };
 
-  return {
-    eqInput,
-    input,
+  const kbd = {
     onDecimalButtonPress,
     onDeleteButtonPress,
     onInputButtonPress,
-    onInputChange,
+  };
+
+  return {
+    eqInput,
+    input,
+    kbd,
     onSwap,
   };
 };

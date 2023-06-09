@@ -21,6 +21,7 @@ import { fontStyle, styledColors } from 'src/shared/styles';
 import { useSendInput } from './hooks';
 import { useWallet } from 'src/shared/hooks';
 import { getBalance } from 'src/shared/services/quais';
+import { EUnit } from './types';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -59,15 +60,15 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendTip',
       params: {
-        amount: eqInput.unit === 'USD' ? eqInput.value : input.value,
+        amount: input.unit === EUnit.USD ? input.value : eqInput.value,
         eqInput: eqInput,
+        input: input,
         address,
         username,
       },
     });
   };
 
-  // async useeffect to fetch balance
   useEffect(() => {
     if (wallet) {
       getBalance(wallet.address).then(balance =>
@@ -91,7 +92,9 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       <View style={styles.walletCardStyle}>
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
-          <Text style={[textColor, styles.username]}>To: {username}</Text>
+          <Text style={[textColor, styles.username]}>
+            {t('common.to')} {username}
+          </Text>
           <Text style={[textColor, styles.wallet]}>
             {`${address.slice(0, 8)}...${address?.slice(-8)}`}
           </Text>
@@ -103,7 +106,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
                 color: styledColors.gray,
               }}
             >
-              Your balance: ${hideBalance ? 'X.XX' : quaiBalance}
+              {t('common.yourBalance')}${hideBalance ? 'X.XX' : quaiBalance}
             </Text>
             <FontAwesome5
               name={hideBalance ? 'eye-slash' : 'eye'}

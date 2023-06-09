@@ -7,6 +7,12 @@
   "send": {
     "label": "Send",
     "amount": "Amount",
-    "address": "Address"
-  },
+    "address": "Address",
+    "searchByAddress": "Search by address",
+    "tip": "Tip",
+    "noTip": "No tip",
+    "includeTip": "Include a tip?",
+    "customTip": "Custom tip",
+    "tipPlaceholder": "Enter a tip amount"
+  }
 }

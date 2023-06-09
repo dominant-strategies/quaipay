@@ -7,6 +7,12 @@
   "send": {
     "label": "Senden",
     "amount": "Betrag",
-    "address": "Adresse"
+    "address": "Adresse",
+    "searchByAddress": "Nach Adresse suchen",
+    "tip": "Tip",
+    "noTip": "Kein ip",
+    "includeTip": "Trinkgeld einbeziehen?",
+    "customTip": "Benutzerdefiniertes Trinkgeld",
+    "tipPlaceholder": "Trinkgeld",
   }
 }

@@ -223,7 +223,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => navigateToOverview()}
+          onPress={navigateToOverview}
           style={[styles.button, styles.selectedButton, styles.continueButton]}
         >
           <Text

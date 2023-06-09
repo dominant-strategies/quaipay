@@ -1,7 +1,9 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 
 import { Theme } from '../types';
+import DeleteArrow from '../assets/deleteArrow.svg';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { QuaiPayText } from './QuaiPayText';
 
@@ -41,13 +43,16 @@ interface QuaiPayKeyboardProps {}
 export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({}) => {
   const styles = useThemedStyle(themedStyle);
 
+  const buttonOptions: Partial<Record<KeyboardButton, React.ReactNode>> = {
+    leftButton: <QuaiPayText type="H2">.</QuaiPayText>,
+    rightButton: <DeleteArrow />,
+  };
+
   return (
     <View style={styles.keyboardContainer}>
       {buttons.map(btn => (
-        <View style={styles.buttonContainer}>
-          <QuaiPayText type="H2" key={btn}>
-            {btn}
-          </QuaiPayText>
+        <View key={btn} style={styles.buttonContainer}>
+          {buttonOptions[btn] || <QuaiPayText type="H2">{btn}</QuaiPayText>}
         </View>
       ))}
     </View>

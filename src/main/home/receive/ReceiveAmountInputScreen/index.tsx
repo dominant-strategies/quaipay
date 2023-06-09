@@ -5,8 +5,6 @@ import {
   View,
   useColorScheme,
   TouchableOpacity,
-  TextInput,
-  Platform,
   Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -15,7 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
-import { QuaiPayContent, QuaiPayKeyboard } from 'src/shared/components';
+import {
+  QuaiPayContent,
+  QuaiPayInputDisplay,
+  QuaiPayKeyboard,
+} from 'src/shared/components';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -43,7 +45,6 @@ export const ReceiveAmountInputScreen = ({
     onDecimalButtonPress,
     onDeleteButtonPress,
     onInputButtonPress,
-    onInputChange,
     onSwap,
   } = useReceiveInput();
 
@@ -72,21 +73,13 @@ export const ReceiveAmountInputScreen = ({
             {wallet &&
               `${wallet?.address.slice(0, 8)}...${wallet.address?.slice(-8)}`}
           </Text>
-          <View style={[styles.row, styles.inputDisplayContainer]}>
-            <Text style={[styles.xUnit, textColor]}>
-              {input.unit === 'USD' && '$'}
-            </Text>
-            <TextInput
-              style={[styles.xUnit, textColor]}
-              value={input.value}
-              onChangeText={onInputChange}
-              keyboardAppearance={isDarkMode ? 'dark' : 'light'}
-              keyboardType={
-                Platform.OS === 'android' ? 'numeric' : 'decimal-pad'
-              }
-            />
-            <Text style={[styles.xUnit, textColor]}>{` ${input.unit}`}</Text>
-          </View>
+        </View>
+        <View style={[styles.row, styles.inputDisplayContainer]}>
+          <QuaiPayInputDisplay
+            prefix={input.unit === 'USD' ? '$' : undefined}
+            suffix={` ${input.unit}`}
+            value={input.value}
+          />
         </View>
         <View style={styles.row}>
           <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>

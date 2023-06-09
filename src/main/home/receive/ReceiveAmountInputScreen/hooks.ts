@@ -44,7 +44,9 @@ export const useReceiveInput = () => {
   };
 
   const onDecimalButtonPress = () => {
-    alert('Decimal button press');
+    const prevValue = amount;
+    // Default to dot (.) as the decimal comma
+    return !prevValue.includes('.') && updateInputs(amount + '.');
   };
 
   const onDeleteButtonPress = () => {

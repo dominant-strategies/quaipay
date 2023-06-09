@@ -107,7 +107,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
         {device != null && hasPermission && (
           <>
             <Camera
-              style={[StyleSheet.absoluteFill]}
+              style={StyleSheet.absoluteFill}
               device={device}
               isActive={true}
               frameProcessor={frameProcessor}

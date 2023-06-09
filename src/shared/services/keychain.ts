@@ -10,7 +10,6 @@ const {
 type KeychainItem = { key: string; value: string };
 
 const defaultOptions = (key: string) => ({
-  accessControl: ACCESS_CONTROL.DEVICE_PASSCODE,
   // ios only
   accessible: ACCESSIBLE.WHEN_UNLOCKED,
   // ios only
@@ -29,12 +28,12 @@ export const storeItem = async (
   const options = passcodeProtected
     ? {
         ...defaultOptions(key),
-        accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+        accessControl: ACCESS_CONTROL.DEVICE_PASSCODE,
       }
     : defaultOptions(key);
 
   try {
-    await Keychain.setGenericPassword('Quaipay', value, defaultOptions(key));
+    await Keychain.setGenericPassword('Quaipay', value, options);
   } catch (error: any) {
     console.log(error);
 

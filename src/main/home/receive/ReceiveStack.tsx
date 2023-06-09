@@ -10,11 +10,15 @@ import { styledColors } from 'src/shared/styles';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
+import { Wallet } from 'src/shared/types/Wallet';
 
 export type ReceiveStackParamList = {
-  ReceiveAmountInput: undefined;
+  ReceiveAmountInput: {
+    wallet: Wallet;
+  };
   ReceiveQR: {
     amount: number;
+    wallet: Wallet;
   };
 };
 

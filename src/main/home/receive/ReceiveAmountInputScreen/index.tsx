@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
+import { useProfilePicture, useUsername } from 'src/shared/hooks';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -31,12 +31,13 @@ type ReceiveAmountInputProps = NativeStackScreenProps<
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen = ({
   navigation,
+  route,
 }: ReceiveAmountInputProps) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();
   const username = useUsername();
-  const wallet = useWallet();
+  const { wallet } = route.params;
   const inputRef = useRef<TextInput>(null);
   const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
 
@@ -57,6 +58,7 @@ export const ReceiveAmountInputScreen = ({
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
       amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+      wallet,
     });
 
   useLayoutEffect(() => {

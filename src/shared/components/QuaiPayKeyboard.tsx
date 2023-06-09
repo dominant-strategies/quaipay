@@ -7,7 +7,18 @@ import DeleteArrow from '../assets/deleteArrow.svg';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { QuaiPayText } from './QuaiPayText';
 
-const KEYBOARD_HEIGHT = 420;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+const KEYBOARD_HEIGHT_FACTOR = WINDOW_HEIGHT > 550 ? 0.4 : 0.35;
+const KEYBOARD_MAX_HEIGHT = 310;
+
+const getKeyboardHeight: (
+  customScreenHeight?: number,
+) => number = customScreenHeight => {
+  const screenHeight = customScreenHeight ?? WINDOW_HEIGHT;
+  const proposedHeight = Math.floor(screenHeight * KEYBOARD_HEIGHT_FACTOR);
+
+  return Math.min(proposedHeight, KEYBOARD_MAX_HEIGHT);
+};
 
 type KeyboardButton =
   | '1'
@@ -62,7 +73,7 @@ export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({}) => {
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     keyboardContainer: {
-      height: KEYBOARD_HEIGHT,
+      height: getKeyboardHeight(),
       backgroundColor: theme.surface,
       borderTopWidth: 1,
       borderColor: theme.border,

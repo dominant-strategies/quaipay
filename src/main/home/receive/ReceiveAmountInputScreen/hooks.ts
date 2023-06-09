@@ -36,6 +36,14 @@ export const useReceiveInput = () => {
     alert(value);
   };
 
+  const onDecimalButtonPress = () => {
+    alert('Decimal button press');
+  };
+
+  const onDeleteButtonPress = () => {
+    alert('Delete button press');
+  };
+
   const onInputChange = (value: string) => {
     const prevValue = value.slice(0, -1);
     const newValue = value[value.length - 1];
@@ -68,6 +76,8 @@ export const useReceiveInput = () => {
   return {
     eqInput,
     input,
+    onDecimalButtonPress,
+    onDeleteButtonPress,
     onInputButtonPress,
     onInputChange,
     onSwap,

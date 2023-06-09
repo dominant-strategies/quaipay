@@ -51,17 +51,29 @@ const buttons: KeyboardButton[] = [
 ];
 
 interface QuaiPayKeyboardProps {
+  handleLeftButtonPress: () => void;
+  handleRightButtonPress: () => void;
   onInputButtonPress: (input: string) => void;
 }
 
 export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({
+  handleLeftButtonPress,
+  handleRightButtonPress,
   onInputButtonPress,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
   const buttonOptions: Partial<Record<KeyboardButton, React.ReactNode>> = {
-    leftButton: <QuaiPayText type="H2">.</QuaiPayText>,
-    rightButton: <DeleteArrow />,
+    leftButton: (
+      <TouchableOpacity onPress={handleLeftButtonPress}>
+        <QuaiPayText type="H2">.</QuaiPayText>
+      </TouchableOpacity>
+    ),
+    rightButton: (
+      <TouchableOpacity onPress={handleRightButtonPress}>
+        <DeleteArrow />
+      </TouchableOpacity>
+    ),
   };
 
   return (

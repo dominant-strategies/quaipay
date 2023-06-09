@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -17,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
+import { QuaiPayContent, QuaiPayKeyboard } from 'src/shared/components';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -40,12 +39,6 @@ export const ReceiveAmountInputScreen = ({
   const { wallet } = route.params;
   const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
-
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
   };
@@ -61,11 +54,8 @@ export const ReceiveAmountInputScreen = ({
     });
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent>
+      <View style={styles.separator} />
       <View style={styles.walletCardStyle}>
         <View style={styles.container}>
           <Image style={styles.image} source={{ uri: profilePicture }} />
@@ -74,14 +64,11 @@ export const ReceiveAmountInputScreen = ({
             {wallet &&
               `${wallet?.address.slice(0, 8)}...${wallet.address?.slice(-8)}`}
           </Text>
-        </View>
-        <View>
-          <View style={[styles.row, styles.marginTop16]}>
+          <View style={[styles.row, styles.inputDisplayContainer]}>
             <Text style={[styles.xUnit, textColor]}>
               {input.unit === 'USD' && '$'}
             </Text>
             <TextInput
-              autoFocus
               style={[styles.xUnit, textColor]}
               value={input.value}
               onChangeText={onInputChange}
@@ -105,22 +92,21 @@ export const ReceiveAmountInputScreen = ({
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={goToGeneratedQR}
-          style={[styles.continueButton]}
-        >
-          <Text style={{ color: styledColors.white }}>
-            {t('common.continue')}
-          </Text>
-        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <TouchableOpacity onPress={goToGeneratedQR} style={styles.continueButton}>
+        <Text style={{ color: styledColors.white }}>
+          {t('common.continue')}
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <QuaiPayKeyboard />
+    </QuaiPayContent>
   );
 };
 
 const styles = StyleSheet.create({
   walletCardStyle: {
-    marginTop: 80,
+    marginTop: 12,
   },
   row: {
     flexDirection: 'row',
@@ -158,7 +144,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 132,
   },
-  marginTop16: {
+  inputDisplayContainer: {
     marginTop: 16,
   },
   image: {
@@ -176,5 +162,8 @@ const styles = StyleSheet.create({
   },
   wallet: {
     ...fontStyle.fontSmallText,
+  },
+  separator: {
+    flex: 1,
   },
 });

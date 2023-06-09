@@ -48,7 +48,11 @@ export const useReceiveInput = () => {
   };
 
   const onDeleteButtonPress = () => {
-    alert('Delete button press');
+    const prevValue = amount;
+
+    return updateInputs(
+      prevValue.length > 1 ? prevValue.slice(0, -1) : INITIAL_AMOUNT,
+    );
   };
 
   const onInputChange = (value: string) => {

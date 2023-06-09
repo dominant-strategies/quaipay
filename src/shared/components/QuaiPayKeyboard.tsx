@@ -6,6 +6,7 @@ import { Theme } from '../types';
 import DeleteArrow from '../assets/deleteArrow.svg';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { QuaiPayText } from './QuaiPayText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const KEYBOARD_HEIGHT_FACTOR = WINDOW_HEIGHT > 550 ? 0.4 : 0.35;
@@ -49,9 +50,13 @@ const buttons: KeyboardButton[] = [
   'rightButton',
 ];
 
-interface QuaiPayKeyboardProps {}
+interface QuaiPayKeyboardProps {
+  onInputButtonPress: (input: string) => void;
+}
 
-export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({}) => {
+export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({
+  onInputButtonPress,
+}) => {
   const styles = useThemedStyle(themedStyle);
 
   const buttonOptions: Partial<Record<KeyboardButton, React.ReactNode>> = {
@@ -63,7 +68,11 @@ export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({}) => {
     <View style={styles.keyboardContainer}>
       {buttons.map(btn => (
         <View key={btn} style={styles.buttonContainer}>
-          {buttonOptions[btn] || <QuaiPayText type="H2">{btn}</QuaiPayText>}
+          {buttonOptions[btn] || (
+            <TouchableOpacity onPress={() => onInputButtonPress(btn)}>
+              <QuaiPayText type="H2">{btn}</QuaiPayText>
+            </TouchableOpacity>
+          )}
         </View>
       ))}
     </View>

@@ -37,7 +37,8 @@ export const ReceiveAmountInputScreen = ({
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const { wallet } = route.params;
-  const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
+  const { eqInput, input, onInputButtonPress, onInputChange, onSwap } =
+    useReceiveInput();
 
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
@@ -99,7 +100,7 @@ export const ReceiveAmountInputScreen = ({
         </Text>
       </TouchableOpacity>
       <View style={styles.separator} />
-      <QuaiPayKeyboard />
+      <QuaiPayKeyboard onInputButtonPress={onInputButtonPress} />
     </QuaiPayContent>
   );
 };

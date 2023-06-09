@@ -32,6 +32,10 @@ export const useReceiveInput = () => {
     }
   };
 
+  const onInputButtonPress = (value: string) => {
+    alert(value);
+  };
+
   const onInputChange = (value: string) => {
     const prevValue = value.slice(0, -1);
     const newValue = value[value.length - 1];
@@ -64,6 +68,7 @@ export const useReceiveInput = () => {
   return {
     eqInput,
     input,
+    onInputButtonPress,
     onInputChange,
     onSwap,
   };

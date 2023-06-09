@@ -19,6 +19,7 @@ import { quais } from 'quais';
 import { t } from 'i18next';
 import { SendStackParamList } from '../SendStack';
 import { styledColors } from 'src/shared/styles';
+import { QuaiPayText } from 'src/shared/components';
 
 type SendScanScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -189,18 +190,9 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
                       </Text>
                     )}
                   </View>
-                  <Text
-                    style={[
-                      styles.contactText,
-                      {
-                        color: isDarkMode
-                          ? styledColors.white
-                          : styledColors.black,
-                      },
-                    ]}
-                  >
+                  <QuaiPayText type="default">
                     {item === 'View All' ? 'View All' : 'Phone'}
-                  </Text>
+                  </QuaiPayText>
                 </TouchableOpacity>
               );
             })}
@@ -261,12 +253,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-  },
-  contactText: {
-    fontFamily: 'Satoshi Variable',
-    fontSize: 10,
-    fontWeight: '500',
-    textAlign: 'center',
   },
   contactSearch: {
     flex: 1,

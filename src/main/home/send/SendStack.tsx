@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, useColorScheme } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,11 +10,25 @@ import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
 import { styledColors } from 'src/shared/styles';
+import { EUnit } from './SendAmount/types';
+import { useNavigation } from '@react-navigation/native';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
   SendAmount: { address: string; amount: number; username: string };
-  SendTip: { address: string; amount: number; username: string };
+  SendTip: {
+    address: string;
+    amount: number;
+    username: string;
+    input: {
+      unit: EUnit;
+      value: string;
+    };
+    eqInput: {
+      unit: EUnit;
+      value: string;
+    };
+  };
   SendOverview: { address: string; amount: number; username: string };
   SendConfirmation: { address: string; amount: number; username: string };
 };
@@ -60,6 +73,8 @@ const SendStack = () => {
               <FontAwesome5 name="chevron-left" color={textColor} size={24} />
             </Pressable>
           ),
+          headerBackTitleVisible: false,
+          headerTintColor: textColor,
         }}
         component={SendAmountScreen}
       />
@@ -72,11 +87,8 @@ const SendStack = () => {
           headerTitle: () => (
             <Text style={textStyle}>{t('home.send.label')}</Text>
           ),
-          headerLeft: () => (
-            <Pressable style={buttonStyle} onPress={goBack}>
-              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
-            </Pressable>
-          ),
+          headerBackTitleVisible: false,
+          headerTintColor: textColor,
         }}
         component={SendTipScreen}
       />
@@ -88,11 +100,8 @@ const SendStack = () => {
           headerTitle: () => (
             <Text style={textStyle}>{t('home.send.label')}</Text>
           ),
-          headerLeft: () => (
-            <Pressable style={buttonStyle} onPress={goBack}>
-              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
-            </Pressable>
-          ),
+          headerBackTitleVisible: false,
+          headerTintColor: textColor,
         }}
         name="SendOverview"
         component={SendOverviewScreen}
@@ -105,11 +114,8 @@ const SendStack = () => {
           headerTitle: () => (
             <Text style={textStyle}>{t('home.send.label')}</Text>
           ),
-          headerLeft: () => (
-            <Pressable style={buttonStyle} onPress={goBack}>
-              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
-            </Pressable>
-          ),
+          headerBackTitleVisible: false,
+          headerTintColor: textColor,
         }}
         name="SendConfirmation"
         component={SendConfirmationScreen}

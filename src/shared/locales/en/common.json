@@ -3,6 +3,5 @@
   "request": "Request",
   "share": "Share",
   "from": "From",
-  "to": "To",
-  "yourBalance": "Your balance: ",
+  "to": "To"
 }

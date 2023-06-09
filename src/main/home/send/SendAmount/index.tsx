@@ -106,7 +106,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
                 color: styledColors.gray,
               }}
             >
-              {t('common.yourBalance')}${hideBalance ? 'X.XX' : quaiBalance}
+              {t('home.send.yourBalance')}${hideBalance ? 'X.XX' : quaiBalance}
             </Text>
             <FontAwesome5
               name={hideBalance ? 'eye-slash' : 'eye'}

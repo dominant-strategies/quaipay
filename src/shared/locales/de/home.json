@@ -8,11 +8,12 @@
     "label": "Senden",
     "amount": "Betrag",
     "address": "Adresse",
+    "yourBalance": "Ihr Guthaben: ",
     "searchByAddress": "Nach Adresse suchen",
     "tip": "Tip",
-    "noTip": "Kein ip",
+    "noTip": "Kein Tip",
     "includeTip": "Trinkgeld einbeziehen?",
     "customTip": "Benutzerdefiniertes Trinkgeld",
-    "tipPlaceholder": "Trinkgeld",
+    "tipPlaceholder": "Trinkgeld"
   }
 }

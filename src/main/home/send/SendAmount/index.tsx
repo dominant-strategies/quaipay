@@ -15,13 +15,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { SendStackParamList } from '../SendStack';
-import { fontStyle, styledColors } from 'src/shared/styles';
-import { useSendInput } from './hooks';
 import { useWallet } from 'src/shared/hooks';
 import { getBalance } from 'src/shared/services/quais';
-import { EUnit } from './types';
+import { Currency } from 'src/shared/types';
+import { fontStyle, styledColors } from 'src/shared/styles';
+
+import { useSendInput } from './hooks';
+import { SendStackParamList } from '../SendStack';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -60,7 +62,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendTip',
       params: {
-        amount: input.unit === EUnit.USD ? input.value : eqInput.value,
+        amount: input.unit === Currency.USD ? input.value : eqInput.value,
         eqInput: eqInput,
         input: input,
         address,

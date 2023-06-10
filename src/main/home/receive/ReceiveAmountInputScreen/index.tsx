@@ -17,10 +17,10 @@ import {
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
 } from 'src/shared/components';
+import { Currency } from 'src/shared/types';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackScreenProps } from '../ReceiveStack';
-import { EUnit } from './types';
 
 // TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
@@ -44,7 +44,7 @@ export const ReceiveAmountInputScreen: React.FC<
 
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
-      amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+      amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
       wallet,
     });
 

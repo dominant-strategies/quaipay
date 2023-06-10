@@ -1,5 +1,7 @@
 {
   "continue": "Continue",
   "request": "Request",
-  "share": "Share"
+  "share": "Share",
+  "from": "From",
+  "to": "To"
 }

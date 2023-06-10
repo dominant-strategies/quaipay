@@ -10,11 +10,11 @@ import {
 
 import { styledColors } from 'src/shared/styles';
 
-type SendConfirmationScreenProps = {
+type SendOverviewScreenProps = {
   navigation: any;
 };
 
-function SendConfirmationScreen({}: SendConfirmationScreenProps) {
+function SendOverviewScreen({}: SendOverviewScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -38,7 +38,7 @@ function SendConfirmationScreen({}: SendConfirmationScreenProps) {
       />
       <View style={topViewStyle}>
         <View style={styles.switchStyle}>
-          <Text>Amount Input</Text>
+          <Text>Overview Screen</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default SendConfirmationScreen;
+export default SendOverviewScreen;

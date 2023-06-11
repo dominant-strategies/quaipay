@@ -31,11 +31,13 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         },
       ]}
     >
-      {!!title && (
-        <QuaiPayText type="H2" style={styles.title}>
-          {title}
-        </QuaiPayText>
-      )}
+      <View style={styles.header}>
+        {!!title && (
+          <QuaiPayText type="H2" style={styles.title}>
+            {title}
+          </QuaiPayText>
+        )}
+      </View>
       {children}
     </View>
   );
@@ -47,6 +49,11 @@ const themedStyle = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.background,
       paddingHorizontal: 20,
+    },
+    header: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     title: {
       flex: 1,

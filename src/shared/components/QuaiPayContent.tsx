@@ -1,7 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import NavChevronLeft from 'src/../assets/icons/navChevronLeft.svg';
 
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
@@ -9,17 +12,25 @@ import { QuaiPayText } from './QuaiPayText';
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
+  navButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
+  navButton = true,
   noInsetBottom = false,
   title,
 }) => {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const styles = useThemedStyle(themedStyle);
+
+  const goBack = useCallback(
+    () => (navigation.canGoBack() ? navigation.goBack() : false),
+    [navigation],
+  );
 
   return (
     <View
@@ -32,8 +43,22 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
       ]}
     >
       <View style={styles.header}>
+        {navButton && (
+          <Pressable
+            onPress={goBack}
+            style={({ pressed }) => [
+              pressed && { opacity: 0.5 },
+              styles.navIconMargin,
+            ]}
+          >
+            <NavChevronLeft />
+          </Pressable>
+        )}
         {!!title && (
-          <QuaiPayText type="H2" style={styles.title}>
+          <QuaiPayText
+            type="H2"
+            style={[styles.title, navButton && styles.navIconMargin]}
+          >
             {title}
           </QuaiPayText>
         )}
@@ -54,6 +79,9 @@ const themedStyle = (theme: Theme) =>
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
+    },
+    navIconMargin: {
+      marginRight: 16,
     },
     title: {
       flex: 1,

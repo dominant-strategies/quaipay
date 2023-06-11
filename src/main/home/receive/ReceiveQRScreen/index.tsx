@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,10 +8,10 @@ import {
   useColorScheme,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
+import { QuaiPayContent } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
@@ -52,10 +51,6 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
     );
   };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-  };
-
   const primaryTextColor = isDarkMode ? styledColors.white : styledColors.black;
   const secondaryTextColor = isDarkMode
     ? styledColors.gray
@@ -66,11 +61,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
     : styledColors.white;
 
   return (
-    <SafeAreaView style={[backgroundStyle, styles.safeAreaView]}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent title={t('common.request')}>
       <ScrollView>
         <View
           style={[
@@ -139,7 +130,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 };
 

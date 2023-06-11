@@ -34,51 +34,53 @@ export const ReceiveScreen = () => {
     return <Loader text={'Loading...'} />;
   }
   return (
-    <View style={styles.container}>
-      <View style={[styles.walletView, styles.switchStyle]}>
-        <View style={styles.qrcodeStyle}>
-          <QRCode
-            value={JSON.stringify({
-              address: wallet.address,
-              username,
-            })}
-            logo={{ uri: profilePicture }}
-            logoSize={50}
-            logoBackgroundColor="transparent"
-            size={140}
-          />
-        </View>
-        <QuaiPayText type="H2" style={styles.ownerName}>
-          {username}
-        </QuaiPayText>
-        <QuaiPayText type="paragraph" style={styles.walletAddress}>
-          {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
-        </QuaiPayText>
-        <View style={styles.shareControlStyle}>
-          <ShareControl />
-        </View>
-      </View>
-      <View style={styles.buttonAreaInfo}>
-        <TouchableOpacity
-          style={isDarkMode ? buttonStyle.dark : buttonStyle.white}
-          onPress={() => {
-            navigation.navigate('ReceiveStack', {
-              screen: 'ReceiveAmountInput',
-              params: { wallet },
-            });
-          }}
-        >
-          <QuaiPayText type="H3">{t('common.request')}</QuaiPayText>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.learnMoreAreaInfo}>
-        <TouchableOpacity onPress={() => {}}>
-          <QuaiPayText style={styles.learnMoreText}>
-            Learn more about QuaiPay
+    <>
+      <View style={styles.container}>
+        <View style={[styles.walletView, styles.switchStyle]}>
+          <View style={styles.qrcodeStyle}>
+            <QRCode
+              value={JSON.stringify({
+                address: wallet.address,
+                username,
+              })}
+              logo={{ uri: profilePicture }}
+              logoSize={50}
+              logoBackgroundColor="transparent"
+              size={140}
+            />
+          </View>
+          <QuaiPayText type="H2" style={styles.ownerName}>
+            {username}
           </QuaiPayText>
-        </TouchableOpacity>
+          <QuaiPayText type="paragraph" style={styles.walletAddress}>
+            {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
+          </QuaiPayText>
+          <View style={styles.shareControlStyle}>
+            <ShareControl />
+          </View>
+        </View>
+        <View style={styles.buttonAreaInfo}>
+          <TouchableOpacity
+            style={isDarkMode ? buttonStyle.dark : buttonStyle.white}
+            onPress={() => {
+              navigation.navigate('ReceiveStack', {
+                screen: 'ReceiveAmountInput',
+                params: { wallet },
+              });
+            }}
+          >
+            <QuaiPayText type="H3">{t('common.request')}</QuaiPayText>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.learnMoreAreaInfo}>
+          <TouchableOpacity onPress={() => {}}>
+            <QuaiPayText style={styles.learnMoreText}>
+              Learn more about QuaiPay
+            </QuaiPayText>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

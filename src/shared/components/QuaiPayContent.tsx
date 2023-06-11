@@ -75,11 +75,11 @@ const themedStyle = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.background,
-      paddingHorizontal: 20,
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
+      paddingHorizontal: 20,
       paddingTop: 8,
       paddingBottom: 12,
     },

@@ -14,6 +14,7 @@ const MARGIN_RIGHT_OFFSET = 16;
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
+  handleGoBack?: () => void;
   navButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
@@ -21,6 +22,7 @@ interface QuaiPayContentProps {
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
+  handleGoBack,
   navButton = true,
   noInsetBottom = false,
   title,
@@ -30,8 +32,13 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   const styles = useThemedStyle(themedStyle);
 
   const goBack = useCallback(
-    () => (navigation.canGoBack() ? navigation.goBack() : false),
-    [navigation],
+    () =>
+      handleGoBack
+        ? handleGoBack()
+        : navigation.canGoBack()
+        ? navigation.goBack()
+        : false,
+    [handleGoBack, navigation],
   );
 
   return (

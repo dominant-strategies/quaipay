@@ -10,6 +10,8 @@ import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 import { QuaiPayText } from './QuaiPayText';
 
+const MARGIN_RIGHT_OFFSET = 16;
+
 interface QuaiPayContentProps {
   children: React.ReactNode;
   navButton?: boolean;
@@ -57,7 +59,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         {!!title && (
           <QuaiPayText
             type="H2"
-            style={[styles.title, navButton && styles.navIconMargin]}
+            style={[styles.title, navButton && styles.titleMargin]}
           >
             {title}
           </QuaiPayText>
@@ -76,13 +78,18 @@ const themedStyle = (theme: Theme) =>
       paddingHorizontal: 20,
     },
     header: {
-      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
+      paddingTop: 8,
+      paddingBottom: 12,
     },
     navIconMargin: {
-      marginRight: 16,
+      marginRight: MARGIN_RIGHT_OFFSET,
     },
+    titleMargin: {
+      marginRight: MARGIN_RIGHT_OFFSET + 12,
+    },
+
     title: {
       flex: 1,
       color: theme.primary,

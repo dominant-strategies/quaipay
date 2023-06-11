@@ -38,5 +38,6 @@ const themedStyle = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.background,
+      paddingHorizontal: 20,
     },
   });

@@ -5,15 +5,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
+import { QuaiPayText } from './QuaiPayText';
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
-  noInsetBottom: boolean;
+  noInsetBottom?: boolean;
+  title?: string | null;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
   noInsetBottom = false,
+  title,
 }) => {
   const insets = useSafeAreaInsets();
   const styles = useThemedStyle(themedStyle);
@@ -28,6 +31,11 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         },
       ]}
     >
+      {!!title && (
+        <QuaiPayText type="H2" style={styles.title}>
+          {title}
+        </QuaiPayText>
+      )}
       {children}
     </View>
   );
@@ -39,5 +47,9 @@ const themedStyle = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.background,
       paddingHorizontal: 20,
+    },
+    title: {
+      flex: 1,
+      color: theme.primary,
     },
   });

@@ -28,6 +28,7 @@ export type RootStackParamList = {
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
+// TODO: refactor to handle app state via context
 interface NavigationProps {
   onboarded: boolean;
 }

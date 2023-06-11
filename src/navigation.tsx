@@ -1,13 +1,22 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import {
   NavigationContainer,
   NavigatorScreenParams,
   createNavigationContainerRef,
 } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack';
+
 import { useTheme } from './shared/context/themeContext';
-import { ReceiveStackParamList } from './main/home/receive/ReceiveStack';
-import { SendStackParamList } from './main/home/send/SendStack';
+import ReceiveStack, {
+  ReceiveStackParamList,
+} from './main/home/receive/ReceiveStack';
+import SendStack, { SendStackParamList } from './main/home/send/SendStack';
+import MainStack from './main/MainStack';
+import OnboardingStack from './onboarding/OnboardingStack';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -17,8 +26,13 @@ export type RootStackParamList = {
 };
 
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
-export const Navigation = () => {
+interface NavigationProps {
+  onboarded: boolean;
+}
+
+export const Navigation = ({ onboarded }: NavigationProps) => {
   const { isDarkMode } = useTheme();
   return (
     <NavigationContainer ref={navigationRef}>
@@ -26,6 +40,47 @@ export const Navigation = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         translucent
       />
+      <AppNavigator onboarded={onboarded} />
     </NavigationContainer>
+  );
+};
+
+const AppNavigator = ({ onboarded }: NavigationProps) => {
+  return (
+    <Stack.Navigator
+      initialRouteName={onboarded ? 'Main' : 'Onboarding'}
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen
+        name="Onboarding"
+        component={OnboardingStack}
+        options={{
+          ...TransitionPresets.ModalPresentationIOS,
+          title: 'onboarding',
+        }}
+      />
+      <Stack.Screen
+        name="Main"
+        component={MainStack}
+        options={{
+          gestureEnabled: false,
+          title: 'Main',
+        }}
+      />
+      <Stack.Screen
+        name="ReceiveStack"
+        component={ReceiveStack}
+        options={{
+          title: 'ReceiveStack',
+        }}
+      />
+      <Stack.Screen
+        name="SendStack"
+        component={SendStack}
+        options={{
+          title: 'SendStack',
+        }}
+      />
+    </Stack.Navigator>
   );
 };

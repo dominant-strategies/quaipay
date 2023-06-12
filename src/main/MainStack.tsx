@@ -1,6 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationProp,
+  BottomTabScreenProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
@@ -21,6 +25,14 @@ type MainTabStackParamList = {
   Earn: any;
   Setting: any;
 };
+
+export type MainTabStackNavigationProp<
+  Route extends keyof MainTabStackParamList,
+> = BottomTabNavigationProp<MainTabStackParamList, Route>;
+
+export type MainTabStackScreenProps<Route extends keyof MainTabStackParamList> =
+  BottomTabScreenProps<MainTabStackParamList, Route>;
+
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
 
 const MainStack = () => {

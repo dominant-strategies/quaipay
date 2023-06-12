@@ -5,10 +5,12 @@ import { Currency } from 'src/shared/types';
 
 const INITIAL_AMOUNT = '0';
 
-export const useAmountInput = () => {
-  const [amount, setAmount] = useState(INITIAL_AMOUNT);
+export const useAmountInput = (initialAmount: string = INITIAL_AMOUNT) => {
+  const [amount, setAmount] = useState(initialAmount);
   const [unit, setUnit] = useState(Currency.USD);
-  const [eqValue, setEqValue] = useState(INITIAL_AMOUNT);
+  const [eqValue, setEqValue] = useState(
+    (Number(initialAmount) / EXCHANGE_RATE).toString(),
+  );
 
   const input = {
     value: amount,

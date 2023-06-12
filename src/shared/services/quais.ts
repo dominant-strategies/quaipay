@@ -1,13 +1,10 @@
 import { quais } from 'quais';
 
-import { allNodeData } from 'src/shared/constants/nodeData';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
-import { getZone } from './getZone';
+import { getQuaisProvider } from './getQuaisProvider';
 
 export const getBalance = async (address: string) => {
-  const zone = getZone();
-  const nodeData = allNodeData[zone];
-  const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
+  const provider = getQuaisProvider();
   await provider.ready;
 
   const balance = await provider.getBalance(address);

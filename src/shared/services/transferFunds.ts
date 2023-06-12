@@ -1,14 +1,11 @@
-import { allNodeData } from '../constants/nodeData';
 import { retrieveWallet } from './retrieveWallet';
 import { quais } from 'quais';
-import { getZone } from './getZone';
+import { getQuaisProvider } from './getQuaisProvider';
 
 export const transferFunds = async (to: string, amount: string) => {
-  const zone = getZone();
-  const sendNodeData = allNodeData[zone];
   const walletData = await retrieveWallet();
 
-  const provider = new quais.providers.JsonRpcProvider(sendNodeData.provider);
+  const provider = getQuaisProvider();
   await provider.ready;
 
   const valueToTransferInWei = quais.utils.parseEther(amount);

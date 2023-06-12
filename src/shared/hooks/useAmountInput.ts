@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-import { EUnit } from './types';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { Currency } from 'src/shared/types';
 
 const INITIAL_AMOUNT = '0';
-export const EXCHANGE_RATE = 0.005;
 
-// TODO: improve input logic handling
-// TODO: get exchange rate from internet
-export const useReceiveInput = () => {
-  const [amount, setAmount] = useState(INITIAL_AMOUNT);
-  const [unit, setUnit] = useState(EUnit.USD);
-  const [eqValue, setEqValue] = useState(INITIAL_AMOUNT);
+export const useAmountInput = (initialAmount: string = INITIAL_AMOUNT) => {
+  const [amount, setAmount] = useState(initialAmount);
+  const [unit, setUnit] = useState(Currency.USD);
+  const [eqValue, setEqValue] = useState(
+    (Number(initialAmount) / EXCHANGE_RATE).toString(),
+  );
 
   const input = {
     value: amount,
@@ -19,11 +19,11 @@ export const useReceiveInput = () => {
 
   const eqInput = {
     value: eqValue,
-    unit: unit === EUnit.QUAI ? EUnit.USD : EUnit.QUAI,
+    unit: unit === Currency.QUAI ? Currency.USD : Currency.QUAI,
   };
 
   const updateInputs = (value: string) => {
-    if (unit === EUnit.USD) {
+    if (unit === Currency.USD) {
       setAmount(value);
       setEqValue((Number(value) / EXCHANGE_RATE).toString());
     } else {
@@ -35,7 +35,7 @@ export const useReceiveInput = () => {
   const onInputButtonPress = (newChar: string) => {
     const prevValue = amount;
 
-    // Check for initial value
+    // Check for empty value
     if (prevValue.startsWith('0') && !prevValue.includes('.')) {
       return updateInputs(newChar);
     }
@@ -58,7 +58,7 @@ export const useReceiveInput = () => {
   };
 
   const onSwap = () => {
-    const result = unit === EUnit.USD ? EUnit.QUAI : EUnit.USD;
+    const result = unit === Currency.USD ? Currency.QUAI : Currency.USD;
     const pastInput = input.value;
     const pastEq = eqInput.value;
 

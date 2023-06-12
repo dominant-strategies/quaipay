@@ -1,8 +1,9 @@
-import { allNodeData } from '../constants/nodeData';
-import { getZone } from './retrieveWallet';
 import { quais } from 'quais';
 
-const EXCHANGE_RATE = 0.005;
+import { allNodeData } from 'src/shared/constants/nodeData';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+
+import { getZone } from './retrieveWallet';
 
 export const getBalance = async (address: string) => {
   const zone = getZone();

@@ -12,17 +12,16 @@ import { useTranslation } from 'react-i18next';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
+import { useAmountInput } from 'src/shared/hooks/useAmountInput';
 import {
   QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
 } from 'src/shared/components';
+import { Currency } from 'src/shared/types';
 
-import { useReceiveInput } from './hooks';
 import { ReceiveStackScreenProps } from '../ReceiveStack';
-import { EUnit } from './types';
 
-// TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveAmountInput'>
@@ -32,7 +31,7 @@ export const ReceiveAmountInputScreen: React.FC<
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const { wallet } = route.params;
-  const { eqInput, input, keyboard, onSwap } = useReceiveInput();
+  const { eqInput, input, keyboard, onSwap } = useAmountInput();
 
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
@@ -44,7 +43,7 @@ export const ReceiveAmountInputScreen: React.FC<
 
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
-      amount: Number(input.unit === EUnit.USD ? input.value : eqInput.value),
+      amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
       wallet,
     });
 

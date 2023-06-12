@@ -15,11 +15,11 @@ import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { goHome } from 'src/shared/navigation/utils';
+import { Currency } from 'src/shared/types';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
-import { EUnit } from '../ReceiveAmountInputScreen/types';
-import { EXCHANGE_RATE } from '../ReceiveAmountInputScreen/hooks';
 
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
@@ -33,7 +33,7 @@ export const ReceiveQRScreen: React.FC<
 
   const [mainAmount, setMainAmount] = useState(amount);
   const [eqAmount, setEqAmount] = useState(amount / EXCHANGE_RATE);
-  const [mainUnit, setMainUnit] = useState(EUnit.USD);
+  const [mainUnit, setMainUnit] = useState(Currency.USD);
 
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
@@ -43,7 +43,7 @@ export const ReceiveQRScreen: React.FC<
     setMainAmount(pastEq);
     setEqAmount(pastMain);
     setMainUnit(prevState =>
-      prevState === EUnit.USD ? EUnit.QUAI : EUnit.USD,
+      prevState === Currency.USD ? Currency.QUAI : Currency.USD,
     );
   };
 
@@ -67,15 +67,16 @@ export const ReceiveQRScreen: React.FC<
         >
           <View style={styles.requestedAmount}>
             <Text style={{ color: secondaryTextColor }}>
-              {mainUnit !== EUnit.USD && '$'}
-              {eqAmount} {mainUnit === EUnit.USD ? EUnit.QUAI : EUnit.USD}
+              {mainUnit !== Currency.USD && '$'}
+              {eqAmount}{' '}
+              {mainUnit === Currency.USD ? Currency.QUAI : Currency.USD}
             </Text>
             <Text style={[styles.mainAmount, { color: primaryTextColor }]}>
-              {mainUnit === EUnit.USD && '$'}
+              {mainUnit === Currency.USD && '$'}
               {mainAmount} {mainUnit}
             </Text>
             <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
-              <Text style={{ color: primaryTextColor }}>{EUnit.USD}</Text>
+              <Text style={{ color: primaryTextColor }}>{Currency.USD}</Text>
               <ExchangeIcon
                 color={isDarkMode ? styledColors.white : styledColors.black}
               />

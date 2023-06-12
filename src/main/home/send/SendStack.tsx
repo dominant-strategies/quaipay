@@ -4,14 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, Text, useColorScheme } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+import { styledColors } from 'src/shared/styles';
+import { Currency } from 'src/shared/types';
+
 import SendScanScreen from './SendScan';
 import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
-import { styledColors } from 'src/shared/styles';
-import { EUnit } from './SendAmount/types';
-import { useNavigation } from '@react-navigation/native';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
@@ -21,11 +23,11 @@ export type SendStackParamList = {
     amount: number;
     username: string;
     input: {
-      unit: EUnit;
+      unit: Currency;
       value: string;
     };
     eqInput: {
-      unit: EUnit;
+      unit: Currency;
       value: string;
     };
   };

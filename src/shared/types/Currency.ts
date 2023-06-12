@@ -1,4 +1,4 @@
-export enum EUnit {
+export enum Currency {
   USD = 'USD',
   QUAI = 'QUAI',
 }

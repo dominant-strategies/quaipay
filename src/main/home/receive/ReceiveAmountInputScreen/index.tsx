@@ -22,7 +22,6 @@ import { Currency } from 'src/shared/types';
 import { useReceiveInput } from './hooks';
 import { ReceiveStackScreenProps } from '../ReceiveStack';
 
-// TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveAmountInput'>

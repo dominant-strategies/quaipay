@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
 
-// TODO: improve input logic handling
-// TODO: get exchange rate from internet
 export const useSendInput = (initialAmount: string = '0') => {
   const [amount, setAmount] = useState(initialAmount);
   const [unit, setUnit] = useState(Currency.USD);

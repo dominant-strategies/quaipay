@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
 
 const INITIAL_AMOUNT = '0';
-export const EXCHANGE_RATE = 0.005;
 
-// TODO: get exchange rate from internet
 export const useReceiveInput = () => {
   const [amount, setAmount] = useState(INITIAL_AMOUNT);
   const [unit, setUnit] = useState(Currency.USD);

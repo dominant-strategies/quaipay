@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
-
-export const EXCHANGE_RATE = 0.005;
 
 // TODO: improve input logic handling
 // TODO: get exchange rate from internet

@@ -5,7 +5,7 @@ import { Currency } from 'src/shared/types';
 
 const INITIAL_AMOUNT = '0';
 
-export const useReceiveInput = () => {
+export const useAmountInput = () => {
   const [amount, setAmount] = useState(INITIAL_AMOUNT);
   const [unit, setUnit] = useState(Currency.USD);
   const [eqValue, setEqValue] = useState(INITIAL_AMOUNT);
@@ -33,7 +33,7 @@ export const useReceiveInput = () => {
   const onInputButtonPress = (newChar: string) => {
     const prevValue = amount;
 
-    // Check for initial value
+    // Check for empty value
     if (prevValue.startsWith('0') && !prevValue.includes('.')) {
       return updateInputs(newChar);
     }

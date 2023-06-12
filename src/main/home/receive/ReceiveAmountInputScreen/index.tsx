@@ -39,7 +39,7 @@ export const ReceiveAmountInputScreen = ({
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const { wallet } = route.params;
-  const { eqInput, input, kbd, onSwap } = useReceiveInput();
+  const { eqInput, input, keyboard, onSwap } = useReceiveInput();
 
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
@@ -94,9 +94,9 @@ export const ReceiveAmountInputScreen = ({
       </TouchableOpacity>
       <View style={styles.separator} />
       <QuaiPayKeyboard
-        handleLeftButtonPress={kbd.onDecimalButtonPress}
-        handleRightButtonPress={kbd.onDeleteButtonPress}
-        onInputButtonPress={kbd.onInputButtonPress}
+        handleLeftButtonPress={keyboard.onDecimalButtonPress}
+        handleRightButtonPress={keyboard.onDeleteButtonPress}
+        onInputButtonPress={keyboard.onInputButtonPress}
       />
     </QuaiPayContent>
   );

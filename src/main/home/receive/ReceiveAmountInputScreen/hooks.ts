@@ -67,7 +67,7 @@ export const useReceiveInput = () => {
     setAmount(pastEq);
   };
 
-  const kbd = {
+  const keyboard = {
     onDecimalButtonPress,
     onDeleteButtonPress,
     onInputButtonPress,
@@ -76,7 +76,7 @@ export const useReceiveInput = () => {
   return {
     eqInput,
     input,
-    kbd,
+    keyboard,
     onSwap,
   };
 };

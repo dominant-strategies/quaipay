@@ -2,8 +2,7 @@ import { quais } from 'quais';
 
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
-
-import { getZone } from './retrieveWallet';
+import { getZone } from './getZone';
 
 export const getBalance = async (address: string) => {
   const zone = getZone();

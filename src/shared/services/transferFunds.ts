@@ -1,6 +1,7 @@
 import { allNodeData } from '../constants/nodeData';
-import { getZone, retrieveWallet } from './retrieveWallet';
+import { retrieveWallet } from './retrieveWallet';
 import { quais } from 'quais';
+import { getZone } from './getZone';
 
 export const transferFunds = async (to: string, amount: string) => {
   const zone = getZone();

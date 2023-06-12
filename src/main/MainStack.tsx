@@ -5,11 +5,11 @@ import {
   BottomTabScreenProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import { useColorScheme } from 'react-native';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
 
+import { useTheme } from 'src/shared/context/themeContext';
 import { styledColors } from 'src/shared/styles';
 
 import ExchangeScreen from './exchange/ExchangeScreen';
@@ -36,7 +36,8 @@ export type MainTabStackScreenProps<Route extends keyof MainTabStackParamList> =
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
 
 const MainStack = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { isDarkMode, theme } = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -56,12 +57,8 @@ const MainStack = () => {
           } else {
           }
         },
-        tabBarActiveTintColor: isDarkMode
-          ? styledColors.white
-          : styledColors.black,
-        tabBarInactiveTintColor: isDarkMode
-          ? styledColors.white
-          : styledColors.black,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.primary,
         tabBarActiveBackgroundColor: isDarkMode
           ? styledColors.dark
           : styledColors.lightGray,

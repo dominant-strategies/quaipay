@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
@@ -15,7 +15,7 @@ export type ReceiveStackParamList = {
   };
 };
 
-const Stack = createNativeStackNavigator<ReceiveStackParamList>();
+const Stack = createStackNavigator<ReceiveStackParamList>();
 
 const ReceiveStack = () => {
   return (

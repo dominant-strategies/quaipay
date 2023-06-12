@@ -7,10 +7,9 @@ import {
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 
-import { RootStackParamList } from 'src/App';
+import { RootStackNavigationProps } from 'src/navigation';
 import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';
@@ -25,8 +24,7 @@ export const ReceiveScreen = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
   const isDarkMode = useColorScheme() === 'dark';
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Main'>>();
+  const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();

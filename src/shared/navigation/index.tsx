@@ -3,7 +3,6 @@ import { StatusBar } from 'react-native';
 import {
   NavigationContainer,
   NavigatorScreenParams,
-  createNavigationContainerRef,
 } from '@react-navigation/native';
 import {
   createStackNavigator,
@@ -20,6 +19,7 @@ import MainStack from 'src/main/MainStack';
 import OnboardingStack from 'src/onboarding/OnboardingStack';
 
 import { useTheme } from '../context/themeContext';
+import { navigationRef } from './utils';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -34,10 +34,7 @@ export type RootStackNavigationProps<Route extends keyof RootStackParamList> =
 export type RootStackScreenProps<Route extends keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, Route>;
 
-const navigationRef = createNavigationContainerRef<RootStackParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
-
-export const goHome = () => navigationRef.current?.navigate('Main');
 
 // TODO: refactor to handle app state via context
 interface NavigationProps {

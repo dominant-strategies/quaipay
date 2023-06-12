@@ -14,7 +14,7 @@ import { QuaiPayContent } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { goHome } from 'src/shared/navigation';
+import { goHome } from 'src/shared/navigation/utils';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';

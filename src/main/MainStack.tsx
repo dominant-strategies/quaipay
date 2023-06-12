@@ -19,11 +19,11 @@ import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
 
 type MainTabStackParamList = {
-  Wallet: any;
-  Exchange: any;
-  Home: any;
-  Earn: any;
-  Setting: any;
+  Wallet: undefined;
+  Exchange: undefined;
+  Home: undefined;
+  Earn: undefined;
+  Setting: undefined;
 };
 
 export type MainTabStackNavigationProp<

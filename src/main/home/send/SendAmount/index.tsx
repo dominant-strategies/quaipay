@@ -8,7 +8,6 @@ import {
   useColorScheme,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -16,13 +15,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
+import { QuaiPayInputDisplay, QuaiPayKeyboard } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useWallet } from 'src/shared/hooks';
+import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
-import { useSendInput } from './hooks';
 import { SendStackParamList } from '../SendStack';
 
 type SendAmountScreenProps = NativeStackScreenProps<
@@ -39,9 +38,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
-  const { eqInput, input, onInputChange, onSwap } = useSendInput(
-    amount ? `${amount}` : '0',
-  );
+  const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -119,20 +116,11 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             />
           </View>
           <View style={[styles.row, styles.marginTop16]}>
-            <Text style={[styles.xUnit, textColor]}>
-              {input.unit === 'USD' && '$'}
-            </Text>
-            <TextInput
-              ref={inputRef}
-              style={[styles.xUnit, textColor]}
+            <QuaiPayInputDisplay
+              prefix={input.unit === 'USD' ? '$' : undefined}
               value={input.value}
-              onChangeText={onInputChange}
-              keyboardAppearance={isDarkMode ? 'dark' : 'light'}
-              keyboardType={
-                Platform.OS === 'android' ? 'numeric' : 'decimal-pad'
-              }
+              suffix={` ${input.unit}`}
             />
-            <Text style={[styles.xUnit]}>{` ${input.unit}`}</Text>
           </View>
           <View style={styles.inputBorder} />
         </View>
@@ -176,6 +164,11 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <QuaiPayKeyboard
+          handleLeftButtonPress={keyboard.onDecimalButtonPress}
+          handleRightButtonPress={keyboard.onDeleteButtonPress}
+          onInputButtonPress={keyboard.onInputButtonPress}
+        />
       </View>
     </SafeAreaView>
   );
@@ -205,13 +198,6 @@ const styles = StyleSheet.create({
   },
   amountUnit: {
     marginTop: 10,
-  },
-  xUnit: {
-    textAlign: 'center',
-    marginTop: 5,
-    fontSize: 48,
-    fontWeight: '700',
-    color: styledColors.gray,
   },
   inputBorder: {
     backgroundColor: styledColors.normal,

@@ -1,5 +1,9 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackScreenProps,
+  StackNavigationProp,
+} from '@react-navigation/stack';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
@@ -14,6 +18,13 @@ export type ReceiveStackParamList = {
     wallet: Wallet;
   };
 };
+
+export type ReceiveStackScreenProps<Route extends keyof ReceiveStackParamList> =
+  StackScreenProps<ReceiveStackParamList, Route>;
+
+export type ReceiveStackNavigationProps<
+  Route extends keyof ReceiveStackParamList,
+> = StackNavigationProp<ReceiveStackParamList, Route>;
 
 const Stack = createStackNavigator<ReceiveStackParamList>();
 

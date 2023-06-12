@@ -7,7 +7,6 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
@@ -17,17 +16,14 @@ import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { goHome } from 'src/navigation';
 
-import { ReceiveStackParamList } from '../ReceiveStack';
+import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
 import { EUnit } from '../ReceiveAmountInputScreen/types';
 import { EXCHANGE_RATE } from '../ReceiveAmountInputScreen/hooks';
 
-type ReceiveQRProps = NativeStackScreenProps<
-  ReceiveStackParamList,
-  'ReceiveQR'
->;
-
-export const ReceiveQRScreen = ({ route }: ReceiveQRProps) => {
+export const ReceiveQRScreen: React.FC<
+  ReceiveStackScreenProps<'ReceiveQR'>
+> = ({ route }) => {
   const { amount, wallet } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';

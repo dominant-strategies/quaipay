@@ -7,6 +7,8 @@ import {
 } from '@react-navigation/native';
 import {
   createStackNavigator,
+  StackNavigationProp,
+  StackScreenProps,
   TransitionPresets,
 } from '@react-navigation/stack';
 
@@ -24,6 +26,12 @@ export type RootStackParamList = {
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
   SendStack: NavigatorScreenParams<SendStackParamList>;
 };
+
+export type RootStackNavigationProps<Route extends keyof RootStackParamList> =
+  StackNavigationProp<RootStackParamList, Route>;
+
+export type RootStackScreenProps<Route extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, Route>;
 
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
 const Stack = createStackNavigator<RootStackParamList>();

@@ -56,7 +56,7 @@ export const ReceiveAmountInputScreen = ({
     });
 
   return (
-    <QuaiPayContent>
+    <QuaiPayContent title={t('common.request')}>
       <View style={styles.separator} />
       <View style={styles.walletCardStyle}>
         <View style={styles.container}>

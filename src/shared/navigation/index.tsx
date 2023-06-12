@@ -12,13 +12,14 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack';
 
-import { useTheme } from './shared/context/themeContext';
 import ReceiveStack, {
   ReceiveStackParamList,
-} from './main/home/receive/ReceiveStack';
-import SendStack, { SendStackParamList } from './main/home/send/SendStack';
-import MainStack from './main/MainStack';
-import OnboardingStack from './onboarding/OnboardingStack';
+} from 'src/main/home/receive/ReceiveStack';
+import SendStack, { SendStackParamList } from 'src/main/home/send/SendStack';
+import MainStack from 'src/main/MainStack';
+import OnboardingStack from 'src/onboarding/OnboardingStack';
+
+import { useTheme } from '../context/themeContext';
 
 export type RootStackParamList = {
   Onboarding: undefined;

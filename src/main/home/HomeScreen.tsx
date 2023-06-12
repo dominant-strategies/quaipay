@@ -9,7 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 
-import { RootStackNavigationProps } from 'src/navigation';
+import { RootStackNavigationProps } from 'src/shared/navigation';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
 import SendStack from './send/SendStack';

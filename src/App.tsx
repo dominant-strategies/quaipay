@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './shared/Loader';
 import './shared/locales';
 import { ThemeProvider } from './shared/context/themeContext';
-import { Navigation } from './navigation';
+import { Navigation } from './shared/navigation';
 
 function App() {
   // TODO: use redux persist instead of AsyncStorage

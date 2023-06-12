@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import QRCode from 'react-native-qrcode-svg';
 
-import { RootStackNavigationProps } from 'src/navigation';
+import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import Loader from 'src/shared/Loader';

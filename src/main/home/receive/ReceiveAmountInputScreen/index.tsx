@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -20,20 +19,14 @@ import {
 } from 'src/shared/components';
 
 import { useReceiveInput } from './hooks';
-import { ReceiveStackParamList } from '../ReceiveStack';
+import { ReceiveStackScreenProps } from '../ReceiveStack';
 import { EUnit } from './types';
-
-type ReceiveAmountInputProps = NativeStackScreenProps<
-  ReceiveStackParamList,
-  'ReceiveAmountInput'
->;
 
 // TODO: implement in-house keyboard
 // TODO: improve L&F by using flex
-export const ReceiveAmountInputScreen = ({
-  navigation,
-  route,
-}: ReceiveAmountInputProps) => {
+export const ReceiveAmountInputScreen: React.FC<
+  ReceiveStackScreenProps<'ReceiveAmountInput'>
+> = ({ navigation, route }) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const profilePicture = useProfilePicture();

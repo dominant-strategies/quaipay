@@ -7,7 +7,6 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
@@ -15,18 +14,16 @@ import { QuaiPayContent } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
+import { goHome } from 'src/shared/navigation/utils';
 
-import { ReceiveStackParamList } from '../ReceiveStack';
+import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
 import { EUnit } from '../ReceiveAmountInputScreen/types';
 import { EXCHANGE_RATE } from '../ReceiveAmountInputScreen/hooks';
 
-type ReceiveQRProps = NativeStackScreenProps<
-  ReceiveStackParamList,
-  'ReceiveQR'
->;
-
-export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
+export const ReceiveQRScreen: React.FC<
+  ReceiveStackScreenProps<'ReceiveQR'>
+> = ({ route }) => {
   const { amount, wallet } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -40,7 +37,6 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
 
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
-  const complete = () => navigation.goBack();
   const onSwap = () => {
     const pastMain = mainAmount;
     const pastEq = eqAmount;
@@ -124,7 +120,7 @@ export const ReceiveQRScreen = ({ navigation, route }: ReceiveQRProps) => {
             <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.completeButton} onPress={complete}>
+        <TouchableOpacity style={styles.completeButton} onPress={goHome}>
           <Text style={{ color: styledColors.white }}>
             {t('receive.qrScreen.complete')}
           </Text>

@@ -32,23 +32,29 @@ export const useReceiveInput = () => {
     }
   };
 
-  const onInputChange = (value: string) => {
-    const prevValue = value.slice(0, -1);
-    const newValue = value[value.length - 1];
+  const onInputButtonPress = (newChar: string) => {
+    const prevValue = amount;
 
-    if (newValue === '.') {
-      return updateInputs(value);
+    // Check for initial value
+    if (prevValue.startsWith('0') && !prevValue.includes('.')) {
+      return updateInputs(newChar);
     }
 
-    if (prevValue === INITIAL_AMOUNT) {
-      return updateInputs(value[value.length - 1]);
-    }
+    return updateInputs(prevValue + newChar);
+  };
 
-    if (value === '') {
-      return updateInputs(INITIAL_AMOUNT);
-    }
+  const onDecimalButtonPress = () => {
+    const prevValue = amount;
+    // Default to dot (.) as the decimal comma
+    return !prevValue.includes('.') && updateInputs(amount + '.');
+  };
 
-    return updateInputs(value);
+  const onDeleteButtonPress = () => {
+    const prevValue = amount;
+
+    return updateInputs(
+      prevValue.length > 1 ? prevValue.slice(0, -1) : INITIAL_AMOUNT,
+    );
   };
 
   const onSwap = () => {
@@ -61,10 +67,16 @@ export const useReceiveInput = () => {
     setAmount(pastEq);
   };
 
+  const keyboard = {
+    onDecimalButtonPress,
+    onDeleteButtonPress,
+    onInputButtonPress,
+  };
+
   return {
     eqInput,
     input,
-    onInputChange,
+    keyboard,
     onSwap,
   };
 };

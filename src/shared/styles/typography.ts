@@ -59,6 +59,7 @@ export const typography: Record<Typography, TextStyle> = {
     fontWeight: '600',
     lineHeight: 28,
     letterSpacing: 0.05,
+    paddingTop: 8,
     textAlign: 'center',
   },
   H2: {

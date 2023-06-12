@@ -1,14 +1,10 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
   useColorScheme,
   TouchableOpacity,
-  TextInput,
-  Platform,
   Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -17,6 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
+import {
+  QuaiPayContent,
+  QuaiPayInputDisplay,
+  QuaiPayKeyboard,
+} from 'src/shared/components';
 
 import { useReceiveInput } from './hooks';
 import { ReceiveStackParamList } from '../ReceiveStack';
@@ -38,14 +39,7 @@ export const ReceiveAmountInputScreen = ({
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const { wallet } = route.params;
-  const inputRef = useRef<TextInput>(null);
-  const { eqInput, input, onInputChange, onSwap } = useReceiveInput();
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
+  const { eqInput, input, keyboard, onSwap } = useReceiveInput();
 
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,
@@ -61,18 +55,9 @@ export const ReceiveAmountInputScreen = ({
       wallet,
     });
 
-  useLayoutEffect(() => {
-    if (inputRef) {
-      inputRef.current?.focus();
-    }
-  }, [inputRef]);
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent>
+      <View style={styles.separator} />
       <View style={styles.walletCardStyle}>
         <View style={styles.container}>
           <Image style={styles.image} source={{ uri: profilePicture }} />
@@ -82,23 +67,12 @@ export const ReceiveAmountInputScreen = ({
               `${wallet?.address.slice(0, 8)}...${wallet.address?.slice(-8)}`}
           </Text>
         </View>
-        <View>
-          <View style={[styles.row, styles.marginTop16]}>
-            <Text style={[styles.xUnit, textColor]}>
-              {input.unit === 'USD' && '$'}
-            </Text>
-            <TextInput
-              ref={inputRef}
-              style={[styles.xUnit, textColor]}
-              value={input.value}
-              onChangeText={onInputChange}
-              keyboardAppearance={isDarkMode ? 'dark' : 'light'}
-              keyboardType={
-                Platform.OS === 'android' ? 'numeric' : 'decimal-pad'
-              }
-            />
-            <Text style={[styles.xUnit, textColor]}>{` ${input.unit}`}</Text>
-          </View>
+        <View style={[styles.row, styles.inputDisplayContainer]}>
+          <QuaiPayInputDisplay
+            prefix={input.unit === 'USD' ? '$' : undefined}
+            suffix={` ${input.unit}`}
+            value={input.value}
+          />
         </View>
         <View style={styles.row}>
           <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
@@ -112,22 +86,25 @@ export const ReceiveAmountInputScreen = ({
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={goToGeneratedQR}
-          style={[styles.continueButton]}
-        >
-          <Text style={{ color: styledColors.white }}>
-            {t('common.continue')}
-          </Text>
-        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <TouchableOpacity onPress={goToGeneratedQR} style={styles.continueButton}>
+        <Text style={{ color: styledColors.white }}>
+          {t('common.continue')}
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <QuaiPayKeyboard
+        handleLeftButtonPress={keyboard.onDecimalButtonPress}
+        handleRightButtonPress={keyboard.onDeleteButtonPress}
+        onInputButtonPress={keyboard.onInputButtonPress}
+      />
+    </QuaiPayContent>
   );
 };
 
 const styles = StyleSheet.create({
   walletCardStyle: {
-    marginTop: 80,
+    marginTop: 12,
   },
   row: {
     flexDirection: 'row',
@@ -165,7 +142,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 132,
   },
-  marginTop16: {
+  inputDisplayContainer: {
     marginTop: 16,
   },
   image: {
@@ -183,5 +160,8 @@ const styles = StyleSheet.create({
   },
   wallet: {
     ...fontStyle.fontSmallText,
+  },
+  separator: {
+    flex: 1,
   },
 });

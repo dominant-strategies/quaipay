@@ -1,50 +1,23 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { styledColors } from 'src/shared/styles';
-
+import { QuaiPayContent } from 'src/shared/components';
 import { MainTabStackScreenProps } from '../MainStack';
 
 const SettingScreen: React.FC<MainTabStackScreenProps<'Setting'>> = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%',
-    height: '100%',
-  };
-
-  const topViewStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 'auto',
-    marginBottom: 'auto',
-  };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <View style={topViewStyle}>
-        <View style={styles.switchStyle}>
-          <Text>Setting Screen</Text>
-        </View>
-      </View>
-    </SafeAreaView>
+    <QuaiPayContent title={'Settings'} navButton={false}>
+      <View style={styles.container} />
+    </QuaiPayContent>
   );
 };
 
 const styles = StyleSheet.create({
-  switchStyle: {},
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default SettingScreen;

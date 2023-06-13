@@ -14,6 +14,8 @@
     "noTip": "Kein Tip",
     "includeTip": "Trinkgeld einbeziehen?",
     "customTip": "Benutzerdefiniertes Trinkgeld",
-    "tipPlaceholder": "Trinkgeld"
+    "tipPlaceholder": "Trinkgeld",
+    "viewOnExplorer":  "Transaktion auf QuaiSnap.com anzeigen",
+    "pay": "Bezahlen"
   }
 }

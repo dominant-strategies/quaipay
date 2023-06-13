@@ -9,12 +9,14 @@ import { ExportLandingScreen } from './ExportLandingScreen';
 import { ExportPhraseScreen } from './ExportPhraseScreen';
 import { ExportConfirmationPhraseScreen } from './ExportConfirmationPhraseScreen';
 import { ExportCheckoutScreen } from './ExportCheckoutScreen';
+import { ExportQRCodeScreen } from './ExportQRCode';
 
 export type ExportStackParamList = {
   ExportLanding: undefined;
   ExportPhrase: undefined;
   ExportConfirmationPhrase: undefined;
   ExportCheckout: undefined;
+  ExportQRCode: undefined;
 };
 
 export type ExportStackScreenProps<Route extends keyof ExportStackParamList> =
@@ -39,6 +41,7 @@ const ExportStack = () => {
         component={ExportConfirmationPhraseScreen}
       />
       <Stack.Screen name="ExportCheckout" component={ExportCheckoutScreen} />
+      <Stack.Screen name="ExportQRCode" component={ExportQRCodeScreen} />
     </Stack.Navigator>
   );
 };

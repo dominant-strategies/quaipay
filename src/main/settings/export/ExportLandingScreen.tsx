@@ -13,8 +13,15 @@ export const ExportLandingScreen: React.FC<
   ExportStackScreenProps<'ExportLanding'>
 > = ({ navigation }) => {
   const styles = useThemedStyle(themedStyle);
+  // TODO: check if seed phrase was already generated
+  const hasSeedPhraseAlready = true;
 
   const goToSetupSeedPhrase = () => navigation.navigate('ExportPhrase');
+  const goToQRCode = () =>
+    hasSeedPhraseAlready
+      ? navigation.navigate('ExportQRCode')
+      : // eslint-disable-next-line no-alert
+        alert('Please setup your seed phrase first');
 
   return (
     <QuaiPayContent>
@@ -29,6 +36,7 @@ export const ExportLandingScreen: React.FC<
         <QuaiPayText>Set up Seed Phrase</QuaiPayText>
       </Pressable>
       <Pressable
+        onPress={goToQRCode}
         style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
       >
         <QuaiPayText>Account Recovery QR Code</QuaiPayText>

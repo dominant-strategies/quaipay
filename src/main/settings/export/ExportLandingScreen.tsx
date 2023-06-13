@@ -29,8 +29,13 @@ export const ExportLandingScreen: React.FC<
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
-        <QuaiPayText type="H1">Setup Account Recovery</QuaiPayText>
-        <QuaiPayText type="H3">Description</QuaiPayText>
+        <QuaiPayText type="H1" style={styles.title}>
+          Setup Account Recovery
+        </QuaiPayText>
+        <QuaiPayText type="paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
+          turpis molestie, dictum est a, mattis tellus. Se
+        </QuaiPayText>
       </View>
       <Pressable
         onPress={goToSetupSeedPhrase}
@@ -74,9 +79,9 @@ export const ExportLandingScreen: React.FC<
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     textContainer: {
-      flex: 1,
       alignItems: 'center',
       marginBottom: 20,
+      marginHorizontal: 48,
     },
     card: {
       flexDirection: 'row',
@@ -95,6 +100,9 @@ const themedStyle = (theme: Theme) =>
     },
     cardText: {
       textAlign: 'left',
+    },
+    title: {
+      marginBottom: 8,
     },
     learnMore: {
       marginBottom: 70,

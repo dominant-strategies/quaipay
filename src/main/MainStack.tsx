@@ -18,7 +18,7 @@ import SettingScreen from './settings/SettingScreen';
 import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
 
-type MainTabStackParamList = {
+export type MainTabStackParamList = {
   Wallet: undefined;
   Exchange: undefined;
   Home: undefined;

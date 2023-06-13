@@ -15,7 +15,7 @@ import ReceiveStack, {
   ReceiveStackParamList,
 } from 'src/main/home/receive/ReceiveStack';
 import SendStack, { SendStackParamList } from 'src/main/home/send/SendStack';
-import MainStack from 'src/main/MainStack';
+import MainStack, { MainTabStackParamList } from 'src/main/MainStack';
 import OnboardingStack from 'src/onboarding/OnboardingStack';
 
 import { useTheme } from '../context/themeContext';
@@ -26,7 +26,7 @@ import ExportStack, {
 
 export type RootStackParamList = {
   Onboarding: undefined;
-  Main: undefined;
+  Main: NavigatorScreenParams<MainTabStackParamList>;
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
   SendStack: NavigatorScreenParams<SendStackParamList>;
   ExportStack: NavigatorScreenParams<ExportStackParamList>;

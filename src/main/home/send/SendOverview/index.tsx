@@ -15,7 +15,6 @@ import { fontStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
 import { useTranslation } from 'react-i18next';
 import { transferFunds } from 'src/shared/services/transferFunds';
-import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';

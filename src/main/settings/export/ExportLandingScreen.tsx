@@ -11,7 +11,6 @@ import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
 import { ExportStackScreenProps } from './ExportStack';
 
 // TODO: move copy to i18n
-// TODO: tweak UI to match L&F
 export const ExportLandingScreen: React.FC<
   ExportStackScreenProps<'ExportLanding'>
 > = ({ navigation }) => {
@@ -71,7 +70,16 @@ export const ExportLandingScreen: React.FC<
         <RightChevron />
       </Pressable>
       <View style={styles.separator} />
-      <QuaiPayText style={styles.learnMore}>Learn more</QuaiPayText>
+      <Pressable
+        style={({ pressed }) => [
+          styles.learnMoreContainer,
+          pressed && { opacity: 0.5 },
+        ]}
+      >
+        <QuaiPayText style={styles.learnMoreText}>
+          Learn more about the recovery process.
+        </QuaiPayText>
+      </Pressable>
     </QuaiPayContent>
   );
 };
@@ -104,8 +112,13 @@ const themedStyle = (theme: Theme) =>
     title: {
       marginBottom: 8,
     },
-    learnMore: {
+    learnMoreContainer: {
       marginBottom: 70,
+      paddingVertical: 10,
+      marginHorizontal: 24,
+    },
+    learnMoreText: {
+      textDecorationLine: 'underline',
     },
     separator: {
       flex: 1,

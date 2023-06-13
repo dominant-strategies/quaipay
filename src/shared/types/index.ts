@@ -1,4 +1,5 @@
 export type { Contact } from './Contact';
+export type { Colors } from './Colors';
 export { Currency } from './Currency';
 export type { Theme } from './Theme';
 export type { Typography } from './Typography';

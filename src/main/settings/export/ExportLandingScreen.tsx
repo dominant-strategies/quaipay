@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
@@ -10,10 +11,10 @@ import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
 
 import { ExportStackScreenProps } from './ExportStack';
 
-// TODO: move copy to i18n
 export const ExportLandingScreen: React.FC<
   ExportStackScreenProps<'ExportLanding'>
 > = ({ navigation }) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'export.landing' });
   const styles = useThemedStyle(themedStyle);
   // TODO: check if seed phrase was already generated
   const hasSeedPhraseAlready = true;
@@ -29,12 +30,9 @@ export const ExportLandingScreen: React.FC<
     <QuaiPayContent>
       <View style={styles.textContainer}>
         <QuaiPayText type="H1" style={styles.title}>
-          Setup Account Recovery
+          {t('title')}
         </QuaiPayText>
-        <QuaiPayText type="paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-          turpis molestie, dictum est a, mattis tellus. Se
-        </QuaiPayText>
+        <QuaiPayText type="paragraph">{t('description')}</QuaiPayText>
       </View>
       <Pressable
         onPress={goToSetupSeedPhrase}
@@ -43,11 +41,10 @@ export const ExportLandingScreen: React.FC<
         <EditIcon />
         <View style={styles.cardTextContainer}>
           <QuaiPayText type="H3" style={styles.cardText}>
-            Set up Seed Phrase
+            {t('cards.setup.title')}
           </QuaiPayText>
           <QuaiPayText style={styles.cardText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a,
+            {t('cards.setup.description')}
           </QuaiPayText>
         </View>
         <RightChevron />
@@ -59,11 +56,10 @@ export const ExportLandingScreen: React.FC<
         <PhoneWithQR />
         <View style={styles.cardTextContainer}>
           <QuaiPayText type="H3" style={styles.cardText}>
-            Account Recovery QR Code
+            {t('cards.qr.title')}
           </QuaiPayText>
           <QuaiPayText style={styles.cardText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a,
+            {t('cards.qr.description')}
           </QuaiPayText>
         </View>
 
@@ -76,9 +72,7 @@ export const ExportLandingScreen: React.FC<
           pressed && { opacity: 0.5 },
         ]}
       >
-        <QuaiPayText style={styles.learnMoreText}>
-          Learn more about the recovery process.
-        </QuaiPayText>
+        <QuaiPayText style={styles.learnMoreText}>{t('learnMore')}</QuaiPayText>
       </Pressable>
     </QuaiPayContent>
   );

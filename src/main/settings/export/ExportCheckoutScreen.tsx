@@ -7,28 +7,38 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
-export const ExportConfirmationPhraseScreen: React.FC<
-  ExportStackScreenProps<'ExportConfirmationPhrase'>
+export const ExportCheckoutScreen: React.FC<
+  ExportStackScreenProps<'ExportCheckout'>
 > = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
-  const goToCheckout = () => navigation.navigate('ExportCheckout');
+  const goToSeedPhraseScreen = () => navigation.navigate('ExportPhrase');
+  const goToSettings = () =>
+    RootNavigator.navigate('Main', { screen: 'Setting' });
 
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
-        <QuaiPayText type="H1">Confirm your seed phrase</QuaiPayText>
+        <QuaiPayText type="H1">Never Share your Recovery Codes</QuaiPayText>
         <QuaiPayText type="H3">Description</QuaiPayText>
       </View>
       <View style={styles.separator} />
       <Pressable
-        onPress={goToCheckout}
+        onPress={goToSeedPhraseScreen}
         style={({ pressed }) => [
-          styles.continueButton,
+          styles.button,
+          styles.reviewButton,
           pressed && { opacity: 0.5 },
         ]}
+      >
+        <QuaiPayText>Review Seed Phrase</QuaiPayText>
+      </Pressable>
+      <Pressable
+        onPress={goToSettings}
+        style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
       >
         <QuaiPayText>{t('common.continue')}</QuaiPayText>
       </Pressable>
@@ -43,11 +53,14 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       marginBottom: 20,
     },
-    continueButton: {
+    button: {
       marginBottom: 70,
       padding: 10,
       marginHorizontal: 30,
       backgroundColor: theme.normal,
+    },
+    reviewButton: {
+      marginBottom: 16,
     },
     separator: {
       flex: 1,

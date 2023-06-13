@@ -6,9 +6,11 @@ import {
 } from '@react-navigation/stack';
 
 import { ExportLandingScreen } from './ExportLandingScreen';
+import { ExportPhraseScreen } from './ExportPhraseScreen';
 
 export type ExportStackParamList = {
   ExportLanding: undefined;
+  ExportPhrase: undefined;
 };
 
 export type ExportStackScreenProps<Route extends keyof ExportStackParamList> =
@@ -27,6 +29,7 @@ const ExportStack = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="ExportLanding" component={ExportLandingScreen} />
+      <Stack.Screen name="ExportPhrase" component={ExportPhraseScreen} />
     </Stack.Navigator>
   );
 };

@@ -11,8 +11,11 @@ import { ExportStackScreenProps } from './ExportStack';
 // TODO: tweak UI to match L&F
 export const ExportLandingScreen: React.FC<
   ExportStackScreenProps<'ExportLanding'>
-> = ({}) => {
+> = ({ navigation }) => {
   const styles = useThemedStyle(themedStyle);
+
+  const goToSetupSeedPhrase = () => navigation.navigate('ExportPhrase');
+
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
@@ -20,6 +23,7 @@ export const ExportLandingScreen: React.FC<
         <QuaiPayText type="H3">Description</QuaiPayText>
       </View>
       <Pressable
+        onPress={goToSetupSeedPhrase}
         style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
       >
         <QuaiPayText>Set up Seed Phrase</QuaiPayText>

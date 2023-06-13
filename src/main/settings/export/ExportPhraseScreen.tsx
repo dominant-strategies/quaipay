@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import BaselineError from 'src/shared/assets/baselineError.svg';
+import EyeOutline from 'src/shared/assets/eyeOutline.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
@@ -15,6 +16,10 @@ export const ExportPhraseScreen: React.FC<
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
+  const [_, setIsSeedPhraseHidden] = useState(true);
+
+  const toggleShowSeedPhrase = () =>
+    setIsSeedPhraseHidden(prevState => !prevState);
   const goToConfirmPhrase = () =>
     navigation.navigate('ExportConfirmationPhrase');
 
@@ -35,6 +40,18 @@ export const ExportPhraseScreen: React.FC<
           Screenshots are disabled to ensure protection of your recovery phrase
         </QuaiPayText>
       </View>
+      <Pressable
+        onPress={toggleShowSeedPhrase}
+        style={({ pressed }) => [
+          styles.revealButton,
+          pressed && { opacity: 0.5 },
+        ]}
+      >
+        <QuaiPayText type="H3" themeColor="secondary">
+          Reveal your Seed Phrase
+        </QuaiPayText>
+        <EyeOutline />
+      </Pressable>
       <View style={styles.separator} />
       <Pressable
         onPress={goToConfirmPhrase}
@@ -70,6 +87,14 @@ const themedStyle = (theme: Theme) =>
     },
     title: {
       marginBottom: 8,
+    },
+    revealButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      padding: 8,
+      gap: 8,
     },
     continueButton: {
       marginBottom: 70,

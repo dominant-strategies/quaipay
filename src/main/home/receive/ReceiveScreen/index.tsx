@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { abbreviateAddress } from 'src/shared/services/quais';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export const ReceiveScreen = () => {
             {username}
           </QuaiPayText>
           <QuaiPayText type="paragraph" style={styles.walletAddress}>
-            {wallet.address.slice(0, 8)}...{wallet.address.slice(-8)}
+            {abbreviateAddress(wallet.address)}
           </QuaiPayText>
           <View style={styles.shareControlStyle}>
             <ShareControl />

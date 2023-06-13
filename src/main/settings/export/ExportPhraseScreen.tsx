@@ -20,8 +20,13 @@ export const ExportPhraseScreen: React.FC<
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
-        <QuaiPayText type="H1">Write down your Seed Phrase</QuaiPayText>
-        <QuaiPayText type="H3">Description</QuaiPayText>
+        <QuaiPayText type="H1" style={styles.title}>
+          Write down your Seed Phrase
+        </QuaiPayText>
+        <QuaiPayText type="paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
+          turpis molestie, dictum est a, mattis tellus. Se
+        </QuaiPayText>
       </View>
       <View style={styles.separator} />
       <Pressable
@@ -40,10 +45,12 @@ export const ExportPhraseScreen: React.FC<
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     textContainer: {
-      flex: 1,
       alignItems: 'center',
       marginBottom: 20,
-      marginHorizontal: 20,
+      marginHorizontal: 48,
+    },
+    title: {
+      marginBottom: 8,
     },
     continueButton: {
       marginBottom: 70,

@@ -10,11 +10,9 @@ import {
 
 import { styledColors } from 'src/shared/styles';
 
-type SettingScreenProps = {
-  navigation: any;
-};
+import { MainTabStackScreenProps } from '../MainStack';
 
-function SettingScreen({}: SettingScreenProps) {
+const SettingScreen: React.FC<MainTabStackScreenProps<'Setting'>> = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -43,7 +41,7 @@ function SettingScreen({}: SettingScreenProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   switchStyle: {},

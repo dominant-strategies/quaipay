@@ -10,11 +10,9 @@ import {
 
 import { styledColors } from 'src/shared/styles';
 
-type EarnScreenProps = {
-  navigation: any;
-};
+import { MainTabStackScreenProps } from '../MainStack';
 
-function EarnScreen({}: EarnScreenProps) {
+const EarnScreen: React.FC<MainTabStackScreenProps<'Earn'>> = ({}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -43,7 +41,7 @@ function EarnScreen({}: EarnScreenProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   switchStyle: {},

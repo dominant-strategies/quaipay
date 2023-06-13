@@ -14,16 +14,19 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SendStackParamList } from '../SendStack';
 import { fontStyle, styledColors } from 'src/shared/styles';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { abbreviateAddress } from 'src/shared/services/quais';
+import { Currency } from 'src/shared/types';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
 const SendTipScreen = ({ route }: SendTipScreenProps) => {
-  const { amount, address, username, eqInput, input } = route.params;
+  const { address, username, input, amountInUSD, amountInQUAI } = route.params;
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
 
-  const [selectedTip, setSelectedTip] = useState<any>(null);
+  const [selectedTip, setSelectedTip] = useState<any>(0);
   const [customTip, setCustomTip] = useState('');
 
   const handleTipPress = (tipPercentage: any) => {
@@ -36,10 +39,33 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
 
   const calculateTipAmount = (_amount: number, tipPercentage: number) => {
     if (tipPercentage === 0) {
-      return t('home.send.noTip');
+      return {
+        tipAmount: 0,
+        message: t('home.send.noTip'),
+        totalAmount: Number(input.value),
+        total: Number(input.value),
+      };
     }
-    const tipAmount = (_amount * tipPercentage) / 100;
-    return `$${tipAmount.toFixed(2)} ${t('home.send.tip')}`;
+    const tipAmount =
+      selectedTip === 'custom'
+        ? Number(customTip)
+        : (Number(input.value) * tipPercentage) / 100;
+
+    return {
+      tipAmount,
+      message:
+        input.unit === Currency.USD
+          ? `$${Number(tipAmount).toFixed(2)} ${t('home.send.tip')}`
+          : `${Number(tipAmount)} ${input.unit} ${t('home.send.tip')}`,
+      total:
+        input.unit === Currency.USD
+          ? (Number(input.value) + Number(tipAmount)).toFixed(2)
+          : Number(input.value) + Number(tipAmount),
+      totalAmount:
+        input.unit === Currency.USD
+          ? `$${(Number(input.value) + Number(tipAmount)).toFixed(2)}`
+          : `${Number(input.value) + Number(tipAmount)}`,
+    };
   };
 
   const isButtonSelected = (tipPercentage: any) => {
@@ -51,17 +77,43 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendOverview',
       params: {
-        amount,
-        address,
-        username,
-        eqInput,
-        input,
+        ...route.params,
+        totalAmount: calculateTipAmount(
+          Number(input.value),
+          Number(selectedTip),
+        ).total,
+        totalAmountInUSD:
+          Number(
+            calculateTipAmount(Number(input.value), Number(selectedTip)).total,
+          ) * EXCHANGE_RATE,
         tip:
           selectedTip === 'custom'
-            ? customTip
-            : ((amount * selectedTip) / 100).toFixed(2).toString(),
+            ? Number(customTip)
+            : ((Number(amountInUSD) * selectedTip) / 100).toFixed(5).toString(),
+        tipInQUAI:
+          selectedTip === 'custom'
+            ? (input.unit === Currency.USD
+                ? Number(customTip)
+                : Number(customTip) / EXCHANGE_RATE
+              ).toString()
+            : (Number(amountInQUAI) * selectedTip) / 100,
       },
     });
+  };
+
+  const handleCustomTip = () => {
+    if (selectedTip === 'custom') {
+      return `${Number(customTip)} ${input.unit} ${t('home.send.tip')}`;
+    } else {
+      return calculateTipAmount(Number(input.value), Number(selectedTip))
+        .message;
+    }
+  };
+
+  const renderEquivalentAmount = () => {
+    return input.unit === Currency.USD
+      ? `$${input.value} + ${handleCustomTip()}`
+      : `${input.value} ${input.unit} + ${handleCustomTip()}`;
   };
 
   const backgroundStyle = {
@@ -90,7 +142,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
             {t('common:to')} {username}
           </Text>
           <Text style={[lightTextColor, styles.wallet]}>
-            {`${address.slice(0, 8)}...${address?.slice(-8)}`}
+            {abbreviateAddress(address)}
           </Text>
         </View>
         <Text style={[textColor, styles.tipText]}>
@@ -98,16 +150,18 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
         </Text>
         <View style={styles.amountContainer}>
           <View style={styles.balanceContainer}>
-            <Text style={[fontStyle.fontH1, textColor]}>${amount}</Text>
+            <Text style={[fontStyle.fontH1, textColor]}>
+              {
+                calculateTipAmount(Number(input.value), Number(selectedTip))
+                  .totalAmount
+              }
+            </Text>
             <Text style={[fontStyle.fontH1, lightTextColor]}>
-              {input.unit === 'USD' ? ` ${input.unit}` : ` ${eqInput.unit}`}
+              {` ${input.unit}`}
             </Text>
           </View>
           <Text style={[textColor, fontStyle.fontParagraph]}>
-            {`$${amount} + `}
-            {selectedTip === 'custom'
-              ? `$${customTip} ${t('home.send.tip')}`
-              : `${calculateTipAmount(Number(amount), Number(selectedTip))}`}
+            {renderEquivalentAmount()}
           </Text>
         </View>
         <View style={styles.container}>
@@ -144,7 +198,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              15% (${calculateTipAmount(amount, 15)})
+              15% ({calculateTipAmount(Number(input.value), 15).message})
             </Text>
           </TouchableOpacity>
 
@@ -162,7 +216,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              20% (${calculateTipAmount(amount, 20)})
+              20% ({calculateTipAmount(Number(input.value), 20).message})
             </Text>
           </TouchableOpacity>
 
@@ -180,7 +234,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              25% (${calculateTipAmount(amount, 25)})
+              25% ({calculateTipAmount(Number(input.value), 25).message})
             </Text>
           </TouchableOpacity>
 

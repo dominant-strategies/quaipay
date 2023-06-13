@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
@@ -19,6 +19,9 @@ export const ExportLandingScreen: React.FC<
   // TODO: check if seed phrase was already generated
   const hasSeedPhraseAlready = true;
 
+  // TODO: update to use the actual page
+  const goToLearnMoreRecovery = () =>
+    Linking.openURL('https://docs.quai.network/use-quai/wallets');
   const goToSetupSeedPhrase = () => navigation.navigate('ExportPhrase');
   const goToQRCode = () =>
     hasSeedPhraseAlready
@@ -67,6 +70,7 @@ export const ExportLandingScreen: React.FC<
       </Pressable>
       <View style={styles.separator} />
       <Pressable
+        onPress={goToLearnMoreRecovery}
         style={({ pressed }) => [
           styles.learnMoreContainer,
           pressed && { opacity: 0.5 },

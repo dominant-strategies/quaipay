@@ -24,7 +24,7 @@ export const ExportPhraseScreen: React.FC<
         <QuaiPayText type="H1" style={styles.title}>
           Write down your Seed Phrase
         </QuaiPayText>
-        <QuaiPayText type="paragraph">
+        <QuaiPayText type="paragraph" themeColor="secondary">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
           turpis molestie, dictum est a, mattis tellus. Se
         </QuaiPayText>

@@ -30,6 +30,8 @@ export type SendStackParamList = {
       unit: Currency;
       value: string;
     };
+    amountInUSD: string;
+    amountInQUAI: string;
   };
   SendOverview: { address: string; amount: number; username: string };
   SendConfirmation: { address: string; amount: number; username: string };

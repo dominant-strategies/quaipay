@@ -7,10 +7,12 @@ import {
 
 import { ExportLandingScreen } from './ExportLandingScreen';
 import { ExportPhraseScreen } from './ExportPhraseScreen';
+import { ExportConfirmationPhraseScreen } from './ExportConfirmationPhraseScreen';
 
 export type ExportStackParamList = {
   ExportLanding: undefined;
   ExportPhrase: undefined;
+  ExportConfirmationPhrase: undefined;
 };
 
 export type ExportStackScreenProps<Route extends keyof ExportStackParamList> =
@@ -30,6 +32,10 @@ const ExportStack = () => {
     >
       <Stack.Screen name="ExportLanding" component={ExportLandingScreen} />
       <Stack.Screen name="ExportPhrase" component={ExportPhraseScreen} />
+      <Stack.Screen
+        name="ExportConfirmationPhrase"
+        component={ExportConfirmationPhraseScreen}
+      />
     </Stack.Navigator>
   );
 };

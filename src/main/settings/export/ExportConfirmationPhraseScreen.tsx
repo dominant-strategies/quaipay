@@ -8,24 +8,20 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
 
-export const ExportPhraseScreen: React.FC<
-  ExportStackScreenProps<'ExportPhrase'>
-> = ({ navigation }) => {
+export const ExportConfirmationPhraseScreen: React.FC<
+  ExportStackScreenProps<'ExportConfirmationPhrase'>
+> = ({}) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
-
-  const goToConfirmPhrase = () =>
-    navigation.navigate('ExportConfirmationPhrase');
 
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
-        <QuaiPayText type="H1">Write down your Seed Phrase</QuaiPayText>
+        <QuaiPayText type="H1">Confirm your seed phrase</QuaiPayText>
         <QuaiPayText type="H3">Description</QuaiPayText>
       </View>
       <View style={styles.separator} />
       <Pressable
-        onPress={goToConfirmPhrase}
         style={({ pressed }) => [
           styles.continueButton,
           pressed && { opacity: 0.5 },
@@ -43,7 +39,6 @@ const themedStyle = (theme: Theme) =>
       flex: 1,
       alignItems: 'center',
       marginBottom: 20,
-      marginHorizontal: 20,
     },
     continueButton: {
       marginBottom: 70,

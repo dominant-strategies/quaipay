@@ -14,8 +14,11 @@ export enum ThemeType {
  * surface - background color for elements containing content, such as cards.
  * border - border color for surface elements
  */
-export interface Theme {
+export interface Theme extends ThemeColor {
   type: ThemeType;
+}
+
+export interface ThemeColor {
   normal: string;
   primary: string;
   secondary: string;

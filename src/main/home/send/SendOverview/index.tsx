@@ -66,20 +66,15 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
   };
 
   useEffect(() => {
-    console.log('eqInput', eqInput);
     // TODO: estimate gas before sending
     // estimateGas(address, eqInput.value).then(gas => console.log('gas', gas));
-    const gas = quais.utils.parseUnits('21000', 'gwei');
-    console.log('gas', gas.toString());
     setGasFee(21000 * 0.000000001);
-    console.log('gasFee', gasFee);
   }, []);
 
   const send = () => {
     setLoading(true);
     transferFunds(address, eqInput.value)
       .then(res => {
-        console.log('res', res);
         setLoading(false);
         navigation.navigate('SendStack', {
           screen: 'SendConfirmation',

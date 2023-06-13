@@ -5,11 +5,15 @@ import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { MainTabStackScreenProps } from '../MainStack';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { Theme } from 'src/shared/types';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackNavigationProps } from 'src/shared/navigation';
 
-const SettingScreen: React.FC<MainTabStackScreenProps<'Setting'>> = ({}) => {
+const SettingScreen: React.FC<MainTabStackScreenProps<'Setting'>> = () => {
+  const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const styles = useThemedStyle(themedStyles);
 
-  const goToExport = () => true;
+  const goToExport = () =>
+    navigation.navigate('ExportStack', { screen: 'ExportLanding' });
 
   return (
     <QuaiPayContent title={'Settings'} navButton={false}>

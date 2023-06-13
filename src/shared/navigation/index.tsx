@@ -19,7 +19,7 @@ import MainStack, { MainTabStackParamList } from 'src/main/MainStack';
 import OnboardingStack from 'src/onboarding/OnboardingStack';
 
 import { useTheme } from '../context/themeContext';
-import { navigationRef } from './utils';
+import { RootNavigator } from './utils';
 import ExportStack, {
   ExportStackParamList,
 } from 'src/main/settings/export/ExportStack';
@@ -48,7 +48,7 @@ interface NavigationProps {
 export const Navigation = ({ onboarded }: NavigationProps) => {
   const { isDarkMode } = useTheme();
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={RootNavigator.ref}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         translucent

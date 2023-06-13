@@ -4,6 +4,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import RightChevron from 'src/shared/assets/rightChevron.svg';
+import EditIcon from 'src/shared/assets/edit.svg';
+import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
 
 import { ExportStackScreenProps } from './ExportStack';
 
@@ -33,13 +36,34 @@ export const ExportLandingScreen: React.FC<
         onPress={goToSetupSeedPhrase}
         style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
       >
-        <QuaiPayText>Set up Seed Phrase</QuaiPayText>
+        <EditIcon />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            Set up Seed Phrase
+          </QuaiPayText>
+          <QuaiPayText style={styles.cardText}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
+            turpis molestie, dictum est a,
+          </QuaiPayText>
+        </View>
+        <RightChevron />
       </Pressable>
       <Pressable
         onPress={goToQRCode}
         style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
       >
-        <QuaiPayText>Account Recovery QR Code</QuaiPayText>
+        <PhoneWithQR />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            Account Recovery QR Code
+          </QuaiPayText>
+          <QuaiPayText style={styles.cardText}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
+            turpis molestie, dictum est a,
+          </QuaiPayText>
+        </View>
+
+        <RightChevron />
       </Pressable>
       <View style={styles.separator} />
       <QuaiPayText style={styles.learnMore}>Learn more</QuaiPayText>
@@ -55,10 +79,22 @@ const themedStyle = (theme: Theme) =>
       marginBottom: 20,
     },
     card: {
-      backgroundColor: theme.secondary,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surfaceVariant,
       marginBottom: 12,
-      padding: 10,
-      marginHorizontal: 32,
+      paddingVertical: 40,
+      marginHorizontal: 24,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+    },
+    cardTextContainer: {
+      flexShrink: 1,
+      marginRight: 'auto',
+      paddingHorizontal: 16,
+    },
+    cardText: {
+      textAlign: 'left',
     },
     learnMore: {
       marginBottom: 70,

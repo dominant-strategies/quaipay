@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import BaselineError from 'src/shared/assets/baselineError.svg';
 import EyeOutline from 'src/shared/assets/eyeOutline.svg';
+import HideIcon from 'src/shared/assets/hide.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
@@ -16,7 +17,7 @@ export const ExportPhraseScreen: React.FC<
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
-  const [_, setIsSeedPhraseHidden] = useState(true);
+  const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);
@@ -48,9 +49,11 @@ export const ExportPhraseScreen: React.FC<
         ]}
       >
         <QuaiPayText type="H3" themeColor="secondary">
-          Reveal your Seed Phrase
+          {isSeedPhraseHidden
+            ? 'Reveal your Seed Phrase'
+            : 'Hide your Seed Phrase'}
         </QuaiPayText>
-        <EyeOutline />
+        {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
       </Pressable>
       <View style={styles.separator} />
       <Pressable

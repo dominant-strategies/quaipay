@@ -16,7 +16,7 @@ export const ExportQRCodeScreen: React.FC<
   // TODO: define what action should be made here
   const handleExportButton = () => false;
   const goToSettings = () =>
-    RootNavigator.navigate('Main', { screen: 'Setting' });
+    RootNavigator.navigate('Main', { screen: 'Settings' });
 
   return (
     <QuaiPayContent>

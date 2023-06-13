@@ -14,7 +14,7 @@ import { styledColors } from 'src/shared/styles';
 
 import ExchangeScreen from './exchange/ExchangeScreen';
 import EarnScreen from './earn/EarnScreen';
-import SettingScreen from './settings/SettingScreen';
+import SettingsScreen from './settings/SettingsScreen';
 import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
 
@@ -23,7 +23,7 @@ export type MainTabStackParamList = {
   Exchange: undefined;
   Home: undefined;
   Earn: undefined;
-  Setting: undefined;
+  Settings: undefined;
 };
 
 export type MainTabStackNavigationProp<
@@ -52,7 +52,7 @@ const MainStack = () => {
             return <AntIcon name="home" size={size} color={color} />;
           } else if (route.name === 'Earn') {
             return <Icon name="dollar" size={size} color={color} />;
-          } else if (route.name === 'Setting') {
+          } else if (route.name === 'Settings') {
             return <AntIcon name="setting" size={size} color={color} />;
           } else {
           }
@@ -72,7 +72,7 @@ const MainStack = () => {
       <Tab.Screen name="Exchange" component={ExchangeScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Earn" component={EarnScreen} />
-      <Tab.Screen name="Setting" component={SettingScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };

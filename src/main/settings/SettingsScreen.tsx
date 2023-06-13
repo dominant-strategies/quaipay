@@ -8,7 +8,7 @@ import { Theme } from 'src/shared/types';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 
-const SettingScreen: React.FC<MainTabStackScreenProps<'Setting'>> = () => {
+const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const styles = useThemedStyle(themedStyles);
 
@@ -45,4 +45,4 @@ const themedStyles = (theme: Theme) =>
     },
   });
 
-export default SettingScreen;
+export default SettingsScreen;

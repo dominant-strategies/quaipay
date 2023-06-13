@@ -17,7 +17,7 @@ export const ExportCheckoutScreen: React.FC<
 
   const goToSeedPhraseScreen = () => navigation.navigate('ExportPhrase');
   const goToSettings = () =>
-    RootNavigator.navigate('Main', { screen: 'Setting' });
+    RootNavigator.navigate('Main', { screen: 'Settings' });
 
   return (
     <QuaiPayContent>

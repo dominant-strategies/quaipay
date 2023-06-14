@@ -14,7 +14,7 @@ import { QuaiPayContent } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { useProfilePicture, useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { goHome } from 'src/shared/navigation/utils';
+import { RootNavigator } from 'src/shared/navigation/utils';
 import { Currency } from 'src/shared/types';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
@@ -121,7 +121,10 @@ export const ReceiveQRScreen: React.FC<
             <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.completeButton} onPress={goHome}>
+        <TouchableOpacity
+          style={styles.completeButton}
+          onPress={RootNavigator.goHome}
+        >
           <Text style={{ color: styledColors.white }}>
             {t('receive.qrScreen.complete')}
           </Text>

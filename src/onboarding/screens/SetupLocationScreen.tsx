@@ -30,13 +30,14 @@ import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import Loader from 'src/shared/Loader';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
     Geolocation.getCurrentPosition(resolve, reject, options),
   );
 }
-function SetupLocationScreen({ navigation }: any) {
+function SetupLocationScreen() {
   const isDarkMode = useColorScheme() === 'dark';
   const [gettingLocation, setGettingLocation] = useState(false);
 
@@ -91,7 +92,7 @@ function SetupLocationScreen({ navigation }: any) {
 
       setGettingLocation(false);
       await AsyncStorage.setItem('onboarded', 'true');
-      navigation.navigate('Main');
+      RootNavigator.goHome();
     }
   }, []);
 

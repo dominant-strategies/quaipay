@@ -1,30 +1,43 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useColorScheme } from 'react-native';
+import {
+  BottomTabNavigationProp,
+  BottomTabScreenProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
 
+import { useTheme } from 'src/shared/context/themeContext';
 import { styledColors } from 'src/shared/styles';
 
 import ExchangeScreen from './exchange/ExchangeScreen';
 import EarnScreen from './earn/EarnScreen';
-import SettingScreen from './settings/SettingScreen';
+import SettingsScreen from './settings/SettingsScreen';
 import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
 
-type MainTabStackParamList = {
-  Wallet: any;
-  Exchange: any;
-  Home: any;
-  Earn: any;
-  Setting: any;
+export type MainTabStackParamList = {
+  Wallet: undefined;
+  Exchange: undefined;
+  Home: undefined;
+  Earn: undefined;
+  Settings: undefined;
 };
+
+export type MainTabStackNavigationProp<
+  Route extends keyof MainTabStackParamList,
+> = BottomTabNavigationProp<MainTabStackParamList, Route>;
+
+export type MainTabStackScreenProps<Route extends keyof MainTabStackParamList> =
+  BottomTabScreenProps<MainTabStackParamList, Route>;
+
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
 
 const MainStack = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { isDarkMode, theme } = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -39,17 +52,13 @@ const MainStack = () => {
             return <AntIcon name="home" size={size} color={color} />;
           } else if (route.name === 'Earn') {
             return <Icon name="dollar" size={size} color={color} />;
-          } else if (route.name === 'Setting') {
+          } else if (route.name === 'Settings') {
             return <AntIcon name="setting" size={size} color={color} />;
           } else {
           }
         },
-        tabBarActiveTintColor: isDarkMode
-          ? styledColors.white
-          : styledColors.black,
-        tabBarInactiveTintColor: isDarkMode
-          ? styledColors.white
-          : styledColors.black,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.primary,
         tabBarActiveBackgroundColor: isDarkMode
           ? styledColors.dark
           : styledColors.lightGray,
@@ -63,7 +72,7 @@ const MainStack = () => {
       <Tab.Screen name="Exchange" component={ExchangeScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Earn" component={EarnScreen} />
-      <Tab.Screen name="Setting" component={SettingScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };

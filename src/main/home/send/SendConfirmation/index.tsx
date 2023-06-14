@@ -17,16 +17,18 @@ import ShareControl from '../../receive/ShareControl';
 import Done from 'src/shared/assets/done.svg';
 import { Currency } from 'src/shared/types';
 import { goHome } from 'src/shared/navigation/utils';
+import { SendStackParamList } from '../SendStack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type SendConfirmationScreenProps = {
-  navigation: any;
-  route: any;
-};
+type SendConfirmationProps = NativeStackScreenProps<
+  SendStackParamList,
+  'SendConfirmation'
+>;
 
-function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
+function SendConfirmation({ route }: SendConfirmationProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { address, username, tip, wallet, from } = route.params;
+  const { sender, address, username, tip, from } = route.params;
   const { eqInput, input } = useAmountInput(
     `${
       Number(
@@ -41,12 +43,6 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
-  };
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
-  };
-  const lightTextColor = {
-    color: isDarkMode ? '#808080' : '#808080',
   };
 
   return (
@@ -71,47 +67,44 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             ]}
           >
             <Done />
-            <QuaiPayText style={[styles.confirmText, textColor]} type="default">
-              Payment Confirmed!
+            <QuaiPayText style={[styles.confirmText]} type="default">
+              {t('home.send.paymentConfirmed')}
             </QuaiPayText>
-            <QuaiPayText style={[styles.unit, textColor]} type="paragraph">
+            <QuaiPayText style={[styles.unit]} type="paragraph">
               {eqInput.value} {eqInput.unit}
             </QuaiPayText>
-            <QuaiPayText
-              style={[styles.unitUSD, lightTextColor]}
-              type="paragraph"
-            >
+            <QuaiPayText style={styles.unitUSD} type="paragraph">
               {input.value} {input.unit}
             </QuaiPayText>
-            <QuaiPayText style={[styles.ends, lightTextColor]} type="bold">
-              from
+            <QuaiPayText style={styles.ends} type="bold">
+              {t('common.from')}
             </QuaiPayText>
-            <QuaiPayText type="bold" style={[styles.username, textColor]}>
+            <QuaiPayText type="bold" style={[styles.username]}>
               {from}
             </QuaiPayText>
-            <QuaiPayText type="bold" style={[styles.address, lightTextColor]}>
-              {abbreviateAddress(wallet?.address as string)}
+            <QuaiPayText type="bold" style={styles.address}>
+              {abbreviateAddress(sender)}
             </QuaiPayText>
-            <QuaiPayText style={[styles.ends, lightTextColor]} type="bold">
-              sent to
+            <QuaiPayText style={styles.ends} type="bold">
+              {t('common.sentTo')}
             </QuaiPayText>
-            <QuaiPayText style={[styles.username, textColor]} type="bold">
+            <QuaiPayText style={[styles.username]} type="bold">
               {username}
             </QuaiPayText>
-            <QuaiPayText type="bold" style={[styles.address, lightTextColor]}>
+            <QuaiPayText type="bold" style={styles.address}>
               {abbreviateAddress(address)}
             </QuaiPayText>
             <View style={styles.shareControl}>
               <ShareControl />
             </View>
             <TouchableOpacity style={[styles.button, styles.saveContact]}>
-              <QuaiPayText style={textColor} type="H3">
-                Save Receipent to Contacts
+              <QuaiPayText type="H3">
+                {t('home.send.saveToContacts')}
               </QuaiPayText>
             </TouchableOpacity>
             <TouchableOpacity onPress={goHome} style={styles.button}>
               <QuaiPayText style={{ color: styledColors.white }} type="H3">
-                Complete
+                {t('home.send.complete')}
               </QuaiPayText>
             </TouchableOpacity>
           </View>
@@ -149,11 +142,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     marginVertical: 2,
+    color: styledColors.gray,
   },
   ends: {
     fontSize: 16,
     fontWeight: '700',
     marginVertical: 16,
+    color: styledColors.gray,
   },
   username: {
     fontWeight: '700',
@@ -163,6 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     marginVertical: 8,
+    color: styledColors.gray,
   },
   shareControl: {
     marginVertical: 16,
@@ -212,4 +208,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SendConfirmationScreen;
+export default SendConfirmation;

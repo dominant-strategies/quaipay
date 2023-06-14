@@ -15,9 +15,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { QuaiPayInputDisplay, QuaiPayKeyboard } from 'src/shared/components';
+import {
+  QuaiPayInputDisplay,
+  QuaiPayKeyboard,
+  QuaiPayText,
+} from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useAmountInput, useUsername, useWallet } from 'src/shared/hooks';
+import { useAmountInput } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -30,12 +34,10 @@ type SendAmountScreenProps = NativeStackScreenProps<
 >;
 
 const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
-  const { amount, address, username } = route.params;
+  const { amount, address, username, wallet, sender } = route.params;
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
-  const wallet = useWallet();
-  const sender = useUsername();
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -45,10 +47,6 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
-  };
-
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
   };
 
   const equivalentUnitTextColorStyle = {
@@ -112,9 +110,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         username,
         wallet,
         totalAmount: amount,
-        totalAmountInUSD: amountInUSD,
         tip: '0',
-        tipInUSD: '0',
       },
     });
   };
@@ -142,12 +138,12 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       <View style={styles.walletCardStyle}>
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
-          <Text style={[textColor, styles.username]}>
+          <QuaiPayText style={styles.username}>
             {t('common.to')} {username}
-          </Text>
-          <Text style={[textColor, styles.wallet]}>
+          </QuaiPayText>
+          <QuaiPayText style={styles.wallet}>
             {abbreviateAddress(address)}
-          </Text>
+          </QuaiPayText>
         </View>
         <View>
           <View style={styles.balanceContainer}>
@@ -182,7 +178,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             {eqInput.value} {eqInput.unit}
           </Text>
           <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-            <Text style={textColor}>{input.unit}</Text>
+            <QuaiPayText>{input.unit}</QuaiPayText>
             <ExchangeIcon
               color={isDarkMode ? styledColors.white : styledColors.black}
             />

@@ -20,6 +20,7 @@ import { t } from 'i18next';
 import { SendStackParamList } from '../SendStack';
 import { styledColors } from 'src/shared/styles';
 import { QuaiPayText } from 'src/shared/components';
+import { useUsername, useWallet } from 'src/shared/hooks';
 
 type SendScanScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -27,6 +28,8 @@ type SendScanScreenProps = NativeStackScreenProps<
 >;
 
 function SendScanScreen({ navigation }: SendScanScreenProps) {
+  const wallet = useWallet();
+  const sender = useUsername();
   const isDarkMode = useColorScheme() === 'dark';
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -67,6 +70,8 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
             address,
             amount,
             username,
+            wallet,
+            sender,
           },
         });
       }
@@ -168,7 +173,22 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
             {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
               // TODO: create a component for this
               return (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity
+                  onPress={() => {
+                    // @ts-ignore
+                    navigation.navigate('SendStack', {
+                      screen: 'SendAmount',
+                      params: {
+                        address: '0x2f7662cD8E784750E116E44a536278d2b429167E',
+                        amount: '2',
+                        username: 'huseyin2',
+                        wallet,
+                        sender,
+                      },
+                    });
+                  }}
+                  key={index}
+                >
                   <View key={index} style={styles.contact}>
                     {item === 'View All' ? (
                       <AntIcon

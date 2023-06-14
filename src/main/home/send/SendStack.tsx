@@ -14,7 +14,8 @@ import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
-import { Transaction, Wallet } from 'src/shared/types/Wallet';
+import { Wallet } from 'src/shared/types/Wallet';
+import { Transaction } from 'src/shared/types/Transaction';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };

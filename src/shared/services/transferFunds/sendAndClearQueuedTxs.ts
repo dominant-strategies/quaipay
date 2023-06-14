@@ -1,7 +1,7 @@
 import BackgroundTimer from 'react-native-background-timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getQuaisProvider } from './getQuaisProvider';
-import { retrieveWallet } from './retrieveWallet';
+import { getQuaisProvider } from '../getQuaisProvider';
+import { retrieveWallet } from '../retrieveWallet';
 import { quais } from 'quais';
 
 const sendAndClearQueuedTxs = async () => {

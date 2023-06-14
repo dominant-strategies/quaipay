@@ -1,5 +1,5 @@
 import { quais } from 'quais';
-import { getQuaisProvider } from './getQuaisProvider';
+import { getQuaisProvider } from '../getQuaisProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BigNumber } from '@quais/bignumber';
 

@@ -14,14 +14,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SendStackParamList } from '../SendStack';
 import { fontStyle, styledColors } from 'src/shared/styles';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
+import { QuaiPayText } from 'src/shared/components';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
 const SendTipScreen = ({ route }: SendTipScreenProps) => {
-  const { address, username, input, amountInUSD, amountInQUAI } = route.params;
+  const { address, username, input, amountInUSD } = route.params;
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
@@ -82,21 +82,10 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
           Number(input.value),
           Number(selectedTip),
         ).total,
-        totalAmountInUSD:
-          Number(
-            calculateTipAmount(Number(input.value), Number(selectedTip)).total,
-          ) * EXCHANGE_RATE,
         tip:
           selectedTip === 'custom'
             ? Number(customTip)
             : ((Number(amountInUSD) * selectedTip) / 100).toFixed(5).toString(),
-        tipInQUAI:
-          selectedTip === 'custom'
-            ? (input.unit === Currency.USD
-                ? Number(customTip)
-                : Number(customTip) / EXCHANGE_RATE
-              ).toString()
-            : (Number(amountInQUAI) * selectedTip) / 100,
       },
     });
   };
@@ -122,14 +111,6 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
     height: '100%',
   };
 
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
-  };
-
-  const lightTextColor = {
-    color: isDarkMode ? '#808080' : '#808080',
-  };
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -138,31 +119,27 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.container}>
-          <Text style={[textColor, styles.username]}>
+          <QuaiPayText style={styles.username}>
             {t('common:to')} {username}
-          </Text>
-          <Text style={[lightTextColor, styles.wallet]}>
-            {abbreviateAddress(address)}
-          </Text>
+          </QuaiPayText>
+          <Text style={styles.wallet}>{abbreviateAddress(address)}</Text>
         </View>
-        <Text style={[textColor, styles.tipText]}>
+        <QuaiPayText style={styles.tipText}>
           {t('home.send.includeTip')}
-        </Text>
+        </QuaiPayText>
         <View style={styles.amountContainer}>
           <View style={styles.balanceContainer}>
-            <Text style={[fontStyle.fontH1, textColor]}>
+            <QuaiPayText style={fontStyle.fontH1}>
               {
                 calculateTipAmount(Number(input.value), Number(selectedTip))
                   .totalAmount
               }
-            </Text>
-            <Text style={[fontStyle.fontH1, lightTextColor]}>
+            </QuaiPayText>
+            <Text style={[fontStyle.fontH1, { color: styledColors.gray }]}>
               {` ${input.unit}`}
             </Text>
           </View>
-          <Text style={[textColor, fontStyle.fontParagraph]}>
-            {renderEquivalentAmount()}
-          </Text>
+          <QuaiPayText type="paragraph">{renderEquivalentAmount()}</QuaiPayText>
         </View>
         <View style={styles.container}>
           {/* TODO: Create a reusable component for the buttons */}
@@ -350,6 +327,7 @@ const styles = StyleSheet.create({
   },
   wallet: {
     ...fontStyle.fontSmallText,
+    color: styledColors.gray,
   },
 });
 

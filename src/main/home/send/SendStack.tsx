@@ -14,10 +14,17 @@ import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
+import { Transaction, Wallet } from 'src/shared/types/Wallet';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
-  SendAmount: { address: string; amount: number; username: string };
+  SendAmount: {
+    address: string;
+    amount: number;
+    username: string;
+    wallet: Wallet;
+    sender: string;
+  };
   SendTip: {
     address: string;
     amount: number;
@@ -33,8 +40,39 @@ export type SendStackParamList = {
     amountInUSD: string;
     amountInQUAI: string;
   };
-  SendOverview: { address: string; amount: number; username: string };
-  SendConfirmation: { address: string; amount: number; username: string };
+  SendOverview: {
+    address: string;
+    amount: number;
+    username: string;
+    input: {
+      unit: Currency;
+      value: string;
+    };
+    eqInput: {
+      unit: Currency;
+      value: string;
+    };
+    amountInUSD: string;
+    amountInQUAI: string;
+    tip: string;
+    totalAmount: string;
+  };
+  SendConfirmation: {
+    transaction: Transaction;
+    sender: string;
+    address: string;
+    username: string;
+    tip: string;
+    from: string;
+    input: {
+      unit: Currency;
+      value: string;
+    };
+    eqInput: {
+      unit: Currency;
+      value: string;
+    };
+  };
 };
 
 const Stack = createNativeStackNavigator<SendStackParamList>();

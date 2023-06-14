@@ -42,6 +42,7 @@ export type SendStackParamList = {
     amountInQUAI: string;
   };
   SendOverview: {
+    wallet: Wallet;
     address: string;
     amount: number;
     username: string;
@@ -59,12 +60,12 @@ export type SendStackParamList = {
     totalAmount: string;
   };
   SendConfirmation: {
+    wallet: Wallet;
     transaction: Transaction;
-    sender: string;
     address: string;
     username: string;
     tip: string;
-    from: string;
+    sender: string;
     input: {
       unit: Currency;
       value: string;

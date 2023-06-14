@@ -29,7 +29,6 @@ function SendConfirmation({ route }: SendConfirmationProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, sender, address, username, tip } = route.params;
-  console.log(route.params);
   const { eqInput, input } = useAmountInput(
     `${
       Number(

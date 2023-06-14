@@ -1,8 +1,9 @@
 import BackgroundTimer from 'react-native-background-timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { quais } from 'quais';
+import { checkTxStatus } from './checkTxStatus';
 import { getQuaisProvider } from '../getQuaisProvider';
 import { retrieveWallet } from '../retrieveWallet';
-import { quais } from 'quais';
 
 const sendAndClearQueuedTxs = async () => {
   const provider = getQuaisProvider();
@@ -15,7 +16,7 @@ const sendAndClearQueuedTxs = async () => {
   for (let i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
     const isSuccessful =
-      transaction.hash && (await checkTransactionStatus(transaction.hash));
+      transaction.hash && (await checkTxStatus(transaction.hash));
 
     if (!isSuccessful) {
       try {
@@ -36,12 +37,6 @@ const sendAndClearQueuedTxs = async () => {
       );
     }
   }
-};
-
-const checkTransactionStatus = async (transactionHash: string) => {
-  const provider = getQuaisProvider();
-  const receipt = await provider.getTransactionReceipt(transactionHash);
-  return receipt && receipt.status === 1;
 };
 
 BackgroundTimer.runBackgroundTimer(() => {

@@ -1,5 +1,6 @@
-import { queueTransaction, TxData } from './createAndQueueTx';
 import { quais } from 'quais';
+import { TxData } from './createAndQueueTx';
+import { queueTx } from './queueTx';
 
 jest.mock('@react-native-async-storage/async-storage', () => {
   return {
@@ -21,7 +22,7 @@ describe('queueTransaction', () => {
       AsyncStorage.getItem.mockImplementation(() => stringifiedTx1);
       const setItemSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-      const queueTxPromise = queueTransaction(tx2);
+      const queueTxPromise = queueTx(tx2);
 
       await expect(queueTxPromise).resolves.toBe(true);
       expect(setItemSpy).toHaveBeenCalledWith(
@@ -40,7 +41,7 @@ describe('queueTransaction', () => {
       AsyncStorage.getItem.mockImplementation(() => undefined);
       const setItemSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-      const queueTxPromise = queueTransaction(tx);
+      const queueTxPromise = queueTx(tx);
 
       await expect(queueTxPromise).resolves.toBe(true);
       expect(setItemSpy).toHaveBeenCalledWith(
@@ -59,7 +60,7 @@ describe('queueTransaction', () => {
       throw new Error();
     });
 
-    const queueTxPromise = queueTransaction(tx);
+    const queueTxPromise = queueTx(tx);
 
     await expect(queueTxPromise).resolves.toBe(false);
   });

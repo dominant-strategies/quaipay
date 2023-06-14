@@ -31,11 +31,9 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { address, username, tip } = route.params;
+  const { address, username, tip, amountInUSD } = route.params;
   const { eqInput, input, onSwap } = useAmountInput(
-    route.params.input.unit === Currency.USD
-      ? `${Number(route.params.input.value) + Number(tip)}`
-      : `${Number(route.params.eqInput.value) + Number(tip)}`,
+    `${Number(amountInUSD) + Number(tip)}`,
   );
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -66,7 +64,6 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
     // TODO: estimate gas before sending
     // estimateGas(address, eqInput.value).then(gas => console.log('gas', gas));
     setGasFee(21000 * 0.000000001);
-    console.log('route.params', route.params);
   }, []);
 
   const send = () => {

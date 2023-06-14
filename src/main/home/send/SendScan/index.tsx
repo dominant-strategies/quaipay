@@ -68,7 +68,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
           screen: 'SendAmount',
           params: {
             address,
-            amount,
+            amount: amount || 0,
             username,
             wallet,
             sender,
@@ -173,22 +173,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
             {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
               // TODO: create a component for this
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    // @ts-ignore
-                    navigation.navigate('SendStack', {
-                      screen: 'SendAmount',
-                      params: {
-                        address: '0x2f7662cD8E784750E116E44a536278d2b429167E',
-                        amount: '2',
-                        username: 'huseyin2',
-                        wallet,
-                        sender,
-                      },
-                    });
-                  }}
-                  key={index}
-                >
+                <TouchableOpacity key={index}>
                   <View key={index} style={styles.contact}>
                     {item === 'View All' ? (
                       <AntIcon

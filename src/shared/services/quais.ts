@@ -58,9 +58,10 @@ export const estimateGas = async (to: string, amount: string) => {
     };
   } catch (error) {
     console.log('error: ', error);
+    return error;
   }
 };
 
-export const abbreviateAddress = (address: string) => {
-  return `${address.slice(0, 8)}...${address.slice(-8)}`;
+export const abbreviateAddress = (address?: string) => {
+  return address ? `${address.slice(0, 8)}...${address.slice(-8)}` : '';
 };

@@ -135,7 +135,10 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
           <QuaiPayText style={styles.username}>
@@ -184,78 +187,43 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             />
           </TouchableOpacity>
         </View>
-        {!amount ? (
-          <View style={styles.row}>
-            <TouchableOpacity
-              onPress={() => inputRef.current?.focus()}
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            onPress={goToTip}
+            style={[
+              styles.tipButton,
+              {
+                borderColor: styledColors.gray,
+              },
+            ]}
+          >
+            <Text
               style={[
-                styles.editButton,
+                styles.label,
                 {
-                  borderColor: isDarkMode
-                    ? styledColors.darkGray
-                    : styledColors.border,
+                  color: isDarkMode ? styledColors.white : styledColors.black,
                 },
               ]}
             >
-              <FontAwesome
-                name="pencil-square-o"
-                size={24}
-                color={isDarkMode ? styledColors.white : styledColors.dark}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={goToTip} style={styles.continueButton}>
-              <Text
-                style={{
+              {t('home.send.includeTip')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={goToOverview}
+            style={[styles.continueButton]}
+          >
+            <Text
+              style={[
+                styles.label,
+                {
                   color: styledColors.white,
-                }}
-              >
-                {t('common.continue')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.row}>
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                onPress={goToTip}
-                style={[
-                  styles.tipButton,
-                  {
-                    borderColor: styledColors.gray,
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.label,
-                    {
-                      color: isDarkMode
-                        ? styledColors.white
-                        : styledColors.black,
-                    },
-                  ]}
-                >
-                  {t('home.send.includeTip')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={goToOverview}
-                style={[styles.continueButton]}
-              >
-                <Text
-                  style={[
-                    styles.label,
-                    {
-                      color: styledColors.white,
-                    },
-                  ]}
-                >
-                  {t('common.continue')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
+                },
+              ]}
+            >
+              {t('common.continue')}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.spacer} />
       </ScrollView>
       {!amount && (
@@ -325,6 +293,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 32,
   },
   label: {
     fontWeight: '700',
@@ -347,19 +316,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     maxHeight: 48,
     marginBottom: 12,
-  },
-  editButton: {
-    borderRadius: 8,
-    backgroundColor: 'transparent',
-    alignSelf: 'center',
-    marginLeft: 16,
-    marginRight: 8,
-    paddingVertical: 12,
-    flex: 1,
-    borderWidth: 1,
-    alignItems: 'center',
-    maxHeight: 48,
-    maxWidth: 48,
   },
   marginTop16: {
     marginTop: 16,

@@ -18,14 +18,18 @@ import { transferFunds } from 'src/shared/services/transferFunds';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SendStackParamList } from '../SendStack';
 
-type SendOverviewScreenProps = {
-  navigation: any;
-  route: any;
-};
+type SendOverviewProps = NativeStackScreenProps<
+  SendStackParamList,
+  'SendOverview'
+>;
 
-function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
+function SendOverviewScreen({ route }: SendOverviewProps) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const { address, username, tip } = route.params;
   const { eqInput, input, onSwap } = useAmountInput(
@@ -40,12 +44,6 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
-  };
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
-  };
-  const lightTextColor = {
-    color: isDarkMode ? '#808080' : '#808080',
   };
 
   const renderDate = () => {
@@ -68,6 +66,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
     // TODO: estimate gas before sending
     // estimateGas(address, eqInput.value).then(gas => console.log('gas', gas));
     setGasFee(21000 * 0.000000001);
+    console.log('route.params', route.params);
   }, []);
 
   const send = () => {
@@ -75,6 +74,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
     transferFunds(address, eqInput.value)
       .then(res => {
         setLoading(false);
+        // @ts-ignore
         navigation.navigate('SendStack', {
           screen: 'SendConfirmation',
           params: {
@@ -151,12 +151,10 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
             />
             <Text style={styles.date}>{renderDate()}</Text>
             <View style={styles.receiver}>
-              <Text style={[textColor, styles.username]}>
+              <QuaiPayText style={styles.username} type="paragraph">
                 {t('common:to')} {username}
-              </Text>
-              <Text style={[lightTextColor, styles.wallet]}>
-                {abbreviateAddress(address)}
-              </Text>
+              </QuaiPayText>
+              <Text style={styles.wallet}>{abbreviateAddress(address)}</Text>
             </View>
             <View
               style={[
@@ -171,7 +169,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
             <View style={styles.detailsContainer}>
               <View style={styles.details}>
                 <View style={styles.detailLabel}>
-                  <QuaiPayText type="paragraph">Sending</QuaiPayText>
+                  <QuaiPayText type="paragraph">
+                    {t('home.send.sending')}
+                  </QuaiPayText>
                 </View>
                 <View>
                   <Text style={styles.unit}>
@@ -184,10 +184,12 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
                   </Text>
                 </View>
               </View>
-              {tip && tip > 0 && (
+              {tip && Number(tip) > 0 && (
                 <View style={styles.details}>
                   <View style={styles.detailLabel}>
-                    <QuaiPayText type="paragraph">Included Tip</QuaiPayText>
+                    <QuaiPayText type="paragraph">
+                      {t('home.send.includedTip')}
+                    </QuaiPayText>
                   </View>
                   <View>
                     <Text style={styles.unit}>
@@ -205,7 +207,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
               )}
               <View style={styles.details}>
                 <View style={styles.detailLabel}>
-                  <QuaiPayText type="paragraph">Gas Fee</QuaiPayText>
+                  <QuaiPayText type="paragraph">
+                    {t('home.send.gasFee')}
+                  </QuaiPayText>
                 </View>
                 <View>
                   <Text style={styles.unit}>
@@ -229,7 +233,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
             />
             <View style={styles.total}>
               <View style={styles.detailLabel}>
-                <QuaiPayText type="paragraph">Total Cost</QuaiPayText>
+                <QuaiPayText type="paragraph">
+                  {t('home.send.totalCost')}
+                </QuaiPayText>
               </View>
               <View>
                 <Text style={styles.unit}>
@@ -246,7 +252,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
         </View>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText style={styles.learnMoreText}>
-            Learn more about QuaiPay
+            {t('common.learnMore')}
           </QuaiPayText>
         </TouchableOpacity>
         <TouchableOpacity
@@ -264,7 +270,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewScreenProps) {
               }}
             >
               {`${t('home.send.pay')} $(${Number(
-                route.params.totalAmountInUSD,
+                Number(route.params.totalAmount) * EXCHANGE_RATE,
               ).toFixed(2)})`}
             </QuaiPayText>
           )}
@@ -331,6 +337,7 @@ const styles = StyleSheet.create({
   wallet: {
     ...fontStyle.fontSmallText,
     marginVertical: 8,
+    color: styledColors.gray,
   },
   detailsContainer: {
     width: '100%',

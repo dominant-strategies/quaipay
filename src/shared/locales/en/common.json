@@ -3,5 +3,7 @@
   "request": "Request",
   "share": "Share",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "sentTo": "Sent to",
+  "learnMore": "Learn more about QuaiPay"
 }

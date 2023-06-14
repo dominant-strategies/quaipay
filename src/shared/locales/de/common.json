@@ -3,5 +3,7 @@
   "request": "Anfrage",
   "share": "Teilen",
   "from": "Von",
-  "to": "An"
+  "to": "An",
+  "sentTo": "Gesendet an",
+  "learnMore": "Erfahren Sie mehr",
 }

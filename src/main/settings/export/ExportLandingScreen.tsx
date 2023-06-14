@@ -1,5 +1,12 @@
 import React from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
@@ -10,6 +17,9 @@ import EditIcon from 'src/shared/assets/edit.svg';
 import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
 
 import { ExportStackScreenProps } from './ExportStack';
+
+const isWindowSmallerThanScreen =
+  Dimensions.get('window').height < Dimensions.get('screen').height;
 
 export const ExportLandingScreen: React.FC<
   ExportStackScreenProps<'ExportLanding'>
@@ -31,53 +41,57 @@ export const ExportLandingScreen: React.FC<
 
   return (
     <QuaiPayContent>
-      <View style={styles.textContainer}>
-        <QuaiPayText type="H1" style={styles.title}>
-          {t('title')}
-        </QuaiPayText>
-        <QuaiPayText type="paragraph">{t('description')}</QuaiPayText>
-      </View>
-      <Pressable
-        onPress={goToSetupSeedPhrase}
-        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-      >
-        <EditIcon />
-        <View style={styles.cardTextContainer}>
-          <QuaiPayText type="H3" style={styles.cardText}>
-            {t('cards.setup.title')}
+      <ScrollView alwaysBounceVertical={isWindowSmallerThanScreen}>
+        <View style={styles.textContainer}>
+          <QuaiPayText type="H1" style={styles.title}>
+            {t('title')}
           </QuaiPayText>
-          <QuaiPayText style={styles.cardText}>
-            {t('cards.setup.description')}
-          </QuaiPayText>
+          <QuaiPayText type="paragraph">{t('description')}</QuaiPayText>
         </View>
-        <RightChevron />
-      </Pressable>
-      <Pressable
-        onPress={goToQRCode}
-        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-      >
-        <PhoneWithQR />
-        <View style={styles.cardTextContainer}>
-          <QuaiPayText type="H3" style={styles.cardText}>
-            {t('cards.qr.title')}
-          </QuaiPayText>
-          <QuaiPayText style={styles.cardText}>
-            {t('cards.qr.description')}
-          </QuaiPayText>
-        </View>
+        <Pressable
+          onPress={goToSetupSeedPhrase}
+          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+        >
+          <EditIcon />
+          <View style={styles.cardTextContainer}>
+            <QuaiPayText type="H3" style={styles.cardText}>
+              {t('cards.setup.title')}
+            </QuaiPayText>
+            <QuaiPayText style={styles.cardText}>
+              {t('cards.setup.description')}
+            </QuaiPayText>
+          </View>
+          <RightChevron />
+        </Pressable>
+        <Pressable
+          onPress={goToQRCode}
+          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+        >
+          <PhoneWithQR />
+          <View style={styles.cardTextContainer}>
+            <QuaiPayText type="H3" style={styles.cardText}>
+              {t('cards.qr.title')}
+            </QuaiPayText>
+            <QuaiPayText style={styles.cardText}>
+              {t('cards.qr.description')}
+            </QuaiPayText>
+          </View>
 
-        <RightChevron />
-      </Pressable>
-      <View style={styles.separator} />
-      <Pressable
-        onPress={goToLearnMoreRecovery}
-        style={({ pressed }) => [
-          styles.learnMoreContainer,
-          pressed && { opacity: 0.5 },
-        ]}
-      >
-        <QuaiPayText style={styles.learnMoreText}>{t('learnMore')}</QuaiPayText>
-      </Pressable>
+          <RightChevron />
+        </Pressable>
+        <View style={styles.separator} />
+        <Pressable
+          onPress={goToLearnMoreRecovery}
+          style={({ pressed }) => [
+            styles.learnMoreContainer,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText style={styles.learnMoreText}>
+            {t('learnMore')}
+          </QuaiPayText>
+        </Pressable>
+      </ScrollView>
     </QuaiPayContent>
   );
 };

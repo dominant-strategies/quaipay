@@ -8,6 +8,7 @@ import {
   useColorScheme,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -45,8 +46,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
+    flex: 1,
   };
 
   const equivalentUnitTextColorStyle = {
@@ -71,7 +71,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendTip',
       params: {
-        from: sender,
+        sender: sender,
         amountInUSD,
         amountInQUAI,
         eqInput: eqInput,
@@ -101,7 +101,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendOverview',
       params: {
-        from: sender,
+        sender,
         amountInUSD,
         amountInQUAI,
         eqInput: eqInput,
@@ -135,7 +135,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={styles.walletCardStyle}>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
           <QuaiPayText style={styles.username}>
@@ -256,7 +256,8 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             </View>
           </View>
         )}
-      </View>
+        <View style={styles.spacer} />
+      </ScrollView>
       {!amount && (
         <View style={styles.keyboardContainer}>
           <QuaiPayKeyboard
@@ -272,11 +273,14 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
 
 const styles = StyleSheet.create({
   keyboardContainer: {
-    flex: 1,
     justifyContent: 'flex-end',
   },
-  walletCardStyle: {
-    marginTop: 80,
+  scrollView: {
+    flex: 1,
+    marginTop: 48,
+  },
+  spacer: {
+    height: 24,
   },
   row: {
     flexDirection: 'row',

@@ -28,7 +28,8 @@ type SendConfirmationProps = NativeStackScreenProps<
 function SendConfirmation({ route }: SendConfirmationProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { sender, address, username, tip, from } = route.params;
+  const { wallet, sender, address, username, tip } = route.params;
+  console.log(route.params);
   const { eqInput, input } = useAmountInput(
     `${
       Number(
@@ -79,16 +80,16 @@ function SendConfirmation({ route }: SendConfirmationProps) {
             <QuaiPayText style={styles.ends} type="bold">
               {t('common.from')}
             </QuaiPayText>
-            <QuaiPayText type="bold" style={[styles.username]}>
-              {from}
+            <QuaiPayText type="bold" style={styles.username}>
+              {sender}
             </QuaiPayText>
             <QuaiPayText type="bold" style={styles.address}>
-              {abbreviateAddress(sender)}
+              {abbreviateAddress(wallet.address)}
             </QuaiPayText>
             <QuaiPayText style={styles.ends} type="bold">
               {t('common.sentTo')}
             </QuaiPayText>
-            <QuaiPayText style={[styles.username]} type="bold">
+            <QuaiPayText style={styles.username} type="bold">
               {username}
             </QuaiPayText>
             <QuaiPayText type="bold" style={styles.address}>

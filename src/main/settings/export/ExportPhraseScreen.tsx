@@ -10,6 +10,12 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
+import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
+
+// Mock implementation
+// TODO: actually generate seed phrase
+const useSeedPhrase = () =>
+  'Fish Squirrel Brave Animal Plant Bicycle Sticky Spatula Eagle Tree Asana Macro';
 
 export const ExportPhraseScreen: React.FC<
   ExportStackScreenProps<'ExportPhrase'>
@@ -18,6 +24,7 @@ export const ExportPhraseScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
 
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
+  const seedPhrase = useSeedPhrase();
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);
@@ -55,6 +62,7 @@ export const ExportPhraseScreen: React.FC<
         </QuaiPayText>
         {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
       </Pressable>
+      <SeedPhraseDisplay hide={isSeedPhraseHidden} seedPhrase={seedPhrase} />
       <View style={styles.separator} />
       <Pressable
         onPress={goToConfirmPhrase}
@@ -65,6 +73,7 @@ export const ExportPhraseScreen: React.FC<
       >
         <QuaiPayText>{t('common.continue')}</QuaiPayText>
       </Pressable>
+      <View style={styles.separator} />
     </QuaiPayContent>
   );
 };
@@ -98,9 +107,9 @@ const themedStyle = (theme: Theme) =>
       justifyContent: 'center',
       padding: 8,
       gap: 8,
+      marginBottom: 24,
     },
     continueButton: {
-      marginBottom: 70,
       padding: 10,
       marginHorizontal: 30,
       backgroundColor: theme.normal,

@@ -17,7 +17,7 @@ import { useAmountInput } from 'src/shared/hooks';
 import { useTranslation } from 'react-i18next';
 import { transferFunds } from 'src/shared/services/transferFunds';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
-import { Currency } from 'src/shared/types';
+import { Currency, Transaction } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SendStackParamList } from '../SendStack';
@@ -55,13 +55,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
     transferFunds(address, eqInput.value, wallet.privateKey)
       .then(res => {
         setLoading(false);
-        // @ts-ignore
-        navigation.navigate('SendStack', {
-          screen: 'SendConfirmation',
-          params: {
-            transaction: res,
-            ...route.params,
-          },
+        navigation.navigate('SendConfirmation', {
+          transaction: res as Transaction,
+          ...route.params,
         });
       })
       .catch(err => {

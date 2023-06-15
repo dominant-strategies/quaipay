@@ -33,10 +33,9 @@ type SendAmountScreenProps = NativeStackScreenProps<
   'SendAmount'
 >;
 
-const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
+const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const { amount, address, receiver, wallet, sender } = route.params;
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
@@ -66,20 +65,15 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       // return;
     }
 
-    // @ts-ignore
-    navigation.navigate('SendStack', {
-      screen: 'SendTip',
-      params: {
-        navigation,
-        sender,
-        amountInUSD,
-        amountInQUAI,
-        eqInput,
-        input,
-        address,
-        receiver,
-        wallet,
-      },
+    navigation.navigate('SendTip', {
+      sender,
+      amountInUSD,
+      amountInQUAI,
+      eqInput,
+      input,
+      address,
+      receiver,
+      wallet,
     });
   };
 
@@ -97,22 +91,17 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       // return;
     }
 
-    // @ts-ignore
-    navigation.navigate('SendStack', {
-      screen: 'SendOverview',
-      params: {
-        navigation,
-        sender,
-        amountInUSD,
-        amountInQUAI,
-        eqInput: eqInput,
-        input: input,
-        address,
-        receiver,
-        wallet,
-        totalAmount: amountInUSD,
-        tip: '0',
-      },
+    navigation.navigate('SendOverview', {
+      sender,
+      amountInUSD,
+      amountInQUAI,
+      eqInput: eqInput,
+      input: input,
+      address,
+      receiver,
+      wallet,
+      totalAmount: amountInUSD,
+      tip: '0',
     });
   };
 

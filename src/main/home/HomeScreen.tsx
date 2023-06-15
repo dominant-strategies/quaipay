@@ -12,8 +12,8 @@ import SwitchSelector from 'react-native-switch-selector';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
-import SendStack from './send/SendStack';
 import { ReceiveScreen } from './receive/ReceiveScreen/';
+import SendScanScreen from './send/SendScan';
 
 enum SwitchValue {
   Receive = 0,
@@ -79,7 +79,7 @@ const HomeScreen: React.FC<RootStackNavigationProps<'Main'>> = ({}) => {
           />
         </View>
         {switchValue ? (
-          <SendStack />
+          <SendScanScreen />
         ) : (
           <View
             style={{

@@ -40,7 +40,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       return {
         tipAmount: 0,
         message: t('home.send.noTip'),
-        totalAmount: Number(input.value),
+        totalAmount: `${input.value}`,
         total: Number(input.value),
       };
     }
@@ -71,20 +71,16 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    // @ts-ignore
-    navigation.navigate('SendStack', {
-      screen: 'SendOverview',
-      params: {
-        ...route.params,
-        totalAmount: calculateTipAmount(
-          Number(input.value),
-          Number(selectedTip),
-        ).total,
-        tip:
-          selectedTip === 'custom'
-            ? Number(customTip)
-            : ((Number(amountInUSD) * selectedTip) / 100).toFixed(5).toString(),
-      },
+    navigation.navigate('SendOverview', {
+      ...route.params,
+      totalAmount: calculateTipAmount(
+        Number(input.value),
+        Number(selectedTip),
+      ).total.toString(),
+      tip:
+        selectedTip === 'custom'
+          ? Number(customTip)
+          : (Number(amountInUSD) * selectedTip) / 100,
     });
   };
 

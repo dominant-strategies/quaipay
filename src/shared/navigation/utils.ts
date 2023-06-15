@@ -2,6 +2,12 @@ import { createNavigationContainerRef } from '@react-navigation/native';
 
 import { RootStackParamList } from '.';
 
-export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+const ref = createNavigationContainerRef<RootStackParamList>();
 
-export const goHome = () => navigationRef.current?.navigate('Main');
+const goHome = () => ref.current?.navigate('Main', { screen: 'Home' });
+
+export const RootNavigator = {
+  goHome,
+  navigate: ref?.navigate,
+  ref,
+};

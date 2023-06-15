@@ -10,11 +10,9 @@ import {
 
 import { styledColors } from 'src/shared/styles';
 
-type ExchangeScreenProps = {
-  navigation: any;
-};
+import { MainTabStackScreenProps } from '../MainStack';
 
-function ExchangeScreen({}: ExchangeScreenProps) {
+const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -43,10 +41,10 @@ function ExchangeScreen({}: ExchangeScreenProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   switchStyle: {},
 });
 
-export default ExchangeScreen;
+export default WalletScreen;

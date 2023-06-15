@@ -87,8 +87,8 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 20,
-      paddingTop: 8,
-      paddingBottom: 12,
+      paddingVertical: 8,
+      minHeight: 60,
     },
     navIconMargin: {
       marginRight: MARGIN_RIGHT_OFFSET,

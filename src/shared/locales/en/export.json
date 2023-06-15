@@ -1,0 +1,17 @@
+{
+  "landing": {
+    "title": "Setup Account Recovery",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
+    "cards": {
+      "setup": {
+        "title": "Set up Seed Phrase",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a,"
+      },
+      "qr": {
+        "title": "Account Recovery QR Code",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a,"
+      }
+    },
+    "learnMore": "Learn more about the recovery process."
+  }
+}

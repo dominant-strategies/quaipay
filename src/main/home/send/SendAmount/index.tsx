@@ -8,17 +8,20 @@ import {
   useColorScheme,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { QuaiPayInputDisplay, QuaiPayKeyboard } from 'src/shared/components';
+import {
+  QuaiPayInputDisplay,
+  QuaiPayKeyboard,
+  QuaiPayText,
+} from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useAmountInput, useWallet } from 'src/shared/hooks';
-import { getBalance } from 'src/shared/services/quais';
+import { useAmountInput } from 'src/shared/hooks';
+import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
@@ -29,12 +32,10 @@ type SendAmountScreenProps = NativeStackScreenProps<
   'SendAmount'
 >;
 
-const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
-  const { amount, address, username } = route.params;
+const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
+  const { amount, address, receiver, wallet, sender } = route.params;
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
-  const wallet = useWallet();
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -42,12 +43,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
-
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
+    flex: 1,
   };
 
   const equivalentUnitTextColorStyle = {
@@ -55,16 +51,56 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
   };
 
   const goToTip = () => {
-    // @ts-ignore
-    navigation.navigate('SendStack', {
-      screen: 'SendTip',
-      params: {
-        amount: input.unit === Currency.USD ? input.value : eqInput.value,
-        eqInput: eqInput,
-        input: input,
-        address,
-        username,
-      },
+    const amountInUSD =
+      input.unit === Currency.USD ? input.value : eqInput.value;
+    const amountInQUAI =
+      input.unit === Currency.QUAI ? input.value : eqInput.value;
+    if (!input.value) {
+      // TODO: show friendly error message
+      return;
+    }
+    if (Number(amountInQUAI) > quaiBalance) {
+      // TODO: show friendly error message
+      // return;
+    }
+
+    navigation.navigate('SendTip', {
+      sender,
+      amountInUSD,
+      amountInQUAI,
+      eqInput,
+      input,
+      address,
+      receiver,
+      wallet,
+    });
+  };
+
+  const goToOverview = () => {
+    const amountInUSD =
+      input.unit === Currency.USD ? input.value : eqInput.value;
+    const amountInQUAI =
+      input.unit === Currency.QUAI ? input.value : eqInput.value;
+    if (!input.value) {
+      // TODO: show friendly error message
+      return;
+    }
+    if (Number(amountInQUAI) > quaiBalance) {
+      // TODO: show friendly error message
+      // return;
+    }
+
+    navigation.navigate('SendOverview', {
+      sender,
+      amountInUSD,
+      amountInQUAI,
+      eqInput: eqInput,
+      input: input,
+      address,
+      receiver,
+      wallet,
+      totalAmount: amountInUSD,
+      tip: '0',
     });
   };
 
@@ -88,15 +124,18 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={styles.walletCardStyle}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
-          <Text style={[textColor, styles.username]}>
-            {t('common.to')} {username}
-          </Text>
-          <Text style={[textColor, styles.wallet]}>
-            {`${address.slice(0, 8)}...${address?.slice(-8)}`}
-          </Text>
+          <QuaiPayText type="H3" style={styles.receiver}>
+            {t('common.to')} {receiver}
+          </QuaiPayText>
+          <QuaiPayText style={styles.wallet}>
+            {abbreviateAddress(address)}
+          </QuaiPayText>
         </View>
         <View>
           <View style={styles.balanceContainer}>
@@ -105,7 +144,8 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
                 color: styledColors.gray,
               }}
             >
-              {t('home.send.yourBalance')}${hideBalance ? 'X.XX' : quaiBalance}
+              {t('home.send.yourBalance')}
+              {hideBalance ? 'X.XX' : quaiBalance.toFixed(5)} QUAI
             </Text>
             <FontAwesome5
               name={hideBalance ? 'eye-slash' : 'eye'}
@@ -117,7 +157,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
           </View>
           <View style={[styles.row, styles.marginTop16]}>
             <QuaiPayInputDisplay
-              prefix={input.unit === 'USD' ? '$' : undefined}
+              prefix={input.unit === Currency.USD ? '$' : undefined}
               value={input.value}
               suffix={` ${input.unit}`}
             />
@@ -126,62 +166,65 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         </View>
         <View style={styles.row}>
           <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
-            {eqInput.unit === 'USD' && '$'}
+            {eqInput.unit === Currency.USD && '$'}
             {eqInput.value} {eqInput.unit}
           </Text>
           <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-            <Text style={textColor}>{input.unit}</Text>
+            <QuaiPayText>{input.unit}</QuaiPayText>
             <ExchangeIcon
               color={isDarkMode ? styledColors.white : styledColors.black}
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.row}>
+        <View style={styles.buttons}>
           <TouchableOpacity
-            onPress={() => inputRef.current?.focus()}
+            onPress={goToTip}
             style={[
-              styles.editButton,
+              styles.tipButton,
               {
-                borderColor: isDarkMode
-                  ? styledColors.darkGray
-                  : styledColors.border,
+                borderColor: styledColors.gray,
               },
             ]}
           >
-            <FontAwesome
-              name="pencil-square-o"
-              size={24}
-              color={isDarkMode ? styledColors.white : styledColors.dark}
-            />
+            <QuaiPayText>{t('home.send.includeTip')}</QuaiPayText>
           </TouchableOpacity>
-          <TouchableOpacity onPress={goToTip} style={[styles.continueButton]}>
-            <Text
-              style={{
-                color: styledColors.white,
-              }}
-            >
+          <TouchableOpacity
+            onPress={goToOverview}
+            style={[styles.continueButton]}
+          >
+            <QuaiPayText style={{ color: styledColors.white }}>
               {t('common.continue')}
-            </Text>
+            </QuaiPayText>
           </TouchableOpacity>
         </View>
-        <QuaiPayKeyboard
-          handleLeftButtonPress={keyboard.onDecimalButtonPress}
-          handleRightButtonPress={keyboard.onDeleteButtonPress}
-          onInputButtonPress={keyboard.onInputButtonPress}
-        />
-      </View>
+      </ScrollView>
+      {!amount && (
+        <View style={styles.keyboardContainer}>
+          <QuaiPayKeyboard
+            handleLeftButtonPress={keyboard.onDecimalButtonPress}
+            handleRightButtonPress={keyboard.onDeleteButtonPress}
+            onInputButtonPress={keyboard.onInputButtonPress}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  walletCardStyle: {
-    marginTop: 80,
+  keyboardContainer: {
+    justifyContent: 'flex-end',
+  },
+  scrollView: {
+    flex: 1,
+    marginVertical: 32,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingRight: 16,
+    paddingTop: 48,
   },
   exchangeUnit: {
     width: 90,
@@ -215,31 +258,30 @@ const styles = StyleSheet.create({
   balanceIcon: {
     marginLeft: 8,
   },
-  continueButton: {
-    borderRadius: 8,
-    backgroundColor: styledColors.normal,
-    marginTop: 44,
-    alignSelf: 'center',
-    marginRight: 16,
-    marginLeft: 4,
-    paddingVertical: 16,
+  buttons: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 32,
+  },
+  continueButton: {
+    borderRadius: 5,
+    backgroundColor: styledColors.normal,
+    alignSelf: 'center',
+    paddingVertical: 16,
+    width: '80%',
     alignItems: 'center',
     maxHeight: 48,
   },
-  editButton: {
-    borderRadius: 8,
-    backgroundColor: 'transparent',
-    marginTop: 44,
-    alignSelf: 'center',
-    marginLeft: 16,
-    marginRight: 4,
-    paddingVertical: 12,
-    flex: 1,
+  tipButton: {
+    borderRadius: 5,
     borderWidth: 1,
+    alignSelf: 'center',
+    paddingVertical: 16,
+    width: '80%',
     alignItems: 'center',
     maxHeight: 48,
-    maxWidth: 48,
+    marginBottom: 12,
   },
   marginTop16: {
     marginTop: 16,
@@ -253,8 +295,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  username: {
-    ...fontStyle.fontH3,
+  receiver: {
     marginTop: 8,
     fontSize: 14,
   },

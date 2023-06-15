@@ -7,12 +7,14 @@ import { typography } from '../styles';
 
 interface IQuaiPayTextProps extends TextProps {
   type?: Typography;
+  themeColor?: 'primary' | 'secondary';
 }
 
 export const QuaiPayText: React.FC<IQuaiPayTextProps> = ({
   children,
   style,
   type = 'default',
+  themeColor = 'primary',
   ...props
 }) => {
   const { theme } = useTheme();
@@ -20,7 +22,13 @@ export const QuaiPayText: React.FC<IQuaiPayTextProps> = ({
 
   return (
     <Text
-      style={[fontStyle, { color: theme.primary }, style]}
+      style={[
+        fontStyle,
+        {
+          color: theme[themeColor],
+        },
+        style,
+      ]}
       allowFontScaling={false}
       {...props}
     >

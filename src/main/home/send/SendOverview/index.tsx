@@ -1,52 +1,379 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
+import { QuaiPayInputDisplay, QuaiPayText } from 'src/shared/components';
+import ExchangeIcon from 'src/shared/assets/exchange.svg';
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
+import { useAmountInput } from 'src/shared/hooks';
+import { useTranslation } from 'react-i18next';
+import { transferFunds } from 'src/shared/services/transferFunds';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { Currency, Transaction } from 'src/shared/types';
+import { abbreviateAddress } from 'src/shared/services/quais';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SendStackParamList } from '../SendStack';
+import { dateToLocaleString } from 'src/shared/services/dateUtil';
 
-import { styledColors } from 'src/shared/styles';
+type SendOverviewProps = NativeStackScreenProps<
+  SendStackParamList,
+  'SendOverview'
+>;
 
-type SendOverviewScreenProps = {
-  navigation: any;
-};
-
-function SendOverviewScreen({}: SendOverviewScreenProps) {
+function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
+  const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
+  const { wallet, address, receiver, tip, amountInUSD } = route.params;
+  const { eqInput, input, onSwap } = useAmountInput(
+    `${Number(amountInUSD) + Number(tip)}`,
+  );
+  const [gasFee, setGasFee] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
+    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
   };
 
-  const topViewStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 'auto',
-    marginBottom: 'auto',
+  useEffect(() => {
+    // TODO: estimate gas before sending
+    // estimateGas(address, eqInput.value).then(gas => console.log('gas', gas));
+    setGasFee(21000 * 0.000000001);
+  }, []);
+
+  const send = () => {
+    setLoading(true);
+    transferFunds(address, eqInput.value, wallet.privateKey)
+      .then(res => {
+        setLoading(false);
+        navigation.navigate('SendConfirmation', {
+          transaction: res as Transaction,
+          ...route.params,
+        });
+      })
+      .catch(err => {
+        // TODO: handle error to show user friendly message
+        console.log('err', err);
+        setLoading(false);
+      });
   };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={topViewStyle}>
-        <View style={styles.switchStyle}>
-          <Text>Overview Screen</Text>
-        </View>
+      <View style={styles.mainContainer}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View
+            style={[
+              styles.overview,
+              {
+                borderColor: isDarkMode
+                  ? styledColors.darkGray
+                  : styledColors.border,
+                backgroundColor: isDarkMode
+                  ? styledColors.dark
+                  : styledColors.white,
+              },
+            ]}
+          >
+            <View style={styles.container}>
+              <QuaiPayText
+                style={[
+                  styles.amountUnit,
+                  {
+                    color: isDarkMode ? styledColors.gray : styledColors.black,
+                  },
+                ]}
+              >
+                {eqInput.value} {eqInput.unit}
+              </QuaiPayText>
+              <QuaiPayInputDisplay
+                value={input.value}
+                suffix={` ${input.unit}`}
+              />
+              <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
+                <Text
+                  style={{
+                    color: isDarkMode ? styledColors.white : styledColors.black,
+                  }}
+                >
+                  {input.unit}
+                </Text>
+                <ExchangeIcon
+                  color={isDarkMode ? styledColors.white : styledColors.black}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={[
+                styles.border,
+                {
+                  backgroundColor: isDarkMode
+                    ? styledColors.darkGray
+                    : styledColors.border,
+                },
+              ]}
+            />
+            <Text style={styles.date}>{dateToLocaleString(new Date())}</Text>
+            <View style={styles.receiver}>
+              <QuaiPayText style={styles.username} type="paragraph">
+                {t('common:to')} {receiver}
+              </QuaiPayText>
+              <QuaiPayText themeColor="secondary" style={styles.wallet}>
+                {abbreviateAddress(address)}
+              </QuaiPayText>
+            </View>
+            <View
+              style={[
+                styles.border,
+                {
+                  backgroundColor: isDarkMode
+                    ? styledColors.darkGray
+                    : styledColors.border,
+                },
+              ]}
+            />
+            <View style={styles.detailsContainer}>
+              <View style={styles.details}>
+                <View style={styles.detailLabel}>
+                  <QuaiPayText type="paragraph">
+                    {t('home.send.sending')}
+                  </QuaiPayText>
+                </View>
+                <View>
+                  <Text style={styles.unit}>
+                    {eqInput.value} {eqInput.unit}
+                  </Text>
+                  <Text style={styles.unitUSD}>
+                    {input.unit === Currency.USD
+                      ? `$${input.value} ${input.unit}`
+                      : `${input.value} ${input.unit}`}
+                  </Text>
+                </View>
+              </View>
+              {tip && Number(tip) > 0 && (
+                <View style={styles.details}>
+                  <View style={styles.detailLabel}>
+                    <QuaiPayText type="paragraph">
+                      {t('home.send.includedTip')}
+                    </QuaiPayText>
+                  </View>
+                  <View>
+                    <Text style={styles.unit}>
+                      {input.value === Currency.USD
+                        ? `$${Number(tip)} ${Currency.USD}`
+                        : `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`}
+                    </Text>
+                    <Text style={styles.unitUSD}>
+                      {input.value === Currency.USD
+                        ? `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`
+                        : `$${Number(tip)} ${Currency.USD}`}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              <View style={styles.details}>
+                <View style={styles.detailLabel}>
+                  <QuaiPayText type="paragraph">
+                    {t('home.send.gasFee')}
+                  </QuaiPayText>
+                </View>
+                <View>
+                  <Text style={styles.unit}>
+                    {gasFee.toFixed(5)} {eqInput.unit}
+                  </Text>
+                  <Text style={styles.unitUSD}>
+                    {(gasFee * EXCHANGE_RATE).toFixed(2)} {input.unit}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={[
+                styles.border,
+                {
+                  backgroundColor: isDarkMode
+                    ? styledColors.darkGray
+                    : styledColors.border,
+                },
+              ]}
+            />
+            <View style={styles.total}>
+              <View style={styles.detailLabel}>
+                <QuaiPayText type="paragraph">
+                  {t('home.send.totalCost')}
+                </QuaiPayText>
+              </View>
+              <View>
+                <Text style={styles.unit}>
+                  {eqInput.value} {eqInput.unit}
+                </Text>
+                <Text style={styles.unitUSD}>
+                  {input.unit === Currency.USD
+                    ? `$${input.value} ${input.unit}`
+                    : `${input.value} ${input.unit}`}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+        <TouchableOpacity onPress={() => {}}>
+          <QuaiPayText style={styles.learnMoreText}>
+            {t('common.learnMore')}
+          </QuaiPayText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          disabled={loading}
+          onPress={send}
+          style={styles.button}
+        >
+          {loading ? (
+            <ActivityIndicator color={styledColors.white} />
+          ) : (
+            <QuaiPayText
+              type="H3"
+              style={{
+                color: styledColors.white,
+              }}
+            >
+              {`${t('home.send.pay')} $(${(
+                Number(amountInUSD) + Number(tip)
+              ).toFixed(2)})`}
+            </QuaiPayText>
+          )}
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  switchStyle: {},
+  mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+  },
+  receiver: {
+    marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderRadius: 8,
+    width: '90%',
+  },
+  column: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  exchangeUnit: {
+    width: 90,
+    height: 24,
+    borderRadius: 42,
+    borderWidth: 1,
+    borderColor: styledColors.border,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 3,
+    marginVertical: 10,
+  },
+  border: {
+    width: '100%',
+    height: 1,
+  },
+  date: {
+    marginVertical: 16,
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  username: {
+    ...fontStyle.fontH3,
+    marginVertical: 8,
+    fontSize: 14,
+  },
+  wallet: {
+    marginVertical: 8,
+  },
+  detailsContainer: {
+    width: '100%',
+    paddingVertical: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  details: {
+    width: '100%',
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  detailLabel: {
+    height: '100%',
+  },
+  total: {
+    width: '100%',
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    marginVertical: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  alignRight: {
+    textAlign: 'right',
+  },
+  learnMoreText: {
+    color: styledColors.gray,
+    textDecorationLine: 'underline',
+    marginVertical: 8,
+  },
+  button: {
+    ...buttonStyle.normal,
+    alignSelf: 'center',
+    padding: 10,
+    marginVertical: 8,
+    borderRadius: 5,
+    width: '80%',
+    alignItems: 'center',
+    paddingVertical: 16,
+    maxHeight: 50,
+  },
+  amountUnit: {
+    marginVertical: 8,
+  },
+  unit: {
+    textAlign: 'right',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  unitUSD: {
+    fontSize: 14,
+    color: styledColors.gray,
+    textAlign: 'right',
+  },
 });
 
 export default SendOverviewScreen;

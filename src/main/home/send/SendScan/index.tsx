@@ -13,20 +13,19 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Camera } from 'react-native-vision-camera';
 import { quais } from 'quais';
 import { t } from 'i18next';
-import { SendStackParamList } from '../SendStack';
 import { styledColors } from 'src/shared/styles';
 import { QuaiPayText } from 'src/shared/components';
+import { useUsername, useWallet } from 'src/shared/hooks';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackNavigationProps } from 'src/shared/navigation';
 
-type SendScanScreenProps = NativeStackScreenProps<
-  SendStackParamList,
-  'SendScan'
->;
-
-function SendScanScreen({ navigation }: SendScanScreenProps) {
+function SendScanScreen() {
+  const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
+  const wallet = useWallet();
+  const sender = useUsername();
   const isDarkMode = useColorScheme() === 'dark';
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -60,13 +59,14 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
         barcodes[0].content.data as string,
       );
       if (quais.utils.isAddress(address)) {
-        // @ts-ignore
         navigation.navigate('SendStack', {
           screen: 'SendAmount',
           params: {
             address,
-            amount,
-            username,
+            amount: amount || 0,
+            receiver: username,
+            wallet,
+            sender,
           },
         });
       }

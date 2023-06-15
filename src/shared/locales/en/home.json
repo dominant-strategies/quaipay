@@ -13,7 +13,16 @@
     "tip": "Tip",
     "noTip": "No tip",
     "includeTip": "Include a tip?",
+    "includedTip": "Included Tip",
     "customTip": "Custom tip",
-    "tipPlaceholder": "Enter a tip amount"
+    "tipPlaceholder": "Enter a tip amount",
+    "viewOnExplorer": "View Transaction on QuaiSnap.com",
+    "pay": "Pay",
+    "sending": "Sending",
+    "gasFee": "Gas Fee",
+    "totalCost": "Total Cost",
+    "paymentConfirmed": "Payment Confirmed!",
+    "saveToContacts": "Save Receipent to Contacts",
+    "complete": "Complete"
   }
 }

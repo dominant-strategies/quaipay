@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Linking,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   TouchableOpacity,
@@ -43,6 +44,7 @@ function SendConfirmation({ route }: SendConfirmationProps) {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
+    flex: 1,
   };
 
   return (
@@ -53,8 +55,8 @@ function SendConfirmation({ route }: SendConfirmationProps) {
       />
       <View style={styles.mainContainer}>
         <View style={styles.container}>
-          <View
-            style={[
+          <ScrollView
+            contentContainerStyle={[
               styles.confirmation,
               {
                 borderColor: isDarkMode
@@ -107,7 +109,7 @@ function SendConfirmation({ route }: SendConfirmationProps) {
                 {t('home.send.complete')}
               </QuaiPayText>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
           <TouchableOpacity onPress={() => {}}>
             <QuaiPayText
               onPress={() => {
@@ -201,7 +203,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     borderRadius: 5,
-    width: '96%',
+    minWidth: '96%',
+    maxWidth: '96%',
     alignItems: 'center',
     paddingVertical: 16,
     maxHeight: 50,

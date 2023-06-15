@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -35,6 +36,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
+  console.log('route.params', route.params);
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -94,7 +96,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.mainContainer}>
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <View
             style={[
               styles.overview,
@@ -246,7 +248,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
               </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText style={styles.learnMoreText}>
             {t('common.learnMore')}
@@ -267,7 +269,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
               }}
             >
               {`${t('home.send.pay')} $(${Number(
-                Number(route.params.totalAmount) * EXCHANGE_RATE,
+                Number(amountInUSD) + Number(tip),
               ).toFixed(2)})`}
             </QuaiPayText>
           )}

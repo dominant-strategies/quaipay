@@ -10,7 +10,6 @@ import {
   TextInput,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SendStackParamList } from '../SendStack';
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -121,7 +120,9 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           <QuaiPayText style={styles.username}>
             {t('common:to')} {username}
           </QuaiPayText>
-          <Text style={styles.wallet}>{abbreviateAddress(address)}</Text>
+          <QuaiPayText style={styles.wallet}>
+            {abbreviateAddress(address)}
+          </QuaiPayText>
         </View>
         <QuaiPayText style={styles.tipText}>
           {t('home.send.includeTip')}
@@ -325,7 +326,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   wallet: {
-    ...fontStyle.fontSmallText,
     color: styledColors.gray,
   },
 });

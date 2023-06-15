@@ -490,6 +490,8 @@ PODS:
     - React-perflogger (= 0.71.7)
   - RNCAsyncStorage (1.18.1):
     - React-Core
+  - RNCClipboard (1.5.1):
+    - React-Core
   - RNGestureHandler (2.10.1):
     - React-Core
   - RNHoleView (2.2.1):
@@ -626,6 +628,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNHoleView (from `../node_modules/react-native-hole-view`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -755,6 +758,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-community/clipboard"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNHoleView:
@@ -851,6 +856,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: c5c89f8f543842dd864b63ded1b0bbb9c9445328
   ReactCommon: dbfbe2f7f3c5ce4ce44f43f2fd0d5950d1eb67c5
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
+  RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNGestureHandler: 42ec7c28dd02d540ed6c9159c57a98ff016492dc
   RNHoleView: 2a1929191141775058fc0a9fd79836edc200640a
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332

@@ -35,18 +35,15 @@ export const ExportPhraseScreen: React.FC<
     <QuaiPayContent>
       <View style={styles.textContainer}>
         <QuaiPayText type="H1" style={styles.title}>
-          Write down your Seed Phrase
+          {t('export.phrase.title')}
         </QuaiPayText>
         <QuaiPayText type="paragraph" themeColor="secondary">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-          turpis molestie, dictum est a, mattis tellus. Se
+          {t('export.phrase.description')}
         </QuaiPayText>
       </View>
       <View style={styles.disclaimerContainer}>
         <BaselineError />
-        <QuaiPayText>
-          Screenshots are disabled to ensure protection of your recovery phrase
-        </QuaiPayText>
+        <QuaiPayText>{t('export.phrase.screenShotBanner')}</QuaiPayText>
       </View>
       <Pressable
         onPress={toggleShowSeedPhrase}
@@ -57,8 +54,8 @@ export const ExportPhraseScreen: React.FC<
       >
         <QuaiPayText type="H3" themeColor="secondary">
           {isSeedPhraseHidden
-            ? 'Reveal your Seed Phrase'
-            : 'Hide your Seed Phrase'}
+            ? t('export.phrase.revealPhrase')
+            : t('export.phrase.hidePhrase')}
         </QuaiPayText>
         {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
       </Pressable>

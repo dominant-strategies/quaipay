@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
@@ -16,10 +15,10 @@ import { useCameraDevices } from 'react-native-vision-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Camera } from 'react-native-vision-camera';
 import { quais } from 'quais';
-import { t } from 'i18next';
 import { SendStackParamList } from '../SendStack';
 import { styledColors } from 'src/shared/styles';
-import { QuaiPayText } from 'src/shared/components';
+import { QuaiPaySearchbar, QuaiPayText } from 'src/shared/components';
+import { t } from 'i18next';
 
 type SendScanScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -28,6 +27,7 @@ type SendScanScreenProps = NativeStackScreenProps<
 
 function SendScanScreen({ navigation }: SendScanScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
+
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -136,7 +136,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
       </View>
       <BottomSheet
         backgroundStyle={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
         }}
         handleIndicatorStyle={{
           backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
@@ -145,14 +145,14 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
         snapPoints={snapPoints}
         onChange={handleSheetChange}
         style={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
         }}
       >
         <BottomSheetView
           style={{
             backgroundColor: isDarkMode
               ? styledColors.black
-              : styledColors.light,
+              : styledColors.white,
           }}
         >
           <View
@@ -161,7 +161,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
               {
                 backgroundColor: isDarkMode
                   ? styledColors.black
-                  : styledColors.light,
+                  : styledColors.white,
               },
             ]}
           >
@@ -197,22 +197,16 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
               );
             })}
           </View>
-          <View style={styles.contactSearch}>
-            <AntIcon
-              name="search1"
-              size={20}
-              color="#808080"
-              style={styles.searchIcon}
+          <TouchableOpacity
+            onPress={() => {
+              handleSnapPress(1);
+            }}
+          >
+            <QuaiPaySearchbar
+              marginHorizontal={27}
+              placeholder={t('home.send.searchByAddress')}
             />
-            <TextInput
-              onFocus={() => {
-                handleSnapPress(1);
-              }}
-              placeholder={t('home.send.searchByAddress') as string}
-              placeholderTextColor="#808080"
-              style={styles.searchInput}
-            />
-          </View>
+          </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
     </SafeAreaView>
@@ -253,33 +247,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-  },
-  contactSearch: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    marginTop: 24,
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 16,
-    top: -1,
-    alignSelf: 'center',
-  },
-  searchInput: {
-    height: 40,
-    width: '96%',
-    paddingLeft: 36,
-    borderRadius: 4,
-    borderColor: '#0066FF',
-    borderWidth: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    marginTop: 20,
   },
 });
 

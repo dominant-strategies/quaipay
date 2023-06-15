@@ -150,7 +150,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
               <QuaiPayText style={styles.username} type="paragraph">
                 {t('common:to')} {username}
               </QuaiPayText>
-              <Text style={styles.wallet}>{abbreviateAddress(address)}</Text>
+              <QuaiPayText style={styles.wallet}>
+                {abbreviateAddress(address)}
+              </QuaiPayText>
             </View>
             <View
               style={[

@@ -21,6 +21,7 @@ import {
 import { Currency } from 'src/shared/types';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
+import { abbreviateAddress } from 'src/shared/services/quais';
 
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<
@@ -55,8 +56,7 @@ export const ReceiveAmountInputScreen: React.FC<
           <Image style={styles.image} source={{ uri: profilePicture }} />
           <Text style={[textColor, styles.username]}>{username}</Text>
           <Text style={[textColor, styles.wallet]}>
-            {wallet &&
-              `${wallet?.address.slice(0, 8)}...${wallet.address?.slice(-8)}`}
+            {wallet && abbreviateAddress(wallet.address)}
           </Text>
         </View>
         <View style={[styles.row, styles.inputDisplayContainer]}>

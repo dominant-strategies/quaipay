@@ -13,7 +13,16 @@
     "tip": "Tip",
     "noTip": "Kein Tip",
     "includeTip": "Trinkgeld einbeziehen?",
+    "includedTip": "Trinkgeld einbezogen",
     "customTip": "Benutzerdefiniertes Trinkgeld",
-    "tipPlaceholder": "Trinkgeld"
+    "tipPlaceholder": "Trinkgeld",
+    "viewOnExplorer":  "Transaktion auf QuaiSnap.com anzeigen",
+    "pay": "Bezahlen",
+    "sending": "Senden",
+    "gasFee": "Gasgebühr",
+    "totalCost": "Gesamtkosten",
+    "paymentConfirmed": "Zahlung bestätigt",
+    "saveToContacts": "Empfänger zu Kontakten hinzufügen",
+    "complete": "Fertig",
   }
 }

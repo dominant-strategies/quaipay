@@ -20,6 +20,7 @@ import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
+import { abbreviateAddress } from 'src/shared/services/quais';
 
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
@@ -103,8 +104,7 @@ export const ReceiveQRScreen: React.FC<
             <Text
               style={[fontStyle.fontParagraph, { color: secondaryTextColor }]}
             >
-              {wallet && wallet?.address.slice(0, 8)}...
-              {wallet?.address.slice(-8)}
+              {wallet && abbreviateAddress(wallet.address)}
             </Text>
           </View>
           <View style={styles.shareControl}>

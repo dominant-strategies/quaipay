@@ -10,20 +10,21 @@ import {
   TextInput,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SendStackParamList } from '../SendStack';
 import { fontStyle, styledColors } from 'src/shared/styles';
+import { abbreviateAddress } from 'src/shared/services/quais';
+import { Currency } from 'src/shared/types';
+import { QuaiPayText } from 'src/shared/components';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
-const SendTipScreen = ({ route }: SendTipScreenProps) => {
-  const { amount, address, username, eqInput, input } = route.params;
+const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
+  const { address, receiver, input, amountInUSD } = route.params;
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
 
-  const [selectedTip, setSelectedTip] = useState<any>(null);
+  const [selectedTip, setSelectedTip] = useState<any>(0);
   const [customTip, setCustomTip] = useState('');
 
   const handleTipPress = (tipPercentage: any) => {
@@ -36,10 +37,33 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
 
   const calculateTipAmount = (_amount: number, tipPercentage: number) => {
     if (tipPercentage === 0) {
-      return t('home.send.noTip');
+      return {
+        tipAmount: 0,
+        message: t('home.send.noTip'),
+        totalAmount: `${input.value}`,
+        total: Number(input.value),
+      };
     }
-    const tipAmount = (_amount * tipPercentage) / 100;
-    return `$${tipAmount.toFixed(2)} ${t('home.send.tip')}`;
+    const tipAmount =
+      selectedTip === 'custom'
+        ? Number(customTip)
+        : (Number(input.value) * tipPercentage) / 100;
+
+    return {
+      tipAmount,
+      message:
+        input.unit === Currency.USD
+          ? `$${Number(tipAmount).toFixed(2)} ${t('home.send.tip')}`
+          : `${Number(tipAmount)} ${input.unit} ${t('home.send.tip')}`,
+      total:
+        input.unit === Currency.USD
+          ? (Number(input.value) + Number(tipAmount)).toFixed(2)
+          : Number(input.value) + Number(tipAmount),
+      totalAmount:
+        input.unit === Currency.USD
+          ? `$${(Number(input.value) + Number(tipAmount)).toFixed(2)}`
+          : `${Number(input.value) + Number(tipAmount)}`,
+    };
   };
 
   const isButtonSelected = (tipPercentage: any) => {
@@ -47,35 +71,38 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    // @ts-ignore
-    navigation.navigate('SendStack', {
-      screen: 'SendOverview',
-      params: {
-        amount,
-        address,
-        username,
-        eqInput,
-        input,
-        tip:
-          selectedTip === 'custom'
-            ? customTip
-            : ((amount * selectedTip) / 100).toFixed(2).toString(),
-      },
+    navigation.navigate('SendOverview', {
+      ...route.params,
+      totalAmount: calculateTipAmount(
+        Number(input.value),
+        Number(selectedTip),
+      ).total.toString(),
+      tip:
+        selectedTip === 'custom'
+          ? Number(customTip)
+          : (Number(amountInUSD) * selectedTip) / 100,
     });
+  };
+
+  const handleCustomTip = () => {
+    if (selectedTip === 'custom') {
+      return `${Number(customTip)} ${input.unit} ${t('home.send.tip')}`;
+    } else {
+      return calculateTipAmount(Number(input.value), Number(selectedTip))
+        .message;
+    }
+  };
+
+  const renderEquivalentAmount = () => {
+    return input.unit === Currency.USD
+      ? `$${input.value} + ${handleCustomTip()}`
+      : `${input.value} ${input.unit} + ${handleCustomTip()}`;
   };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
-  };
-
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
-  };
-
-  const lightTextColor = {
-    color: isDarkMode ? '#808080' : '#808080',
   };
 
   return (
@@ -86,29 +113,29 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.container}>
-          <Text style={[textColor, styles.username]}>
-            {t('common:to')} {username}
-          </Text>
-          <Text style={[lightTextColor, styles.wallet]}>
-            {`${address.slice(0, 8)}...${address?.slice(-8)}`}
-          </Text>
+          <QuaiPayText style={styles.username}>
+            {t('common:to')} {receiver}
+          </QuaiPayText>
+          <QuaiPayText themeColor="secondary">
+            {abbreviateAddress(address)}
+          </QuaiPayText>
         </View>
-        <Text style={[textColor, styles.tipText]}>
+        <QuaiPayText style={styles.tipText}>
           {t('home.send.includeTip')}
-        </Text>
+        </QuaiPayText>
         <View style={styles.amountContainer}>
           <View style={styles.balanceContainer}>
-            <Text style={[fontStyle.fontH1, textColor]}>${amount}</Text>
-            <Text style={[fontStyle.fontH1, lightTextColor]}>
-              {input.unit === 'USD' ? ` ${input.unit}` : ` ${eqInput.unit}`}
-            </Text>
+            <QuaiPayText style={fontStyle.fontH1}>
+              {
+                calculateTipAmount(Number(input.value), Number(selectedTip))
+                  .totalAmount
+              }
+            </QuaiPayText>
+            <QuaiPayText type="H1" themeColor="secondary">
+              {` ${input.unit}`}
+            </QuaiPayText>
           </View>
-          <Text style={[textColor, fontStyle.fontParagraph]}>
-            {`$${amount} + `}
-            {selectedTip === 'custom'
-              ? `$${customTip} ${t('home.send.tip')}`
-              : `${calculateTipAmount(Number(amount), Number(selectedTip))}`}
-          </Text>
+          <QuaiPayText type="paragraph">{renderEquivalentAmount()}</QuaiPayText>
         </View>
         <View style={styles.container}>
           {/* TODO: Create a reusable component for the buttons */}
@@ -144,7 +171,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              15% (${calculateTipAmount(amount, 15)})
+              15% ({calculateTipAmount(Number(input.value), 15).message})
             </Text>
           </TouchableOpacity>
 
@@ -162,7 +189,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              20% (${calculateTipAmount(amount, 20)})
+              20% ({calculateTipAmount(Number(input.value), 20).message})
             </Text>
           </TouchableOpacity>
 
@@ -180,7 +207,7 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
                   : styledColors.black,
               }}
             >
-              25% (${calculateTipAmount(amount, 25)})
+              25% ({calculateTipAmount(Number(input.value), 25).message})
             </Text>
           </TouchableOpacity>
 
@@ -225,13 +252,14 @@ const SendTipScreen = ({ route }: SendTipScreenProps) => {
           onPress={navigateToOverview}
           style={[styles.button, styles.selectedButton, styles.continueButton]}
         >
-          <Text
+          <QuaiPayText
+            type="H3"
             style={{
               color: styledColors.white,
             }}
           >
             {t('common.continue')}
-          </Text>
+          </QuaiPayText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -263,7 +291,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#d5d5d5',
+    backgroundColor: styledColors.border,
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
@@ -293,9 +321,6 @@ const styles = StyleSheet.create({
     ...fontStyle.fontH3,
     marginTop: 16,
     fontSize: 14,
-  },
-  wallet: {
-    ...fontStyle.fontSmallText,
   },
 });
 

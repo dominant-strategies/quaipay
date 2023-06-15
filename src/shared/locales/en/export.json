@@ -19,6 +19,8 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
     "screenShotBanner": "Screenshots are disabled to ensure protection of your recovery phrase",
     "revealPhrase": "Reveal your Seed Phrase",
-    "hidePhrase": "Hide your Seed Phrase"
+    "hidePhrase": "Hide your Seed Phrase",
+    "copyToClipboard": "Copy to Clipboard",
+    "phraseCopied": "Seed Phrase copied"
   }
 }

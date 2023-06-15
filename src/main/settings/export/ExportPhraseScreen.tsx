@@ -7,11 +7,13 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Clipboard from '@react-native-community/clipboard';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import BaselineError from 'src/shared/assets/baselineError.svg';
 import EyeOutline from 'src/shared/assets/eyeOutline.svg';
 import HideIcon from 'src/shared/assets/hide.svg';
+import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
@@ -37,6 +39,10 @@ export const ExportPhraseScreen: React.FC<
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);
+  const copyToClipboard = () => {
+    Clipboard.setString(seedPhrase ?? '');
+    alert(t('export.phrase.phraseCopied'));
+  };
   const goToConfirmPhrase = () =>
     navigation.navigate('ExportConfirmationPhrase');
 
@@ -71,6 +77,18 @@ export const ExportPhraseScreen: React.FC<
         </Pressable>
         <SeedPhraseDisplay hide={isSeedPhraseHidden} seedPhrase={seedPhrase} />
         <View style={styles.separator} />
+        <Pressable
+          onPress={copyToClipboard}
+          style={({ pressed }) => [
+            styles.copyToClipboardButton,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText type="bold" themeColor="secondary">
+            {t('export.phrase.copyToClipboard')}
+          </QuaiPayText>
+          <CopyOutline />
+        </Pressable>
         <View style={styles.doubleSeparator} />
         <Pressable
           onPress={goToConfirmPhrase}
@@ -117,6 +135,17 @@ const themedStyle = (theme: Theme) =>
       padding: 8,
       gap: 8,
       marginBottom: 24,
+    },
+    copyToClipboardButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      padding: 16,
+      gap: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      borderRadius: 4,
     },
     continueButton: {
       padding: 10,

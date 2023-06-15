@@ -70,6 +70,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendTip',
       params: {
+        navigation,
         sender: sender,
         amountInUSD,
         amountInQUAI,
@@ -100,6 +101,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
     navigation.navigate('SendStack', {
       screen: 'SendOverview',
       params: {
+        navigation,
         sender,
         amountInUSD,
         amountInQUAI,

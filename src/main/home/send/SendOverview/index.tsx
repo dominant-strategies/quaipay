@@ -19,7 +19,6 @@ import { transferFunds } from 'src/shared/services/transferFunds';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SendStackParamList } from '../SendStack';
 
@@ -28,15 +27,13 @@ type SendOverviewProps = NativeStackScreenProps<
   'SendOverview'
 >;
 
-function SendOverviewScreen({ route }: SendOverviewProps) {
+function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, address, username, tip, amountInUSD } = route.params;
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
-  console.log('route.params', route.params);
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
 

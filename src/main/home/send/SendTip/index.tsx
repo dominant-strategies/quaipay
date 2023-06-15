@@ -20,10 +20,9 @@ import { QuaiPayText } from 'src/shared/components';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
-const SendTipScreen = ({ route }: SendTipScreenProps) => {
+const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   const { address, username, input, amountInUSD } = route.params;
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
 
   const [selectedTip, setSelectedTip] = useState<any>(0);

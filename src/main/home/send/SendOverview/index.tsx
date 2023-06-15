@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { QuaiPayInputDisplay, QuaiPayText } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { fontStyle, styledColors } from 'src/shared/styles';
+import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
 import { useTranslation } from 'react-i18next';
 import { transferFunds } from 'src/shared/services/transferFunds';
@@ -93,7 +93,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
             ]}
           >
             <View style={styles.container}>
-              <Text
+              <QuaiPayText
                 style={[
                   styles.amountUnit,
                   {
@@ -102,7 +102,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 ]}
               >
                 {eqInput.value} {eqInput.unit}
-              </Text>
+              </QuaiPayText>
               <QuaiPayInputDisplay
                 value={input.value}
                 suffix={` ${input.unit}`}
@@ -135,7 +135,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
               <QuaiPayText style={styles.username} type="paragraph">
                 {t('common:to')} {username}
               </QuaiPayText>
-              <QuaiPayText style={styles.wallet}>
+              <QuaiPayText themeColor="secondary" style={styles.wallet}>
                 {abbreviateAddress(address)}
               </QuaiPayText>
             </View>
@@ -319,7 +319,6 @@ const styles = StyleSheet.create({
   },
   wallet: {
     marginVertical: 8,
-    color: styledColors.gray,
   },
   detailsContainer: {
     width: '100%',
@@ -356,7 +355,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   button: {
-    backgroundColor: '#0066FF',
+    ...buttonStyle.normal,
     alignSelf: 'center',
     padding: 10,
     marginVertical: 8,

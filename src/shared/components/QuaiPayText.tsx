@@ -24,10 +24,10 @@ export const QuaiPayText: React.FC<IQuaiPayTextProps> = ({
     <Text
       style={[
         fontStyle,
-        style,
         {
           color: theme[themeColor],
         },
+        style,
       ]}
       allowFontScaling={false}
       {...props}

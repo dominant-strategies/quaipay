@@ -32,7 +32,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { address, username, tip, amountInUSD } = route.params;
+  const { wallet, address, username, tip, amountInUSD } = route.params;
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
@@ -70,7 +70,7 @@ function SendOverviewScreen({ route }: SendOverviewProps) {
 
   const send = () => {
     setLoading(true);
-    transferFunds(address, eqInput.value)
+    transferFunds(address, eqInput.value, wallet.privateKey)
       .then(res => {
         setLoading(false);
         // @ts-ignore

@@ -209,7 +209,6 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
             </QuaiPayText>
           </TouchableOpacity>
         </View>
-        <View style={styles.spacer} />
       </ScrollView>
       {!amount && (
         <View style={styles.keyboardContainer}>
@@ -230,10 +229,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginTop: 48,
-  },
-  spacer: {
-    height: 24,
+    marginVertical: 32,
   },
   row: {
     flexDirection: 'row',

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { QuaiPayText } from 'src/shared/components';
-import { styledColors } from 'src/shared/styles';
+import { buttonStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import ShareControl from '../../receive/ShareControl';
@@ -53,76 +53,72 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={styles.mainContainer}>
-        <View style={styles.container}>
-          <ScrollView
-            contentContainerStyle={[
-              styles.confirmation,
-              {
-                borderColor: isDarkMode
-                  ? styledColors.darkGray
-                  : styledColors.border,
-                backgroundColor: isDarkMode
-                  ? styledColors.dark
-                  : styledColors.white,
-              },
-            ]}
-          >
-            <Done />
-            <QuaiPayText style={styles.confirmText}>
-              {t('home.send.paymentConfirmed')}
-            </QuaiPayText>
-            <QuaiPayText style={styles.unit}>
-              {eqInput.value} {eqInput.unit}
-            </QuaiPayText>
-            <QuaiPayText style={styles.unitUSD}>
-              {input.value} {input.unit}
-            </QuaiPayText>
-            <QuaiPayText style={styles.ends} type="bold">
-              {t('common.from')}
-            </QuaiPayText>
-            <QuaiPayText type="bold" style={styles.username}>
-              {sender}
-            </QuaiPayText>
-            <QuaiPayText type="bold" style={styles.address}>
-              {abbreviateAddress(wallet.address)}
-            </QuaiPayText>
-            <QuaiPayText style={styles.ends} type="bold">
-              {t('common.sentTo')}
-            </QuaiPayText>
-            <QuaiPayText style={styles.username} type="bold">
-              {username}
-            </QuaiPayText>
-            <QuaiPayText type="bold" style={styles.address}>
-              {abbreviateAddress(address)}
-            </QuaiPayText>
-            <View style={styles.shareControl}>
-              <ShareControl />
-            </View>
-            <TouchableOpacity style={[styles.button, styles.saveContact]}>
-              <QuaiPayText type="H3">
-                {t('home.send.saveToContacts')}
-              </QuaiPayText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={goHome} style={styles.button}>
-              <QuaiPayText style={{ color: styledColors.white }} type="H3">
-                {t('home.send.complete')}
-              </QuaiPayText>
-            </TouchableOpacity>
-          </ScrollView>
-          <TouchableOpacity onPress={() => {}}>
-            <QuaiPayText
-              onPress={() => {
-                Linking.openURL(
-                  `https://paxos1.colosseum.quaiscan.io/tx/${route.params.transaction.hash}`,
-                );
-              }}
-              style={styles.quaiSnap}
-            >
-              {t('home.send.viewOnExplorer')}
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.confirmation,
+            {
+              borderColor: isDarkMode
+                ? styledColors.darkGray
+                : styledColors.border,
+              backgroundColor: isDarkMode
+                ? styledColors.dark
+                : styledColors.white,
+            },
+          ]}
+        >
+          <Done />
+          <QuaiPayText type="H1" style={styles.confirmText}>
+            {t('home.send.paymentConfirmed')}
+          </QuaiPayText>
+          <QuaiPayText style={styles.unit}>
+            {eqInput.value} {eqInput.unit}
+          </QuaiPayText>
+          <QuaiPayText style={styles.unitUSD}>
+            {input.value} {input.unit}
+          </QuaiPayText>
+          <QuaiPayText style={styles.ends} type="bold">
+            {t('common.from')}
+          </QuaiPayText>
+          <QuaiPayText type="bold" style={styles.username}>
+            {sender}
+          </QuaiPayText>
+          <QuaiPayText type="bold" style={styles.address}>
+            {abbreviateAddress(wallet.address)}
+          </QuaiPayText>
+          <QuaiPayText style={styles.ends} type="bold">
+            {t('common.sentTo')}
+          </QuaiPayText>
+          <QuaiPayText style={styles.username} type="bold">
+            {username}
+          </QuaiPayText>
+          <QuaiPayText type="bold" style={styles.address}>
+            {abbreviateAddress(address)}
+          </QuaiPayText>
+          <View style={styles.shareControl}>
+            <ShareControl />
+          </View>
+          <TouchableOpacity style={[styles.button, styles.saveContact]}>
+            <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goHome} style={styles.button}>
+            <QuaiPayText style={{ color: styledColors.white }} type="H3">
+              {t('home.send.complete')}
             </QuaiPayText>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
+        <TouchableOpacity onPress={() => {}}>
+          <QuaiPayText
+            onPress={() => {
+              Linking.openURL(
+                `https://paxos1.colosseum.quaiscan.io/tx/${route.params.transaction.hash}`,
+              );
+            }}
+            style={styles.quaiSnap}
+          >
+            {t('home.send.viewOnExplorer')}
+          </QuaiPayText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -130,9 +126,6 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
 
 const styles = StyleSheet.create({
   confirmText: {
-    fontSize: 32,
-    lineHeight: 32,
-    fontWeight: '700',
     marginVertical: 16,
   },
   unit: {
@@ -165,10 +158,6 @@ const styles = StyleSheet.create({
   shareControl: {
     marginVertical: 16,
   },
-  mainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -198,7 +187,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: '#0066FF',
+    ...buttonStyle.normal,
     alignSelf: 'center',
     padding: 10,
     marginVertical: 8,

@@ -109,7 +109,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         address,
         username,
         wallet,
-        totalAmount: amount,
+        totalAmount: amountInUSD,
         tip: '0',
       },
     });

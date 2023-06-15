@@ -198,31 +198,15 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
               },
             ]}
           >
-            <Text
-              style={[
-                styles.label,
-                {
-                  color: isDarkMode ? styledColors.white : styledColors.black,
-                },
-              ]}
-            >
-              {t('home.send.includeTip')}
-            </Text>
+            <QuaiPayText>{t('home.send.includeTip')}</QuaiPayText>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={goToOverview}
             style={[styles.continueButton]}
           >
-            <Text
-              style={[
-                styles.label,
-                {
-                  color: styledColors.white,
-                },
-              ]}
-            >
+            <QuaiPayText style={{ color: styledColors.white }}>
               {t('common.continue')}
-            </Text>
+            </QuaiPayText>
           </TouchableOpacity>
         </View>
         <View style={styles.spacer} />
@@ -295,9 +279,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 32,
-  },
-  label: {
-    fontWeight: '700',
   },
   continueButton: {
     borderRadius: 5,

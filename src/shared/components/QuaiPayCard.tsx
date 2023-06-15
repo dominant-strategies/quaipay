@@ -69,8 +69,8 @@ const themedStyle = (theme: Theme) =>
     },
     image: {
       borderRadius: 70,
-      height: 60,
-      width: 60,
+      height: 68,
+      width: 68,
     },
     textWrapper: {
       alignItems: 'flex-start',

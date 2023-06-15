@@ -267,8 +267,8 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 color: styledColors.white,
               }}
             >
-              {`${t('home.send.pay')} $(${Number(
-                Number(amountInUSD) + Number(tip),
+              {`${t('home.send.pay')} $(${(
+                Number(amountInUSD) + Number(tip)
               ).toFixed(2)})`}
             </QuaiPayText>
           )}

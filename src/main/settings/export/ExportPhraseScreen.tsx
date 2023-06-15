@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
@@ -11,6 +17,9 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
 import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
+
+const isWindowSmallerThanScreen =
+  Dimensions.get('window').height < Dimensions.get('screen').height;
 
 // Mock implementation
 // TODO: actually generate seed phrase
@@ -33,44 +42,47 @@ export const ExportPhraseScreen: React.FC<
 
   return (
     <QuaiPayContent>
-      <View style={styles.textContainer}>
-        <QuaiPayText type="H1" style={styles.title}>
-          {t('export.phrase.title')}
-        </QuaiPayText>
-        <QuaiPayText type="paragraph" themeColor="secondary">
-          {t('export.phrase.description')}
-        </QuaiPayText>
-      </View>
-      <View style={styles.disclaimerContainer}>
-        <BaselineError />
-        <QuaiPayText>{t('export.phrase.screenShotBanner')}</QuaiPayText>
-      </View>
-      <Pressable
-        onPress={toggleShowSeedPhrase}
-        style={({ pressed }) => [
-          styles.revealButton,
-          pressed && { opacity: 0.5 },
-        ]}
-      >
-        <QuaiPayText type="H3" themeColor="secondary">
-          {isSeedPhraseHidden
-            ? t('export.phrase.revealPhrase')
-            : t('export.phrase.hidePhrase')}
-        </QuaiPayText>
-        {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
-      </Pressable>
-      <SeedPhraseDisplay hide={isSeedPhraseHidden} seedPhrase={seedPhrase} />
-      <View style={styles.separator} />
-      <Pressable
-        onPress={goToConfirmPhrase}
-        style={({ pressed }) => [
-          styles.continueButton,
-          pressed && { opacity: 0.5 },
-        ]}
-      >
-        <QuaiPayText>{t('common.continue')}</QuaiPayText>
-      </Pressable>
-      <View style={styles.separator} />
+      <ScrollView alwaysBounceVertical={isWindowSmallerThanScreen}>
+        <View style={styles.textContainer}>
+          <QuaiPayText type="H1" style={styles.title}>
+            {t('export.phrase.title')}
+          </QuaiPayText>
+          <QuaiPayText type="paragraph" themeColor="secondary">
+            {t('export.phrase.description')}
+          </QuaiPayText>
+        </View>
+        <View style={styles.disclaimerContainer}>
+          <BaselineError />
+          <QuaiPayText>{t('export.phrase.screenShotBanner')}</QuaiPayText>
+        </View>
+        <Pressable
+          onPress={toggleShowSeedPhrase}
+          style={({ pressed }) => [
+            styles.revealButton,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText type="H3" themeColor="secondary">
+            {isSeedPhraseHidden
+              ? t('export.phrase.revealPhrase')
+              : t('export.phrase.hidePhrase')}
+          </QuaiPayText>
+          {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
+        </Pressable>
+        <SeedPhraseDisplay hide={isSeedPhraseHidden} seedPhrase={seedPhrase} />
+        <View style={styles.separator} />
+        <View style={styles.doubleSeparator} />
+        <Pressable
+          onPress={goToConfirmPhrase}
+          style={({ pressed }) => [
+            styles.continueButton,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText>{t('common.continue')}</QuaiPayText>
+        </Pressable>
+        <View style={styles.doubleSeparator} />
+      </ScrollView>
     </QuaiPayContent>
   );
 };
@@ -112,6 +124,9 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.normal,
     },
     separator: {
-      flex: 1,
+      height: 40,
+    },
+    doubleSeparator: {
+      height: 80,
     },
   });

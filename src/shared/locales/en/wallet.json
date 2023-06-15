@@ -1,5 +1,7 @@
 {
   "balance": "Balance",
   "chooseAddress": "Choose Active Address",
-  "earn": "Earn"
+  "earn": "Earn",
+  "transactionsHistory": "Transactions History",
+  "filter": "Filter"
 }

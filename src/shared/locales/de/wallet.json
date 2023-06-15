@@ -1,5 +1,7 @@
 {
   "balance": "Kontostand",
   "chooseAddress": "Aktive Adresse auswählen",
-  "earn": "Verdienen"
+  "earn": "Verdienen",
+  "transactions": "Transaktionen",
+  "filter": "Filter"
 }

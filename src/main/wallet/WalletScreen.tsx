@@ -6,6 +6,7 @@ import { CardSize, QuaiPayCard } from '../../shared/components/QuaiPayCard';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Theme } from '../../shared/types';
 import { useThemedStyle } from '../../shared/hooks/useThemedStyle';
+import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors, typography } from '../../shared/styles';
 
@@ -47,6 +48,27 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           <QuaiPayText style={[typography.H3]}>{t('wallet.earn')}</QuaiPayText>
         </Pressable>
       </View>
+      <View style={styles.transactionsWrapper}>
+        <View style={styles.transactionsHeader}>
+          <QuaiPayText style={[typography.H3, { color: styledColors.gray }]}>
+            {t('wallet.transactionsHistory')}
+          </QuaiPayText>
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.filterButton,
+              pressed && { opacity: 0.5 },
+            ]}
+          >
+            <QuaiPayText
+              style={[typography.default, { color: styledColors.gray }]}
+            >
+              {t('wallet.filter')}&nbsp;
+            </QuaiPayText>
+            <FilterIcon />
+          </Pressable>
+        </View>
+      </View>
     </QuaiPayContent>
   );
 };
@@ -84,6 +106,25 @@ const themedStyle = (theme: Theme) =>
       borderWidth: 1,
       borderColor: styledColors.gray,
       width: 110,
+    },
+    filterButton: {
+      backgroundColor: theme.surface,
+      borderWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: styledColors.lightGray,
+      height: 25,
+      width: 77,
+    },
+    transactionsHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    transactionsWrapper: {
+      backgroundColor: theme.surface,
+      padding: 16,
     },
   });
 

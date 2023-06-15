@@ -333,7 +333,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   wallet: {
-    ...fontStyle.fontSmallText,
     marginVertical: 8,
     color: styledColors.gray,
   },

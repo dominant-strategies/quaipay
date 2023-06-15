@@ -69,13 +69,13 @@ function SendConfirmation({ route }: SendConfirmationProps) {
             ]}
           >
             <Done />
-            <QuaiPayText style={[styles.confirmText]} type="default">
+            <QuaiPayText style={styles.confirmText}>
               {t('home.send.paymentConfirmed')}
             </QuaiPayText>
-            <QuaiPayText style={[styles.unit]} type="paragraph">
+            <QuaiPayText style={styles.unit}>
               {eqInput.value} {eqInput.unit}
             </QuaiPayText>
-            <QuaiPayText style={styles.unitUSD} type="paragraph">
+            <QuaiPayText style={styles.unitUSD}>
               {input.value} {input.unit}
             </QuaiPayText>
             <QuaiPayText style={styles.ends} type="bold">

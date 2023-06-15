@@ -5,6 +5,7 @@ import {
   CardSize,
   QuaiPayCard,
   QuaiPayContent,
+  QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -72,6 +73,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             <FilterIcon />
           </Pressable>
         </View>
+        <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
       </View>
     </QuaiPayContent>
   );
@@ -113,11 +115,13 @@ const themedStyle = (theme: Theme) =>
     },
     filterButton: {
       backgroundColor: theme.surface,
+      color: styledColors.gray,
       borderWidth: 1,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      borderColor: styledColors.lightGray,
+      borderColor: theme.border,
+      borderRadius: 4,
       height: 25,
       width: 77,
     },
@@ -125,6 +129,7 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginBottom: 10,
     },
     transactionsWrapper: {
       backgroundColor: theme.surface,

@@ -201,11 +201,9 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
             onPress={() => {
               handleSnapPress(1);
             }}
+            style={styles.searchbarWrapper}
           >
-            <QuaiPaySearchbar
-              marginHorizontal={27}
-              placeholder={t('home.send.searchByAddress')}
-            />
+            <QuaiPaySearchbar placeholder={t('home.send.searchByAddress')} />
           </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
@@ -247,6 +245,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
+  },
+  searchbarWrapper: {
+    paddingHorizontal: 27,
+    marginTop: 22,
   },
 });
 

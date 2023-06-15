@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import MagnifyingGlass from '../assets/magnifyingGlass.svg';
 import React from 'react';
 import { Theme } from '../types';
@@ -6,26 +6,16 @@ import { styledColors } from '../styles';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 
 type QuaiPaySearchbarProps = {
-  marginHorizontal: number;
   placeholder: string;
 };
 
 export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
-  marginHorizontal,
   placeholder,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <View
-      style={[
-        styles.contactSearch,
-        {
-          marginHorizontal,
-          width: Dimensions.get('window').width - marginHorizontal * 2,
-        },
-      ]}
-    >
+    <View style={[styles.contactSearch]}>
       <MagnifyingGlass style={styles.searchIcon} />
       <TextInput
         placeholder={placeholder}
@@ -42,12 +32,10 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       paddingLeft: 6,
       height: 32,
-      marginHorizontal: 32,
-      marginTop: 22,
       justifyContent: 'flex-start',
       alignItems: 'center',
       borderColor: theme.border,
-      borderWidth: 2,
+      borderWidth: 1,
       borderRadius: 4,
       backgroundColor: styledColors.white,
     },

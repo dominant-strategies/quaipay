@@ -3,5 +3,6 @@
   "chooseAddress": "Aktive Adresse auswählen",
   "earn": "Verdienen",
   "transactions": "Transaktionen",
-  "filter": "Filter"
+  "filter": "Filter",
+  "searchByTransaction": "Nach aktueller Transaktion suchen"
 }

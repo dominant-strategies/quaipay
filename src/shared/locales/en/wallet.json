@@ -3,5 +3,6 @@
   "chooseAddress": "Choose Active Address",
   "earn": "Earn",
   "transactionsHistory": "Transactions History",
-  "filter": "Filter"
+  "filter": "Filter",
+  "searchByTransaction": "Search by recent transaction"
 }

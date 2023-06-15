@@ -14,6 +14,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors, typography } from 'src/shared/styles';
+import { QuaiPayListItem } from '../../shared/components/QuaiPayListItem';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation();
@@ -73,7 +74,65 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             <FilterIcon />
           </Pressable>
         </View>
-        <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
+        <View style={styles.searchbarWrapper}>
+          <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
+        </View>
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
+        <QuaiPayListItem
+          date="April 26, 2023  17:23:04"
+          fiatAmount="0.99"
+          name="John Doe"
+          picture="https://picsum.photos/666"
+          quaiAmount="+ XXX.XXXXX"
+        />
       </View>
     </QuaiPayContent>
   );
@@ -129,11 +188,14 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 10,
     },
     transactionsWrapper: {
       backgroundColor: theme.surface,
       padding: 16,
+    },
+    searchbarWrapper: {
+      marginBottom: 22,
+      marginTop: 10,
     },
   });
 

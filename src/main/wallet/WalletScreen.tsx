@@ -1,50 +1,22 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-} from 'react-native';
-
-import { styledColors } from 'src/shared/styles';
 
 import { MainTabStackScreenProps } from '../MainStack';
+import { QuaiPayContent } from '../../shared/components';
+import { CardSize, QuaiPayCard } from '../../shared/components/QuaiPayCard';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%',
-    height: '100%',
-  };
-
-  const topViewStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 'auto',
-    marginBottom: 'auto',
-  };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <QuaiPayContent navButton={false}>
+      <QuaiPayCard
+        size={CardSize.Small}
+        quaiAmount="142.123"
+        address="0x123453.....0934823"
+        zone="Cyprus-02"
+        fiatAmount="1,000"
+        title="Balance"
       />
-      <View style={topViewStyle}>
-        <View style={styles.switchStyle}>
-          <Text>Wallet Screen</Text>
-        </View>
-      </View>
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 };
-
-const styles = StyleSheet.create({
-  switchStyle: {},
-});
 
 export default WalletScreen;

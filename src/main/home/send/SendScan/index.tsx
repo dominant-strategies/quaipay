@@ -69,7 +69,7 @@ function SendScanScreen({ navigation }: SendScanScreenProps) {
           params: {
             address,
             amount: amount || 0,
-            username,
+            receiver: username,
             wallet,
             sender,
           },

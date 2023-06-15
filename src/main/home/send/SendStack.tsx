@@ -21,14 +21,14 @@ export type SendStackParamList = {
   SendAmount: {
     address: string;
     amount: number;
-    username: string;
+    receiver: string;
     wallet: Wallet;
     sender: string;
   };
   SendTip: {
     address: string;
     amount: number;
-    username: string;
+    receiver: string;
     input: {
       unit: Currency;
       value: string;
@@ -44,7 +44,7 @@ export type SendStackParamList = {
     wallet: Wallet;
     address: string;
     amount: number;
-    username: string;
+    receiver: string;
     input: {
       unit: Currency;
       value: string;
@@ -62,7 +62,7 @@ export type SendStackParamList = {
     wallet: Wallet;
     transaction: Transaction;
     address: string;
-    username: string;
+    receiver: string;
     tip: string;
     sender: string;
     input: {

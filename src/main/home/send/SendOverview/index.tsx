@@ -31,7 +31,7 @@ type SendOverviewProps = NativeStackScreenProps<
 function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { wallet, address, username, tip, amountInUSD } = route.params;
+  const { wallet, address, receiver, tip, amountInUSD } = route.params;
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
@@ -133,7 +133,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
             <Text style={styles.date}>{dateToLocaleString(new Date())}</Text>
             <View style={styles.receiver}>
               <QuaiPayText style={styles.username} type="paragraph">
-                {t('common:to')} {username}
+                {t('common:to')} {receiver}
               </QuaiPayText>
               <QuaiPayText themeColor="secondary" style={styles.wallet}>
                 {abbreviateAddress(address)}

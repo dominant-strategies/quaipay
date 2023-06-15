@@ -20,7 +20,7 @@ import { QuaiPayText } from 'src/shared/components';
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
 const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
-  const { address, username, input, amountInUSD } = route.params;
+  const { address, receiver, input, amountInUSD } = route.params;
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -118,7 +118,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <QuaiPayText style={styles.username}>
-            {t('common:to')} {username}
+            {t('common:to')} {receiver}
           </QuaiPayText>
           <QuaiPayText themeColor="secondary">
             {abbreviateAddress(address)}
@@ -135,9 +135,9 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
                   .totalAmount
               }
             </QuaiPayText>
-            <Text style={[fontStyle.fontH1, { color: styledColors.gray }]}>
+            <QuaiPayText type="H1" themeColor="secondary">
               {` ${input.unit}`}
-            </Text>
+            </QuaiPayText>
           </View>
           <QuaiPayText type="paragraph">{renderEquivalentAmount()}</QuaiPayText>
         </View>

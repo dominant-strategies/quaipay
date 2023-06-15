@@ -34,7 +34,7 @@ type SendAmountScreenProps = NativeStackScreenProps<
 >;
 
 const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
-  const { amount, address, username, wallet, sender } = route.params;
+  const { amount, address, receiver, wallet, sender } = route.params;
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
@@ -71,13 +71,13 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       screen: 'SendTip',
       params: {
         navigation,
-        sender: sender,
+        sender,
         amountInUSD,
         amountInQUAI,
-        eqInput: eqInput,
-        input: input,
+        eqInput,
+        input,
         address,
-        username,
+        receiver,
         wallet,
       },
     });
@@ -108,7 +108,7 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
         eqInput: eqInput,
         input: input,
         address,
-        username,
+        receiver,
         wallet,
         totalAmount: amountInUSD,
         tip: '0',
@@ -142,8 +142,8 @@ const SendAmountScreen = ({ route }: SendAmountScreenProps) => {
       >
         <View style={styles.container}>
           {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
-          <QuaiPayText style={styles.username}>
-            {t('common.to')} {username}
+          <QuaiPayText type="H3" style={styles.receiver}>
+            {t('common.to')} {receiver}
           </QuaiPayText>
           <QuaiPayText style={styles.wallet}>
             {abbreviateAddress(address)}
@@ -330,8 +330,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  username: {
-    ...fontStyle.fontH3,
+  receiver: {
     marginTop: 8,
     fontSize: 14,
   },

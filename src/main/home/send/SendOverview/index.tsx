@@ -21,6 +21,7 @@ import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SendStackParamList } from '../SendStack';
+import { dateToLocaleString } from 'src/shared/services/dateUtil';
 
 type SendOverviewProps = NativeStackScreenProps<
   SendStackParamList,
@@ -41,22 +42,6 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     width: '100%',
     height: '100%',
-  };
-
-  const renderDate = () => {
-    const date: Date = new Date();
-
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    };
-
-    const formattedDate: string = date.toLocaleString('en-US', options);
-    return formattedDate;
   };
 
   useEffect(() => {
@@ -145,7 +130,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 },
               ]}
             />
-            <Text style={styles.date}>{renderDate()}</Text>
+            <Text style={styles.date}>{dateToLocaleString(new Date())}</Text>
             <View style={styles.receiver}>
               <QuaiPayText style={styles.username} type="paragraph">
                 {t('common:to')} {username}

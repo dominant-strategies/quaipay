@@ -21,12 +21,12 @@ import { goHome } from 'src/shared/navigation/utils';
 import { SendStackParamList } from '../SendStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type SendConfirmationProps = NativeStackScreenProps<
+type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
   'SendConfirmation'
 >;
 
-function SendConfirmation({ route }: SendConfirmationProps) {
+function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, sender, address, username, tip } = route.params;
@@ -211,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SendConfirmation;
+export default SendConfirmationScreen;

@@ -120,7 +120,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           <QuaiPayText style={styles.username}>
             {t('common:to')} {username}
           </QuaiPayText>
-          <QuaiPayText style={styles.wallet}>
+          <QuaiPayText themeColor="secondary">
             {abbreviateAddress(address)}
           </QuaiPayText>
         </View>
@@ -256,13 +256,14 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           onPress={navigateToOverview}
           style={[styles.button, styles.selectedButton, styles.continueButton]}
         >
-          <Text
+          <QuaiPayText
+            type="H3"
             style={{
               color: styledColors.white,
             }}
           >
             {t('common.continue')}
-          </Text>
+          </QuaiPayText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#d5d5d5',
+    backgroundColor: styledColors.border,
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
@@ -324,9 +325,6 @@ const styles = StyleSheet.create({
     ...fontStyle.fontH3,
     marginTop: 16,
     fontSize: 14,
-  },
-  wallet: {
-    color: styledColors.gray,
   },
 });
 

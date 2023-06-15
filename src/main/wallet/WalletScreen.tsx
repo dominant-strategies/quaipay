@@ -8,7 +8,7 @@ import {
   QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
@@ -54,86 +54,88 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           <QuaiPayText style={[typography.H3]}>{t('wallet.earn')}</QuaiPayText>
         </Pressable>
       </View>
-      <View style={styles.transactionsWrapper}>
-        <View style={styles.transactionsHeader}>
-          <QuaiPayText style={[typography.H3, { color: styledColors.gray }]}>
-            {t('wallet.transactionsHistory')}
-          </QuaiPayText>
-          <Pressable
-            style={({ pressed }) => [
-              styles.button,
-              styles.filterButton,
-              pressed && { opacity: 0.5 },
-            ]}
-          >
-            <QuaiPayText
-              style={[typography.default, { color: styledColors.gray }]}
-            >
-              {t('wallet.filter')}&nbsp;
+      <ScrollView>
+        <View style={styles.transactionsWrapper}>
+          <View style={styles.transactionsHeader}>
+            <QuaiPayText style={[typography.H3, { color: styledColors.gray }]}>
+              {t('wallet.transactionsHistory')}
             </QuaiPayText>
-            <FilterIcon />
-          </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.button,
+                styles.filterButton,
+                pressed && { opacity: 0.5 },
+              ]}
+            >
+              <QuaiPayText
+                style={[typography.default, { color: styledColors.gray }]}
+              >
+                {t('wallet.filter')}&nbsp;
+              </QuaiPayText>
+              <FilterIcon />
+            </Pressable>
+          </View>
+          <View style={styles.searchbarWrapper}>
+            <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
+          </View>
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
+          <QuaiPayListItem
+            date="April 26, 2023  17:23:04"
+            fiatAmount="0.99"
+            name="John Doe"
+            picture="https://picsum.photos/666"
+            quaiAmount="+ XXX.XXXXX"
+          />
         </View>
-        <View style={styles.searchbarWrapper}>
-          <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
-        </View>
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-        <QuaiPayListItem
-          date="April 26, 2023  17:23:04"
-          fiatAmount="0.99"
-          name="John Doe"
-          picture="https://picsum.photos/666"
-          quaiAmount="+ XXX.XXXXX"
-        />
-      </View>
+      </ScrollView>
     </QuaiPayContent>
   );
 };

@@ -1,14 +1,18 @@
 import React from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
-import { QuaiPayContent, QuaiPayText } from '../../shared/components';
-import { CardSize, QuaiPayCard } from '../../shared/components/QuaiPayCard';
+import {
+  CardSize,
+  QuaiPayCard,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Theme } from '../../shared/types';
-import { useThemedStyle } from '../../shared/hooks/useThemedStyle';
+import { Theme } from 'src/shared/types';
+import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
-import { styledColors, typography } from '../../shared/styles';
+import { styledColors, typography } from 'src/shared/styles';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation();

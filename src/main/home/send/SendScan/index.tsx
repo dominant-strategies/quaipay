@@ -58,6 +58,9 @@ function SendScanScreen() {
   });
 
   useEffect(() => {
+    if (!wallet) {
+      return;
+    }
     if (barcodes.length > 0 && barcodes[0].content.data) {
       const { address, amount, username } = JSON.parse(
         barcodes[0].content.data as string,
@@ -75,7 +78,7 @@ function SendScanScreen() {
         });
       }
     }
-  }, [barcodes]);
+  }, [barcodes, wallet]);
 
   // Alternatively you can use the underlying function:
   //

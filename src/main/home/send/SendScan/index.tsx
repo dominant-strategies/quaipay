@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
@@ -15,18 +14,20 @@ import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
 import { quais } from 'quais';
-import { t } from 'i18next';
 import { styledColors } from 'src/shared/styles';
-import { QuaiPayText } from 'src/shared/components';
+import { QuaiPaySearchbar, QuaiPayText } from 'src/shared/components';
+import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
+import Loader from '../../../../shared/Loader';
 
 function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const wallet = useWallet();
   const sender = useUsername();
   const isDarkMode = useColorScheme() === 'dark';
+
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -88,6 +89,10 @@ function SendScanScreen() {
     })();
   }, []);
 
+  if (!wallet) {
+    return <Loader text={t('loading')} />;
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -136,7 +141,7 @@ function SendScanScreen() {
       </View>
       <BottomSheet
         backgroundStyle={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
         }}
         handleIndicatorStyle={{
           backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
@@ -145,14 +150,14 @@ function SendScanScreen() {
         snapPoints={snapPoints}
         onChange={handleSheetChange}
         style={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
+          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
         }}
       >
         <BottomSheetView
           style={{
             backgroundColor: isDarkMode
               ? styledColors.black
-              : styledColors.light,
+              : styledColors.white,
           }}
         >
           <View
@@ -161,7 +166,7 @@ function SendScanScreen() {
               {
                 backgroundColor: isDarkMode
                   ? styledColors.black
-                  : styledColors.light,
+                  : styledColors.white,
               },
             ]}
           >
@@ -197,22 +202,14 @@ function SendScanScreen() {
               );
             })}
           </View>
-          <View style={styles.contactSearch}>
-            <AntIcon
-              name="search1"
-              size={20}
-              color="#808080"
-              style={styles.searchIcon}
-            />
-            <TextInput
-              onFocus={() => {
-                handleSnapPress(1);
-              }}
-              placeholder={t('home.send.searchByAddress') as string}
-              placeholderTextColor="#808080"
-              style={styles.searchInput}
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              handleSnapPress(1);
+            }}
+            style={styles.searchbarWrapper}
+          >
+            <QuaiPaySearchbar placeholder={t('home.send.searchByAddress')} />
+          </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
     </SafeAreaView>
@@ -254,32 +251,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
   },
-  contactSearch: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    marginTop: 24,
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 16,
-    top: -1,
-    alignSelf: 'center',
-  },
-  searchInput: {
-    height: 40,
-    width: '96%',
-    paddingLeft: 36,
-    borderRadius: 4,
-    borderColor: '#0066FF',
-    borderWidth: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    marginTop: 20,
+  searchbarWrapper: {
+    paddingHorizontal: 27,
+    marginTop: 22,
   },
 });
 

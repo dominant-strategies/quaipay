@@ -17,7 +17,7 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import ShareControl from '../../receive/ShareControl';
 import Done from 'src/shared/assets/done.svg';
 import { Currency } from 'src/shared/types';
-import { goHome } from 'src/shared/navigation/utils';
+import { RootNavigator } from 'src/shared/navigation/utils';
 import { SendStackParamList } from '../SendStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -109,7 +109,10 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
           </TouchableOpacity>
-          <TouchableOpacity onPress={goHome} style={styles.button}>
+          <TouchableOpacity
+            onPress={RootNavigator.goHome}
+            style={styles.button}
+          >
             <QuaiPayText style={{ color: styledColors.white }} type="H3">
               {t('home.send.complete')}
             </QuaiPayText>

@@ -6,7 +6,7 @@ export const LightTheme: Theme = {
   normal: styledColors.normal,
   primary: styledColors.black,
   secondary: styledColors.gray,
-  background: styledColors.lightGray,
+  background: styledColors.light,
   surfaceVariant: styledColors.light,
   surface: styledColors.white,
   border: styledColors.border,

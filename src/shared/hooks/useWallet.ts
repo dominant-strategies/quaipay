@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { retrieveWallet } from '../services/retrieveWallet';
-import { Wallet } from '../types/Wallet';
+import { Wallet } from '../types';
 
 export const useWallet = () => {
   const [wallet, setWallet] = useState<Wallet>();

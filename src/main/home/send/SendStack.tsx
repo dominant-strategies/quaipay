@@ -22,7 +22,7 @@ export type SendStackParamList = {
     address: string;
     amount: number;
     receiver: string;
-    wallet?: Wallet;
+    wallet: Wallet;
     sender: string;
   };
   SendTip: {
@@ -39,10 +39,10 @@ export type SendStackParamList = {
     };
     amountInUSD: string;
     amountInQUAI: string;
-    wallet?: Wallet;
+    wallet: Wallet;
   };
   SendOverview: {
-    wallet?: Wallet;
+    wallet: Wallet;
     address: string;
     receiver: string;
     sender: string;
@@ -60,7 +60,7 @@ export type SendStackParamList = {
     totalAmount: string;
   };
   SendConfirmation: {
-    wallet?: Wallet;
+    wallet: Wallet;
     transaction: Transaction;
     address: string;
     receiver: string;

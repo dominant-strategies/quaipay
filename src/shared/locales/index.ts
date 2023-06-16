@@ -12,6 +12,8 @@ import receive_en from './en/receive.json';
 import receive_de from './de/receive.json';
 import export_en from './en/export.json';
 import export_de from './de/export.json';
+import wallet_en from './en/wallet.json';
+import wallet_de from './de/wallet.json';
 
 const fallbackLng = findBestLanguageTag(['en', 'de'])?.languageTag;
 
@@ -24,6 +26,7 @@ i18n.use(initReactI18next).init({
         onboarding: onboarding_en,
         receive: receive_en,
         export: export_en,
+        wallet: wallet_en,
       },
     },
     de: {
@@ -33,6 +36,7 @@ i18n.use(initReactI18next).init({
         onboarding: onboarding_de,
         receive: receive_de,
         export: export_de,
+        wallet: wallet_de,
       },
     },
   },

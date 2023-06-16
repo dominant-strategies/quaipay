@@ -1,4 +1,5 @@
-import { ThemeType, Theme } from '../../types/Theme';
+import { ThemeType, Theme } from 'src/shared/types/Theme';
+
 import { styledColors } from '..';
 
 export const DarkTheme: Theme = {

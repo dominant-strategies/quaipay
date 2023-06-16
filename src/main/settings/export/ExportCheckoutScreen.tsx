@@ -8,6 +8,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { styledColors } from 'src/shared/styles';
 
 export const ExportCheckoutScreen: React.FC<
   ExportStackScreenProps<'ExportCheckout'>
@@ -34,13 +35,15 @@ export const ExportCheckoutScreen: React.FC<
           pressed && { opacity: 0.5 },
         ]}
       >
-        <QuaiPayText>Review Seed Phrase</QuaiPayText>
+        <QuaiPayText style={styles.whiteColor}>Review Seed Phrase</QuaiPayText>
       </Pressable>
       <Pressable
         onPress={goToSettings}
         style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
       >
-        <QuaiPayText>{t('common.continue')}</QuaiPayText>
+        <QuaiPayText style={styles.whiteColor}>
+          {t('common.continue')}
+        </QuaiPayText>
       </Pressable>
     </QuaiPayContent>
   );
@@ -64,5 +67,8 @@ const themedStyle = (theme: Theme) =>
     },
     separator: {
       flex: 1,
+    },
+    whiteColor: {
+      color: styledColors.white,
     },
   });

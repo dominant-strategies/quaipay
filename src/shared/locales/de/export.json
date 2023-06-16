@@ -13,5 +13,14 @@
       }
     },
     "learnMore": "Erfahren Sie mehr über den Wiederherstellungsprozess."
+  },
+  "phrase": {
+    "title": "Schreiben Sie Ihre Seed-Phrase auf",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
+    "screenShotBanner": "Screenshots sind deaktiviert, um den Schutz Ihrer Wiederherstellungs-\nphrase zu gewährleisten",
+    "revealPhrase": "Seed-Phrase anzeigen",
+    "hidePhrase": "Seed-Phrase ausblenden",
+    "copyToClipboard": "In Zwischenablage kopieren",
+    "phraseCopied": "Seed-Phrase kopiert"
   }
 }

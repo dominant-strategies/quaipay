@@ -1,4 +1,6 @@
-export const styledColors = {
+import { Colors } from '../types';
+
+export const styledColors: Record<Colors, string> = {
   normal: '#0066FF',
   black: '#000000',
   dark: '#161616',

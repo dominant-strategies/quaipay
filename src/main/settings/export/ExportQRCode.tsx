@@ -7,6 +7,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { styledColors } from 'src/shared/styles';
 
 export const ExportQRCodeScreen: React.FC<
   ExportStackScreenProps<'ExportQRCode'>
@@ -37,13 +38,13 @@ export const ExportQRCodeScreen: React.FC<
           pressed && { opacity: 0.5 },
         ]}
       >
-        <QuaiPayText>Export</QuaiPayText>
+        <QuaiPayText style={styles.whiteColor}>Export</QuaiPayText>
       </Pressable>
       <Pressable
         onPress={goToSettings}
         style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
       >
-        <QuaiPayText>Complete</QuaiPayText>
+        <QuaiPayText style={styles.whiteColor}>Complete</QuaiPayText>
       </Pressable>
     </QuaiPayContent>
   );
@@ -73,5 +74,8 @@ const themedStyle = (theme: Theme) =>
     },
     separator: {
       flex: 1,
+    },
+    whiteColor: {
+      color: styledColors.white,
     },
   });

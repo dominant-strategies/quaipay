@@ -13,9 +13,9 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
-import Loader from 'src/shared/Loader';
 
 import { setUpWallet } from '../services/setUpWallet';
+import { QuaiPayLoader } from 'src/shared/components';
 
 type SetupWalletScreenProps = {
   navigation: any;
@@ -57,7 +57,7 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   }, [navigation]);
 
   if (settingUpWallet) {
-    return <Loader text="Setting up wallet" />;
+    return <QuaiPayLoader text="Setting up wallet" />;
   }
   return (
     <SafeAreaView style={backgroundStyle}>

@@ -13,7 +13,7 @@ type LoaderProps = {
   text: string;
 };
 
-export default function Loader({ text }: LoaderProps) {
+export function QuaiPayLoader({ text }: LoaderProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (

@@ -29,8 +29,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
-import Loader from 'src/shared/Loader';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { QuaiPayLoader } from 'src/shared/components';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
@@ -111,7 +111,7 @@ function SetupLocationScreen() {
   };
 
   if (gettingLocation) {
-    return <Loader text="Almost there!" />;
+    return <QuaiPayLoader text="Almost there!" />;
   }
 
   return (

@@ -12,11 +12,10 @@ import QRCode from 'react-native-qrcode-svg';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
-import Loader from 'src/shared/Loader';
 
 import ShareControl from '../ShareControl';
 import { useTranslation } from 'react-i18next';
-import { QuaiPayText } from 'src/shared/components';
+import { QuaiPayLoader, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
@@ -30,7 +29,7 @@ export const ReceiveScreen = () => {
   const username = useUsername();
   const wallet = useWallet();
   if (!profilePicture || !username || !wallet) {
-    return <Loader text={'Loading...'} />;
+    return <QuaiPayLoader text={'Loading...'} />;
   }
   return (
     <>

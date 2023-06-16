@@ -20,6 +20,7 @@ import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
+import Loader from '../../../../shared/Loader';
 
 function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
@@ -87,6 +88,10 @@ function SendScanScreen() {
       setHasPermission(status === 'authorized');
     })();
   }, []);
+
+  if (!wallet) {
+    return <Loader text={t('loading')} />;
+  }
 
   return (
     <SafeAreaView

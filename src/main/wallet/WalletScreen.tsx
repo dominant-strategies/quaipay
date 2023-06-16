@@ -40,7 +40,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="paragraph">{t('chooseAddress')}</QuaiPayText>
+          <QuaiPayText type="paragraph" style={styles.colorOverwrite}>
+            {t('chooseAddress')}
+          </QuaiPayText>
         </Pressable>
         <Pressable
           style={({ pressed }) => [

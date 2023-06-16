@@ -44,7 +44,9 @@ export const QuaiPayCard: React.FC<QuaiPayCardProps> = ({
         </QuaiPayText>
         <View style={styles.address}>
           <QuaiPayText style={styles.colorOverwrite}>
-            <QuaiPayText style={styles.bold}>{zone}:&nbsp;</QuaiPayText>
+            <QuaiPayText style={[styles.bold, styles.colorOverwrite]}>
+              {zone}:&nbsp;
+            </QuaiPayText>
             {address}
           </QuaiPayText>
         </View>

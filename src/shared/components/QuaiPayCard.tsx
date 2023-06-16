@@ -1,8 +1,9 @@
 import React from 'react';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
-import { styledColors, typography } from '../styles';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { styledColors } from '../styles';
+import { QuaiPayText } from './QuaiPayText';
 
 export enum CardSize {
   Small = 'small',
@@ -32,18 +33,20 @@ export const QuaiPayCard: React.FC<QuaiPayCardProps> = ({
   return (
     <View style={[styles.wrapper, { height }]}>
       <View style={styles.textWrapper}>
-        <Text style={[typography.H3, styles.colorOverwrite]}>{title}</Text>
-        <Text style={[typography.H2, styles.colorOverwrite]}>
+        <QuaiPayText style={styles.colorOverwrite} type="H3">
+          {title}
+        </QuaiPayText>
+        <QuaiPayText style={styles.colorOverwrite} type="H2">
           {quaiAmount}&nbsp;QUAI
-        </Text>
-        <Text style={[typography.default, styles.colorOverwrite]}>
+        </QuaiPayText>
+        <QuaiPayText style={styles.colorOverwrite}>
           ${fiatAmount}&nbsp;USD
-        </Text>
+        </QuaiPayText>
         <View style={styles.address}>
-          <Text style={[typography.default, styles.colorOverwrite]}>
-            <Text style={styles.bold}>{zone}:&nbsp;</Text>
+          <QuaiPayText style={styles.colorOverwrite}>
+            <QuaiPayText style={styles.bold}>{zone}:&nbsp;</QuaiPayText>
             {address}
-          </Text>
+          </QuaiPayText>
         </View>
       </View>
       <Image

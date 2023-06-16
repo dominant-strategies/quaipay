@@ -3,7 +3,7 @@ import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 import { QuaiPayText } from './QuaiPayText';
-import { styledColors, typography } from '../styles';
+import { styledColors } from '../styles';
 
 type QuaiPayListItemProps = {
   picture: string;
@@ -27,18 +27,14 @@ export const QuaiPayListItem: React.FC<QuaiPayListItemProps> = ({
       <Image source={{ uri: picture }} style={styles.image} />
       <View style={styles.textWrapper}>
         <View style={styles.leftTextWrapper}>
-          <QuaiPayText style={[typography.H3, styles.weightOverwrite]}>
+          <QuaiPayText style={styles.weightOverwrite} type="H3">
             {name}
           </QuaiPayText>
-          <QuaiPayText style={[typography.default, styles.colorOverwrite]}>
-            {date}
-          </QuaiPayText>
+          <QuaiPayText style={styles.colorOverwrite}>{date}</QuaiPayText>
         </View>
         <View style={styles.rightTextWrapper}>
-          <QuaiPayText style={typography.default}>
-            {quaiAmount}&nbsp;QUAI
-          </QuaiPayText>
-          <QuaiPayText style={[typography.default, styles.colorOverwrite]}>
+          <QuaiPayText>{quaiAmount}&nbsp;QUAI</QuaiPayText>
+          <QuaiPayText style={styles.colorOverwrite}>
             ${fiatAmount}&nbsp;USD
           </QuaiPayText>
         </View>

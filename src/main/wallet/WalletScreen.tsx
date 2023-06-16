@@ -14,7 +14,7 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
-import { styledColors, typography } from 'src/shared/styles';
+import { styledColors } from 'src/shared/styles';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText style={[typography.H3, styles.colorOverwrite]}>
+          <QuaiPayText type="paragraph">
             {t('wallet.chooseAddress')}
           </QuaiPayText>
         </Pressable>
@@ -51,13 +51,13 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText style={[typography.H3]}>{t('wallet.earn')}</QuaiPayText>
+          <QuaiPayText type="H3">{t('wallet.earn')}</QuaiPayText>
         </Pressable>
       </View>
       <ScrollView>
         <View style={styles.transactionsWrapper}>
           <View style={styles.transactionsHeader}>
-            <QuaiPayText style={[typography.H3, { color: styledColors.gray }]}>
+            <QuaiPayText style={{ color: styledColors.gray }} type="H3">
               {t('wallet.transactionsHistory')}
             </QuaiPayText>
             <Pressable
@@ -67,9 +67,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
                 pressed && { opacity: 0.5 },
               ]}
             >
-              <QuaiPayText
-                style={[typography.default, { color: styledColors.gray }]}
-              >
+              <QuaiPayText style={{ color: styledColors.gray }}>
                 {t('wallet.filter')}&nbsp;
               </QuaiPayText>
               <FilterIcon />

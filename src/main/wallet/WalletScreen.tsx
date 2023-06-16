@@ -5,6 +5,7 @@ import {
   CardSize,
   QuaiPayCard,
   QuaiPayContent,
+  QuaiPayListItem,
   QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
@@ -14,7 +15,6 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors, typography } from 'src/shared/styles';
-import { QuaiPayListItem } from '../../shared/components/QuaiPayListItem';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation();

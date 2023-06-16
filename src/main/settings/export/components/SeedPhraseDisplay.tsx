@@ -7,12 +7,12 @@ import { Theme } from 'src/shared/types';
 const placeholderWord = 'Octopus';
 const placeholderSecuredWord = placeholderWord.split('').map(() => '*');
 
-interface ISeedPhraseDisplayProps {
+interface SeedPhraseDisplayProps {
   hide?: boolean;
   seedPhrase: string;
 }
 
-export const SeedPhraseDisplay: React.FC<ISeedPhraseDisplayProps> = ({
+export const SeedPhraseDisplay: React.FC<SeedPhraseDisplayProps> = ({
   hide = true,
   seedPhrase,
 }) => {

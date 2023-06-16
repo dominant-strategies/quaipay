@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Loader from './shared/Loader';
 import './shared/locales';
 import { ThemeProvider } from './shared/context/themeContext';
 import { Navigation } from './shared/navigation';
+import { QuaiPayLoader } from 'src/shared/components';
 
 function App() {
   // TODO: use redux persist instead of AsyncStorage
@@ -22,7 +22,7 @@ function App() {
   }, []);
 
   if (onboarded === null || loading) {
-    return <Loader text={'Welcome'} />;
+    return <QuaiPayLoader text={'Welcome'} />;
   }
   return (
     <ThemeProvider>

@@ -15,12 +15,15 @@ import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
 import { quais } from 'quais';
 import { styledColors } from 'src/shared/styles';
-import { QuaiPaySearchbar, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayLoader,
+  QuaiPaySearchbar,
+  QuaiPayText,
+} from 'src/shared/components';
 import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
-import Loader from '../../../../shared/Loader';
 
 function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
@@ -90,7 +93,7 @@ function SendScanScreen() {
   }, []);
 
   if (!wallet) {
-    return <Loader text={t('loading')} />;
+    return <QuaiPayLoader text={t('loading')} />;
   }
 
   return (

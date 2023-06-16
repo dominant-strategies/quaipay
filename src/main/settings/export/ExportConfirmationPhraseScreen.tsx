@@ -7,6 +7,7 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
+import { styledColors } from 'src/shared/styles';
 
 export const ExportConfirmationPhraseScreen: React.FC<
   ExportStackScreenProps<'ExportConfirmationPhrase'>
@@ -30,7 +31,9 @@ export const ExportConfirmationPhraseScreen: React.FC<
           pressed && { opacity: 0.5 },
         ]}
       >
-        <QuaiPayText>{t('common.continue')}</QuaiPayText>
+        <QuaiPayText style={styles.whiteColor}>
+          {t('common.continue')}
+        </QuaiPayText>
       </Pressable>
     </QuaiPayContent>
   );
@@ -51,5 +54,8 @@ const themedStyle = (theme: Theme) =>
     },
     separator: {
       flex: 1,
+    },
+    whiteColor: {
+      color: styledColors.white,
     },
   });

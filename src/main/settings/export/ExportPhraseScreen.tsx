@@ -19,6 +19,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 
 import { ExportStackScreenProps } from './ExportStack';
 import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
+import { styledColors } from 'src/shared/styles';
 
 const isWindowSmallerThanScreen =
   Dimensions.get('window').height < Dimensions.get('screen').height;
@@ -99,7 +100,9 @@ export const ExportPhraseScreen: React.FC<
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText>{t('common.continue')}</QuaiPayText>
+          <QuaiPayText style={styles.whiteColor}>
+            {t('common.continue')}
+          </QuaiPayText>
         </Pressable>
         <View style={styles.doubleSeparator} />
       </ScrollView>
@@ -162,5 +165,8 @@ const themedStyle = (theme: Theme) =>
     },
     doubleSeparator: {
       height: 80,
+    },
+    whiteColor: {
+      color: styledColors.white,
     },
   });

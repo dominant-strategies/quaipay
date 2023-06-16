@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
 
   return (
@@ -29,7 +29,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           address="0x123453.....0934823"
           zone="Cyprus-02"
           fiatAmount="1,000"
-          title={t('wallet.balance')}
+          title={t('balance')}
         />
       </View>
       <View style={styles.buttonWrapper}>
@@ -40,9 +40,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="paragraph">
-            {t('wallet.chooseAddress')}
-          </QuaiPayText>
+          <QuaiPayText type="paragraph">{t('chooseAddress')}</QuaiPayText>
         </Pressable>
         <Pressable
           style={({ pressed }) => [
@@ -51,14 +49,14 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="H3">{t('wallet.earn')}</QuaiPayText>
+          <QuaiPayText type="H3">{t('earn')}</QuaiPayText>
         </Pressable>
       </View>
       <ScrollView>
         <View style={styles.transactionsWrapper}>
           <View style={styles.transactionsHeader}>
             <QuaiPayText style={{ color: styledColors.gray }} type="H3">
-              {t('wallet.transactionsHistory')}
+              {t('transactionsHistory')}
             </QuaiPayText>
             <Pressable
               style={({ pressed }) => [
@@ -68,13 +66,13 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
               ]}
             >
               <QuaiPayText style={{ color: styledColors.gray }}>
-                {t('wallet.filter')}&nbsp;
+                {t('filter')}&nbsp;
               </QuaiPayText>
               <FilterIcon />
             </Pressable>
           </View>
           <View style={styles.searchbarWrapper}>
-            <QuaiPaySearchbar placeholder={t('wallet.searchByTransaction')} />
+            <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
           </View>
           <QuaiPayListItem
             date="April 26, 2023  17:23:04"

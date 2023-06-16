@@ -59,7 +59,9 @@ export const ExportPhraseScreen: React.FC<
         </View>
         <View style={styles.disclaimerContainer}>
           <BaselineError />
-          <QuaiPayText>{t('export.phrase.screenShotBanner')}</QuaiPayText>
+          <QuaiPayText allowFontScaling style={styles.disclaimerText}>
+            {t('export.phrase.screenShotBanner')}
+          </QuaiPayText>
         </View>
         <Pressable
           onPress={toggleShowSeedPhrase}
@@ -123,6 +125,9 @@ const themedStyle = (theme: Theme) =>
       borderColor: theme.normal,
       borderRadius: 4,
       gap: 4,
+    },
+    disclaimerText: {
+      maxWidth: '90%', // To avoid text overflow in german
     },
     title: {
       marginBottom: 8,

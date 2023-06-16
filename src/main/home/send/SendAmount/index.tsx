@@ -100,7 +100,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
       receiver,
       wallet,
       totalAmount: amountInUSD,
-      tip: '0',
+      tip: 0,
     });
   };
 

@@ -22,47 +22,57 @@ export const ExportCheckoutScreen: React.FC<
 
   return (
     <QuaiPayContent>
-      <View style={styles.textContainer}>
+      <View style={styles.container}>
         <QuaiPayText type="H1">Never Share your Recovery Codes</QuaiPayText>
-        <QuaiPayText type="H3">Description</QuaiPayText>
-      </View>
-      <View style={styles.separator} />
-      <Pressable
-        onPress={goToSeedPhraseScreen}
-        style={({ pressed }) => [
-          styles.button,
-          styles.reviewButton,
-          pressed && { opacity: 0.5 },
-        ]}
-      >
-        <QuaiPayText style={styles.whiteColor}>Review Seed Phrase</QuaiPayText>
-      </Pressable>
-      <Pressable
-        onPress={goToSettings}
-        style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
-      >
-        <QuaiPayText style={styles.whiteColor}>
-          {t('common.continue')}
+        <View style={styles.separator} />
+        <QuaiPayText type="paragraph" themeColor="secondary">
+          Description
         </QuaiPayText>
-      </Pressable>
+        <View style={styles.separator} />
+        <Pressable
+          onPress={goToSeedPhraseScreen}
+          style={({ pressed }) => [
+            styles.button,
+            styles.reviewButton,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText type="H3">Review Seed Phrase</QuaiPayText>
+        </Pressable>
+        <Pressable
+          onPress={goToSettings}
+          style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
+        >
+          <QuaiPayText type="H3" style={styles.whiteColor}>
+            {t('common.continue')}
+          </QuaiPayText>
+        </Pressable>
+      </View>
     </QuaiPayContent>
   );
 };
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    textContainer: {
+    container: {
       flex: 1,
+      marginHorizontal: 20,
+    },
+    textContainer: {
       alignItems: 'center',
       marginBottom: 20,
     },
     button: {
       marginBottom: 70,
       padding: 10,
-      marginHorizontal: 30,
+      marginHorizontal: 12,
       backgroundColor: theme.normal,
+      borderRadius: 8,
     },
     reviewButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: theme.secondary,
       marginBottom: 16,
     },
     separator: {

@@ -5,9 +5,25 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors } from 'src/shared/styles';
 import { Theme } from 'src/shared/types';
 
+const BOX_HEIGHT = 40;
+const BOX_WIDTH = 85;
+
 interface SeedPhraseConfirmationProps {
   seedPhrase: string;
 }
+
+const WordBox = ({ onPress, word }: { onPress?: () => void; word: string }) => {
+  const styles = useThemedStyle(themedStyle);
+
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.wordButton, pressed && { opacity: 0.5 }]}
+    >
+      <QuaiPayText style={styles.word}>{word}</QuaiPayText>
+    </Pressable>
+  );
+};
 
 export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   seedPhrase,
@@ -17,23 +33,19 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   const seedPhraseWords = seedPhrase.split(' ');
   return (
     <>
-      <View style={styles.wordFillerContainer}>
+      <View style={styles.mainContainer}>
         {seedPhraseWords.map((_, idx) => (
-          <View key={idx} style={styles.itemContainer}>
-            <View style={styles.word} />
+          <View key={idx} style={styles.emptyBox}>
+            <WordBox word={''} />
           </View>
         ))}
+      </View>
+      <View style={styles.separator} />
+      <View style={styles.mainContainer}>
         {seedPhraseWords.map((word, idx) => (
-          <Pressable
-            key={idx}
-            style={({ pressed }) => [
-              styles.itemContainer,
-              styles.wordButtonContainer,
-              pressed && { opacity: 0.5 },
-            ]}
-          >
-            <QuaiPayText style={styles.word}>{word}</QuaiPayText>
-          </Pressable>
+          <View key={idx}>
+            <WordBox word={word} />
+          </View>
         ))}
       </View>
     </>
@@ -42,37 +54,35 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    textContainer: {
-      flex: 1,
-      alignItems: 'center',
-      marginBottom: 20,
-    },
-    wordFillerContainer: {
+    mainContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'flex-end',
+      justifyContent: 'space-between',
       gap: 8,
       marginHorizontal: 16,
-      paddingRight: 16,
+      paddingHorizontal: 16,
     },
-    itemContainer: {
-      width: '30%',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      gap: 2,
-    },
-    wordButtonContainer: {
-      backgroundColor: theme.normal,
-    },
-    word: {
+    emptyBox: {
       borderWidth: 1,
       borderRadius: 4,
       borderColor: theme.border,
-      paddingTop: 10,
+      width: BOX_WIDTH,
+      height: BOX_HEIGHT,
+    },
+    wordButton: {
+      width: BOX_WIDTH,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      backgroundColor: theme.normal,
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: theme.border,
+    },
+    word: {
+      paddingVertical: 12,
       paddingHorizontal: 8,
-      width: 85,
-      height: 40,
+      width: BOX_WIDTH,
+      height: BOX_HEIGHT,
       textAlign: 'left',
     },
     continueButton: {
@@ -82,7 +92,9 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.normal,
     },
     separator: {
-      height: 40,
+      borderWidth: 1,
+      borderColor: theme.border,
+      marginVertical: 18,
     },
     whiteColor: {
       color: styledColors.white,

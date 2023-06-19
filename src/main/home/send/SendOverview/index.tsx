@@ -10,7 +10,11 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { QuaiPayInputDisplay, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayBanner,
+  QuaiPayInputDisplay,
+  QuaiPayText,
+} from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
@@ -37,6 +41,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   );
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -54,6 +59,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
     setLoading(true);
     transferFunds(address, eqInput.value, wallet.privateKey)
       .then(res => {
+        setShowError(false);
         setLoading(false);
         navigation.navigate('SendConfirmation', {
           transaction: res as Transaction,
@@ -61,8 +67,8 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
         });
       })
       .catch(err => {
-        // TODO: handle error to show user friendly message
-        console.log('err', err);
+        console.log('err', err.message);
+        err.message.includes('insufficient funds') && setShowError(true);
         setLoading(false);
       });
   };
@@ -74,6 +80,15 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.mainContainer}>
+        <View style={styles.bannerWrapper}>
+          <View style={styles.banner}>
+            <QuaiPayBanner
+              boldText="Insufficient Funds."
+              showError={showError}
+              text="You need more QUAI."
+            />
+          </View>
+        </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View
             style={[
@@ -263,6 +278,12 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  bannerWrapper: {
+    alignItems: 'center',
+  },
+  banner: {
+    width: '90%',
   },
   container: {
     alignItems: 'center',

@@ -25,8 +25,14 @@ export const ExportConfirmationPhraseScreen: React.FC<
   >([]);
 
   const proposedSeedPhrase = proposedSeedPhraseWords.join(' ');
+  const isPhraseComplete =
+    proposedSeedPhrase.length === seedPhrase.split('').length;
   const isPhraseOk = seedPhrase === proposedSeedPhrase;
 
+  const handleCTAPress = () =>
+    isPhraseOk ? goToCheckout() : popWrongPhraseMessage();
+  const popWrongPhraseMessage = () =>
+    alert(t('export.confirmation.wrongPhraseMessage'));
   const goToCheckout = () => navigation.navigate('ExportCheckout');
 
   return (
@@ -45,8 +51,8 @@ export const ExportConfirmationPhraseScreen: React.FC<
         />
         <View style={styles.separator} />
         <Pressable
-          onPress={goToCheckout}
-          disabled={!isPhraseOk}
+          onPress={handleCTAPress}
+          disabled={!isPhraseComplete}
           style={({ pressed }) => [
             styles.continueButton,
             !isPhraseOk && styles.disabledButton,

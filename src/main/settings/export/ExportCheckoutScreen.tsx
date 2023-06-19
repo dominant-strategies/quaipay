@@ -52,18 +52,18 @@ export const ExportCheckoutScreen: React.FC<
           </QuaiPayText>
         </Pressable>
         <View style={styles.separator} />
-        <Pressable onPress={toggleAcceptTerms} style={styles.tcAcceptContainer}>
+        <Pressable
+          onPress={toggleAcceptTerms}
+          style={styles.acceptTermsContainer}
+        >
           <CheckBold
             style={{
               ...styles.checkBold,
               color: checkBoldToggleColor,
             }}
           />
-          <QuaiPayText
-            style={styles.acceptConditionsText}
-            themeColor="secondary"
-          >
-            {t('acceptConditions')}
+          <QuaiPayText style={styles.acceptTermsText} themeColor="secondary">
+            {t('acceptTerms')}
           </QuaiPayText>
         </Pressable>
         <View style={styles.separator} />
@@ -134,13 +134,13 @@ const themedStyle = (theme: Theme) =>
     learnMoreText: {
       textDecorationLine: 'underline',
     },
-    tcAcceptContainer: {
+    acceptTermsContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       marginHorizontal: 10,
       gap: 16,
     },
-    acceptConditionsText: {
+    acceptTermsText: {
       flexShrink: 1,
       textAlign: 'left',
     },

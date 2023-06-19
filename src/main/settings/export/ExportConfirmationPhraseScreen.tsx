@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
@@ -25,36 +25,38 @@ export const ExportConfirmationPhraseScreen: React.FC<
   const seedPhraseWords = seedPhrase.split(' ');
   return (
     <QuaiPayContent>
-      <View style={styles.textContainer}>
-        <QuaiPayText type="H1">{t('export.confirmation.title')}</QuaiPayText>
-        <QuaiPayText type="H3">
-          {t('export.confirmation.description')}
-        </QuaiPayText>
-      </View>
-      <View style={styles.wordFillerContainer}>
-        {seedPhraseWords.map((_, idx) => (
-          <View key={idx} style={styles.itemContainer}>
-            <View style={styles.word} />
-          </View>
-        ))}
-        {seedPhraseWords.map((word, idx) => (
-          <View key={idx} style={styles.itemContainer}>
-            <QuaiPayText style={styles.word}>{word}</QuaiPayText>
-          </View>
-        ))}
-      </View>
-      <View style={styles.separator} />
-      <Pressable
-        onPress={goToCheckout}
-        style={({ pressed }) => [
-          styles.continueButton,
-          pressed && { opacity: 0.5 },
-        ]}
-      >
-        <QuaiPayText style={styles.whiteColor}>
-          {t('common.continue')}
-        </QuaiPayText>
-      </Pressable>
+      <ScrollView>
+        <View style={styles.textContainer}>
+          <QuaiPayText type="H1">{t('export.confirmation.title')}</QuaiPayText>
+          <QuaiPayText type="H3">
+            {t('export.confirmation.description')}
+          </QuaiPayText>
+        </View>
+        <View style={styles.wordFillerContainer}>
+          {seedPhraseWords.map((_, idx) => (
+            <View key={idx} style={styles.itemContainer}>
+              <View style={styles.word} />
+            </View>
+          ))}
+          {seedPhraseWords.map((word, idx) => (
+            <View key={idx} style={styles.itemContainer}>
+              <QuaiPayText style={styles.word}>{word}</QuaiPayText>
+            </View>
+          ))}
+        </View>
+        <View style={styles.separator} />
+        <Pressable
+          onPress={goToCheckout}
+          style={({ pressed }) => [
+            styles.continueButton,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText style={styles.whiteColor}>
+            {t('common.continue')}
+          </QuaiPayText>
+        </Pressable>
+      </ScrollView>
     </QuaiPayContent>
   );
 };
@@ -98,7 +100,7 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.normal,
     },
     separator: {
-      flex: 1,
+      height: 40,
     },
     whiteColor: {
       color: styledColors.white,

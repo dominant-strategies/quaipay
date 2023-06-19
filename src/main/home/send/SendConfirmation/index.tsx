@@ -32,6 +32,8 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { wallet, sender, address, receiver, tip } = route.params;
   const [showError, setShowError] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
+  // TODO: remove when setShowError and setTxStatus are used
+  console.log(setShowError, setTxStatus);
   const { eqInput, input } = useAmountInput(
     `${
       Number(

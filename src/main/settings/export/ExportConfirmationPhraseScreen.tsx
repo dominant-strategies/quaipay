@@ -83,7 +83,7 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.normal,
     },
     separator: {
-      height: 40,
+      height: 86,
     },
     whiteColor: {
       color: styledColors.white,

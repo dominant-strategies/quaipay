@@ -30,7 +30,11 @@ const WordBox = ({ onPress, word }: WordBoxProps) => {
   return (
     <Pressable
       onPress={handleOnPress}
-      style={({ pressed }) => [styles.wordButton, pressed && { opacity: 0.5 }]}
+      style={({ pressed }) => [
+        styles.box,
+        styles.wordButton,
+        pressed && { opacity: 0.5 },
+      ]}
     >
       <QuaiPayText style={styles.word}>{word}</QuaiPayText>
     </Pressable>
@@ -65,15 +69,24 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
     <>
       <View style={styles.mainContainer}>
         {seedPhraseWords.map((_, idx) => (
-          <View key={idx} style={styles.emptyBox}>
-            {result[idx] && <WordBox onPress={popWord} word={result[idx]} />}
+          <View
+            key={idx}
+            style={[styles.box, !result[idx] && styles.boxBorder]}
+          >
+            {!!result[idx] && <WordBox onPress={popWord} word={result[idx]} />}
           </View>
         ))}
       </View>
       <View style={styles.separator} />
       <View style={styles.mainContainer}>
         {seedPhraseWords.map((word, idx) => (
-          <View key={idx} style={styles.emptyBox}>
+          <View
+            key={idx}
+            style={[
+              styles.box,
+              !!result.find(w => w === word) && styles.boxBorder,
+            ]}
+          >
             {!result.find(w => w === word) && (
               <WordBox word={word} onPress={appendWord} />
             )}
@@ -94,28 +107,23 @@ const themedStyle = (theme: Theme) =>
       marginHorizontal: 16,
       paddingHorizontal: 16,
     },
-    emptyBox: {
-      borderWidth: 1,
-      borderRadius: 4,
-      borderColor: theme.border,
+    box: {
       width: BOX_WIDTH,
       height: BOX_HEIGHT,
+      borderRadius: 4,
+    },
+    boxBorder: {
+      borderWidth: 1,
+      borderColor: theme.border,
     },
     wordButton: {
-      width: BOX_WIDTH,
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
       backgroundColor: theme.normal,
-      borderWidth: 1,
-      borderRadius: 4,
-      borderColor: theme.border,
     },
     word: {
       paddingVertical: 12,
       paddingHorizontal: 8,
-      width: BOX_WIDTH,
-      height: BOX_HEIGHT,
       textAlign: 'left',
+      color: styledColors.white,
     },
     continueButton: {
       marginBottom: 70,
@@ -124,7 +132,7 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.normal,
     },
     separator: {
-      borderWidth: 1,
+      borderTopWidth: 1,
       borderColor: theme.border,
       marginVertical: 18,
     },

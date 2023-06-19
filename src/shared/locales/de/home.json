@@ -22,6 +22,8 @@
     "gasFee": "Gasgebühr",
     "totalCost": "Gesamtkosten",
     "paymentConfirmed": "Zahlung bestätigt",
+    "paymentFailed": "Zahlung fehlgeschlagen.",
+    "paymentPending": "Zahlung ausstehend...",
     "saveToContacts": "Empfänger zu Kontakten hinzufügen",
     "complete": "Fertig",
   }

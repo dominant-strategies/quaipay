@@ -16,10 +16,10 @@ import { useAmountInput } from 'src/shared/hooks';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import ShareControl from '../../receive/ShareControl';
 import { Currency } from 'src/shared/types';
-import { RootNavigator } from 'src/shared/navigation/utils';
 import { SendStackParamList } from '../SendStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';
+import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -31,7 +31,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, sender, address, receiver, tip } = route.params;
   const [showError, setShowError] = useState(false);
-  const [txStatus, setTxStatus] = useState(TxStatus.failed);
+  const [txStatus, setTxStatus] = useState(TxStatus.pending);
   const { eqInput, input } = useAmountInput(
     `${
       Number(
@@ -113,14 +113,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={RootNavigator.goHome}
-            style={styles.button}
-          >
-            <QuaiPayText style={{ color: styledColors.white }} type="H3">
-              {t('home.send.complete')}
-            </QuaiPayText>
-          </TouchableOpacity>
+          <BottomButton txStatus={txStatus} />
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText
@@ -207,7 +200,7 @@ const styles = StyleSheet.create({
     minWidth: '96%',
     maxWidth: '96%',
     alignItems: 'center',
-    paddingVertical: 16,
+    height: 42,
     maxHeight: 50,
   },
 });

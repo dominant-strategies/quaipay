@@ -24,6 +24,7 @@
     "paymentConfirmed": "Payment Confirmed!",
     "paymentFailed": "Transaction Failed.",
     "paymentPending": "Transaction Pending...",
+    "retry": "Retry",
     "saveToContacts": "Save Receipent to Contacts",
     "complete": "Complete"
   }

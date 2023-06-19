@@ -14,12 +14,19 @@ interface SeedPhraseConfirmationProps {
   setResult: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const WordBox = ({ onPress, word }: { onPress?: () => void; word: string }) => {
+interface WordBoxProps {
+  onPress?: (w: string) => void;
+  word: string;
+}
+
+const WordBox = ({ onPress, word }: WordBoxProps) => {
   const styles = useThemedStyle(themedStyle);
+
+  const handleOnPress = () => onPress && onPress(word);
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handleOnPress}
       style={({ pressed }) => [styles.wordButton, pressed && { opacity: 0.5 }]}
     >
       <QuaiPayText style={styles.word}>{word}</QuaiPayText>
@@ -29,24 +36,40 @@ const WordBox = ({ onPress, word }: { onPress?: () => void; word: string }) => {
 
 export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   seedPhrase,
+  result,
+  setResult,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
   const seedPhraseWords = seedPhrase.split(' ');
+
+  const appendWord = (word: string) => {
+    if (result.find(w => w === word)) {
+      return;
+    }
+    setResult(prevState => [...prevState, word]);
+  };
+
+  const popWord = (word: string) => {
+    setResult(prevState => prevState.filter(w => word !== w));
+  };
+
   return (
     <>
       <View style={styles.mainContainer}>
         {seedPhraseWords.map((_, idx) => (
           <View key={idx} style={styles.emptyBox}>
-            <WordBox word={''} />
+            {result[idx] && <WordBox onPress={popWord} word={result[idx]} />}
           </View>
         ))}
       </View>
       <View style={styles.separator} />
       <View style={styles.mainContainer}>
         {seedPhraseWords.map((word, idx) => (
-          <View key={idx}>
-            <WordBox word={word} />
+          <View key={idx} style={styles.emptyBox}>
+            {!result.find(w => w === word) && (
+              <WordBox word={word} onPress={appendWord} />
+            )}
           </View>
         ))}
       </View>

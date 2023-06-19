@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+
 import { QuaiPayText } from 'src/shared/components';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors } from 'src/shared/styles';
 import { Theme } from 'src/shared/types';
+import { shuffle } from 'src/shared/utils/shuffle';
 
 const BOX_HEIGHT = 40;
 const BOX_WIDTH = 85;
 
 interface SeedPhraseConfirmationProps {
+  shouldShuffle?: boolean;
   seedPhrase: string;
   result: string[];
   setResult: React.Dispatch<React.SetStateAction<string[]>>;
@@ -35,13 +38,17 @@ const WordBox = ({ onPress, word }: WordBoxProps) => {
 };
 
 export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
+  shouldShuffle = true,
   seedPhrase,
   result,
   setResult,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
-  const seedPhraseWords = seedPhrase.split(' ');
+  const seedPhraseWords = useMemo(
+    (arr = seedPhrase.split(' ')) => (shouldShuffle ? shuffle(arr) : arr),
+    [seedPhrase],
+  );
 
   const appendWord = (word: string) => {
     if (result.find(w => w === word)) {

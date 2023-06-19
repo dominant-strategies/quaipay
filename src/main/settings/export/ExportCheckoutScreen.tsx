@@ -78,8 +78,13 @@ export const ExportCheckoutScreen: React.FC<
           <QuaiPayText type="H3">{t('reviewSeedPhrase')}</QuaiPayText>
         </Pressable>
         <Pressable
+          disabled={!acceptedTerms}
           onPress={goToSettings}
-          style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
+          style={({ pressed }) => [
+            styles.button,
+            !acceptedTerms && styles.disabledButton,
+            pressed && { opacity: 0.5 },
+          ]}
         >
           <QuaiPayText type="H3" style={styles.whiteColor}>
             {t('complete')}
@@ -112,6 +117,9 @@ const themedStyle = (theme: Theme) =>
       borderWidth: 1,
       borderColor: theme.secondary,
       marginBottom: 16,
+    },
+    disabledButton: {
+      backgroundColor: theme.secondary,
     },
     separator: {
       flex: 1,

@@ -13,7 +13,7 @@ import { styledColors } from 'src/shared/styles';
 export const ExportCheckoutScreen: React.FC<
   ExportStackScreenProps<'ExportCheckout'>
 > = ({ navigation }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'export.checkout' });
   const styles = useThemedStyle(themedStyle);
 
   const goToSeedPhraseScreen = () => navigation.navigate('ExportPhrase');
@@ -23,10 +23,10 @@ export const ExportCheckoutScreen: React.FC<
   return (
     <QuaiPayContent>
       <View style={styles.container}>
-        <QuaiPayText type="H1">Never Share your Recovery Codes</QuaiPayText>
+        <QuaiPayText type="H1">{t('title')}</QuaiPayText>
         <View style={styles.separator} />
         <QuaiPayText type="paragraph" themeColor="secondary">
-          Description
+          {t('description')}
         </QuaiPayText>
         <View style={styles.separator} />
         <Pressable
@@ -37,14 +37,14 @@ export const ExportCheckoutScreen: React.FC<
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="H3">Review Seed Phrase</QuaiPayText>
+          <QuaiPayText type="H3">{t('reviewSeedPhrase')}</QuaiPayText>
         </Pressable>
         <Pressable
           onPress={goToSettings}
           style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
         >
           <QuaiPayText type="H3" style={styles.whiteColor}>
-            {t('common.continue')}
+            {t('complete')}
           </QuaiPayText>
         </Pressable>
       </View>

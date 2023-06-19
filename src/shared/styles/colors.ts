@@ -10,4 +10,6 @@ export const styledColors: Record<Colors, string> = {
   light: '#EFEFEF',
   white: '#FFFFFF',
   border: '#D5D5D5',
+  alert: '#ED4337',
+  alertBackground: '#FFE6E6',
 };

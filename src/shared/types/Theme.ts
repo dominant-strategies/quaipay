@@ -26,4 +26,5 @@ export interface ThemeColor {
   surfaceVariant: string;
   background: string;
   border: string;
+  alert: string;
 }

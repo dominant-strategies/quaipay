@@ -18,7 +18,6 @@ export const ExportCheckoutScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  const checkBoldToggleColor = acceptedTerms ? undefined : 'transparent'; // undefined will default to styled value
   const toggleAcceptTerms = () => setAcceptedTerms(prevState => !prevState);
 
   // TODO: update to use the actual page
@@ -56,12 +55,13 @@ export const ExportCheckoutScreen: React.FC<
           onPress={toggleAcceptTerms}
           style={styles.acceptTermsContainer}
         >
-          <CheckBold
-            style={{
-              ...styles.checkBold,
-              color: checkBoldToggleColor,
-            }}
-          />
+          <View style={styles.checkBoldContainer}>
+            {acceptedTerms ? (
+              <CheckBold />
+            ) : (
+              <View style={styles.checkBoldBlank} />
+            )}
+          </View>
           <QuaiPayText style={styles.acceptTermsText} themeColor="secondary">
             {t('acceptTerms')}
           </QuaiPayText>
@@ -145,9 +145,12 @@ const themedStyle = (theme: Theme) =>
       flexShrink: 1,
       textAlign: 'left',
     },
-    checkBold: {
+    checkBoldContainer: {
       borderWidth: 1,
       borderColor: theme.border,
-      color: theme.normal,
+    },
+    checkBoldBlank: {
+      height: 24,
+      width: 24,
     },
   });

@@ -10,6 +10,8 @@ const BOX_WIDTH = 85;
 
 interface SeedPhraseConfirmationProps {
   seedPhrase: string;
+  result: string[];
+  setResult: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const WordBox = ({ onPress, word }: { onPress?: () => void; word: string }) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,12 @@ export const ExportConfirmationPhraseScreen: React.FC<
 }) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
+  const [proposedSeedPhraseWords, setProposedSeedPhraseWords] = useState<
+    string[]
+  >([]);
+
+  const proposedSeedPhrase = proposedSeedPhraseWords.join(' ');
+  const isPhraseOk = seedPhrase === proposedSeedPhrase;
 
   const goToCheckout = () => navigation.navigate('ExportCheckout');
 
@@ -32,12 +38,18 @@ export const ExportConfirmationPhraseScreen: React.FC<
             {t('export.confirmation.description')}
           </QuaiPayText>
         </View>
-        <SeedPhraseConfirmation seedPhrase={seedPhrase} />
+        <SeedPhraseConfirmation
+          seedPhrase={seedPhrase}
+          result={proposedSeedPhraseWords}
+          setResult={setProposedSeedPhraseWords}
+        />
         <View style={styles.separator} />
         <Pressable
           onPress={goToCheckout}
+          disabled={!isPhraseOk}
           style={({ pressed }) => [
             styles.continueButton,
+            !isPhraseOk && styles.disabledButton,
             pressed && { opacity: 0.5 },
           ]}
         >
@@ -69,5 +81,8 @@ const themedStyle = (theme: Theme) =>
     },
     whiteColor: {
       color: styledColors.white,
+    },
+    disabledButton: {
+      backgroundColor: theme.secondary,
     },
   });

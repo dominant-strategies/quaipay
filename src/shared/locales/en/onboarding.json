@@ -4,5 +4,10 @@
       "title": "Wallet",
       "description": "Wallet is a place where you can store your money."
     },
+    "nameAndPFP": {
+      "choose": "Choose a username and profile picture",
+      "username": "Username",
+      "PFPURL": "Profile picture URL",
+    }
   }
 }

@@ -1,21 +1,29 @@
-import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
-
-import { ExportStackScreenProps } from './ExportStack';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { styledColors } from 'src/shared/styles';
+import CheckBold from 'src/shared/assets/checkBold.svg';
+
+import { ExportStackScreenProps } from './ExportStack';
 
 export const ExportCheckoutScreen: React.FC<
   ExportStackScreenProps<'ExportCheckout'>
 > = ({ navigation }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.checkout' });
   const styles = useThemedStyle(themedStyle);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  const checkBoldToggleColor = acceptedTerms ? undefined : 'transparent'; // undefined will default to styled value
+  const toggleAcceptTerms = () => setAcceptedTerms(prevState => !prevState);
+
+  // TODO: update to use the actual page
+  const goToLearnMoreRecovery = () =>
+    Linking.openURL('https://docs.quai.network/use-quai/wallets');
   const goToSeedPhraseScreen = () => navigation.navigate('ExportPhrase');
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });
@@ -28,6 +36,36 @@ export const ExportCheckoutScreen: React.FC<
         <QuaiPayText type="paragraph" themeColor="secondary">
           {t('description')}
         </QuaiPayText>
+        <View style={styles.separator} />
+        <QuaiPayText type="paragraph" themeColor="secondary">
+          {t('otherParagraph')}
+        </QuaiPayText>
+        <Pressable
+          onPress={goToLearnMoreRecovery}
+          style={({ pressed }) => [
+            styles.learnMoreContainer,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText style={styles.learnMoreText} themeColor="secondary">
+            {t('learnMore')}
+          </QuaiPayText>
+        </Pressable>
+        <View style={styles.separator} />
+        <Pressable onPress={toggleAcceptTerms} style={styles.tcAcceptContainer}>
+          <CheckBold
+            style={{
+              ...styles.checkBold,
+              color: checkBoldToggleColor,
+            }}
+          />
+          <QuaiPayText
+            style={styles.acceptConditionsText}
+            themeColor="secondary"
+          >
+            {t('acceptConditions')}
+          </QuaiPayText>
+        </Pressable>
         <View style={styles.separator} />
         <Pressable
           onPress={goToSeedPhraseScreen}
@@ -80,5 +118,27 @@ const themedStyle = (theme: Theme) =>
     },
     whiteColor: {
       color: styledColors.white,
+    },
+    learnMoreContainer: {
+      paddingVertical: 10,
+      marginHorizontal: 24,
+    },
+    learnMoreText: {
+      textDecorationLine: 'underline',
+    },
+    tcAcceptContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: 10,
+      gap: 16,
+    },
+    acceptConditionsText: {
+      flexShrink: 1,
+      textAlign: 'left',
+    },
+    checkBold: {
+      borderWidth: 1,
+      borderColor: theme.border,
+      color: theme.normal,
     },
   });

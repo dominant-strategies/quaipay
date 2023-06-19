@@ -20,8 +20,10 @@ export const ExportConfirmationPhraseScreen: React.FC<
   return (
     <QuaiPayContent>
       <View style={styles.textContainer}>
-        <QuaiPayText type="H1">Confirm your seed phrase</QuaiPayText>
-        <QuaiPayText type="H3">Description</QuaiPayText>
+        <QuaiPayText type="H1">{t('export.confirmation.title')}</QuaiPayText>
+        <QuaiPayText type="H3">
+          {t('export.confirmation.description')}
+        </QuaiPayText>
       </View>
       <View style={styles.separator} />
       <Pressable

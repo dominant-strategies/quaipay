@@ -14,7 +14,9 @@ import { ExportQRCodeScreen } from './ExportQRCode';
 export type ExportStackParamList = {
   ExportLanding: undefined;
   ExportPhrase: undefined;
-  ExportConfirmationPhrase: undefined;
+  ExportConfirmationPhrase: {
+    seedPhrase: string;
+  };
   ExportCheckout: undefined;
   ExportQRCode: undefined;
 };

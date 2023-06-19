@@ -45,7 +45,7 @@ export const ExportPhraseScreen: React.FC<
     alert(t('export.phrase.phraseCopied'));
   };
   const goToConfirmPhrase = () =>
-    navigation.navigate('ExportConfirmationPhrase');
+    navigation.navigate('ExportConfirmationPhrase', { seedPhrase });
 
   return (
     <QuaiPayContent>

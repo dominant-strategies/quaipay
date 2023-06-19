@@ -163,7 +163,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                   </Text>
                 </View>
               </View>
-              {tip && Number(tip) > 0 && (
+              {tip && Number(tip) > 0 ? (
                 <View style={styles.details}>
                   <View style={styles.detailLabel}>
                     <QuaiPayText type="paragraph">
@@ -183,7 +183,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                     </Text>
                   </View>
                 </View>
-              )}
+              ) : null}
               <View style={styles.details}>
                 <View style={styles.detailLabel}>
                   <QuaiPayText type="paragraph">

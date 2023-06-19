@@ -90,6 +90,7 @@ export const ExportCheckoutScreen: React.FC<
             {t('complete')}
           </QuaiPayText>
         </Pressable>
+        <View style={styles.separator} />
       </View>
     </QuaiPayContent>
   );
@@ -106,7 +107,7 @@ const themedStyle = (theme: Theme) =>
       marginBottom: 20,
     },
     button: {
-      marginBottom: 70,
+      marginBottom: 20,
       padding: 10,
       marginHorizontal: 12,
       backgroundColor: theme.normal,

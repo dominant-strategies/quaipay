@@ -57,7 +57,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   }, [username, profilePicture]);
 
   return (
-    <QuaiPayContent separateHeader={true}>
+    <QuaiPayContent noSeparateHeader={true}>
       <KeyboardAvoidingView
         style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
         behavior="padding"

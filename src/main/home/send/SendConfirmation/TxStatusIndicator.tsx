@@ -36,6 +36,7 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
       transform: [{ rotateZ: `${rotation.value}deg` }],
     };
   });
+  // TODO: https://github.com/dominant-strategies/quaipay/pull/128#discussion_r1234770045
   switch (txStatus) {
     case TxStatus.success:
       return (

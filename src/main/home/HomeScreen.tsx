@@ -9,18 +9,18 @@ import {
 import { useTranslation } from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 
-import { RootStackNavigationProps } from 'src/shared/navigation';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
 import { ReceiveScreen } from './receive/ReceiveScreen/';
 import SendScanScreen from './send/SendScan';
+import { MainTabStackScreenProps } from '../MainStack';
 
 enum SwitchValue {
   Receive = 0,
   Send = 1,
 }
 
-const HomeScreen: React.FC<RootStackNavigationProps<'Main'>> = ({}) => {
+const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const [switchValue, setSwitchValue] = useState<SwitchValue>(
@@ -35,7 +35,6 @@ const HomeScreen: React.FC<RootStackNavigationProps<'Main'>> = ({}) => {
   };
 
   const topViewStyle = {
-    // backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     flex: 1,
   };
   return (

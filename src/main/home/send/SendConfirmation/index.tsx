@@ -59,9 +59,9 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
       />
       <View style={styles.container}>
         <QuaiPayBanner
-          boldText="Something went wrong."
+          boldText={t('home.send.somethingWrong')}
           showError={showError}
-          text="Please retry the transaction."
+          text={t('home.send.retryTransaction')}
         />
         <ScrollView
           contentContainerStyle={[

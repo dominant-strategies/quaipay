@@ -2,12 +2,11 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Dimensions,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import { RNHoleView } from 'react-native-hole-view';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { useCameraDevices } from 'react-native-vision-camera';
@@ -25,6 +24,10 @@ import { useUsername, useWallet } from 'src/shared/hooks';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { useTheme } from 'src/shared/context/themeContext';
+import { useContacts } from 'src/shared/hooks/useContacts';
+import { Contact, Theme } from 'src/shared/types';
+import DownChevronBlack from 'src/shared/assets/downChevronBlack.svg';
+import DownChevronWhite from 'src/shared/assets/downChevronWhite.svg';
 
 const windowWidth = Dimensions.get('window').width;
 const squareSize = windowWidth * 0.65;
@@ -35,7 +38,8 @@ function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const wallet = useWallet();
   const sender = useUsername();
-  const { isDarkMode } = useTheme();
+  const contacts = useContacts();
+  const { isDarkMode, theme } = useTheme();
 
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -71,6 +75,8 @@ function SendScanScreen() {
       setIsCameraReady(false);
     }
   }, [isFocused]);
+
+  const styles = themedStyle(theme);
 
   useEffect(() => {
     if (!wallet) {
@@ -148,7 +154,7 @@ function SendScanScreen() {
       </View>
       <BottomSheet
         backgroundStyle={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
+          backgroundColor: theme.surface,
         }}
         handleIndicatorStyle={{
           backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
@@ -162,52 +168,44 @@ function SendScanScreen() {
       >
         <BottomSheetView
           style={{
-            backgroundColor: isDarkMode
-              ? styledColors.black
-              : styledColors.white,
+            backgroundColor: theme.surface,
           }}
         >
           <View
             style={[
               styles.bottomSheetContainer,
               {
-                backgroundColor: isDarkMode
-                  ? styledColors.black
-                  : styledColors.white,
+                backgroundColor: theme.surface,
               },
             ]}
           >
-            {['P', 'P', 'P', 'P', 'P', 'P', 'View All'].map((item, index) => {
-              // TODO: create a component for this
-              return (
-                <TouchableOpacity key={index}>
-                  <View key={index} style={styles.contact}>
-                    {item === 'View All' ? (
-                      <AntIcon
-                        color={
-                          isDarkMode ? styledColors.white : styledColors.black
-                        }
-                        name="down"
-                        size={24}
-                      />
-                    ) : (
-                      <Text
-                        style={{
-                          color: isDarkMode
-                            ? styledColors.white
-                            : styledColors.black,
-                        }}
+            {contacts
+              ? contacts.slice(0, 5).map((contact: Contact, index: number) => {
+                  return (
+                    <TouchableOpacity key={index}>
+                      <View key={index} style={styles.contact}>
+                        <Image
+                          source={{ uri: contact.profilePicture }}
+                          style={styles.image}
+                        />
+                      </View>
+                      <QuaiPayText
+                        type="default"
+                        style={styles.truncated}
+                        numberOfLines={1}
                       >
-                        {item}
-                      </Text>
-                    )}
-                  </View>
-                  <QuaiPayText type="default">
-                    {item === 'View All' ? 'View All' : 'Phone'}
-                  </QuaiPayText>
-                </TouchableOpacity>
-              );
-            })}
+                        {contact.username}
+                      </QuaiPayText>
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
+            <TouchableOpacity>
+              <View style={styles.contact}>
+                {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
+              </View>
+              <QuaiPayText type="default">View All</QuaiPayText>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -223,45 +221,48 @@ function SendScanScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  cameraContainer: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  holeView: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.6,
-  },
-  bottomSheetContainer: {
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  contact: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderColor: '#D5D5D5',
-    borderWidth: 1,
-    alignSelf: 'flex-start',
-    margin: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  searchbarWrapper: {
-    paddingHorizontal: 27,
-    marginTop: 22,
-  },
-});
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    cameraContainer: {
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+    image: { width: 40, height: 40, borderRadius: 20 },
+    holeView: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      opacity: 0.6,
+    },
+    bottomSheetContainer: {
+      paddingHorizontal: 24,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    contact: {
+      height: 40,
+      width: 40,
+      borderRadius: 20,
+      borderColor: theme.border,
+      borderWidth: 1,
+      margin: 4,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    searchbarWrapper: {
+      paddingHorizontal: 27,
+      marginTop: 22,
+    },
+    truncated: {
+      width: 40,
+    },
+  });
 
 export default SendScanScreen;

@@ -37,7 +37,7 @@ const themedStyle = (theme: Theme) =>
       borderColor: theme.border,
       borderWidth: 1,
       borderRadius: 4,
-      backgroundColor: styledColors.white,
+      backgroundColor: theme.surface,
     },
     searchIcon: {
       marginRight: 6,

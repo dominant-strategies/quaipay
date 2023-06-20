@@ -46,7 +46,9 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
 
   const saveUserName = useCallback(async () => {
     try {
+      // TODO: show error banner when no username provided
       await storeItem({ key: keychainKeys.username, value: username });
+      // TODO: add default PFP options
       await storeItem({
         key: keychainKeys.profilePicture,
         value: profilePicture,

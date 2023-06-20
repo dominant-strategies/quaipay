@@ -25,6 +25,7 @@ import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useTheme } from 'src/shared/context/themeContext';
 
 interface State {
   selectedImage: string;
@@ -43,6 +44,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   const [profilePicture, setProfilePicture] =
     useState<State['selectedImage']>(PFPURLPlaceholder);
   const styles = useThemedStyle(themedStyle);
+  const { theme } = useTheme();
 
   const saveUserName = useCallback(async () => {
     try {
@@ -96,7 +98,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
                 placeholder={
                   t('onboarding.setup.nameAndPFP.username') as string
                 }
-                placeholderTextColor={styledColors.gray}
+                placeholderTextColor={theme.secondary}
                 value={username}
               />
               <QuaiPayText type="H3">
@@ -106,7 +108,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
                 style={styles.textInput}
                 onChangeText={setProfilePicture}
                 placeholder={PFPURLPlaceholder}
-                placeholderTextColor={styledColors.gray}
+                placeholderTextColor={theme.secondary}
                 value={profilePicture}
               />
               <QuaiPayText>

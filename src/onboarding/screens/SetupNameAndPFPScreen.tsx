@@ -74,8 +74,8 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
             </View>
             <View style={styles.body}>
               <View style={styles.imageCenterer}>
-                <View style={styles.imageWrappersWrapper}>
-                  <View style={styles.imageWrapper}>
+                <View style={styles.imageNormalBorder}>
+                  <View style={styles.imageSurfaceBorder}>
                     <Image
                       source={{
                         uri: profilePicture,
@@ -162,12 +162,12 @@ const themedStyle = (theme: Theme) =>
       height: 80,
       borderRadius: 40,
     },
-    imageWrapper: {
+    imageSurfaceBorder: {
       borderRadius: 44,
       borderWidth: 4,
       borderColor: theme.surface,
     },
-    imageWrappersWrapper: {
+    imageNormalBorder: {
       borderRadius: 48,
       borderWidth: 4,
       borderColor: styledColors.normal,

@@ -9,12 +9,14 @@
 import React, { useCallback, useState } from 'react';
 import {
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { storeItem } from 'src/shared/services/keychain';
@@ -57,73 +59,81 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
   }, [username, profilePicture]);
 
   return (
-    <QuaiPayContent noSeparateHeader={true}>
-      <KeyboardAvoidingView
-        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
-        behavior="padding"
-        enabled
-        keyboardVerticalOffset={0}
-      >
-        <ScrollView>
-          <View style={styles.title}>
-            <QuaiPayText type="H1">
-              {t('onboarding.setup.nameAndPFP.choose')}
-            </QuaiPayText>
-          </View>
-          <View style={styles.body}>
-            <View style={styles.imageCenterer}>
-              <View style={styles.imageWrappersWrapper}>
-                <View style={styles.imageWrapper}>
-                  <Image
-                    source={{
-                      uri: profilePicture,
-                    }}
-                    style={styles.image}
-                  />
+    <DismissKeyboard>
+      <QuaiPayContent noSeparateHeader={true}>
+        <KeyboardAvoidingView
+          style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={0}
+        >
+          <ScrollView>
+            <View style={styles.title}>
+              <QuaiPayText type="H1">
+                {t('onboarding.setup.nameAndPFP.choose')}
+              </QuaiPayText>
+            </View>
+            <View style={styles.body}>
+              <View style={styles.imageCenterer}>
+                <View style={styles.imageWrappersWrapper}>
+                  <View style={styles.imageWrapper}>
+                    <Image
+                      source={{
+                        uri: profilePicture,
+                      }}
+                      style={styles.image}
+                    />
+                  </View>
                 </View>
               </View>
+              <QuaiPayText type="H3">
+                {t('onboarding.setup.nameAndPFP.username')}
+              </QuaiPayText>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setUsername}
+                placeholder={
+                  t('onboarding.setup.nameAndPFP.username') as string
+                }
+                placeholderTextColor={styledColors.gray}
+                value={username}
+              />
+              <QuaiPayText type="H3">
+                {t('onboarding.setup.nameAndPFP.PFPURL')}
+              </QuaiPayText>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setProfilePicture}
+                placeholder={PFPURLPlaceholder}
+                placeholderTextColor={styledColors.gray}
+                value={profilePicture}
+              />
+              <QuaiPayText>
+                To reduce dependencies here we allow users to upload a custom
+                weblink for their profile picture. Cycle through default profile
+                picture options.
+              </QuaiPayText>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  onPress={() => {
+                    saveUserName();
+                  }}
+                >
+                  <Text style={styles.buttonText}>{t('common.continue')}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <QuaiPayText type="H3">
-              {t('onboarding.setup.nameAndPFP.username')}
-            </QuaiPayText>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={setUsername}
-              placeholder={t('onboarding.setup.nameAndPFP.username') as string}
-              placeholderTextColor={styledColors.gray}
-              value={username}
-            />
-            <QuaiPayText type="H3">
-              {t('onboarding.setup.nameAndPFP.PFPURL')}
-            </QuaiPayText>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={setProfilePicture}
-              placeholder={PFPURLPlaceholder}
-              placeholderTextColor={styledColors.gray}
-              value={profilePicture}
-            />
-            <QuaiPayText>
-              To reduce dependencies here we allow users to upload a custom
-              weblink for their profile picture. Cycle through default profile
-              picture options.
-            </QuaiPayText>
-            <View style={styles.button}>
-              <TouchableOpacity
-                onPress={() => {
-                  saveUserName();
-                }}
-              >
-                <Text style={styles.buttonText}>{t('common.continue')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </QuaiPayContent>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </QuaiPayContent>
+    </DismissKeyboard>
   );
 }
-
+const DismissKeyboard = ({ children }: any) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     body: {

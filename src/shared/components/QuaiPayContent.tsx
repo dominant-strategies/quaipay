@@ -20,7 +20,7 @@ interface QuaiPayContentProps {
   navButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
-  noSeparateHeader?: boolean;
+  hasBackgroundVariant?: boolean;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
@@ -29,7 +29,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   navButton = true,
   noInsetBottom = false,
   title,
-  noSeparateHeader = false,
+  hasBackgroundVariant = true,
 }) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -47,12 +47,12 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   );
 
   const backgroundColor = isDarkMode
-    ? noSeparateHeader
-      ? styledColors.black
-      : styledColors.dark
-    : noSeparateHeader
-    ? styledColors.white
-    : styledColors.light;
+    ? hasBackgroundVariant
+      ? styledColors.dark
+      : styledColors.black
+    : hasBackgroundVariant
+    ? styledColors.light
+    : styledColors.white;
 
   return (
     <View

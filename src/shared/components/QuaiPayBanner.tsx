@@ -18,7 +18,7 @@ export const QuaiPayBanner = ({
   return (
     <View style={[styles.wrapper, { opacity: showError ? 1 : 0 }]}>
       <RedExclamation />
-      <QuaiPayText style={{ fontWeight: '700' }} themeColor="alert">
+      <QuaiPayText type="bold" themeColor="alert">
         &nbsp;{boldText}
       </QuaiPayText>
       <QuaiPayText themeColor="alert">&nbsp;{text}</QuaiPayText>

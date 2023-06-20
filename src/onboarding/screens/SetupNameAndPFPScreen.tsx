@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -62,7 +61,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
     <DismissKeyboard>
       <QuaiPayContent noSeparateHeader={true}>
         <KeyboardAvoidingView
-          style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+          style={styles.keyboardAvoiding}
           behavior="padding"
           enabled
           keyboardVerticalOffset={0}
@@ -172,6 +171,11 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 48,
       borderWidth: 4,
       borderColor: styledColors.normal,
+    },
+    keyboardAvoiding: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
     },
     title: {
       alignItems: 'center',

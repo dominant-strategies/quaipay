@@ -1,12 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
-import {
-  Pressable,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Pressable, StatusBar, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -16,6 +10,7 @@ import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 import { QuaiPayText } from './QuaiPayText';
 import { styledColors } from 'src/shared/styles';
+import { useTheme } from 'src/shared/context/themeContext';
 
 const MARGIN_RIGHT_OFFSET = 16;
 
@@ -39,7 +34,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const styles = useThemedStyle(themedStyle);
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useTheme();
 
   const goBack = useCallback(
     () =>

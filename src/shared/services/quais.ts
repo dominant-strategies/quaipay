@@ -4,6 +4,7 @@ import { allNodeData } from 'src/shared/constants/nodeData';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
 import { getZone } from './retrieveWallet';
+import { CONFIRMATIONS_REQUIRED } from '../constants/quais';
 
 export const getProvider = () => {
   const zone = getZone();
@@ -12,16 +13,24 @@ export const getProvider = () => {
   return provider;
 };
 
+export const getWebSocketsProvider = () => {
+  const zone = getZone();
+  const nodeData = allNodeData[zone];
+  const provider = new quais.providers.WebSocketProvider(nodeData.url);
+
+  return provider;
+};
+
 export const getBalance = async (address: string) => {
   const provider = getProvider();
   await provider.ready;
 
   const balance = await provider.getBalance(address);
-  const balanceInEth = quais.utils.formatEther(balance);
+  const balanceInQuai = quais.utils.formatEther(balance);
 
   return {
-    balanceInEth,
-    balanceInUsd: Number(balanceInEth) * EXCHANGE_RATE,
+    balanceInQuai: Number(balanceInQuai),
+    balanceInUsd: Number(balanceInQuai) * EXCHANGE_RATE,
   };
 };
 
@@ -64,4 +73,18 @@ export const estimateGas = async (to: string, amount: string) => {
 
 export const abbreviateAddress = (address?: string) => {
   return address ? `${address.slice(0, 8)}...${address.slice(-8)}` : '';
+};
+
+export const waitForTransaction = async (
+  txHash: string,
+): Promise<quais.providers.TransactionReceipt> => {
+  const provider = getWebSocketsProvider();
+  await provider.ready;
+
+  const txReceipt = await provider.waitForTransaction(
+    txHash,
+    CONFIRMATIONS_REQUIRED,
+  );
+
+  return txReceipt;
 };

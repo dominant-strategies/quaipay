@@ -389,8 +389,6 @@ PODS:
     - glog
   - react-native-geolocation-service (5.3.1):
     - React
-  - react-native-image-picker (5.3.1):
-    - React-Core
   - react-native-quick-base64 (2.0.6):
     - React-Core
   - react-native-quick-crypto (0.6.1):
@@ -610,7 +608,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
   - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -722,8 +719,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
-  react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
   react-native-quick-base64:
     :path: "../node_modules/react-native-quick-base64"
   react-native-quick-crypto:
@@ -838,7 +833,6 @@ SPEC CHECKSUMS:
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
   react-native-quick-base64: 62290829c619fbabca4c41cfec75ae759d08fc1c
   react-native-quick-crypto: 455c1b411db006dba1026a30681ececb19180187
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753

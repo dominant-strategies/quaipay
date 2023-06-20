@@ -14,8 +14,6 @@ import Geolocation, {
 import {
   PermissionsAndroid,
   Platform,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -30,7 +28,7 @@ import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { RootNavigator } from 'src/shared/navigation/utils';
-import { QuaiPayLoader } from 'src/shared/components';
+import { QuaiPayContent, QuaiPayLoader } from 'src/shared/components';
 
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
@@ -96,12 +94,6 @@ function SetupLocationScreen() {
     }
   }, []);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%',
-    height: '100%',
-  };
-
   const topViewStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
     marginLeft: 10,
@@ -115,11 +107,7 @@ function SetupLocationScreen() {
   }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent hasBackgroundVariant={false}>
       <View style={topViewStyle}>
         <Text
           style={{
@@ -169,7 +157,7 @@ function SetupLocationScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 }
 

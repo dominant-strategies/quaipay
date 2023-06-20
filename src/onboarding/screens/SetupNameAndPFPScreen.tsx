@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -8,23 +7,25 @@
 
 import React, { useCallback, useState } from 'react';
 import {
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-import {
   Image,
-  SafeAreaView,
-  StatusBar,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
-import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
+import { styledColors } from 'src/shared/styles';
+import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import { useTranslation } from 'react-i18next';
+import { Theme } from 'src/shared/types';
+import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useTheme } from 'src/shared/context/themeContext';
 
 interface State {
   selectedImage: string;
@@ -33,167 +34,171 @@ interface State {
 type SetupNameAndPFPScreenProps = {
   navigation: any;
 };
+
+const PFPURLPlaceholder =
+  'https://www.pngfind.com/pngs/m/616-6168267_personblack-jack-kicking-at-camera-jack-black-transparent.png';
+
 function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
-  const [selectedImage, setSelectedImage] = useState<State['selectedImage']>(
-    'https://www.pngfind.com/pngs/m/616-6168267_personblack-jack-kicking-at-camera-jack-black-transparent.png',
-  );
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%',
-    height: '100%',
-  };
-
-  const topViewStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 'auto',
-    marginBottom: 'auto',
-  };
+  const [profilePicture, setProfilePicture] =
+    useState<State['selectedImage']>(PFPURLPlaceholder);
+  const styles = useThemedStyle(themedStyle);
+  const { theme } = useTheme();
 
   const saveUserName = useCallback(async () => {
     try {
+      // TODO: show error banner when no username provided
       await storeItem({ key: keychainKeys.username, value: username });
+      // TODO: add default PFP options
       await storeItem({
         key: keychainKeys.profilePicture,
-        value: selectedImage,
+        value: profilePicture,
       });
       navigation.navigate('SetupLocation');
     } catch (error) {
       console.log(error);
     }
-  }, [username, selectedImage]);
-
-  const pickImage = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'photo',
-        includeBase64: true,
-        maxHeight: 300,
-        maxWidth: 300,
-      },
-      (response: ImagePickerResponse) => {
-        if (!response.didCancel && !response.errorCode) {
-          if (response.assets && response.assets[0]) {
-            setSelectedImage(
-              `data:${response.assets[0].type};base64,${response.assets[0].base64}}`,
-            );
-          }
-        }
-      },
-    );
-  };
+  }, [username, profilePicture]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <View style={topViewStyle}>
-        <View style={styles.welcomeTitleView}>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? styledColors.white : styledColors.black,
-            }}
-          >
-            Choose a{'\n'}username and{'\n'}profile picture
-          </Text>
-        </View>
-        <TouchableOpacity onPress={pickImage} style={styles.buttonStyle}>
-          <Image
-            source={{
-              uri: selectedImage,
-            }}
-            style={{
-              width: 150,
-              height: 150,
-              borderRadius: 100,
-              alignContent: 'center',
-            }}
-          />
-        </TouchableOpacity>
-        <TextInput
-          placeholder="User Name"
-          textAlign="center"
-          style={{
-            ...fontStyle.fontH2,
-            marginTop: 20,
-            textAlign: 'center',
-            color: isDarkMode ? styledColors.white : styledColors.black,
-          }}
-          value={username}
-          onChangeText={text => setUsername(text)}
-          onSubmitEditing={() => {}}
-        />
-        <View style={styles.textDescriptionView}>
-          <Text
-            style={{ ...fontStyle.fontParagraph, ...styles.textDescription }}
-          >
-            Tap to edit
-          </Text>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{ marginLeft: 21, marginRight: 21 }}
-            onPress={() => {
-              saveUserName();
-            }}
-          >
-            <Text
-              style={{
-                ...fontStyle.fontH3,
-                ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
-                borderRadius: 30,
-              }}
-            >
-              {' '}
-              Save{' '}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+    <DismissKeyboard>
+      <QuaiPayContent hasBackgroundVariant={false}>
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoiding}
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={0}
+        >
+          <ScrollView>
+            <View style={styles.title}>
+              <QuaiPayText type="H1">
+                {t('onboarding.setup.nameAndPFP.choose')}
+              </QuaiPayText>
+            </View>
+            <View style={styles.body}>
+              <View style={styles.imageCenterer}>
+                <View style={styles.imageNormalBorder}>
+                  <View style={styles.imageSurfaceBorder}>
+                    <Image
+                      source={{
+                        uri: profilePicture,
+                      }}
+                      style={styles.image}
+                    />
+                  </View>
+                </View>
+              </View>
+              <QuaiPayText type="H3">
+                {t('onboarding.setup.nameAndPFP.username')}
+              </QuaiPayText>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setUsername}
+                placeholder={
+                  t('onboarding.setup.nameAndPFP.username') as string
+                }
+                placeholderTextColor={theme.secondary}
+                value={username}
+              />
+              <QuaiPayText type="H3">
+                {t('onboarding.setup.nameAndPFP.PFPURL')}
+              </QuaiPayText>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setProfilePicture}
+                placeholder={PFPURLPlaceholder}
+                placeholderTextColor={theme.secondary}
+                value={profilePicture}
+              />
+              <QuaiPayText>
+                To reduce dependencies here we allow users to upload a custom
+                weblink for their profile picture. Cycle through default profile
+                picture options.
+              </QuaiPayText>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  onPress={() => {
+                    saveUserName();
+                  }}
+                >
+                  <Text style={styles.buttonText}>{t('common.continue')}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </QuaiPayContent>
+    </DismissKeyboard>
   );
 }
-
-const styles = StyleSheet.create({
-  buttonStyle: {
-    width: '100%',
-    alignItems: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  welcomeTitleView: {
-    alignItems: 'center',
-    marginBottom: 25,
-    marginTop: 50,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  welcomeTitle: {
-    verticalAlign: 'middle',
-    textAlign: 'center',
-    paddingHorizontal: 70,
-  },
-  textDescriptionView: {
-    marginTop: 10,
-  },
-  textDescription: {
-    color: '#B5B5B5',
-    verticalAlign: 'middle',
-    textAlign: 'center',
-    fontSize: 16,
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 100,
-    lineHeight: 20,
-  },
-});
+const DismissKeyboard = ({ children }: any) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    body: {
+      alignItems: 'flex-start',
+      paddingHorizontal: 16,
+    },
+    button: {
+      borderRadius: 8,
+      marginVertical: 22,
+      backgroundColor: styledColors.normal,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: 42,
+    },
+    buttonText: {
+      color: styledColors.white,
+      fontWeight: '700',
+    },
+    imageCenterer: {
+      width: '100%',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    image: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+    },
+    imageSurfaceBorder: {
+      borderRadius: 44,
+      borderWidth: 4,
+      borderColor: theme.surface,
+    },
+    imageNormalBorder: {
+      borderRadius: 48,
+      borderWidth: 4,
+      borderColor: styledColors.normal,
+    },
+    keyboardAvoiding: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    title: {
+      alignItems: 'center',
+      marginBottom: 25,
+      marginTop: 25,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    textInput: {
+      borderRadius: 4,
+      borderWidth: 2,
+      marginBottom: 16,
+      marginTop: 8,
+      paddingHorizontal: 13,
+      height: 32,
+      color: theme.primary,
+      borderColor: theme.border,
+      width: '100%',
+    },
+  });
 
 export default SetupNameAndPFPScreen;

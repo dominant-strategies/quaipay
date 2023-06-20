@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
+  Dimensions,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -24,6 +25,10 @@ import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
+
+const windowWidth = Dimensions.get('window').width;
+const squareSize = windowWidth * 0.65;
+const squarePaddingRight = (windowWidth - squareSize) / 2;
 
 function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
@@ -58,6 +63,9 @@ function SendScanScreen() {
   });
 
   useEffect(() => {
+    if (!wallet) {
+      return;
+    }
     if (barcodes.length > 0 && barcodes[0].content.data) {
       const { address, amount, username } = JSON.parse(
         barcodes[0].content.data as string,
@@ -75,7 +83,7 @@ function SendScanScreen() {
         });
       }
     }
-  }, [barcodes]);
+  }, [barcodes, wallet]);
 
   // Alternatively you can use the underlying function:
   //
@@ -131,10 +139,10 @@ function SendScanScreen() {
               ]}
               holes={[
                 {
-                  x: 90,
+                  x: squarePaddingRight,
                   y: 160,
-                  width: 240,
-                  height: 240,
+                  width: squareSize,
+                  height: squareSize,
                   borderRadius: 10,
                 },
               ]}

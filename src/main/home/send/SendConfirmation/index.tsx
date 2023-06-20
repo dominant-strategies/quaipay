@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Linking,
   SafeAreaView,
@@ -10,16 +10,16 @@ import {
   useColorScheme,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { QuaiPayText } from 'src/shared/components';
+import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import ShareControl from '../../receive/ShareControl';
-import Done from 'src/shared/assets/done.svg';
 import { Currency } from 'src/shared/types';
-import { RootNavigator } from 'src/shared/navigation/utils';
 import { SendStackParamList } from '../SendStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';
+import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -30,6 +30,10 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, sender, address, receiver, tip } = route.params;
+  const [showError, setShowError] = useState(false);
+  const [txStatus, setTxStatus] = useState(TxStatus.pending);
+  // TODO: remove when setShowError and setTxStatus are used
+  console.log(setShowError, setTxStatus);
   const { eqInput, input } = useAmountInput(
     `${
       Number(
@@ -54,6 +58,11 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View style={styles.container}>
+        <QuaiPayBanner
+          boldText={t('home.send.somethingWrong')}
+          showError={showError}
+          text={t('home.send.retryTransaction')}
+        />
         <ScrollView
           contentContainerStyle={[
             styles.confirmation,
@@ -67,10 +76,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             },
           ]}
         >
-          <Done />
-          <QuaiPayText type="H1" style={styles.confirmText}>
-            {t('home.send.paymentConfirmed')}
-          </QuaiPayText>
+          <TxStatusIndicator txStatus={txStatus} />
           <QuaiPayText style={styles.unit}>
             {eqInput.value} {eqInput.unit}
           </QuaiPayText>
@@ -109,14 +115,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={RootNavigator.goHome}
-            style={styles.button}
-          >
-            <QuaiPayText style={{ color: styledColors.white }} type="H3">
-              {t('home.send.complete')}
-            </QuaiPayText>
-          </TouchableOpacity>
+          <BottomButton txStatus={txStatus} />
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText
@@ -136,9 +135,6 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  confirmText: {
-    marginVertical: 16,
-  },
   unit: {
     fontSize: 16,
     fontWeight: '400',
@@ -183,7 +179,8 @@ const styles = StyleSheet.create({
     width: '92%',
     paddingHorizontal: 16,
     paddingBottom: 16,
-    paddingTop: 32,
+    paddingTop: 64,
+    marginTop: 16,
   },
   quaiSnap: {
     fontSize: 12,
@@ -205,7 +202,7 @@ const styles = StyleSheet.create({
     minWidth: '96%',
     maxWidth: '96%',
     alignItems: 'center',
-    paddingVertical: 16,
+    height: 42,
     maxHeight: 50,
   },
 });

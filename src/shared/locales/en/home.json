@@ -22,7 +22,12 @@
     "gasFee": "Gas Fee",
     "totalCost": "Total Cost",
     "paymentConfirmed": "Payment Confirmed!",
+    "paymentFailed": "Transaction Failed.",
+    "paymentPending": "Transaction Pending...",
+    "retry": "Retry",
     "saveToContacts": "Save Receipent to Contacts",
-    "complete": "Complete"
+    "complete": "Complete",
+    "somethingWrong": "Something went wrong.",
+    "retryTransaction": "Please retry the transaction."
   }
 }

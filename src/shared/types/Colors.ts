@@ -7,4 +7,6 @@ export type Colors =
   | 'lightGray'
   | 'light'
   | 'white'
-  | 'border';
+  | 'border'
+  | 'alert'
+  | 'alertBackground';

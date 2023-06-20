@@ -11,4 +11,5 @@ export const DarkTheme: Theme = {
   surfaceVariant: styledColors.darkGray,
   surface: styledColors.dark,
   border: styledColors.darkGray,
+  alert: styledColors.alert,
 };

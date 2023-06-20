@@ -11,4 +11,5 @@ export const LightTheme: Theme = {
   surfaceVariant: styledColors.light,
   surface: styledColors.white,
   border: styledColors.border,
+  alert: styledColors.alert,
 };

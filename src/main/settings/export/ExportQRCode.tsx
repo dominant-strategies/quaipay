@@ -7,10 +7,12 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { RootNavigator } from 'src/shared/navigation/utils';
 
 import { ExportStackScreenProps } from './ExportStack';
+import { useTranslation } from 'react-i18next';
 
 export const ExportQRCodeScreen: React.FC<
   ExportStackScreenProps<'ExportQRCode'>
 > = ({}) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
 
   const goToSettings = () =>
@@ -21,14 +23,13 @@ export const ExportQRCodeScreen: React.FC<
       <View style={styles.separator} />
       <View style={styles.flexContainer}>
         <View style={styles.cardContainer}>
-          <QuaiPayText type="H1">Recovery QR Code</QuaiPayText>
+          <QuaiPayText type="H1">{t('title')}</QuaiPayText>
           <QuaiPayText type="paragraph" themeColor="secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus. Sed dignissi
+            {t('description')}
           </QuaiPayText>
         </View>
         <QuaiPayText style={styles.underline} themeColor="secondary">
-          Learn more about QuaiPay
+          {t('learnMore')}
         </QuaiPayText>
       </View>
       <View style={styles.separator} />
@@ -36,7 +37,7 @@ export const ExportQRCodeScreen: React.FC<
         onPress={goToSettings}
         style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
       >
-        <QuaiPayText type="H3">Complete</QuaiPayText>
+        <QuaiPayText type="H3">{t('complete')}</QuaiPayText>
       </Pressable>
     </QuaiPayContent>
   );

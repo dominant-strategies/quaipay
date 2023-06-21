@@ -17,19 +17,19 @@ const MARGIN_RIGHT_OFFSET = 16;
 interface QuaiPayContentProps {
   children: React.ReactNode;
   handleGoBack?: () => void;
-  navButton?: boolean;
+  hasBackgroundVariant?: boolean;
+  noNavButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
-  hasBackgroundVariant?: boolean;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
   handleGoBack,
-  navButton = true,
+  hasBackgroundVariant = false,
+  noNavButton = false,
   noInsetBottom = false,
   title,
-  hasBackgroundVariant = false,
 }) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -70,7 +70,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         backgroundColor={backgroundColor}
       />
       <View style={styles.header}>
-        {navButton && (
+        {noNavButton ? null : (
           <Pressable
             onPress={goBack}
             style={({ pressed }) => [
@@ -84,7 +84,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         {!!title && (
           <QuaiPayText
             type="H2"
-            style={[styles.title, navButton && styles.titleMargin]}
+            style={[styles.title, noNavButton && styles.noTitleMargin]}
           >
             {title}
           </QuaiPayText>
@@ -108,13 +108,14 @@ const themedStyle = (theme: Theme) =>
       minHeight: 60,
     },
     navIconMargin: {
-      marginRight: MARGIN_RIGHT_OFFSET,
-    },
-    titleMargin: {
-      marginRight: MARGIN_RIGHT_OFFSET + 12,
+      marginRight: MARGIN_RIGHT_OFFSET - 12,
     },
     title: {
       flex: 1,
       color: theme.primary,
+      marginRight: MARGIN_RIGHT_OFFSET,
+    },
+    noTitleMargin: {
+      marginRight: 0,
     },
   });

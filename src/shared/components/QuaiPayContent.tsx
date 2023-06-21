@@ -43,7 +43,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const styles = useThemedStyle(themedStyle);
-  const isDarkMode = useTheme();
+  const { isDarkMode } = useTheme();
 
   const goBack = useCallback(
     () =>

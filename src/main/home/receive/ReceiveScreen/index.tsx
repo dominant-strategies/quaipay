@@ -95,7 +95,7 @@ const themedStyle = (theme: Theme) =>
     container: {
       flex: 1,
       paddingHorizontal: 16,
-      paddingTop: 40,
+      paddingTop: 80,
     },
     ownerName: {
       fontSize: 20,

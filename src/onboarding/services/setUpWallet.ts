@@ -40,4 +40,8 @@ export async function setUpWallet() {
       );
     }),
   );
+
+  return {
+    entropy,
+  };
 }

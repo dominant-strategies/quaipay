@@ -7,22 +7,24 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
+import { QuaiPayLoader } from 'src/shared/components';
+import { useWalletContext } from 'src/shared/context/walletContext';
+import { useTheme } from 'src/shared/context/themeContext';
 
 import { setUpWallet } from '../services/setUpWallet';
-import { QuaiPayLoader } from 'src/shared/components';
 
 type SetupWalletScreenProps = {
   navigation: any;
 };
 
 function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { setEntropy } = useWalletContext();
+  const { isDarkMode } = useTheme();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const backgroundStyle = {
@@ -42,7 +44,7 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const onPressSetup = useCallback(async () => {
     try {
       setSettingUpWallet(true);
-      await setUpWallet();
+      await setUpWallet().then(({ entropy }) => setEntropy(entropy));
 
       navigation.navigate('SetupNameAndPFP');
     } catch (err) {

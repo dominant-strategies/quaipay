@@ -1,60 +1,34 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
-
-import { styledColors } from 'src/shared/styles';
+import { useTranslation } from 'react-i18next';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { ReceiveScreen } from './receive/ReceiveScreen/';
 import SendScanScreen from './send/SendScan';
 import { MainTabStackScreenProps } from '../MainStack';
 
+const TopBar = createMaterialTopTabNavigator();
+
 const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
-  const switchValue = true;
-  const isDarkMode = useColorScheme() === 'dark';
+  const { t } = useTranslation();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-    flex: 1,
-  };
-
-  const topViewStyle = {
-    flex: 1,
-  };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <TopBar.Navigator initialRouteName={'Receive'}>
+      <TopBar.Screen
+        name="Receive"
+        component={ReceiveScreen}
+        options={{
+          title: t('home.receive.label') ?? '',
+        }}
       />
-      <View style={topViewStyle}>
-        {switchValue ? (
-          <SendScanScreen />
-        ) : (
-          <View
-            style={{
-              ...styles.walletCardStyle,
-            }}
-          >
-            <ReceiveScreen />
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
+      <TopBar.Screen
+        name="Send"
+        component={SendScanScreen}
+        options={{
+          title: t('home.send.label') ?? '',
+        }}
+      />
+    </TopBar.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  walletCardStyle: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-});
 
 export default HomeScreen;

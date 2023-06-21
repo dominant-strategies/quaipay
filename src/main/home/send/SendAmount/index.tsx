@@ -107,7 +107,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   useEffect(() => {
     if (wallet) {
       getBalance(wallet.address).then(balance =>
-        setQuaiBalance(balance.balanceInQuai),
+        setQuaiBalance(balance.balanceInUsd),
       );
     }
   }, [wallet]);
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginVertical: 32,
+    paddingVertical: 32,
   },
   row: {
     flexDirection: 'row',

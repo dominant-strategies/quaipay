@@ -23,7 +23,7 @@ import {
 } from 'src/shared/components';
 import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 
 const windowWidth = Dimensions.get('window').width;
@@ -31,6 +31,7 @@ const squareSize = windowWidth * 0.65;
 const squarePaddingRight = (windowWidth - squareSize) / 2;
 
 function SendScanScreen() {
+  const isFocused = useIsFocused();
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const wallet = useWallet();
   const sender = useUsername();
@@ -61,6 +62,15 @@ function SendScanScreen() {
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
+  const [isCameraReady, setIsCameraReady] = React.useState(true);
+
+  useEffect(() => {
+    if (isFocused) {
+      setIsCameraReady(true);
+    } else {
+      setIsCameraReady(false);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     if (!wallet) {
@@ -121,7 +131,7 @@ function SendScanScreen() {
           },
         ]}
       >
-        {device != null && hasPermission && (
+        {device != null && hasPermission && isCameraReady && (
           <>
             <Camera
               style={StyleSheet.absoluteFill}

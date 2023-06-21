@@ -11,11 +11,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { QuaiPayText } from 'src/shared/components';
 import { styledColors } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
 import NavChevronLeft from 'src/../assets/icons/navChevronLeft.svg';
 
+import { QuaiPayText } from './QuaiPayText';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 

@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
-import { Pressable, StatusBar, StyleSheet, View } from 'react-native';
+import {
+  Pressable,
+  StatusBar,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -16,6 +23,7 @@ const MARGIN_RIGHT_OFFSET = 16;
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
+  containerStyle?: StyleProp<ViewStyle>;
   handleGoBack?: () => void;
   hasBackgroundVariant?: boolean;
   noNavButton?: boolean;
@@ -25,6 +33,7 @@ interface QuaiPayContentProps {
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
+  containerStyle,
   handleGoBack,
   hasBackgroundVariant = false,
   noNavButton = false,
@@ -63,6 +72,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           paddingTop: insets.top,
           paddingBottom: noInsetBottom ? 0 : insets.bottom,
         },
+        ...(containerStyle ? [containerStyle] : []),
       ]}
     >
       <StatusBar

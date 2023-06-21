@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Linking,
   SafeAreaView,
@@ -13,7 +13,10 @@ import { useTranslation } from 'react-i18next';
 import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
-import { abbreviateAddress } from 'src/shared/services/quais';
+import {
+  abbreviateAddress,
+  waitForTransaction,
+} from 'src/shared/services/quais';
 import ShareControl from '../../receive/ShareControl';
 import { Currency } from 'src/shared/types';
 import { SendStackParamList } from '../SendStack';
@@ -50,6 +53,21 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     height: '100%',
     flex: 1,
   };
+
+  useEffect(() => {
+    waitForTransaction(route.params.transaction.hash)
+      .then(receipt => {
+        if (receipt?.status === 0) {
+          setTxStatus(TxStatus.failed);
+        } else if (receipt?.status === 1) {
+          setTxStatus(TxStatus.success);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setTxStatus(TxStatus.failed);
+      });
+  }, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>

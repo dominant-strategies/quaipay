@@ -50,10 +50,12 @@ const topTabBarScreenOptionsGenerator =
   (isDarkMode: boolean) => (theme: Theme) =>
     ({
       tabBarStyle: {
-        backgroundColor: isDarkMode ? styledColors.black : styledColors.gray,
+        backgroundColor: isDarkMode
+          ? styledColors.black
+          : styledColors.lightGray,
         borderRadius: 50,
         borderWidth: 1,
-        borderColor: theme.border,
+        borderColor: theme.secondary,
         marginBottom: 50,
         top: 40,
         position: 'absolute',
@@ -82,6 +84,8 @@ const topTabBarScreenOptionsGenerator =
         borderRadius: 50,
         height: 34,
         marginBottom: 3,
+        borderWidth: 1,
+        borderColor: theme.secondary,
       },
       tabBarPressColor: 'transparent',
       tabBarPressOpacity: 0.5,

@@ -55,6 +55,8 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
     [handleGoBack, navigation],
   );
 
+  const noHeader = noNavButton && !title;
+
   const backgroundColor = isDarkMode
     ? hasBackgroundVariant
       ? styledColors.black
@@ -79,27 +81,29 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundColor}
       />
-      <View style={styles.header}>
-        {noNavButton ? null : (
-          <Pressable
-            onPress={goBack}
-            style={({ pressed }) => [
-              pressed && { opacity: 0.5 },
-              styles.navIconMargin,
-            ]}
-          >
-            <NavChevronLeft />
-          </Pressable>
-        )}
-        {!!title && (
-          <QuaiPayText
-            type="H2"
-            style={[styles.title, noNavButton && styles.noTitleMargin]}
-          >
-            {title}
-          </QuaiPayText>
-        )}
-      </View>
+      {noHeader ? null : (
+        <View style={styles.header}>
+          {noNavButton ? null : (
+            <Pressable
+              onPress={goBack}
+              style={({ pressed }) => [
+                pressed && { opacity: 0.5 },
+                styles.navIconMargin,
+              ]}
+            >
+              <NavChevronLeft />
+            </Pressable>
+          )}
+          {!!title && (
+            <QuaiPayText
+              type="H2"
+              style={[styles.title, noNavButton && styles.noTitleMargin]}
+            >
+              {title}
+            </QuaiPayText>
+          )}
+        </View>
+      )}
       {children}
     </View>
   );

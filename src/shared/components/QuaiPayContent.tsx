@@ -4,13 +4,13 @@ import { Pressable, StatusBar, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { QuaiPayText } from 'src/shared/components';
+import { styledColors } from 'src/shared/styles';
+import { useTheme } from 'src/shared/context/themeContext';
 import NavChevronLeft from 'src/../assets/icons/navChevronLeft.svg';
 
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
-import { QuaiPayText } from './QuaiPayText';
-import { styledColors } from 'src/shared/styles';
-import { useTheme } from 'src/shared/context/themeContext';
 
 const MARGIN_RIGHT_OFFSET = 16;
 
@@ -29,7 +29,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   navButton = true,
   noInsetBottom = false,
   title,
-  hasBackgroundVariant = true,
+  hasBackgroundVariant = false,
 }) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -48,8 +48,8 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
 
   const backgroundColor = isDarkMode
     ? hasBackgroundVariant
-      ? styledColors.dark
-      : styledColors.black
+      ? styledColors.black
+      : styledColors.dark
     : hasBackgroundVariant
     ? styledColors.light
     : styledColors.white;

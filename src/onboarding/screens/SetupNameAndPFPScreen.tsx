@@ -63,7 +63,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
 
   return (
     <DismissKeyboard>
-      <QuaiPayContent hasBackgroundVariant={false}>
+      <QuaiPayContent hasBackgroundVariant>
         <KeyboardAvoidingView
           style={styles.keyboardAvoiding}
           behavior="padding"

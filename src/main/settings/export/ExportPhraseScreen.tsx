@@ -16,18 +16,15 @@ import HideIcon from 'src/shared/assets/hide.svg';
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
-
-import { ExportStackScreenProps } from './ExportStack';
-import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
 import { styledColors } from 'src/shared/styles';
+import { useWalletContext } from 'src/shared/context/walletContext';
+import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
+
+import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
+import { ExportStackScreenProps } from './ExportStack';
 
 const isWindowSmallerThanScreen =
   Dimensions.get('window').height < Dimensions.get('screen').height;
-
-// Mock implementation
-// TODO: actually generate seed phrase
-const useSeedPhrase = () =>
-  'Fish Squirrel Brave Animal Plant Bicycle Sticky Spatula Eagle Tree Asana Macro';
 
 export const ExportPhraseScreen: React.FC<
   ExportStackScreenProps<'ExportPhrase'>
@@ -36,7 +33,8 @@ export const ExportPhraseScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
 
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
-  const seedPhrase = useSeedPhrase();
+  const { entropy } = useWalletContext();
+  const seedPhrase = entropy ? getSeedPhraseFromEntropy(entropy) : undefined;
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);
@@ -45,6 +43,7 @@ export const ExportPhraseScreen: React.FC<
     alert(t('export.phrase.phraseCopied'));
   };
   const goToConfirmPhrase = () =>
+    seedPhrase &&
     navigation.navigate('ExportConfirmationPhrase', { seedPhrase });
 
   return (
@@ -78,7 +77,12 @@ export const ExportPhraseScreen: React.FC<
           </QuaiPayText>
           {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
         </Pressable>
-        <SeedPhraseDisplay hide={isSeedPhraseHidden} seedPhrase={seedPhrase} />
+        {seedPhrase && (
+          <SeedPhraseDisplay
+            hide={isSeedPhraseHidden}
+            seedPhrase={seedPhrase}
+          />
+        )}
         <View style={styles.separator} />
         <Pressable
           onPress={copyToClipboard}
@@ -94,6 +98,7 @@ export const ExportPhraseScreen: React.FC<
         </Pressable>
         <View style={styles.doubleSeparator} />
         <Pressable
+          disabled={!seedPhrase}
           onPress={goToConfirmPhrase}
           style={({ pressed }) => [
             styles.continueButton,

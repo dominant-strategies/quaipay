@@ -81,7 +81,7 @@ export const ReceiveScreen = () => {
       <View style={styles.learnMoreAreaInfo}>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText style={styles.learnMoreText}>
-            Learn more about QuaiPay
+            {t('common.learnMore')}
           </QuaiPayText>
         </TouchableOpacity>
       </View>

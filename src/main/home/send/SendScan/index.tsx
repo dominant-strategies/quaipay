@@ -56,10 +56,10 @@ function SendScanScreen() {
 
   // callbacks
   const handleSheetChange = useCallback((index: any) => {
-    setBottomSheetUp(!index);
+    setBottomSheetUp(!!index);
   }, []);
   const handleSnapPress = useCallback((index: number) => {
-    setBottomSheetUp(!index);
+    setBottomSheetUp(!!index);
     sheetRef.current?.snapToIndex(index);
   }, []);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -186,6 +186,17 @@ function SendScanScreen() {
             }}
           >
             {bottomSheetUp ? (
+              <View style={{ paddingHorizontal: 16 }}>
+                {contacts.map((contact: Contact, index: number) => (
+                  <QuaiPayListItem
+                    key={index}
+                    name={contact.username}
+                    picture={contact.profilePicture}
+                    address={contact.address}
+                  />
+                ))}
+              </View>
+            ) : (
               <View
                 style={[
                   styles.bottomSheetContainer,
@@ -218,19 +229,6 @@ function SendScanScreen() {
                   </View>
                   <QuaiPayText type="default">View All</QuaiPayText>
                 </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                {contacts.map((contact: Contact, index: number) => (
-                  <QuaiPayListItem
-                    date="April 26, 2023  17:23:04"
-                    fiatAmount="0.99"
-                    key={index}
-                    name="John Doe"
-                    picture="https://picsum.photos/666"
-                    quaiAmount="+ XXX.XXXXX"
-                  />
-                ))}
               </View>
             )}
             <TouchableOpacity

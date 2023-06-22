@@ -22,9 +22,9 @@ export const addContact = async (contact: Contact) => {
   await storeItem({ key: keychainKeys.contacts, value: stringifiedContacts });
 };
 
-const parseIfParsable = (value: string) => {
+const parseIfParsable = (value: string | false) => {
   try {
-    return JSON.parse(value);
+    return JSON.parse(value as any);
   } catch (_) {
     return value;
   }

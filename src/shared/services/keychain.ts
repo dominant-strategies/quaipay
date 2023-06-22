@@ -64,7 +64,7 @@ export const retrieveStoredItem = async (key: string) => {
     storage: STORAGE_TYPE.AES,
   });
   if (!credentials) {
-    return undefined;
+    return credentials;
   }
   return credentials.password;
 };

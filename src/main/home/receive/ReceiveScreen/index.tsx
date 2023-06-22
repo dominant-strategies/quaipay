@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import QRCode from 'react-native-qrcode-svg';
 
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
@@ -18,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import {
   QuaiPayContent,
   QuaiPayLoader,
+  QuaiPayQRCode,
   QuaiPayText,
 } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
@@ -43,18 +43,12 @@ export const ReceiveScreen = () => {
     >
       <View style={styles.separator} />
       <View style={styles.walletView}>
-        <View style={styles.qrcodeStyle}>
-          <QRCode
-            value={JSON.stringify({
-              address: wallet.address,
-              username,
-            })}
-            logo={{ uri: profilePicture }}
-            logoSize={50}
-            logoBackgroundColor="transparent"
-            size={140}
-          />
-        </View>
+        <QuaiPayQRCode
+          value={JSON.stringify({
+            address: wallet.address,
+            username,
+          })}
+        />
         <QuaiPayText type="H2" style={styles.ownerName}>
           {username}
         </QuaiPayText>
@@ -102,17 +96,6 @@ const themedStyle = (theme: Theme) =>
     },
     walletAddress: {
       color: theme.secondary,
-    },
-    qrcodeStyle: {
-      backgroundColor: '#FFFFFF',
-      padding: 8,
-      borderWidth: 1,
-      borderRadius: 8,
-      borderColor: theme.border,
-      width: 156,
-      height: 156,
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
     shareControlStyle: {
       marginTop: 20,

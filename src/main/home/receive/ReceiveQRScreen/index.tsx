@@ -7,12 +7,11 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import { useTranslation } from 'react-i18next';
 
-import { QuaiPayContent } from 'src/shared/components';
+import { QuaiPayContent, QuaiPayQRCode } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
-import { useProfilePicture, useUsername } from 'src/shared/hooks';
+import { useUsername } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { Currency } from 'src/shared/types';
@@ -29,7 +28,6 @@ export const ReceiveQRScreen: React.FC<
 
   const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
-  const profilePicture = useProfilePicture();
   const username = useUsername();
 
   const [mainAmount, setMainAmount] = useState(amount);
@@ -83,20 +81,13 @@ export const ReceiveQRScreen: React.FC<
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.qrCode}>
-            <QRCode
-              value={JSON.stringify({
-                address: wallet?.address,
-                username,
-                amount,
-              })}
-              logo={{ uri: profilePicture }}
-              logoSize={50}
-              logoBackgroundColor="transparent"
-              logoBorderRadius={50}
-              size={140}
-            />
-          </View>
+          <QuaiPayQRCode
+            value={JSON.stringify({
+              address: wallet?.address,
+              username,
+              amount,
+            })}
+          />
           <View style={styles.userInfo}>
             <Text style={[styles.username, { color: primaryTextColor }]}>
               {username}
@@ -152,15 +143,6 @@ const styles = StyleSheet.create({
   },
   mainAmount: {
     ...fontStyle.fontH2,
-  },
-  qrCode: {
-    padding: 8,
-    borderWidth: 1,
-    borderRadius: 8,
-    backgroundColor: styledColors.white,
-    borderColor: styledColors.lightGray,
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   userInfo: {
     alignItems: 'center',

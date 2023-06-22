@@ -1,10 +1,17 @@
-import { useRetrieve } from './useRetrieve';
 import { keychainKeys } from '../constants/keychainKeys';
 import { Contact } from '../types/Contact';
 import { retrieveStoredItem, storeItem } from '../services/keychain';
+import { useEffect, useState } from 'react';
 
-export const useContacts = () => {
-  return useRetrieve(keychainKeys.contacts);
+export const useContacts = (): Contact[] | undefined => {
+  const [retrieved, setRetrieved] = useState<any>();
+  useEffect(() => {
+    (async () => {
+      const retrievedItem = await retrieveStoredItem(keychainKeys.contacts);
+      setRetrieved(parseIfParsable(retrievedItem));
+    })();
+  }, [keychainKeys.contacts]);
+  return retrieved;
 };
 
 export const addContact = async (contact: Contact) => {
@@ -13,4 +20,12 @@ export const addContact = async (contact: Contact) => {
   const updatedContacts = [...parsedContacts, contact];
   const stringifiedContacts = JSON.stringify(updatedContacts);
   await storeItem({ key: keychainKeys.contacts, value: stringifiedContacts });
+};
+
+const parseIfParsable = (value: string) => {
+  try {
+    return JSON.parse(value);
+  } catch (_) {
+    return value;
+  }
 };

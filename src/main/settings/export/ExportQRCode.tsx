@@ -1,19 +1,27 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayContent,
+  QuaiPayQRCode,
+  QuaiPayText,
+} from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
 import { ExportStackScreenProps } from './ExportStack';
-import { useTranslation } from 'react-i18next';
+import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 export const ExportQRCodeScreen: React.FC<
   ExportStackScreenProps<'ExportQRCode'>
 > = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
+  const { entropy } = useWalletContext();
+
+  const mnemonicPhrase = getSeedPhraseFromEntropy(entropy);
 
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });
@@ -27,6 +35,10 @@ export const ExportQRCodeScreen: React.FC<
           <QuaiPayText type="paragraph" themeColor="secondary">
             {t('description')}
           </QuaiPayText>
+        <QuaiPayQRCode
+          containerStyle={styles.qrCodeContainer}
+          value={mnemonicPhrase}
+        />
         </View>
         <QuaiPayText style={styles.underline} themeColor="secondary">
           {t('learnMore')}
@@ -67,6 +79,9 @@ const themedStyle = (theme: Theme) =>
       borderWidth: 1,
       borderRadius: 8,
       borderColor: theme.border,
+    },
+    qrCodeContainer: {
+      marginTop: 20,
     },
     reviewButton: {
       marginBottom: 16,

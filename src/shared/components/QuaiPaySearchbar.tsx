@@ -2,15 +2,18 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import MagnifyingGlass from '../assets/magnifyingGlass.svg';
 import React from 'react';
 import { Theme } from '../types';
-import { styledColors } from '../styles';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 
 type QuaiPaySearchbarProps = {
   placeholder: string;
+  searchValue: string;
+  onSearchChange: (search: string) => void;
 };
 
 export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
   placeholder,
+  searchValue,
+  onSearchChange,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
@@ -21,6 +24,8 @@ export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
         placeholder={placeholder}
         placeholderTextColor="#808080"
         style={styles.searchInput}
+        value={searchValue}
+        onChangeText={onSearchChange}
       />
     </View>
   );
@@ -43,6 +48,7 @@ const themedStyle = (theme: Theme) =>
       marginRight: 6,
     },
     searchInput: {
+      color: theme.primary,
       width: '100%',
     },
   });

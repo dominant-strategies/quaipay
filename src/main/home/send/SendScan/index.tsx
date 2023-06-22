@@ -71,6 +71,22 @@ function SendScanScreen() {
 
   const [hasPermission, setHasPermission] = useState(false);
   const [bottomSheetUp, setBottomSheetUp] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+  useEffect(() => {
+    if (searchText === '' && contacts) {
+      setFilteredContacts(contacts);
+    } else if (contacts) {
+      setFilteredContacts(
+        contacts.filter(contact => {
+          console.log({ contact, searchText });
+          return contact.username
+            ?.toLowerCase()
+            ?.includes(searchText.toLowerCase());
+        }),
+      );
+    }
+  }, [contacts, searchText]);
   const devices = useCameraDevices();
   const device = devices.back;
 
@@ -193,13 +209,29 @@ function SendScanScreen() {
             >
               {bottomSheetUp ? (
                 <View style={{ paddingHorizontal: 16 }}>
-                  {contacts.map((contact: Contact, index: number) => (
-                    <QuaiPayListItem
+                  {filteredContacts.map((contact: Contact, index: number) => (
+                    <TouchableOpacity
                       key={index}
-                      name={contact.username}
-                      picture={contact.profilePicture}
-                      address={contact.address}
-                    />
+                      onPress={() => {
+                        navigation.navigate('SendStack', {
+                          screen: 'SendAmount',
+                          params: {
+                            address: contact.address,
+                            amount: 0,
+                            receiver: contact.username,
+                            // wallet,
+                            wallet: '' as any,
+                            sender,
+                          },
+                        });
+                      }}
+                    >
+                      <QuaiPayListItem
+                        name={contact.username}
+                        picture={contact.profilePicture}
+                        address={contact.address}
+                      />
+                    </TouchableOpacity>
                   ))}
                 </View>
               ) : (
@@ -211,10 +243,25 @@ function SendScanScreen() {
                     },
                   ]}
                 >
-                  {contacts
+                  {filteredContacts
                     .slice(0, 5)
                     .map((contact: Contact, index: number) => (
-                      <TouchableOpacity key={index}>
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          navigation.navigate('SendStack', {
+                            screen: 'SendAmount',
+                            params: {
+                              address: contact.address,
+                              amount: 0,
+                              receiver: contact.username,
+                              // wallet,
+                              wallet: '' as any,
+                              sender,
+                            },
+                          });
+                        }}
+                      >
                         <View key={index} style={styles.contact}>
                           <Image
                             source={{ uri: contact.profilePicture }}
@@ -245,6 +292,8 @@ function SendScanScreen() {
                 style={styles.searchbarWrapper}
               >
                 <QuaiPaySearchbar
+                  searchValue={searchText}
+                  onSearchChange={setSearchText}
                   placeholder={t('home.send.searchByAddress')}
                 />
               </TouchableOpacity>

@@ -1,6 +1,12 @@
 import { generateSecureRandom } from 'react-native-securerandom';
 
-import { getSeedPhraseFromEntropy } from './seedPhrase';
+import {
+  getEntropyFromSeedPhrase,
+  getSeedPhraseFromEntropy,
+} from './seedPhrase';
+
+const sampleMnemonic =
+  'seed sock milk update focus rotate barely fade car face mechanic mercy';
 
 jest.mock('react-native-securerandom', () => {
   return {
@@ -41,6 +47,33 @@ describe('entropyToSeedPhrase', () => {
       const output = getSeedPhraseFromEntropy(input);
 
       expect(output).toBeFalsy();
+    });
+  });
+});
+
+describe('seedPhraseToEntropy', () => {
+  const invalidPhrase =
+    'Fish Squirrel Brave Animal Plant Bicycle Sticky Spatula Eagle Tree Asana Macro';
+
+  it('should work with valid mnemonic phrase', () => {
+    const outputLength = getEntropyFromSeedPhrase(sampleMnemonic)?.byteLength;
+
+    expect(outputLength).toBe((sampleMnemonic.split(' ').length * 8) / 6);
+  });
+
+  it('should be falsy for invalid phrases', () => {
+    const output = getEntropyFromSeedPhrase(invalidPhrase);
+
+    expect(output).toBeFalsy();
+  });
+
+  describe('along with phrase getter', () => {
+    it('should be idempotent', async () => {
+      const input = sampleMnemonic;
+      const mid = getEntropyFromSeedPhrase(input);
+      const output = getSeedPhraseFromEntropy(mid);
+
+      expect(output).toBe(input);
     });
   });
 });

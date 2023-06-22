@@ -21,7 +21,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <QuaiPayContent navButton={false}>
+    <QuaiPayContent noNavButton>
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}

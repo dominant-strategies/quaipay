@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Dimensions,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from 'react-native';
 import { RNHoleView } from 'react-native-hole-view';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -17,6 +15,7 @@ import { Camera } from 'react-native-vision-camera';
 import { quais } from 'quais';
 import { styledColors } from 'src/shared/styles';
 import {
+  QuaiPayContent,
   QuaiPayLoader,
   QuaiPaySearchbar,
   QuaiPayText,
@@ -25,6 +24,7 @@ import { t } from 'i18next';
 import { useUsername, useWallet } from 'src/shared/hooks';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
+import { useTheme } from 'src/shared/context/themeContext';
 
 const windowWidth = Dimensions.get('window').width;
 const squareSize = windowWidth * 0.65;
@@ -35,7 +35,7 @@ function SendScanScreen() {
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const wallet = useWallet();
   const sender = useUsername();
-  const isDarkMode = useColorScheme() === 'dark';
+  const { isDarkMode } = useTheme();
 
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -115,22 +115,8 @@ function SendScanScreen() {
   }
 
   return (
-    <SafeAreaView
-      style={{
-        ...styles.container,
-        backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-      }}
-    >
-      <View
-        style={[
-          styles.cameraContainer,
-          {
-            backgroundColor: isDarkMode
-              ? styledColors.black
-              : styledColors.light,
-          },
-        ]}
-      >
+    <QuaiPayContent noNavButton hasBackgroundVariant>
+      <View style={styles.cameraContainer}>
         {device != null && hasPermission && isCameraReady && (
           <>
             <Camera
@@ -150,7 +136,7 @@ function SendScanScreen() {
               holes={[
                 {
                   x: squarePaddingRight,
-                  y: 160,
+                  y: 120,
                   width: squareSize,
                   height: squareSize,
                   borderRadius: 10,
@@ -233,7 +219,7 @@ function SendScanScreen() {
           </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 }
 

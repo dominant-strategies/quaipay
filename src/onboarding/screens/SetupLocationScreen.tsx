@@ -107,7 +107,7 @@ function SetupLocationScreen() {
   }
 
   return (
-    <QuaiPayContent hasBackgroundVariant={false}>
+    <QuaiPayContent hasBackgroundVariant>
       <View style={topViewStyle}>
         <Text
           style={{

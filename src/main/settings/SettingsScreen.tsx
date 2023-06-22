@@ -16,7 +16,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
     navigation.navigate('ExportStack', { screen: 'ExportLanding' });
 
   return (
-    <QuaiPayContent title={'Settings'} navButton={false}>
+    <QuaiPayContent title={'Settings'} noNavButton>
       <View style={styles.container}>
         <Pressable
           onPress={goToExport}

@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -45,13 +51,14 @@ function SendScanScreen() {
   const sheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['30%', '70%'], []);
+  const snapPoints = useMemo(() => ['30%', '80%'], []);
 
   // callbacks
   const handleSheetChange = useCallback((index: any) => {
-    console.log('handleSheetChange', index);
+    setBottomSheetUp(!index);
   }, []);
   const handleSnapPress = useCallback((index: number) => {
+    setBottomSheetUp(!index);
     sheetRef.current?.snapToIndex(index);
   }, []);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,7 +66,8 @@ function SendScanScreen() {
     sheetRef.current?.close();
   }, []);
 
-  const [hasPermission, setHasPermission] = React.useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
+  const [bottomSheetUp, setBottomSheetUp] = useState(false);
   const devices = useCameraDevices();
   const device = devices.back;
 
@@ -171,42 +179,50 @@ function SendScanScreen() {
             backgroundColor: theme.surface,
           }}
         >
-          <View
-            style={[
-              styles.bottomSheetContainer,
-              {
-                backgroundColor: theme.surface,
-              },
-            ]}
-          >
-            {contacts
-              ? contacts.slice(0, 5).map((contact: Contact, index: number) => {
-                  return (
-                    <TouchableOpacity key={index}>
-                      <View key={index} style={styles.contact}>
-                        <Image
-                          source={{ uri: contact.profilePicture }}
-                          style={styles.image}
-                        />
-                      </View>
-                      <QuaiPayText
-                        type="default"
-                        style={styles.truncated}
-                        numberOfLines={1}
-                      >
-                        {contact.username}
-                      </QuaiPayText>
-                    </TouchableOpacity>
-                  );
-                })
-              : null}
-            <TouchableOpacity>
-              <View style={styles.contact}>
-                {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
-              </View>
-              <QuaiPayText type="default">View All</QuaiPayText>
-            </TouchableOpacity>
-          </View>
+          {bottomSheetUp ? (
+            <View
+              style={[
+                styles.bottomSheetContainer,
+                {
+                  backgroundColor: theme.surface,
+                },
+              ]}
+            >
+              {contacts
+                ? contacts
+                    .slice(0, 5)
+                    .map((contact: Contact, index: number) => {
+                      return (
+                        <TouchableOpacity key={index}>
+                          <View key={index} style={styles.contact}>
+                            <Image
+                              source={{ uri: contact.profilePicture }}
+                              style={styles.image}
+                            />
+                          </View>
+                          <QuaiPayText
+                            type="default"
+                            style={styles.truncated}
+                            numberOfLines={1}
+                          >
+                            {contact.username}
+                          </QuaiPayText>
+                        </TouchableOpacity>
+                      );
+                    })
+                : null}
+              <TouchableOpacity>
+                {/* eslint-disable-next-line react-native/no-inline-styles */}
+                <View style={[styles.contact, { paddingTop: 5 }]}>
+                  {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
+                </View>
+                <QuaiPayText type="default">View All</QuaiPayText>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <QuaiPayText>hey</QuaiPayText>
+          )}
+
           <TouchableOpacity
             onPress={() => {
               handleSnapPress(1);

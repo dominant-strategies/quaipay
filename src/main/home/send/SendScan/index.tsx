@@ -21,6 +21,7 @@ import { quais } from 'quais';
 import { styledColors } from 'src/shared/styles';
 import {
   QuaiPayContent,
+  QuaiPayListItem,
   QuaiPayLoader,
   QuaiPaySearchbar,
   QuaiPayText,
@@ -160,79 +161,89 @@ function SendScanScreen() {
           </>
         )}
       </View>
-      <BottomSheet
-        backgroundStyle={{
-          backgroundColor: theme.surface,
-        }}
-        handleIndicatorStyle={{
-          backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
-        }}
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        onChange={handleSheetChange}
-        style={{
-          backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-        }}
-      >
-        <BottomSheetView
-          style={{
+      {contacts ? (
+        <BottomSheet
+          backgroundStyle={{
             backgroundColor: theme.surface,
           }}
+          handleIndicatorStyle={{
+            backgroundColor: isDarkMode
+              ? styledColors.light
+              : styledColors.gray,
+          }}
+          ref={sheetRef}
+          snapPoints={snapPoints}
+          onChange={handleSheetChange}
+          style={{
+            backgroundColor: isDarkMode
+              ? styledColors.black
+              : styledColors.white,
+          }}
         >
-          {bottomSheetUp ? (
-            <View
-              style={[
-                styles.bottomSheetContainer,
-                {
-                  backgroundColor: theme.surface,
-                },
-              ]}
-            >
-              {contacts
-                ? contacts
-                    .slice(0, 5)
-                    .map((contact: Contact, index: number) => {
-                      return (
-                        <TouchableOpacity key={index}>
-                          <View key={index} style={styles.contact}>
-                            <Image
-                              source={{ uri: contact.profilePicture }}
-                              style={styles.image}
-                            />
-                          </View>
-                          <QuaiPayText
-                            type="default"
-                            style={styles.truncated}
-                            numberOfLines={1}
-                          >
-                            {contact.username}
-                          </QuaiPayText>
-                        </TouchableOpacity>
-                      );
-                    })
-                : null}
-              <TouchableOpacity>
-                {/* eslint-disable-next-line react-native/no-inline-styles */}
-                <View style={[styles.contact, { paddingTop: 5 }]}>
-                  {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
-                </View>
-                <QuaiPayText type="default">View All</QuaiPayText>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <QuaiPayText>hey</QuaiPayText>
-          )}
-
-          <TouchableOpacity
-            onPress={() => {
-              handleSnapPress(1);
+          <BottomSheetView
+            style={{
+              backgroundColor: theme.surface,
             }}
-            style={styles.searchbarWrapper}
           >
-            <QuaiPaySearchbar placeholder={t('home.send.searchByAddress')} />
-          </TouchableOpacity>
-        </BottomSheetView>
-      </BottomSheet>
+            {bottomSheetUp ? (
+              <View
+                style={[
+                  styles.bottomSheetContainer,
+                  {
+                    backgroundColor: theme.surface,
+                  },
+                ]}
+              >
+                {contacts.slice(0, 5).map((contact: Contact, index: number) => (
+                  <TouchableOpacity key={index}>
+                    <View key={index} style={styles.contact}>
+                      <Image
+                        source={{ uri: contact.profilePicture }}
+                        style={styles.image}
+                      />
+                    </View>
+                    <QuaiPayText
+                      type="default"
+                      style={styles.truncated}
+                      numberOfLines={1}
+                    >
+                      {contact.username}
+                    </QuaiPayText>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity>
+                  {/* eslint-disable-next-line react-native/no-inline-styles */}
+                  <View style={[styles.contact, { paddingTop: 5 }]}>
+                    {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
+                  </View>
+                  <QuaiPayText type="default">View All</QuaiPayText>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                {contacts.map((contact: Contact, index: number) => (
+                  <QuaiPayListItem
+                    date="April 26, 2023  17:23:04"
+                    fiatAmount="0.99"
+                    key={index}
+                    name="John Doe"
+                    picture="https://picsum.photos/666"
+                    quaiAmount="+ XXX.XXXXX"
+                  />
+                ))}
+              </View>
+            )}
+            <TouchableOpacity
+              onPress={() => {
+                handleSnapPress(1);
+              }}
+              style={styles.searchbarWrapper}
+            >
+              <QuaiPaySearchbar placeholder={t('home.send.searchByAddress')} />
+            </TouchableOpacity>
+          </BottomSheetView>
+        </BottomSheet>
+      ) : null}
     </QuaiPayContent>
   );
 }

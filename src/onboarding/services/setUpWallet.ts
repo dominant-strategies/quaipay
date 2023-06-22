@@ -1,15 +1,17 @@
-import { generateSecureRandom } from 'react-native-securerandom';
-import buffer from 'buffer';
-import { storeItem } from 'src/shared/services/keychain';
-import { keychainKeys } from '../../shared/constants/keychainKeys';
+import bip39 from 'bip39';
 import { quais } from 'quais';
+
+import { storeItem } from 'src/shared/services/keychain';
+import { keychainKeys } from 'src/shared/constants/keychainKeys';
+import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
 export async function setUpWallet() {
-  const entropy = await generateSecureRandom(32);
-  const encodedEntropy = buffer.Buffer.from(entropy).toString('base64');
+  // Use bip39 to generate entropy
+  const entropy = getEntropyFromSeedPhrase(bip39.generateMnemonic()) ?? '';
+  const encodedEntropy = Buffer.from(entropy).toString('base64');
   await storeItem(
     {
       key: keychainKeys.entropy,

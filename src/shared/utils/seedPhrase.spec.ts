@@ -1,22 +1,18 @@
-import { generateSecureRandom } from 'react-native-securerandom';
-
 import {
   getEntropyFromSeedPhrase,
   getSeedPhraseFromEntropy,
 } from './seedPhrase';
 
+// Phrase generated with bip39 lib
 const sampleMnemonic =
   'seed sock milk update focus rotate barely fade car face mechanic mercy';
 
-jest.mock('react-native-securerandom', () => {
-  return {
-    generateSecureRandom: jest.fn((size: number) => {
-      let uint8 = new Uint8Array(size);
-      uint8 = uint8.map(() => Math.floor(Math.random() * 90) + 10);
-      return uint8;
-    }),
-  };
-});
+// Mock fx to test utility
+const generateSecureRandom = (size: number) => {
+  let uint8 = new Uint8Array(size);
+  uint8 = uint8.map(() => Math.floor(Math.random() * 90) + 10);
+  return uint8;
+};
 
 describe('entropyToSeedPhrase', () => {
   describe('with valid entropy', () => {

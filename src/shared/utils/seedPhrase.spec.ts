@@ -7,6 +7,9 @@ import {
 const sampleMnemonic =
   'seed sock milk update focus rotate barely fade car face mechanic mercy';
 
+const invalidPhrase =
+  'Fish Squirrel Brave Animal Plant Bicycle Sticky Spatula Eagle Tree Asana Macro';
+
 // Mock fx to test utility
 const generateSecureRandom = (size: number) => {
   let uint8 = new Uint8Array(size);
@@ -48,9 +51,6 @@ describe('entropyToSeedPhrase', () => {
 });
 
 describe('seedPhraseToEntropy', () => {
-  const invalidPhrase =
-    'Fish Squirrel Brave Animal Plant Bicycle Sticky Spatula Eagle Tree Asana Macro';
-
   it('should work with valid mnemonic phrase', () => {
     const outputLength = getEntropyFromSeedPhrase(sampleMnemonic)?.byteLength;
 
@@ -64,7 +64,7 @@ describe('seedPhraseToEntropy', () => {
   });
 
   describe('along with phrase getter', () => {
-    it('should be idempotent', async () => {
+    it('should be deterministic', async () => {
       const input = sampleMnemonic;
       const mid = getEntropyFromSeedPhrase(input);
       const output = getSeedPhraseFromEntropy(mid);

@@ -39,7 +39,7 @@ const ANIMATED_SNAP_POINTS = [1, 2];
 // Init to 1 to render but not show BottomSheet
 const INITIAL_SNAP_POINTS = [1];
 // Values of BottomSheet heights for other 2 indexes
-const PARTIAL_DIFF = 180;
+const PARTIAL_DIFF = 220;
 const EXPAND_DIFF = 475;
 
 export const QuaiPayContactBottomSheet: React.FC = () => {
@@ -79,6 +79,12 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       transition.value,
       ANIMATED_SNAP_POINTS,
       [70, 0],
+      Extrapolate.CLAMP,
+    ),
+    marginTop: interpolate(
+      transition.value,
+      ANIMATED_SNAP_POINTS,
+      [24, 0],
       Extrapolate.CLAMP,
     ),
   }));
@@ -270,7 +276,7 @@ const themedStyle = (theme: Theme) =>
     },
     searchbarWrapper: {
       paddingHorizontal: 27,
-      marginTop: 22,
+      marginVertical: 24,
     },
     truncated: {
       width: 40,

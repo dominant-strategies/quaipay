@@ -35,11 +35,14 @@ export const QuaiPayContactBottomSheet: React.FC<
   const { isDarkMode } = useTheme();
   const styles = useThemedStyle(themedStyle);
 
-  // variables
+  // search
+  const [searchText, setSearchText] = useState<string>();
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+
+  // bottomsheet
   const snapPoints = useMemo(() => ['30%', '80%'], []);
   const [bottomSheetUp, setBottomSheetUp] = useState(false);
   const sheetRef = useRef<BottomSheet>(null);
-
   // callbacks
   const handleSheetChange = useCallback((index: any) => {
     setBottomSheetUp(!!index);
@@ -49,25 +52,17 @@ export const QuaiPayContactBottomSheet: React.FC<
     sheetRef.current?.snapToIndex(index);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
-  }, []);
-
-  const [searchText, setSearchText] = useState('');
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
-
   useEffect(() => {
-    if (searchText === '' && contacts) {
-      setFilteredContacts(contacts);
-    } else if (contacts) {
+    if (contacts) {
       setFilteredContacts(
-        contacts.filter(contact => {
-          console.log({ contact, searchText });
-          return contact.username
-            ?.toLowerCase()
-            ?.includes(searchText.toLowerCase());
-        }),
+        searchText
+          ? contacts.filter(contact => {
+              console.log({ contact, searchText });
+              return contact.username
+                ?.toLowerCase()
+                ?.includes(searchText.toLowerCase());
+            })
+          : contacts,
       );
     }
   }, [contacts, searchText]);

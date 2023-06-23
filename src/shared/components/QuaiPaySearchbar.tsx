@@ -6,7 +6,7 @@ import { useThemedStyle } from '../hooks/useThemedStyle';
 
 type QuaiPaySearchbarProps = {
   placeholder: string;
-  searchValue: string;
+  searchValue?: string;
   onSearchChange: (search: string) => void;
 };
 

@@ -15,8 +15,7 @@ import {
   View,
 } from 'react-native';
 
-import DownChevronBlack from 'src/shared/assets/downChevronBlack.svg';
-import DownChevronWhite from 'src/shared/assets/downChevronWhite.svg';
+import DownChevron from 'src/shared/assets/downChevron.svg';
 import { QuaiPayListItem, QuaiPaySearchbar, QuaiPayText } from '.';
 
 import { RootNavigator } from '../navigation/utils';
@@ -25,11 +24,7 @@ import { Contact, Theme } from '../types';
 import { useContacts, useThemedStyle, useUsername } from '../hooks';
 import { useTheme } from '../context/themeContext';
 
-interface QuaiPayContactBottomSheetProps {}
-
-export const QuaiPayContactBottomSheet: React.FC<
-  QuaiPayContactBottomSheetProps
-> = ({}) => {
+export const QuaiPayContactBottomSheet: React.FC = () => {
   const contacts = useContacts();
   const sender = useUsername();
   const { isDarkMode } = useTheme();
@@ -51,13 +46,26 @@ export const QuaiPayContactBottomSheet: React.FC<
     setBottomSheetUp(!!index);
     sheetRef.current?.snapToIndex(index);
   }, []);
+  const expandBottomSheet = () => handleSnapPress(1);
+
+  const handleOnContactPress = (contact: Contact) =>
+    RootNavigator.navigate('SendStack', {
+      screen: 'SendAmount',
+      params: {
+        address: contact.address,
+        amount: 0,
+        receiver: contact.username,
+        // wallet,
+        wallet: '' as any,
+        sender,
+      },
+    });
 
   useEffect(() => {
     if (contacts) {
       setFilteredContacts(
         searchText
           ? contacts.filter(contact => {
-              console.log({ contact, searchText });
               return contact.username
                 ?.toLowerCase()
                 ?.includes(searchText.toLowerCase());
@@ -67,124 +75,80 @@ export const QuaiPayContactBottomSheet: React.FC<
     }
   }, [contacts, searchText]);
 
-  return (
-    <>
-      {contacts ? (
-        <BottomSheet
-          backgroundStyle={styles.backgroundSurface}
-          handleIndicatorStyle={{
-            backgroundColor: isDarkMode
-              ? styledColors.light
-              : styledColors.gray,
-          }}
-          ref={sheetRef}
-          snapPoints={snapPoints}
-          onChange={handleSheetChange}
-          style={{
-            backgroundColor: isDarkMode
-              ? styledColors.black
-              : styledColors.white,
-          }}
+  return contacts ? (
+    <BottomSheet
+      backgroundStyle={styles.backgroundSurface}
+      handleIndicatorStyle={{
+        backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
+      }}
+      ref={sheetRef}
+      snapPoints={snapPoints}
+      onChange={handleSheetChange}
+    >
+      <BottomSheetView style={styles.backgroundSurface}>
+        <ScrollView
+          scrollEnabled={bottomSheetUp}
+          contentContainerStyle={styles.paddingBottom20}
         >
-          <BottomSheetView style={styles.backgroundSurface}>
-            <ScrollView
-              scrollEnabled={bottomSheetUp}
-              contentContainerStyle={styles.paddingBottom20}
-            >
-              {bottomSheetUp ? (
-                <View style={styles.paddingHorizontal16}>
-                  {filteredContacts.map((contact: Contact, index: number) => (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => {
-                        RootNavigator.navigate('SendStack', {
-                          screen: 'SendAmount',
-                          params: {
-                            address: contact.address,
-                            amount: 0,
-                            receiver: contact.username,
-                            // wallet,
-                            wallet: '' as any,
-                            sender,
-                          },
-                        });
-                      }}
-                    >
-                      <QuaiPayListItem
-                        name={contact.username}
-                        picture={contact.profilePicture}
-                        address={contact.address}
-                      />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              ) : (
-                <View
-                  style={[
-                    styles.bottomSheetContainer,
-                    styles.backgroundSurface,
-                  ]}
+          {bottomSheetUp ? (
+            <View style={styles.paddingHorizontal16}>
+              {filteredContacts.map((contact: Contact, index: number) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleOnContactPress(contact)}
                 >
-                  {filteredContacts
-                    .slice(0, 5)
-                    .map((contact: Contact, index: number) => (
-                      <TouchableOpacity
-                        key={index}
-                        onPress={() => {
-                          RootNavigator.navigate('SendStack', {
-                            screen: 'SendAmount',
-                            params: {
-                              address: contact.address,
-                              amount: 0,
-                              receiver: contact.username,
-                              // wallet,
-                              wallet: '' as any,
-                              sender,
-                            },
-                          });
-                        }}
-                      >
-                        <View key={index} style={styles.contact}>
-                          <Image
-                            source={{ uri: contact.profilePicture }}
-                            style={styles.image}
-                          />
-                        </View>
-                        <QuaiPayText
-                          type="default"
-                          style={styles.truncated}
-                          numberOfLines={1}
-                        >
-                          {contact.username}
-                        </QuaiPayText>
-                      </TouchableOpacity>
-                    ))}
-                  <TouchableOpacity onPress={() => handleSnapPress(1)}>
-                    <View style={styles.contact}>
-                      {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
+                  <QuaiPayListItem
+                    name={contact.username}
+                    picture={contact.profilePicture}
+                    address={contact.address}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <View
+              style={[styles.bottomSheetContainer, styles.backgroundSurface]}
+            >
+              {filteredContacts
+                .slice(0, 5)
+                .map((contact: Contact, index: number) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleOnContactPress(contact)}
+                  >
+                    <View key={index} style={styles.contact}>
+                      <Image
+                        source={{ uri: contact.profilePicture }}
+                        style={styles.image}
+                      />
                     </View>
-                    <QuaiPayText type="default">View All</QuaiPayText>
+                    <QuaiPayText style={styles.truncated} numberOfLines={1}>
+                      {contact.username}
+                    </QuaiPayText>
                   </TouchableOpacity>
+                ))}
+              <TouchableOpacity onPress={expandBottomSheet}>
+                <View style={styles.contact}>
+                  <DownChevron color={styles.chevron.color} />
                 </View>
-              )}
-              <TouchableOpacity
-                onPress={() => {
-                  handleSnapPress(1);
-                }}
-                style={styles.searchbarWrapper}
-              >
-                <QuaiPaySearchbar
-                  searchValue={searchText}
-                  onSearchChange={setSearchText}
-                  placeholder={t('home.send.searchByAddress')}
-                />
+                <QuaiPayText>View All</QuaiPayText>
               </TouchableOpacity>
-            </ScrollView>
-          </BottomSheetView>
-        </BottomSheet>
-      ) : null}
-    </>
-  );
+            </View>
+          )}
+          <TouchableOpacity
+            onPress={expandBottomSheet}
+            style={styles.searchbarWrapper}
+          >
+            <QuaiPaySearchbar
+              searchValue={searchText}
+              onSearchChange={setSearchText}
+              placeholder={t('home.send.searchByAddress')}
+            />
+          </TouchableOpacity>
+        </ScrollView>
+      </BottomSheetView>
+    </BottomSheet>
+  ) : null;
 };
 
 const themedStyle = (theme: Theme) =>
@@ -228,5 +192,8 @@ const themedStyle = (theme: Theme) =>
     },
     paddingHorizontal16: {
       paddingHorizontal: 16,
+    },
+    chevron: {
+      color: theme.primary,
     },
   });

@@ -16,9 +16,11 @@ describe('getAccountTransactions', () => {
       'asc',
       1,
       10,
-      'to',
       1620000000,
       Date.now(),
+      'to',
+      50000000000000000,
+      1000000000000000000,
     );
     expect(Array.isArray(transactions.result)).toBe(true);
     expect(transactions.status).toBe('1');

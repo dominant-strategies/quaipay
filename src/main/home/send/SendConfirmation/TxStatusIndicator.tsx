@@ -6,6 +6,7 @@ import { QuaiPayText } from 'src/shared/components';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -30,7 +31,13 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
   const { t } = useTranslation();
 
   const rotation = useSharedValue(0);
-  rotation.value = withRepeat(withTiming(90), 180);
+  rotation.value = withRepeat(
+    withTiming(360, {
+      duration: 1200,
+      easing: Easing.linear,
+    }),
+    -1,
+  );
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ rotateZ: `${rotation.value}deg` }],

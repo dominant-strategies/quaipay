@@ -5,7 +5,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import './shared/locales';
-import { ThemeProvider } from './shared/context/themeContext';
+import { ThemeProvider } from 'src/shared/context/themeContext';
+import { WalletProvider } from 'src/shared/context/walletContext';
 import { Navigation } from './shared/navigation';
 import { QuaiPayLoader } from 'src/shared/components';
 
@@ -26,9 +27,11 @@ function App() {
   }
   return (
     <ThemeProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Navigation onboarded={onboarded} />
-      </GestureHandlerRootView>
+      <WalletProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Navigation onboarded={onboarded} />
+        </GestureHandlerRootView>
+      </WalletProvider>
     </ThemeProvider>
   );
 }

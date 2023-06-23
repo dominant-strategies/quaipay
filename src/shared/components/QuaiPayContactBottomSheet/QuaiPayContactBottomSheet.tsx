@@ -1,8 +1,9 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { t } from 'i18next';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Image,
+  LayoutChangeEvent,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -23,31 +24,46 @@ import { QuaiPaySearchbar } from '../QuaiPaySearchbar';
 import { QuaiPayText } from '../QuaiPayText';
 
 enum BottomSheetIndex {
-  PARTIAL = 0,
-  EXPAND = 1,
+  INIT = 0,
+  PARTIAL = 1,
+  EXPAND = 2,
 }
+
+// Init to 1 to render but not show BottomSheet
+const INITIAL_SNAP_POINTS = [1];
+// Values of BottomSheet heights for other 2 indexes
+const PARTIAL_DIFF = 180;
+const EXPAND_DIFF = 475;
 
 export const QuaiPayContactBottomSheet: React.FC = () => {
   const sender = useUsername();
   const { isDarkMode } = useTheme();
   const styles = useThemedStyle(themedStyle);
 
-  // search
+  // ===== Search =====
   const [searchText, setSearchText] = useState<string>();
 
-  // contacts
+  // ===== Contacts =====
   const { contacts, filteredContacts } = useFilteredContacts(searchText);
 
-  // bottomsheet
-  const snapPoints = useMemo(() => ['30%', '80%'], []);
-  const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
+  // ===== Bottomsheet =====
   const sheetRef = useRef<BottomSheet>(null);
-  // callbacks
+  // To control element's heights, dynamically calculate snap points stored here
+  const [snapPoints, setSnapPoints] = useState(INITIAL_SNAP_POINTS);
+  // Control if BottomSheet ui data is initialized
+  const [isBottomSheetInitialized, setIsBottomSheetInitialized] =
+    useState(false);
+  // Keep track of BottomSheet's index
+  const [currentBottomSheetIndex, setCurrentBottomSheetIndex] = useState(
+    BottomSheetIndex.INIT,
+  );
+
+  // ===== Callbacks =====
   const handleSheetChange = useCallback((index: number) => {
-    setIsBottomSheetExpanded(!!index);
+    setCurrentBottomSheetIndex(index);
   }, []);
   const handleSnapPress = useCallback((index: number) => {
-    setIsBottomSheetExpanded(!!index);
+    setCurrentBottomSheetIndex(index);
     sheetRef.current?.snapToIndex(index);
   }, []);
   const expandBottomSheet = () => handleSnapPress(BottomSheetIndex.EXPAND);
@@ -65,6 +81,41 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       },
     });
 
+  // ===== Animation & Layout =====
+  const handleLayoutContent = ({
+    nativeEvent: {
+      layout: { height },
+    },
+  }: LayoutChangeEvent) => {
+    if (snapPoints.length <= 1) {
+      const partialSnapPoint = height + PARTIAL_DIFF;
+      const expandSnapPoint = height + EXPAND_DIFF;
+      setSnapPoints([
+        ...INITIAL_SNAP_POINTS,
+        partialSnapPoint,
+        expandSnapPoint,
+      ]);
+    }
+  };
+
+  // First check if snap points are updated
+  useEffect(() => {
+    if (snapPoints.length > 1 && !isBottomSheetInitialized) {
+      setIsBottomSheetInitialized(true);
+    }
+  }, [snapPoints]);
+
+  // Then show BottomSheet (only runs if scan screen is mounted and not lazy rendered)
+  useEffect(() => {
+    if (
+      isBottomSheetInitialized &&
+      currentBottomSheetIndex === BottomSheetIndex.INIT
+    ) {
+      handleSnapPress(BottomSheetIndex.PARTIAL);
+    }
+  });
+
+  // ===============
   return contacts ? (
     <BottomSheet
       backgroundStyle={styles.backgroundSurface}
@@ -74,70 +125,73 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       ref={sheetRef}
       snapPoints={snapPoints}
       onChange={handleSheetChange}
-      index={BottomSheetIndex.PARTIAL}
+      enablePanDownToClose={false}
+      index={BottomSheetIndex.INIT}
     >
-      <BottomSheetView style={styles.backgroundSurface}>
-        <ScrollView
-          scrollEnabled={isBottomSheetExpanded}
-          contentContainerStyle={styles.paddingBottom20}
-        >
-          {isBottomSheetExpanded ? (
-            <View style={styles.paddingHorizontal16}>
-              {filteredContacts.map((contact: Contact, index: number) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleOnContactPress(contact)}
-                >
-                  <QuaiPayListItem
-                    name={contact.username}
-                    picture={contact.profilePicture}
-                    address={contact.address}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-          ) : (
-            <View
-              style={[styles.bottomSheetContainer, styles.backgroundSurface]}
-            >
-              {filteredContacts
-                .slice(0, 5)
-                .map((contact: Contact, index: number) => (
+      <View onLayout={handleLayoutContent}>
+        <BottomSheetView style={styles.backgroundSurface}>
+          <ScrollView
+            scrollEnabled={currentBottomSheetIndex === BottomSheetIndex.EXPAND}
+            contentContainerStyle={styles.paddingBottom20}
+          >
+            {currentBottomSheetIndex === BottomSheetIndex.EXPAND ? (
+              <View style={styles.paddingHorizontal16}>
+                {filteredContacts.map((contact: Contact, index: number) => (
                   <TouchableOpacity
                     key={index}
                     onPress={() => handleOnContactPress(contact)}
                   >
-                    <View key={index} style={styles.contact}>
-                      <Image
-                        source={{ uri: contact.profilePicture }}
-                        style={styles.image}
-                      />
-                    </View>
-                    <QuaiPayText style={styles.truncated} numberOfLines={1}>
-                      {contact.username}
-                    </QuaiPayText>
+                    <QuaiPayListItem
+                      name={contact.username}
+                      picture={contact.profilePicture}
+                      address={contact.address}
+                    />
                   </TouchableOpacity>
                 ))}
-              <TouchableOpacity onPress={expandBottomSheet}>
-                <View style={styles.contact}>
-                  <DownChevron color={styles.chevron.color} />
-                </View>
-                <QuaiPayText>View All</QuaiPayText>
-              </TouchableOpacity>
-            </View>
-          )}
-          <TouchableOpacity
-            onPress={expandBottomSheet}
-            style={styles.searchbarWrapper}
-          >
-            <QuaiPaySearchbar
-              searchValue={searchText}
-              onSearchChange={setSearchText}
-              placeholder={t('home.send.searchByAddress')}
-            />
-          </TouchableOpacity>
-        </ScrollView>
-      </BottomSheetView>
+              </View>
+            ) : (
+              <View
+                style={[styles.bottomSheetContainer, styles.backgroundSurface]}
+              >
+                {filteredContacts
+                  .slice(0, 5)
+                  .map((contact: Contact, index: number) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => handleOnContactPress(contact)}
+                    >
+                      <View key={index} style={styles.contact}>
+                        <Image
+                          source={{ uri: contact.profilePicture }}
+                          style={styles.image}
+                        />
+                      </View>
+                      <QuaiPayText style={styles.truncated} numberOfLines={1}>
+                        {contact.username}
+                      </QuaiPayText>
+                    </TouchableOpacity>
+                  ))}
+                <TouchableOpacity onPress={expandBottomSheet}>
+                  <View style={styles.contact}>
+                    <DownChevron color={styles.chevron.color} />
+                  </View>
+                  <QuaiPayText>View All</QuaiPayText>
+                </TouchableOpacity>
+              </View>
+            )}
+            <TouchableOpacity
+              onPress={expandBottomSheet}
+              style={styles.searchbarWrapper}
+            >
+              <QuaiPaySearchbar
+                searchValue={searchText}
+                onSearchChange={setSearchText}
+                placeholder={t('home.send.searchByAddress')}
+              />
+            </TouchableOpacity>
+          </ScrollView>
+        </BottomSheetView>
+      </View>
     </BottomSheet>
   ) : null;
 };

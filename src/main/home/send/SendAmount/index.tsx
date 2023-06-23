@@ -107,7 +107,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   useEffect(() => {
     if (wallet) {
       getBalance(wallet.address).then(balance =>
-        setQuaiBalance(balance.balanceInUsd),
+        setQuaiBalance(balance.balanceInQuai),
       );
     }
   }, [wallet]);

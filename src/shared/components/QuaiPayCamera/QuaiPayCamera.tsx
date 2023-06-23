@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { RNHoleView } from 'react-native-hole-view';
 import { Camera, Frame, useCameraDevices } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
-import { styledColors } from '../styles';
+import { styledColors } from '../../styles';
 
 const windowWidth = Dimensions.get('window').width;
 const squareSize = windowWidth * 0.65;

@@ -18,19 +18,25 @@ import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 import { quais } from 'quais';
 import { styledColors } from 'src/shared/styles';
 import {
+  useQuaiPayCamera,
   QuaiPayCamera,
   QuaiPayContent,
   QuaiPayListItem,
   QuaiPayLoader,
   QuaiPaySearchbar,
   QuaiPayText,
+  ScannerType,
 } from 'src/shared/components';
 import { t } from 'i18next';
-import { useUsername, useWallet } from 'src/shared/hooks';
+import {
+  useContacts,
+  useThemedStyle,
+  useUsername,
+  useWallet,
+} from 'src/shared/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { useTheme } from 'src/shared/context/themeContext';
-import { useContacts } from 'src/shared/hooks/useContacts';
 import { Contact, Theme } from 'src/shared/types';
 import DownChevronBlack from 'src/shared/assets/downChevronBlack.svg';
 import DownChevronWhite from 'src/shared/assets/downChevronWhite.svg';
@@ -44,6 +50,8 @@ function SendScanScreen() {
 
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
+
+  const { frameProcessor } = useQuaiPayCamera(ScannerType.SEND_AMOUNT)();
 
   // variables
   const snapPoints = useMemo(() => ['30%', '80%'], []);
@@ -79,35 +87,7 @@ function SendScanScreen() {
     }
   }, [contacts, searchText]);
 
-  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
-    checkInverted: true,
-  });
-
   const styles = themedStyle(theme);
-
-  useEffect(() => {
-    if (!wallet) {
-      return;
-    }
-    if (barcodes.length > 0 && barcodes[0].content.data) {
-      const { address, amount, username } = JSON.parse(
-        barcodes[0].content.data as string,
-      );
-      if (quais.utils.isAddress(address)) {
-        navigation.navigate('SendStack', {
-          screen: 'SendAmount',
-          params: {
-            address,
-            amount: amount || 0,
-            receiver: username,
-            wallet,
-            sender,
-          },
-        });
-      }
-    }
-  }, [barcodes, wallet]);
-
   // Alternatively you can use the underlying function:
   //
   // const frameProcessor = useFrameProcessor((frame) => {

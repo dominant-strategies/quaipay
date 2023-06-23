@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
 import {
@@ -15,10 +15,33 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
+import { getAccountTransactions } from 'src/shared/services/blockscout';
+import { useWallet } from 'src/shared/hooks';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
+  const wallet = useWallet();
+
+  useEffect(() => {
+    getAccountTransactions(
+      wallet?.address as string,
+      'desc',
+      1,
+      20,
+      1686782724,
+      Date.now(),
+      'to',
+      50000000000000000,
+      1000000000000000000,
+    )
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <QuaiPayContent noNavButton>

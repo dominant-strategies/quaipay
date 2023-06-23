@@ -1,12 +1,10 @@
-import axios from 'axios';
-
-export type TransactionList = {
+type TransactionList = {
   message: string;
   result: Transaction[];
   status: string;
 };
 
-export type Transaction = {
+type Transaction = {
   blockHash: string;
   blockNumber: string;
   confirmations: string;
@@ -51,9 +49,6 @@ export const getAccountTransactions = (
   min_amount?: number,
   max_amount?: number,
 ): Promise<TransactionList> => {
-  address = '0x2f7662cD8E784750E116E44a536278d2b429167E';
-
-  console.log('getAccountTransactions', address, sort);
   return new Promise(async (resolve, reject) => {
     // Get the URL for the API
     const url =
@@ -65,34 +60,28 @@ export const getAccountTransactions = (
       `${end_timestamp ? `&end_timestamp=${end_timestamp}` : ''}` +
       `${filter_by ? `&filter_by=${filter_by}` : ''}`;
 
-    const config = {
-      method: 'get',
-      url,
-      headers: {
-        accept: 'application/json',
-      },
+    var myHeaders = new Headers();
+    myHeaders.append('accept', 'application/json');
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
     };
 
-    axios
-      .request(config)
-      .then(response => {
-        /**
-         * Filter out transactions that are below the minimum amount or above the maximum amount.
-         * This is done because the API does not support filtering by amount.
-         */
-        response.data.result = response.data.result.map((transaction: any) => {
+    fetch(url, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        let transactions: TransactionList = JSON.parse(result);
+        transactions.result = transactions.result.filter((transaction: any) => {
           if (min_amount && Number(transaction.value) < min_amount) {
-            return null;
+            return false;
           }
           if (max_amount && Number(transaction.value) > max_amount) {
-            return null;
+            return false;
           }
-          return transaction;
+          return true;
         });
-        response.data.result = response.data.result.filter(
-          (transaction: Transaction) => transaction !== null,
-        );
-        resolve(response.data);
+        resolve(transactions);
       })
       .catch(error => {
         reject(error);

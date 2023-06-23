@@ -36,5 +36,11 @@
     "acceptTerms": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
     "reviewSeedPhrase": "Review Seed Phrase",
     "complete": "Complete"
+  },
+  "qrCode": {
+    "title": "Recovery QR Code",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissi",
+    "learnMore": "Learn more about QuaiPay",
+    "complete": "Complete"
   }
 }

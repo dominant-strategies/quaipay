@@ -171,43 +171,43 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     >
       <View onLayout={handleLayoutContent}>
         <BottomSheetView style={styles.backgroundSurface}>
+          <Animated.View
+            style={[
+              styles.bottomSheetContainer,
+              styles.backgroundSurface,
+              animatedShortHorizontalListStyle,
+            ]}
+          >
+            {filteredContacts
+              .slice(0, 5)
+              .map((contact: Contact, index: number) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleOnContactPress(contact)}
+                >
+                  <View key={index} style={styles.contact}>
+                    <Image
+                      source={{ uri: contact.profilePicture }}
+                      style={styles.image}
+                    />
+                  </View>
+                  <QuaiPayText style={styles.truncated} numberOfLines={1}>
+                    {contact.username}
+                  </QuaiPayText>
+                </TouchableOpacity>
+              ))}
+            <TouchableOpacity onPress={expandBottomSheet}>
+              <View style={styles.contact}>
+                <DownChevron color={styles.chevron.color} />
+              </View>
+              <QuaiPayText>View All</QuaiPayText>
+            </TouchableOpacity>
+          </Animated.View>
+
           <ScrollView
             scrollEnabled={currentBottomSheetIndex === BottomSheetIndex.EXPAND}
             contentContainerStyle={styles.paddingBottom20}
           >
-            <Animated.View
-              style={[
-                styles.bottomSheetContainer,
-                styles.backgroundSurface,
-                animatedShortHorizontalListStyle,
-              ]}
-            >
-              {filteredContacts
-                .slice(0, 5)
-                .map((contact: Contact, index: number) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => handleOnContactPress(contact)}
-                  >
-                    <View key={index} style={styles.contact}>
-                      <Image
-                        source={{ uri: contact.profilePicture }}
-                        style={styles.image}
-                      />
-                    </View>
-                    <QuaiPayText style={styles.truncated} numberOfLines={1}>
-                      {contact.username}
-                    </QuaiPayText>
-                  </TouchableOpacity>
-                ))}
-              <TouchableOpacity onPress={expandBottomSheet}>
-                <View style={styles.contact}>
-                  <DownChevron color={styles.chevron.color} />
-                </View>
-                <QuaiPayText>View All</QuaiPayText>
-              </TouchableOpacity>
-            </Animated.View>
-
             <Animated.View
               style={[styles.paddingHorizontal16, animatedLongListStyle]}
             >
@@ -224,18 +224,18 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                 </TouchableOpacity>
               ))}
             </Animated.View>
-
-            <TouchableOpacity
-              onPress={expandBottomSheet}
-              style={styles.searchbarWrapper}
-            >
-              <QuaiPaySearchbar
-                searchValue={searchText}
-                onSearchChange={setSearchText}
-                placeholder={t('home.send.searchByAddress')}
-              />
-            </TouchableOpacity>
           </ScrollView>
+
+          <TouchableOpacity
+            onPress={expandBottomSheet}
+            style={styles.searchbarWrapper}
+          >
+            <QuaiPaySearchbar
+              searchValue={searchText}
+              onSearchChange={setSearchText}
+              placeholder={t('home.send.searchByAddress')}
+            />
+          </TouchableOpacity>
         </BottomSheetView>
       </View>
     </BottomSheet>

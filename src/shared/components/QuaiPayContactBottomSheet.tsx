@@ -24,6 +24,11 @@ import { Contact, Theme } from '../types';
 import { useContacts, useThemedStyle, useUsername } from '../hooks';
 import { useTheme } from '../context/themeContext';
 
+enum BottomSheetIndex {
+  PARTIAL = 0,
+  EXPAND = 1,
+}
+
 export const QuaiPayContactBottomSheet: React.FC = () => {
   const contacts = useContacts();
   const sender = useUsername();
@@ -36,17 +41,17 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
 
   // bottomsheet
   const snapPoints = useMemo(() => ['30%', '80%'], []);
-  const [bottomSheetUp, setBottomSheetUp] = useState(false);
+  const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const sheetRef = useRef<BottomSheet>(null);
   // callbacks
-  const handleSheetChange = useCallback((index: any) => {
-    setBottomSheetUp(!!index);
+  const handleSheetChange = useCallback((index: number) => {
+    setIsBottomSheetExpanded(!!index);
   }, []);
   const handleSnapPress = useCallback((index: number) => {
-    setBottomSheetUp(!!index);
+    setIsBottomSheetExpanded(!!index);
     sheetRef.current?.snapToIndex(index);
   }, []);
-  const expandBottomSheet = () => handleSnapPress(1);
+  const expandBottomSheet = () => handleSnapPress(BottomSheetIndex.EXPAND);
 
   const handleOnContactPress = (contact: Contact) =>
     RootNavigator.navigate('SendStack', {
@@ -84,13 +89,14 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       ref={sheetRef}
       snapPoints={snapPoints}
       onChange={handleSheetChange}
+      index={BottomSheetIndex.PARTIAL}
     >
       <BottomSheetView style={styles.backgroundSurface}>
         <ScrollView
-          scrollEnabled={bottomSheetUp}
+          scrollEnabled={isBottomSheetExpanded}
           contentContainerStyle={styles.paddingBottom20}
         >
-          {bottomSheetUp ? (
+          {isBottomSheetExpanded ? (
             <View style={styles.paddingHorizontal16}>
               {filteredContacts.map((contact: Contact, index: number) => (
                 <TouchableOpacity

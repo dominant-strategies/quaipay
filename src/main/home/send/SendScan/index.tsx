@@ -14,9 +14,10 @@ import {
   ScrollView,
 } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
-import { quais } from 'quais';
-import { styledColors } from 'src/shared/styles';
+import { t } from 'i18next';
+
+import DownChevronBlack from 'src/shared/assets/downChevronBlack.svg';
+import DownChevronWhite from 'src/shared/assets/downChevronWhite.svg';
 import {
   useQuaiPayCamera,
   QuaiPayCamera,
@@ -27,26 +28,23 @@ import {
   QuaiPayText,
   ScannerType,
 } from 'src/shared/components';
-import { t } from 'i18next';
 import {
   useContacts,
   useThemedStyle,
   useUsername,
   useWallet,
 } from 'src/shared/hooks';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigationProps } from 'src/shared/navigation';
+import { styledColors } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
 import { Contact, Theme } from 'src/shared/types';
-import DownChevronBlack from 'src/shared/assets/downChevronBlack.svg';
-import DownChevronWhite from 'src/shared/assets/downChevronWhite.svg';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
 function SendScanScreen() {
-  const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   // const wallet = useWallet();
   const sender = useUsername();
   const contacts = useContacts();
   const { isDarkMode, theme } = useTheme();
+  const styles = useThemedStyle(themedStyle);
 
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
@@ -87,7 +85,6 @@ function SendScanScreen() {
     }
   }, [contacts, searchText]);
 
-  const styles = themedStyle(theme);
   // Alternatively you can use the underlying function:
   //
   // const frameProcessor = useFrameProcessor((frame) => {
@@ -137,7 +134,7 @@ function SendScanScreen() {
                     <TouchableOpacity
                       key={index}
                       onPress={() => {
-                        navigation.navigate('SendStack', {
+                        RootNavigator.navigate('SendStack', {
                           screen: 'SendAmount',
                           params: {
                             address: contact.address,
@@ -173,7 +170,7 @@ function SendScanScreen() {
                       <TouchableOpacity
                         key={index}
                         onPress={() => {
-                          navigation.navigate('SendStack', {
+                          RootNavigator.navigate('SendStack', {
                             screen: 'SendAmount',
                             params: {
                               address: contact.address,

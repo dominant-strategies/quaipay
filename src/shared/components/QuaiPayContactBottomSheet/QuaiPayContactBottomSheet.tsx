@@ -204,6 +204,17 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
             </TouchableOpacity>
           </Animated.View>
 
+          <TouchableOpacity
+            onPress={expandBottomSheet}
+            style={styles.searchbarWrapper}
+          >
+            <QuaiPaySearchbar
+              searchValue={searchText}
+              onSearchChange={setSearchText}
+              placeholder={t('home.send.searchByAddress')}
+            />
+          </TouchableOpacity>
+
           <ScrollView
             scrollEnabled={currentBottomSheetIndex === BottomSheetIndex.EXPAND}
             contentContainerStyle={styles.paddingBottom20}
@@ -225,17 +236,6 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               ))}
             </Animated.View>
           </ScrollView>
-
-          <TouchableOpacity
-            onPress={expandBottomSheet}
-            style={styles.searchbarWrapper}
-          >
-            <QuaiPaySearchbar
-              searchValue={searchText}
-              onSearchChange={setSearchText}
-              placeholder={t('home.send.searchByAddress')}
-            />
-          </TouchableOpacity>
         </BottomSheetView>
       </View>
     </BottomSheet>

@@ -181,6 +181,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
             style={[
               styles.bottomSheetContainer,
               styles.backgroundSurface,
+              styles.marginHorizontal20,
               animatedShortHorizontalListStyle,
             ]}
           >
@@ -212,7 +213,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
 
           <TouchableOpacity
             onPress={expandBottomSheet}
-            style={styles.searchbarWrapper}
+            style={[styles.searchbarWrapper, styles.marginHorizontal20]}
           >
             <QuaiPaySearchbar
               searchValue={searchText}
@@ -221,12 +222,14 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
             />
           </TouchableOpacity>
 
-          <ScrollView
-            scrollEnabled={currentBottomSheetIndex === BottomSheetIndex.EXPAND}
-            contentContainerStyle={styles.paddingBottom20}
+          <Animated.View
+            style={[styles.paddingBottom20, animatedLongListStyle]}
           >
-            <Animated.View
-              style={[styles.paddingHorizontal16, animatedLongListStyle]}
+            <ScrollView
+              scrollEnabled={
+                currentBottomSheetIndex === BottomSheetIndex.EXPAND
+              }
+              contentContainerStyle={styles.marginHorizontal20}
             >
               {filteredContacts.map((contact: Contact, index: number) => (
                 <TouchableOpacity
@@ -240,8 +243,8 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                   />
                 </TouchableOpacity>
               ))}
-            </Animated.View>
-          </ScrollView>
+            </ScrollView>
+          </Animated.View>
         </BottomSheetView>
       </View>
     </BottomSheet>
@@ -259,7 +262,6 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 20,
     },
     bottomSheetContainer: {
-      paddingHorizontal: 24,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
@@ -275,7 +277,6 @@ const themedStyle = (theme: Theme) =>
       padding: 5,
     },
     searchbarWrapper: {
-      paddingHorizontal: 27,
       marginVertical: 24,
     },
     truncated: {
@@ -287,8 +288,8 @@ const themedStyle = (theme: Theme) =>
     paddingBottom20: {
       paddingBottom: 20,
     },
-    paddingHorizontal16: {
-      paddingHorizontal: 16,
+    marginHorizontal20: {
+      marginHorizontal: 20,
     },
     chevron: {
       color: theme.primary,

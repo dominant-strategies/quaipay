@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 import { QuaiPayText } from './QuaiPayText';
@@ -30,13 +30,12 @@ export const QuaiPayListItem: React.FC<QuaiPayListItemProps> = ({
       <Image source={{ uri: picture }} style={styles.image} />
       <View style={styles.textWrapper}>
         <View style={styles.leftTextWrapper}>
-          <QuaiPayText style={styles.weightOverwrite} type="H3">
-            {name}
-          </QuaiPayText>
+          <QuaiPayText type="paragraph">{name}</QuaiPayText>
           {date ? (
             <QuaiPayText style={styles.colorOverwrite}>{date}</QuaiPayText>
           ) : null}
         </View>
+        <View style={styles.separator} />
         {quaiAmount ? (
           <View style={styles.rightTextWrapper}>
             <QuaiPayText>{quaiAmount}&nbsp;QUAI</QuaiPayText>
@@ -66,15 +65,15 @@ const themedStyle = (theme: Theme) =>
       width: 32,
     },
     wrapper: {
+      flex: 1,
       flexDirection: 'row',
       backgroundColor: theme.surface,
       marginBottom: 16,
     },
     textWrapper: {
+      flex: 1,
       flexDirection: 'row',
-      width: Dimensions.get('window').width - 68,
       marginLeft: 4,
-      justifyContent: 'space-between',
       alignItems: 'center',
     },
     leftTextWrapper: {
@@ -83,10 +82,10 @@ const themedStyle = (theme: Theme) =>
     rightTextWrapper: {
       alignItems: 'flex-end',
     },
-    weightOverwrite: {
-      fontWeight: '400',
-    },
     colorOverwrite: {
       color: styledColors.gray,
+    },
+    separator: {
+      flex: 1,
     },
   });

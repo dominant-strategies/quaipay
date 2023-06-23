@@ -1,12 +1,6 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { t } from 'i18next';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -16,13 +10,15 @@ import {
 } from 'react-native';
 
 import DownChevron from 'src/shared/assets/downChevron.svg';
-import { QuaiPayListItem, QuaiPaySearchbar, QuaiPayText } from '.';
+import { QuaiPayListItem, QuaiPaySearchbar, QuaiPayText } from '..';
 
-import { RootNavigator } from '../navigation/utils';
-import { styledColors } from '../styles';
-import { Contact, Theme } from '../types';
-import { useContacts, useThemedStyle, useUsername } from '../hooks';
-import { useTheme } from '../context/themeContext';
+import { RootNavigator } from '../../navigation/utils';
+import { styledColors } from '../../styles';
+import { Contact, Theme } from '../../types';
+import { useThemedStyle, useUsername } from '../../hooks';
+import { useTheme } from '../../context/themeContext';
+
+import { useFilteredContacts } from './QuaiPayContactBottomSheet.hooks';
 
 enum BottomSheetIndex {
   PARTIAL = 0,
@@ -30,14 +26,15 @@ enum BottomSheetIndex {
 }
 
 export const QuaiPayContactBottomSheet: React.FC = () => {
-  const contacts = useContacts();
   const sender = useUsername();
   const { isDarkMode } = useTheme();
   const styles = useThemedStyle(themedStyle);
 
   // search
   const [searchText, setSearchText] = useState<string>();
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+
+  // contacts
+  const { contacts, filteredContacts } = useFilteredContacts(searchText);
 
   // bottomsheet
   const snapPoints = useMemo(() => ['30%', '80%'], []);
@@ -65,20 +62,6 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
         sender,
       },
     });
-
-  useEffect(() => {
-    if (contacts) {
-      setFilteredContacts(
-        searchText
-          ? contacts.filter(contact => {
-              return contact.username
-                ?.toLowerCase()
-                ?.includes(searchText.toLowerCase());
-            })
-          : contacts,
-      );
-    }
-  }, [contacts, searchText]);
 
   return contacts ? (
     <BottomSheet

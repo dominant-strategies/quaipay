@@ -32,7 +32,7 @@ export const QuaiPayContactBottomSheet: React.FC<
 > = ({}) => {
   const contacts = useContacts();
   const sender = useUsername();
-  const { isDarkMode, theme } = useTheme();
+  const { isDarkMode } = useTheme();
   const styles = useThemedStyle(themedStyle);
 
   // variables
@@ -76,9 +76,7 @@ export const QuaiPayContactBottomSheet: React.FC<
     <>
       {contacts ? (
         <BottomSheet
-          backgroundStyle={{
-            backgroundColor: theme.surface,
-          }}
+          backgroundStyle={styles.backgroundSurface}
           handleIndicatorStyle={{
             backgroundColor: isDarkMode
               ? styledColors.light
@@ -93,17 +91,13 @@ export const QuaiPayContactBottomSheet: React.FC<
               : styledColors.white,
           }}
         >
-          <BottomSheetView
-            style={{
-              backgroundColor: theme.surface,
-            }}
-          >
+          <BottomSheetView style={styles.backgroundSurface}>
             <ScrollView
               scrollEnabled={bottomSheetUp}
-              contentContainerStyle={{ paddingBottom: 20 }}
+              contentContainerStyle={styles.paddingBottom20}
             >
               {bottomSheetUp ? (
-                <View style={{ paddingHorizontal: 16 }}>
+                <View style={styles.paddingHorizontal16}>
                   {filteredContacts.map((contact: Contact, index: number) => (
                     <TouchableOpacity
                       key={index}
@@ -133,9 +127,7 @@ export const QuaiPayContactBottomSheet: React.FC<
                 <View
                   style={[
                     styles.bottomSheetContainer,
-                    {
-                      backgroundColor: theme.surface,
-                    },
+                    styles.backgroundSurface,
                   ]}
                 >
                   {filteredContacts
@@ -173,7 +165,7 @@ export const QuaiPayContactBottomSheet: React.FC<
                       </TouchableOpacity>
                     ))}
                   <TouchableOpacity onPress={() => handleSnapPress(1)}>
-                    <View style={[styles.contact, { paddingTop: 5 }]}>
+                    <View style={styles.contact}>
                       {isDarkMode ? <DownChevronWhite /> : <DownChevronBlack />}
                     </View>
                     <QuaiPayText type="default">View All</QuaiPayText>
@@ -224,6 +216,7 @@ const themedStyle = (theme: Theme) =>
       margin: 4,
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 5,
     },
     searchbarWrapper: {
       paddingHorizontal: 27,
@@ -231,5 +224,14 @@ const themedStyle = (theme: Theme) =>
     },
     truncated: {
       width: 40,
+    },
+    backgroundSurface: {
+      backgroundColor: theme.surface,
+    },
+    paddingBottom20: {
+      paddingBottom: 20,
+    },
+    paddingHorizontal16: {
+      paddingHorizontal: 16,
     },
   });

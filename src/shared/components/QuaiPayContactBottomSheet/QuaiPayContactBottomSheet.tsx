@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import DownChevron from 'src/shared/assets/downChevron.svg';
-import { QuaiPayListItem, QuaiPaySearchbar, QuaiPayText } from '..';
 
 import { RootNavigator } from '../../navigation/utils';
 import { styledColors } from '../../styles';
@@ -19,6 +18,9 @@ import { useThemedStyle, useUsername } from '../../hooks';
 import { useTheme } from '../../context/themeContext';
 
 import { useFilteredContacts } from './QuaiPayContactBottomSheet.hooks';
+import { QuaiPayListItem } from '../QuaiPayListItem';
+import { QuaiPaySearchbar } from '../QuaiPaySearchbar';
+import { QuaiPayText } from '../QuaiPayText';
 
 enum BottomSheetIndex {
   PARTIAL = 0,

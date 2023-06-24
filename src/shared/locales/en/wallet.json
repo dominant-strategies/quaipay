@@ -4,5 +4,6 @@
   "earn": "Earn",
   "transactionsHistory": "Transactions History",
   "filter": "Filter",
-  "searchByTransaction": "Search by recent transaction"
+  "searchByTransaction": "Search by recent transaction",
+  "noTransaction": "No transactions found"
 }

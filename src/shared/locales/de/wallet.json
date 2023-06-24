@@ -4,5 +4,6 @@
   "earn": "Verdienen",
   "transactions": "Transaktionen",
   "filter": "Filter",
-  "searchByTransaction": "Nach aktueller Transaktion suchen"
+  "searchByTransaction": "Nach aktueller Transaktion suchen",
+  "noTransaction": "Keine Transaktion gefunden"
 }

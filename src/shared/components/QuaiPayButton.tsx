@@ -17,6 +17,8 @@ type QuaiPayButtonType = 'default';
 interface QuaiPayButtonStyle {
   backgroundColor: string;
   textColor: string;
+  disabledBackgroundColor: string;
+  disabledTextColor: string;
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
@@ -46,11 +48,20 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
         {
           backgroundColor: buttonStyles.backgroundColor,
         },
+        props.disabled && {
+          backgroundColor: buttonStyles.disabledBackgroundColor,
+        },
         pressed && styles.opacity50,
         style,
       ]}
     >
-      <QuaiPayText type={titleType} style={{ color: buttonStyles.textColor }}>
+      <QuaiPayText
+        type={titleType}
+        style={[
+          { color: buttonStyles.textColor },
+          props.disabled && { color: buttonStyles.disabledTextColor },
+        ]}
+      >
         {title}
       </QuaiPayText>
     </Pressable>
@@ -77,5 +88,7 @@ const buttonStylesByType: Record<
   default: (theme: Theme) => ({
     backgroundColor: theme.normal,
     textColor: styledColors.white,
+    disabledBackgroundColor: styledColors.lightGray,
+    disabledTextColor: styledColors.gray,
   }),
 };

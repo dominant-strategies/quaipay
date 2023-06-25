@@ -9,7 +9,7 @@ import {
 import { QuaiPayText } from './QuaiPayText';
 
 import { useTheme } from '../context/themeContext';
-import { Theme, Typography } from '../types';
+import { Colors, Theme, Typography } from '../types';
 import { styledColors } from '../styles';
 
 type QuaiPayButtonType = 'default' | 'secondary';
@@ -22,16 +22,20 @@ interface QuaiPayButtonStyle {
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
+  bgColor?: Colors;
   outlined?: boolean;
   pill?: boolean;
   style?: StyleProp<ViewStyle>;
   title: string;
   type?: QuaiPayButtonType;
+  titleColor?: Colors;
   titleType?: Typography;
 }
 
 export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   title,
+  bgColor,
+  titleColor,
   style,
   outlined = false, // Whether to use style as outline rather than background
   pill = false, // Whether to use pill shaped button (more rounded corners)
@@ -49,13 +53,18 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
         styles.button,
         pill && styles.pill,
         outlined && styles.outlinedButton,
+        bgColor && { backgroundColor: bgColor },
         pressed && styles.opacity50,
         style,
       ]}
     >
       <QuaiPayText
         type={titleType}
-        style={[styles.text, outlined && styles.outlinedText]}
+        style={[
+          styles.text,
+          outlined && styles.outlinedText,
+          titleColor && { color: titleColor },
+        ]}
       >
         {title}
       </QuaiPayText>

@@ -17,8 +17,8 @@ type QuaiPayButtonType = 'default';
 interface QuaiPayButtonStyle {
   backgroundColor: string;
   textColor: string;
-  disabledBackgroundColor: string;
-  disabledTextColor: string;
+  disabled: Omit<QuaiPayButtonStyle, 'disabled' | 'outlined'>;
+  outlined: Omit<QuaiPayButtonStyle, 'outlined'>;
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
@@ -72,22 +72,28 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
       padding: 16,
       borderRadius: 8,
       backgroundColor: disabled
-        ? ref.disabledBackgroundColor
+        ? ref.disabled.backgroundColor
         : ref.backgroundColor,
     },
     pill: {
       borderRadius: 60,
     },
     text: {
-      color: disabled ? ref.disabledTextColor : ref.textColor,
+      color: disabled ? ref.disabled.textColor : ref.textColor,
     },
     outlinedButton: {
       borderWidth: 1,
-      borderColor: disabled ? ref.disabledBackgroundColor : ref.backgroundColor,
-      backgroundColor: 'transparent',
+      borderColor: disabled
+        ? ref.outlined.disabled.textColor
+        : ref.outlined.textColor,
+      backgroundColor: disabled
+        ? ref.outlined.disabled.backgroundColor
+        : ref.outlined.backgroundColor,
     },
     outlinedText: {
-      color: disabled ? ref.disabledBackgroundColor : ref.backgroundColor,
+      color: disabled
+        ? ref.outlined.disabled.textColor
+        : ref.outlined.textColor,
     },
   });
 
@@ -98,7 +104,17 @@ const buttonStylesByType: Record<
   default: (theme: Theme) => ({
     backgroundColor: theme.normal,
     textColor: styledColors.white,
-    disabledBackgroundColor: styledColors.lightGray,
-    disabledTextColor: styledColors.gray,
+    disabled: {
+      backgroundColor: styledColors.lightGray,
+      textColor: styledColors.gray,
+    },
+    outlined: {
+      disabled: {
+        backgroundColor: 'transparent',
+        textColor: styledColors.gray,
+      },
+      backgroundColor: 'transparent',
+      textColor: theme.normal,
+    },
   }),
 };

@@ -35,6 +35,10 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
    */
   pill?: boolean;
   /*
+   * SVG icon to be rendered alongside the title
+   */
+  RightIcon?: React.FC<React.SVGAttributes<SVGElement>>;
+  /*
    * Custom style props to overwrite any style that is applied to button's component
    */
   style?: StyleProp<ViewStyle>;
@@ -60,6 +64,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   title,
   bgColor,
   titleColor,
+  RightIcon,
   style,
   outlined = false,
   pill = false,
@@ -74,6 +79,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
       {...props}
       style={({ pressed }) => [
         styles.button,
+          RightIcon && styles.row,
         pill && styles.pill,
         outlined && styles.outlinedButton,
         bgColor && { backgroundColor: bgColor },
@@ -91,6 +97,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
       >
         {title}
       </QuaiPayText>
+        {RightIcon && <RightIcon />}
     </Pressable>
   );
 };
@@ -101,6 +108,7 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
       opacity: 0.5,
     },
     button: {
+      gap: 8,
       padding: 16,
       borderRadius: 8,
       backgroundColor: disabled
@@ -126,6 +134,10 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
       color: disabled
         ? ref.outlined.disabled.textColor
         : ref.outlined.textColor,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
   });
 

@@ -20,6 +20,7 @@ interface QuaiPayButtonStyle {
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
+  pill?: boolean;
   style?: StyleProp<ViewStyle>;
   title: string;
   type?: QuaiPayButtonType;
@@ -29,6 +30,7 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
 export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   title,
   style,
+  pill = false, // Whether to use pill shaped button (more rounded corners)
   type = 'default',
   titleType = 'H3',
   ...props
@@ -40,6 +42,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
       {...props}
       style={({ pressed }) => [
         styles.button,
+        pill && styles.pill,
         {
           backgroundColor: buttonStyles.backgroundColor,
         },
@@ -61,6 +64,9 @@ const styles = StyleSheet.create({
   button: {
     padding: 16,
     borderRadius: 8,
+  },
+  pill: {
+    borderRadius: 60,
   },
 });
 

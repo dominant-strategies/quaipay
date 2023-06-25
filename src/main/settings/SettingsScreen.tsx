@@ -1,48 +1,31 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import { RootNavigator } from 'src/shared/navigation/utils';
+import { QuaiPayButton, QuaiPayContent } from 'src/shared/components';
+
 import { MainTabStackScreenProps } from '../MainStack';
-import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
-import { Theme } from 'src/shared/types';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigationProps } from 'src/shared/navigation';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
-  const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
-  const styles = useThemedStyle(themedStyles);
-
   const goToExport = () =>
-    navigation.navigate('ExportStack', { screen: 'ExportLanding' });
+    RootNavigator.navigate('ExportStack', { screen: 'ExportLanding' });
 
   return (
     <QuaiPayContent title={'Settings'} noNavButton>
       <View style={styles.container}>
-        <Pressable
-          onPress={goToExport}
-          style={({ pressed }) => [
-            styles.placeholderBtn,
-            pressed && { opacity: 0.5 },
-          ]}
-        >
-          <QuaiPayText type="H3">Export Account</QuaiPayText>
-        </Pressable>
+        <QuaiPayButton onPress={goToExport} title="Export Account" />
       </View>
     </QuaiPayContent>
   );
 };
 
-const themedStyles = (theme: Theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    placeholderBtn: {
-      padding: 10,
-      backgroundColor: theme.normal,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default SettingsScreen;

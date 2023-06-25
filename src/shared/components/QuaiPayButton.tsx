@@ -12,7 +12,7 @@ import { useTheme } from '../context/themeContext';
 import { Theme, Typography } from '../types';
 import { styledColors } from '../styles';
 
-type QuaiPayButtonType = 'default';
+type QuaiPayButtonType = 'default' | 'secondary';
 
 interface QuaiPayButtonStyle {
   backgroundColor: string;
@@ -115,6 +115,22 @@ const buttonStylesByType: Record<
       },
       backgroundColor: 'transparent',
       textColor: theme.normal,
+    },
+  }),
+  secondary: (theme: Theme) => ({
+    backgroundColor: 'transparent',
+    textColor: theme.primary,
+    disabled: {
+      backgroundColor: 'transparent',
+      textColor: theme.border,
+    },
+    outlined: {
+      backgroundColor: 'transparent',
+      textColor: theme.primary,
+      disabled: {
+        backgroundColor: 'transparent',
+        textColor: theme.border,
+      },
     },
   }),
 };

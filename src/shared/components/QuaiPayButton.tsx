@@ -39,47 +39,43 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
 }) => {
   const { theme } = useTheme();
   const buttonStyles = buttonStylesByType[type](theme);
+  const styles = stylesByType(buttonStyles, props.disabled ?? false);
   return (
     <Pressable
       {...props}
       style={({ pressed }) => [
         styles.button,
         pill && styles.pill,
-        {
-          backgroundColor: buttonStyles.backgroundColor,
-        },
-        props.disabled && {
-          backgroundColor: buttonStyles.disabledBackgroundColor,
-        },
         pressed && styles.opacity50,
         style,
       ]}
     >
-      <QuaiPayText
-        type={titleType}
-        style={[
-          { color: buttonStyles.textColor },
-          props.disabled && { color: buttonStyles.disabledTextColor },
-        ]}
-      >
+      <QuaiPayText type={titleType} style={styles.text}>
         {title}
       </QuaiPayText>
     </Pressable>
   );
 };
 
-const styles = StyleSheet.create({
-  opacity50: {
-    opacity: 0.5,
-  },
-  button: {
-    padding: 16,
-    borderRadius: 8,
-  },
-  pill: {
-    borderRadius: 60,
-  },
-});
+const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
+  StyleSheet.create({
+    opacity50: {
+      opacity: 0.5,
+    },
+    button: {
+      padding: 16,
+      borderRadius: 8,
+      backgroundColor: disabled
+        ? ref.disabledBackgroundColor
+        : ref.backgroundColor,
+    },
+    pill: {
+      borderRadius: 60,
+    },
+    text: {
+      color: disabled ? ref.disabledTextColor : ref.textColor,
+    },
+  });
 
 const buttonStylesByType: Record<
   QuaiPayButtonType,

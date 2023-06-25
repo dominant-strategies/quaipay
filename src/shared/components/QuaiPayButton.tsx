@@ -72,7 +72,9 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   titleType = 'H3',
   ...props
 }) => {
-  const buttonStyles = useThemedStyle(buttonStylesByType[type]);
+  const buttonStyles = useThemedStyle(t =>
+    buttonStylesByType[type](t, titleColor),
+  );
   const styles = stylesByType(buttonStyles, props.disabled ?? false);
   return (
     <Pressable
@@ -143,7 +145,7 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
 
 const buttonStylesByType: Record<
   QuaiPayButtonType,
-  (theme: Theme) => QuaiPayButtonStyle
+  (theme: Theme, color?: Colors) => QuaiPayButtonStyle
 > = {
   default: (theme: Theme) => ({
     backgroundColor: theme.normal,
@@ -161,16 +163,16 @@ const buttonStylesByType: Record<
       textColor: theme.normal,
     },
   }),
-  secondary: (theme: Theme) => ({
+  secondary: (theme: Theme, color?: Colors) => ({
     backgroundColor: 'transparent',
-    textColor: theme.primary,
+    textColor: color ? color : theme.primary,
     disabled: {
       backgroundColor: 'transparent',
       textColor: theme.border,
     },
     outlined: {
       backgroundColor: 'transparent',
-      textColor: theme.primary,
+      textColor: color ? color : theme.primary,
       disabled: {
         backgroundColor: 'transparent',
         textColor: theme.border,

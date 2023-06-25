@@ -22,6 +22,7 @@ interface QuaiPayButtonStyle {
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
+  outlined?: boolean;
   pill?: boolean;
   style?: StyleProp<ViewStyle>;
   title: string;
@@ -32,6 +33,7 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
 export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   title,
   style,
+  outlined = false, // Whether to use style as outline rather than background
   pill = false, // Whether to use pill shaped button (more rounded corners)
   type = 'default',
   titleType = 'H3',
@@ -46,11 +48,15 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
       style={({ pressed }) => [
         styles.button,
         pill && styles.pill,
+        outlined && styles.outlinedButton,
         pressed && styles.opacity50,
         style,
       ]}
     >
-      <QuaiPayText type={titleType} style={styles.text}>
+      <QuaiPayText
+        type={titleType}
+        style={[styles.text, outlined && styles.outlinedText]}
+      >
         {title}
       </QuaiPayText>
     </Pressable>
@@ -74,6 +80,14 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
     },
     text: {
       color: disabled ? ref.disabledTextColor : ref.textColor,
+    },
+    outlinedButton: {
+      borderWidth: 1,
+      borderColor: disabled ? ref.disabledBackgroundColor : ref.backgroundColor,
+      backgroundColor: 'transparent',
+    },
+    outlinedText: {
+      color: disabled ? ref.disabledBackgroundColor : ref.backgroundColor,
     },
   });
 

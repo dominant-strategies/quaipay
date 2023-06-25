@@ -23,6 +23,7 @@ export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
     <Pressable onPress={onPress} style={[styles.contactSearch]}>
       <MagnifyingGlass style={styles.searchIcon} />
       <TextInput
+        onPressOut={onPress}
         placeholder={placeholder}
         placeholderTextColor="#808080"
         style={styles.searchInput}
@@ -51,6 +52,5 @@ const themedStyle = (theme: Theme) =>
     },
     searchInput: {
       color: theme.primary,
-      width: '100%',
     },
   });

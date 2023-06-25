@@ -39,6 +39,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
     <Pressable
       {...props}
       style={({ pressed }) => [
+        styles.button,
         {
           backgroundColor: buttonStyles.backgroundColor,
         },
@@ -56,6 +57,10 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
 const styles = StyleSheet.create({
   opacity50: {
     opacity: 0.5,
+  },
+  button: {
+    padding: 16,
+    borderRadius: 8,
   },
 });
 

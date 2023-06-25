@@ -4,6 +4,7 @@ import {
   PressableProps,
   StyleProp,
   StyleSheet,
+  View,
   ViewStyle,
 } from 'react-native';
 import { QuaiPayText } from './QuaiPayText';
@@ -77,35 +78,40 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   );
   const styles = stylesByType(buttonStyles, props.disabled ?? false);
   return (
-    <Pressable
-      {...props}
-      style={({ pressed }) => [
-        styles.button,
+    <View style={styles.container}>
+      <Pressable
+        {...props}
+        style={({ pressed }) => [
+          styles.button,
           RightIcon && styles.row,
-        pill && styles.pill,
-        outlined && styles.outlinedButton,
-        bgColor && { backgroundColor: bgColor },
-        pressed && styles.opacity50,
-        style,
-      ]}
-    >
-      <QuaiPayText
-        type={titleType}
-        style={[
-          styles.text,
-          outlined && styles.outlinedText,
-          titleColor && { color: titleColor },
+          pill && styles.pill,
+          outlined && styles.outlinedButton,
+          bgColor && { backgroundColor: bgColor },
+          pressed && styles.opacity50,
+          style,
         ]}
       >
-        {title}
-      </QuaiPayText>
+        <QuaiPayText
+          type={titleType}
+          style={[
+            styles.text,
+            outlined && styles.outlinedText,
+            titleColor && { color: titleColor },
+          ]}
+        >
+          {title}
+        </QuaiPayText>
         {RightIcon && <RightIcon />}
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
 const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
   StyleSheet.create({
+    container: {
+      width: '100%',
+    },
     opacity50: {
       opacity: 0.5,
     },

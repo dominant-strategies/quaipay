@@ -9,7 +9,7 @@ import {
 import { QuaiPayText } from './QuaiPayText';
 
 import { useTheme } from '../context/themeContext';
-import { Theme } from '../types';
+import { Theme, Typography } from '../types';
 import { styledColors } from '../styles';
 
 type QuaiPayButtonType = 'default';
@@ -23,12 +23,14 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
   style?: StyleProp<ViewStyle>;
   title: string;
   type?: QuaiPayButtonType;
+  titleType?: Typography;
 }
 
 export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   title,
   style,
   type = 'default',
+  titleType = 'H3',
   ...props
 }) => {
   const { theme } = useTheme();
@@ -44,7 +46,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
         style,
       ]}
     >
-      <QuaiPayText style={{ color: buttonStyles.textColor }}>
+      <QuaiPayText type={titleType} style={{ color: buttonStyles.textColor }}>
         {title}
       </QuaiPayText>
     </Pressable>

@@ -22,13 +22,37 @@ interface QuaiPayButtonStyle {
 }
 
 interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
+  /*
+   * Color to use for button's background instead of the one on typed style
+   */
   bgColor?: Colors;
+  /*
+   * Whether to use style as outline rather than background, which mainly adds border to it
+   */
   outlined?: boolean;
+  /*
+   * Whether to use pill shaped button (more rounded corners)
+   */
   pill?: boolean;
+  /*
+   * Custom style props to overwrite any style that is applied to button's component
+   */
   style?: StyleProp<ViewStyle>;
+  /*
+   * Text string to use as title for the button
+   */
   title: string;
+  /*
+   * Type of styling of the component to be used
+   */
   type?: QuaiPayButtonType;
+  /*
+   * Color to use for title's color instead of the one on typed style
+   */
   titleColor?: Colors;
+  /*
+   * Typography to be used on title's component instead of the one on typed style
+   */
   titleType?: Typography;
 }
 
@@ -37,8 +61,8 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   bgColor,
   titleColor,
   style,
-  outlined = false, // Whether to use style as outline rather than background
-  pill = false, // Whether to use pill shaped button (more rounded corners)
+  outlined = false,
+  pill = false,
   type = 'default',
   titleType = 'H3',
   ...props

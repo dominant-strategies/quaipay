@@ -10,6 +10,7 @@ export { QuaiPayListItem } from './QuaiPayListItem';
 export { QuaiPayLoader } from './QuaiPayLoader';
 export { QuaiPayQRCode } from './QuaiPayQRCode';
 export { QuaiPaySearchbar } from './QuaiPaySearchbar';
+export { QuaiPaySnackBar } from './QuaiPaySnackBar';
 export { QuaiPayText } from './QuaiPayText';
 
 export { useQuaiPayCamera } from './QuaiPayCamera/QuaiPayCamera.hooks';

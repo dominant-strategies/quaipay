@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { QuaiPayText } from './QuaiPayText';
 
-import { useTheme } from '../context/themeContext';
 import { Colors, Theme, Typography } from '../types';
 import { styledColors } from '../styles';
+import { useThemedStyle } from '../hooks';
 
 type QuaiPayButtonType = 'default' | 'secondary';
 
@@ -67,8 +67,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   titleType = 'H3',
   ...props
 }) => {
-  const { theme } = useTheme();
-  const buttonStyles = buttonStylesByType[type](theme);
+  const buttonStyles = useThemedStyle(buttonStylesByType[type]);
   const styles = stylesByType(buttonStyles, props.disabled ?? false);
   return (
     <Pressable

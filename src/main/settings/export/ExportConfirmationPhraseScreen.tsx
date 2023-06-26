@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { styledColors } from 'src/shared/styles';
 
 import { ExportStackScreenProps } from './ExportStack';
@@ -20,6 +21,7 @@ export const ExportConfirmationPhraseScreen: React.FC<
 }) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
+  const { showSnackBar } = useSnackBar();
   const [proposedSeedPhraseWords, setProposedSeedPhraseWords] = useState<
     string[]
   >([]);
@@ -32,7 +34,7 @@ export const ExportConfirmationPhraseScreen: React.FC<
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();
   const popWrongPhraseMessage = () =>
-    alert(t('export.confirmation.wrongPhraseMessage'));
+    showSnackBar({ message: t('export.confirmation.wrongPhraseMessage') });
   const goToCheckout = () => navigation.navigate('ExportCheckout');
 
   return (

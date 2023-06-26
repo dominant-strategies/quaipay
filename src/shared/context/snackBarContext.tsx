@@ -15,7 +15,10 @@ interface SnackBarContextState {
 // This interface differentiates from State
 // because it holds any other option or fx
 // that handle the state in some way
-interface SnackBarContext extends SnackBarContextState {}
+interface SnackBarContext extends SnackBarContextState {
+  closeSnackBar: () => void;
+  showSnackBar: (info: SnackBarInfo) => void;
+}
 
 const INITIAL_STATE: SnackBarContextState = {
   isOpen: false,
@@ -30,13 +33,19 @@ const [useContext, SnackBarContextProvider] =
 export const SnackBarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [state, _] = useState<SnackBarContextState>(INITIAL_STATE);
+  const [state, setState] = useState<SnackBarContextState>(INITIAL_STATE);
+
+  const closeSnackBar = () =>
+    setState({ isOpen: false, snackBar: { message: '' } });
+
+  const showSnackBar = (newInfo: SnackBarInfo) =>
+    setState({ isOpen: true, snackBar: newInfo });
 
   return (
-    <SnackBarContextProvider value={{ ...state }}>
+    <SnackBarContextProvider value={{ ...state, closeSnackBar, showSnackBar }}>
       {children}
     </SnackBarContextProvider>
   );
 };
 
-export const useSnackBarContext = useContext;
+export const useSnackBar = useContext;

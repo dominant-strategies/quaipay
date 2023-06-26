@@ -9,7 +9,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
 
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayButton,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
 import BaselineError from 'src/shared/assets/baselineError.svg';
 import EyeOutline from 'src/shared/assets/eyeOutline.svg';
 import HideIcon from 'src/shared/assets/hide.svg';
@@ -69,20 +73,18 @@ export const ExportPhraseScreen: React.FC<
             {t('export.phrase.screenShotBanner')}
           </QuaiPayText>
         </View>
-        <Pressable
-          onPress={toggleShowSeedPhrase}
-          style={({ pressed }) => [
-            styles.revealButton,
-            pressed && { opacity: 0.5 },
-          ]}
-        >
-          <QuaiPayText type="H3" themeColor="secondary">
-            {isSeedPhraseHidden
+        <QuaiPayButton
+          title={
+            isSeedPhraseHidden
               ? t('export.phrase.revealPhrase')
-              : t('export.phrase.hidePhrase')}
-          </QuaiPayText>
-          {isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
-        </Pressable>
+              : t('export.phrase.hidePhrase')
+          }
+          type="secondary"
+          titleColor="gray"
+          RightIcon={isSeedPhraseHidden ? EyeOutline : HideIcon}
+          onPress={toggleShowSeedPhrase}
+          style={styles.revealButton}
+        />
         {seedPhrase && (
           <SeedPhraseDisplay
             hide={isSeedPhraseHidden}
@@ -90,18 +92,16 @@ export const ExportPhraseScreen: React.FC<
           />
         )}
         <View style={styles.separator} />
-        <Pressable
+        <QuaiPayButton
+          type="secondary"
+          title={t('export.phrase.copyToClipboard')}
+          titleColor="gray"
+          titleType="bold"
+          outlined
+          RightIcon={CopyOutline}
           onPress={copyToClipboard}
-          style={({ pressed }) => [
-            styles.copyToClipboardButton,
-            pressed && { opacity: 0.5 },
-          ]}
-        >
-          <QuaiPayText type="bold" themeColor="secondary">
-            {t('export.phrase.copyToClipboard')}
-          </QuaiPayText>
-          <CopyOutline />
-        </Pressable>
+          style={styles.copyToClipboardButton}
+        />
         <View style={styles.doubleSeparator} />
         <Pressable
           disabled={!seedPhrase}
@@ -147,23 +147,11 @@ const themedStyle = (theme: Theme) =>
       marginBottom: 8,
     },
     revealButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
       alignSelf: 'center',
-      justifyContent: 'center',
-      padding: 8,
-      gap: 8,
       marginBottom: 24,
     },
     copyToClipboardButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
       alignSelf: 'center',
-      justifyContent: 'center',
-      padding: 16,
-      gap: 8,
-      borderWidth: 1,
-      borderColor: theme.border,
       borderRadius: 4,
     },
     continueButton: {

@@ -34,7 +34,10 @@ export const ExportConfirmationPhraseScreen: React.FC<
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();
   const popWrongPhraseMessage = () =>
-    showSnackBar({ message: t('export.confirmation.wrongPhraseMessage') });
+    showSnackBar({
+      message: t('export.confirmation.wrongPhraseMessage.main'),
+      moreInfo: t('export.confirmation.wrongPhraseMessage.moreInfo') ?? '',
+    });
   const goToCheckout = () => navigation.navigate('ExportCheckout');
 
   return (

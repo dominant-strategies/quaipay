@@ -3,12 +3,13 @@ import '@ethersproject/shims';
 import React, { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import './shared/locales';
-import { SnackBarProvider } from './shared/context/snackBarContext';
+import { SnackBarProvider } from 'src/shared/context/snackBarContext';
 import { ThemeProvider } from 'src/shared/context/themeContext';
 import { WalletProvider } from 'src/shared/context/walletContext';
-import { Navigation } from './shared/navigation';
+import { Navigation } from 'src/shared/navigation';
 import { QuaiPayLoader } from 'src/shared/components';
 
 function App() {
@@ -31,7 +32,9 @@ function App() {
       <ThemeProvider>
         <WalletProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <Navigation onboarded={onboarded} />
+            <SafeAreaProvider>
+              <Navigation onboarded={onboarded} />
+            </SafeAreaProvider>
           </GestureHandlerRootView>
         </WalletProvider>
       </ThemeProvider>

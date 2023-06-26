@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from 'react';
-
-import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
+import React, { useState } from 'react';
 
 import { createCtx } from '.';
 
 // State variables only
-interface WalletContextState {
-  entropy?: Uint8Array;
-}
+interface WalletContextState {}
 
 // This interface differentiates from State
 // because it holds any other option or fx
 // that handle the state in some way
-interface WalletContext extends WalletContextState {
-  setEntropy: (entropy: Uint8Array) => void;
-}
+interface WalletContext extends WalletContextState {}
 
-const INITIAL_STATE: WalletContextState = {
-  entropy: undefined,
-};
+const INITIAL_STATE: WalletContextState = {};
 
 const [useContext, WalletContextProvider] =
   createCtx<WalletContext>('walletContext');
@@ -26,26 +18,10 @@ const [useContext, WalletContextProvider] =
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [state, setState] = useState<WalletContextState>(INITIAL_STATE);
-
-  // Fetch entropy from keychain at start up
-  useEffect(() => {
-    const initEntropy = async () => {
-      if (!state.entropy) {
-        retrieveEntropy().then(setEntropy).catch(console.error);
-      }
-      return;
-    };
-
-    initEntropy();
-  }, []);
-
-  // Exposing setter for onboarding flow to use after flow is finished
-  const setEntropy = (entropy: Uint8Array) =>
-    setState(prevState => ({ ...prevState, entropy }));
+  const [state, _] = useState<WalletContextState>(INITIAL_STATE);
 
   return (
-    <WalletContextProvider value={{ ...state, setEntropy }}>
+    <WalletContextProvider value={{ ...state }}>
       {children}
     </WalletContextProvider>
   );

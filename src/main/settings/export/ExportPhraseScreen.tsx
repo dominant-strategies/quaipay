@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   Pressable,
@@ -17,7 +17,7 @@ import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors } from 'src/shared/styles';
-import { useWalletContext } from 'src/shared/context/walletContext';
+import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
 import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
@@ -32,9 +32,15 @@ export const ExportPhraseScreen: React.FC<
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
+  const [seedPhrase, setSeedPhrase] = useState<string>();
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
-  const { entropy } = useWalletContext();
-  const seedPhrase = entropy ? getSeedPhraseFromEntropy(entropy) : undefined;
+
+  useEffect(() => {
+    (async () =>
+      retrieveEntropy().then(value =>
+        setSeedPhrase(getSeedPhraseFromEntropy(value)),
+      ))();
+  }, []);
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);

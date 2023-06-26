@@ -9,16 +9,8 @@ export const useRetrieve = (key: string) => {
       if (!retrievedItem) {
         throw new Error(`No ${key} found`);
       }
-      setRetrieved(parseIfParsable(retrievedItem));
+      setRetrieved(retrievedItem);
     })();
   }, [key]);
   return retrieved;
-};
-
-const parseIfParsable = (value: string) => {
-  try {
-    return JSON.parse(value);
-  } catch (_) {
-    return value;
-  }
 };

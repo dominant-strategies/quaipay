@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
   MaterialTopTabNavigationOptions,
@@ -23,9 +24,20 @@ const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
     topTabBarScreenOptionsGenerator(isDarkMode),
   );
 
+  const lazyPlaceholderStyle = (isDarkTheme: boolean) =>
+    ({
+      flex: 1,
+      backgroundColor: isDarkTheme ? styledColors.black : styledColors.light,
+    } as StyleProp<ViewStyle>);
+
+  const LazyPlaceholder = useCallback(
+    () => <View style={lazyPlaceholderStyle(isDarkMode)} />,
+    [isDarkMode],
+  );
+
   return (
     <TopBar.Navigator
-      screenOptions={topTabBarScreenOptions}
+      screenOptions={{ ...topTabBarScreenOptions, lazy: true }}
       initialRouteName={'Receive'}
     >
       <TopBar.Screen
@@ -33,6 +45,7 @@ const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
         component={ReceiveScreen}
         options={{
           title: t('home.receive.label') ?? '',
+          lazyPlaceholder: LazyPlaceholder,
         }}
       />
       <TopBar.Screen
@@ -40,6 +53,7 @@ const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
         component={SendScanScreen}
         options={{
           title: t('home.send.label') ?? '',
+          lazyPlaceholder: LazyPlaceholder,
         }}
       />
     </TopBar.Navigator>

@@ -16,7 +16,7 @@
     "includedTip": "Trinkgeld einbezogen",
     "customTip": "Benutzerdefiniertes Trinkgeld",
     "tipPlaceholder": "Trinkgeld",
-    "viewOnExplorer":  "Transaktion auf QuaiSnap.com anzeigen",
+    "viewOnExplorer": "Transaktion auf QuaiSnap.com anzeigen",
     "pay": "Bezahlen",
     "sending": "Senden",
     "gasFee": "Gasgebühr",
@@ -28,6 +28,7 @@
     "saveToContacts": "Empfänger zu Kontakten hinzufügen",
     "complete": "Fertig",
     "somethingWrong": "Etwas ist schief gelaufen.",
-    "retryTransaction": "Bitte noch einmal versuchen."
+    "retryTransaction": "Bitte noch einmal versuchen.",
+    "viewAll": "Alle anzeigen"
   }
 }

@@ -207,7 +207,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               <View style={styles.contact}>
                 <DownChevron color={styles.chevron.color} />
               </View>
-              <QuaiPayText>View All</QuaiPayText>
+              <QuaiPayText>{t('home.send.viewAll')}</QuaiPayText>
             </TouchableOpacity>
           </Animated.View>
 

@@ -4,6 +4,7 @@ import { createCtx } from '.';
 
 export interface SnackBarInfo {
   message: string;
+  moreInfo?: string;
 }
 
 // State variables only
@@ -24,6 +25,7 @@ const INITIAL_STATE: SnackBarContextState = {
   isOpen: false,
   snackBar: {
     message: '',
+    moreInfo: '',
   },
 };
 

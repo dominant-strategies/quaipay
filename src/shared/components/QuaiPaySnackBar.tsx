@@ -15,8 +15,11 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
+import RedExclamation from 'src/shared/assets/redExclamation.svg';
+
 import { QuaiPayText } from './QuaiPayText';
 import { useSnackBar } from '../context/snackBarContext';
+import { styledColors } from '../styles';
 
 const SNACK_BAR_DURATION = 3000; // 3 seconds
 const SWIPE_THRESHOLD = 150;
@@ -24,20 +27,33 @@ const Z_INDEX_SNACKBAR = 10;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
+type QuaiPaySnackBarType = 'error';
+
+const snackBarIconByType: Record<
+  QuaiPaySnackBarType,
+  React.FC<React.SVGAttributes<SVGElement>>
+> = {
+  error: RedExclamation,
+};
+
 interface QuaiPaySnackBarProps {
   swipeAnimation?: boolean;
+  type?: QuaiPaySnackBarType;
 }
 
 export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
   swipeAnimation = false,
+  type = 'error',
 }) => {
   const {
     isOpen,
-    snackBar: { message },
+    snackBar: { message, moreInfo },
     closeSnackBar,
   } = useSnackBar();
   const insets = useSafeAreaInsets();
   const translateX = useSharedValue(0);
+
+  const Icon = snackBarIconByType[type];
 
   // Start timeout closure only if snackbar is open
   useEffect(() => {
@@ -84,9 +100,19 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
           entering={FadeInDown.delay(300)}
           exiting={FadeOutDown}
           layout={Layout.easing(Easing.linear)}
-          style={[styles.snackBar, animatedStyle]}
+          style={[styles.snackBar, styles.row, animatedStyle]}
         >
-          <QuaiPayText>{message + Math.random()}</QuaiPayText>
+          <Icon />
+          <QuaiPayText
+            allowFontScaling={true}
+            numberOfLines={1}
+            style={styles.text}
+          >
+            <QuaiPayText type="bold" style={styles.text}>
+              {`${message}`}
+            </QuaiPayText>
+            {` ${moreInfo}`}
+          </QuaiPayText>
         </Animated.View>
       </PanGestureHandler>
     </View>
@@ -99,10 +125,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   snackBar: {
-    backgroundColor: 'red',
+    backgroundColor: styledColors.alertBackground,
+    paddingHorizontal: 16,
     paddingVertical: 16,
+    gap: 8,
     borderRadius: 8,
     marginHorizontal: 20,
     zIndex: 1000 + Z_INDEX_SNACKBAR,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    color: styledColors.black,
   },
 });

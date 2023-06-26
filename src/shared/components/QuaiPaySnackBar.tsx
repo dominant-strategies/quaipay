@@ -29,10 +29,10 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
   const {
     isOpen,
     snackBar: { message },
+    closeSnackBar,
   } = useSnackBar();
   const insets = useSafeAreaInsets();
   const translateX = useSharedValue(0);
-  const close = () => false;
 
   const gestureHandler = useAnimatedGestureHandler({
     onActive: event => {
@@ -41,7 +41,7 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
     onEnd: event => {
       if (event.translationX > SWIPE_THRESHOLD) {
         translateX.value = withSpring(SCREEN_WIDTH);
-        runOnJS(close)();
+        runOnJS(closeSnackBar)();
       } else {
         translateX.value = withSpring(0);
       }

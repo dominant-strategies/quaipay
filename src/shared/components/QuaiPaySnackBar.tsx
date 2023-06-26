@@ -24,9 +24,13 @@ const Z_INDEX_SNACKBAR = 10;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-interface QuaiPaySnackBarProps {}
+interface QuaiPaySnackBarProps {
+  swipeAnimation?: boolean;
+}
 
-export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
+export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
+  swipeAnimation = false,
+}) => {
   const {
     isOpen,
     snackBar: { message },
@@ -50,7 +54,9 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
 
   const gestureHandler = useAnimatedGestureHandler({
     onActive: event => {
-      translateX.value = event.translationX;
+      if (swipeAnimation) {
+        translateX.value = event.translationX;
+      }
     },
     onEnd: event => {
       if (event.translationX > SWIPE_THRESHOLD) {

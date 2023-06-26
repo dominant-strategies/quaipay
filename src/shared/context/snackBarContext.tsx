@@ -39,24 +39,28 @@ export const SnackBarProvider: React.FC<{ children: React.ReactNode }> = ({
     info: SnackBarInfo;
   }>({
     state: false,
-    info: {
-      message: '',
-    },
+    info: INITIAL_STATE.snackBar,
   });
 
   const closeSnackBar = () =>
-    setState({ isOpen: false, snackBar: { message: '' } });
+    setState({ isOpen: false, snackBar: INITIAL_STATE.snackBar });
 
   const showSnackBar = (newInfo: SnackBarInfo) =>
     setState(({ isOpen }) => {
       // When SnackBar is visible, close it and show new one
       if (isOpen) {
-        setShouldResetWithNewInfo({ state: true, info: newInfo });
-        return { isOpen: false, snackBar: newInfo };
+        setShouldResetWithNewInfo({
+          state: true,
+          info: newInfo,
+        });
+        return { isOpen: false, snackBar: INITIAL_STATE.snackBar };
       }
 
       // When not visible, simply show it
-      return { isOpen: true, snackBar: newInfo };
+      return {
+        isOpen: true,
+        snackBar: newInfo,
+      };
     });
 
   useEffect(() => {
@@ -68,9 +72,7 @@ export const SnackBarProvider: React.FC<{ children: React.ReactNode }> = ({
       return () =>
         setShouldResetWithNewInfo({
           state: false,
-          info: {
-            message: '',
-          },
+          info: INITIAL_STATE.snackBar,
         });
     }
   }, [shouldResetWithNewInfo]);

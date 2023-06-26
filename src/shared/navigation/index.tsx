@@ -17,12 +17,13 @@ import ReceiveStack, {
 import SendStack, { SendStackParamList } from 'src/main/home/send/SendStack';
 import MainStack, { MainTabStackParamList } from 'src/main/MainStack';
 import OnboardingStack from 'src/onboarding/OnboardingStack';
-
-import { useTheme } from '../context/themeContext';
-import { RootNavigator } from './utils';
 import ExportStack, {
   ExportStackParamList,
 } from 'src/main/settings/export/ExportStack';
+
+import { useTheme } from '../context/themeContext';
+import { RootNavigator } from './utils';
+import { QuaiPaySnackBar } from '../components';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -54,6 +55,7 @@ export const Navigation = ({ onboarded }: NavigationProps) => {
         translucent
       />
       <AppNavigator onboarded={onboarded} />
+      <QuaiPaySnackBar />
     </NavigationContainer>
   );
 };

@@ -26,18 +26,12 @@ export const ExportLandingScreen: React.FC<
 > = ({ navigation }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.landing' });
   const styles = useThemedStyle(themedStyle);
-  // TODO: check if seed phrase was already generated
-  const hasSeedPhraseAlready = true;
 
   // TODO: update to use the actual page
   const goToLearnMoreRecovery = () =>
     Linking.openURL('https://docs.quai.network/use-quai/wallets');
   const goToSetupSeedPhrase = () => navigation.navigate('ExportPhrase');
-  const goToQRCode = () =>
-    hasSeedPhraseAlready
-      ? navigation.navigate('ExportQRCode')
-      : // eslint-disable-next-line no-alert
-        alert('Please setup your seed phrase first');
+  const goToQRCode = () => navigation.navigate('ExportQRCode');
 
   return (
     <QuaiPayContent>

@@ -26,7 +26,10 @@
   "confirmation": {
     "title": "Confirm your seed phrase",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
-    "wrongPhraseMessage": "Incorrect seed phrase. Please review your seed phrase and try again."
+    "wrongPhraseMessage": {
+      "main": "Incorrect seed phrase.",
+      "moreInfo": "Please review and try again"
+    }
   },
   "checkout": {
     "title": "Never Share your Recovery Codes",

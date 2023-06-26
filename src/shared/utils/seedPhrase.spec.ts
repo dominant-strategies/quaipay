@@ -21,14 +21,18 @@ describe('entropyToSeedPhrase', () => {
   describe('with valid entropy', () => {
     it('should create a phrase of 12 words from 16 byte array', async () => {
       const input = await generateSecureRandom(16);
-      const output = getSeedPhraseFromEntropy(input);
+      const output = getSeedPhraseFromEntropy(
+        Buffer.from(input).toString('hex'),
+      );
 
       expect(output).toBeTruthy();
       expect(output?.split(' ')).toHaveLength(12);
     });
     it('should create a phrase of 24 words from 32 byte array', async () => {
       const input = await generateSecureRandom(32);
-      const output = getSeedPhraseFromEntropy(input);
+      const output = getSeedPhraseFromEntropy(
+        Buffer.from(input).toString('hex'),
+      );
 
       expect(output).toBeTruthy();
       expect(output?.split(' ')).toHaveLength(24);
@@ -43,7 +47,9 @@ describe('entropyToSeedPhrase', () => {
     });
     it('should return a falsy value for invalid length entropies', async () => {
       const input = await generateSecureRandom(4);
-      const output = getSeedPhraseFromEntropy(input);
+      const output = getSeedPhraseFromEntropy(
+        Buffer.from(input).toString('hex'),
+      );
 
       expect(output).toBeFalsy();
     });
@@ -52,7 +58,9 @@ describe('entropyToSeedPhrase', () => {
 
 describe('seedPhraseToEntropy', () => {
   it('should work with valid mnemonic phrase', () => {
-    const outputLength = getEntropyFromSeedPhrase(sampleMnemonic)?.byteLength;
+    const outputLength = Uint8Array.from(
+      Buffer.from(getEntropyFromSeedPhrase(sampleMnemonic) ?? '', 'hex'),
+    )?.byteLength;
 
     expect(outputLength).toBe((sampleMnemonic.split(' ').length * 8) / 6);
   });

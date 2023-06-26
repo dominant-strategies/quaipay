@@ -104,11 +104,16 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
         >
           <Icon />
           <QuaiPayText
-            allowFontScaling={true}
             numberOfLines={1}
-            style={styles.text}
+            adjustsFontSizeToFit
+            style={[styles.text, styles.textContainer]}
           >
-            <QuaiPayText type="bold" style={styles.text}>
+            <QuaiPayText
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              type="bold"
+              style={styles.text}
+            >
               {`${message}`}
             </QuaiPayText>
             {` ${moreInfo}`}
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
   snackBar: {
     backgroundColor: styledColors.alertBackground,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 16,
     gap: 8,
     borderRadius: 8,
@@ -139,5 +144,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: styledColors.black,
+  },
+  textContainer: {
+    width: '90%',
   },
 });

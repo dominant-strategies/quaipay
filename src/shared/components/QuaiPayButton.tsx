@@ -86,7 +86,8 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
           RightIcon && styles.row,
           pill && styles.pill,
           outlined && styles.outlinedButton,
-          bgColor && { backgroundColor: bgColor },
+          titleColor && outlined && { borderColor: styledColors[titleColor] },
+          bgColor && { backgroundColor: styledColors[bgColor] },
           pressed && styles.opacity50,
           style,
         ]}
@@ -96,7 +97,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
           style={[
             styles.text,
             outlined && styles.outlinedText,
-            titleColor && { color: titleColor },
+            titleColor && { color: styledColors[titleColor] },
           ]}
         >
           {title}

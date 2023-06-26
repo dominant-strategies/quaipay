@@ -20,8 +20,8 @@ import DownChevron from 'src/shared/assets/downChevron.svg';
 
 import { RootNavigator } from '../../navigation/utils';
 import { styledColors } from '../../styles';
-import { Contact, Theme } from '../../types';
-import { useThemedStyle, useUsername } from '../../hooks';
+import { Contact, Theme, Wallet } from '../../types';
+import { useThemedStyle, useUsername, useWallet } from '../../hooks';
 import { useTheme } from '../../context/themeContext';
 
 import { useFilteredContacts } from './QuaiPayContactBottomSheet.hooks';
@@ -44,6 +44,7 @@ const EXPAND_DIFF = 475;
 
 export const QuaiPayContactBottomSheet: React.FC = () => {
   const sender = useUsername();
+  const wallet = useWallet();
   const { isDarkMode } = useTheme();
   const styles = useThemedStyle(themedStyle);
 
@@ -121,8 +122,8 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
         address: contact.address,
         amount: 0,
         receiver: contact.username,
-        // wallet,
-        wallet: '' as any,
+        // TODO: properly handle undefined wallet
+        wallet: wallet as unknown as Wallet,
         sender,
       },
     });

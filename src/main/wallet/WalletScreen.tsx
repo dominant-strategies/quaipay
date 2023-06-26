@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
 import {
@@ -9,16 +9,55 @@ import {
   QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
+import {
+  Transaction,
+  getAccountTransactions,
+} from 'src/shared/services/blockscout';
+import { useWallet } from 'src/shared/hooks';
+import { quais } from 'quais';
+import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { dateToLocaleString } from 'src/shared/services/dateUtil';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
+  const wallet = useWallet();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    getAccountTransactions({
+      address: wallet?.address as string,
+      sort: 'desc',
+      page: 1,
+      offset: 100,
+      start_timestamp: 0,
+      end_timestamp: Date.now(),
+      filter_by: 'to',
+      min_amount: 0,
+      max_amount: 1000000000000000000000000,
+    })
+      .then(res => {
+        setTransactions(
+          res.result.map(item => {
+            return {
+              ...item,
+              fiatAmount:
+                Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
+              quaiAmount: Number(quais.utils.formatEther(item.value)),
+            };
+          }),
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <QuaiPayContent noNavButton>
@@ -54,86 +93,47 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           <QuaiPayText type="H3">{t('earn')}</QuaiPayText>
         </Pressable>
       </View>
-      <ScrollView>
-        <View style={styles.transactionsWrapper}>
-          <View style={styles.transactionsHeader}>
-            <QuaiPayText style={{ color: styledColors.gray }} type="H3">
-              {t('transactionsHistory')}
+      <View style={styles.transactionsWrapper}>
+        <View style={styles.transactionsHeader}>
+          <QuaiPayText style={{ color: styledColors.gray }} type="H3">
+            {t('transactionsHistory')}
+          </QuaiPayText>
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              styles.filterButton,
+              pressed && { opacity: 0.5 },
+            ]}
+          >
+            <QuaiPayText style={{ color: styledColors.gray }}>
+              {t('filter')}&nbsp;
             </QuaiPayText>
-            <Pressable
-              style={({ pressed }) => [
-                styles.button,
-                styles.filterButton,
-                pressed && { opacity: 0.5 },
-              ]}
-            >
-              <QuaiPayText style={{ color: styledColors.gray }}>
-                {t('filter')}&nbsp;
-              </QuaiPayText>
-              <FilterIcon />
-            </Pressable>
-          </View>
-          <View style={styles.searchbarWrapper}>
-            <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
-          </View>
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
-          <QuaiPayListItem
-            date="April 26, 2023  17:23:04"
-            fiatAmount="0.99"
-            name="John Doe"
-            picture="https://picsum.photos/666"
-            quaiAmount="+ XXX.XXXXX"
-          />
+            <FilterIcon />
+          </Pressable>
         </View>
-      </ScrollView>
+        <View style={styles.searchbarWrapper}>
+          <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
+        </View>
+        {transactions.length === 0 ? (
+          <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>
+        ) : (
+          <FlatList
+            data={transactions}
+            renderItem={({ item }) => (
+              <QuaiPayListItem
+                date={dateToLocaleString(
+                  new Date(Number(item.timeStamp) * 1000),
+                )}
+                fiatAmount={item.fiatAmount.toFixed(3)}
+                name="John Doe"
+                picture="https://picsum.photos/666"
+                quaiAmount={item.quaiAmount.toFixed(3)}
+              />
+            )}
+            keyExtractor={item => item.hash}
+          />
+        )}
+      </View>
     </QuaiPayContent>
   );
 };

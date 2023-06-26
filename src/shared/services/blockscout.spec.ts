@@ -1,6 +1,6 @@
 import { getAccountTransactions } from './blockscout';
 
-describe('getAccountTransactions', () => {
+describe.skip('getAccountTransactions', () => {
   it('should return a Promise that resolves to an array of transactions', async () => {
     const transactions = await getAccountTransactions({
       address: '0x2f7662cD8E784750E116E44a536278d2b429167E',

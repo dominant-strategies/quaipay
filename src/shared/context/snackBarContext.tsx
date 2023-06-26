@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { createCtx } from '.';
 
@@ -34,12 +34,46 @@ export const SnackBarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, setState] = useState<SnackBarContextState>(INITIAL_STATE);
+  const [shouldResetWithNewInfo, setShouldResetWithNewInfo] = useState<{
+    state: boolean;
+    info: SnackBarInfo;
+  }>({
+    state: false,
+    info: {
+      message: '',
+    },
+  });
 
   const closeSnackBar = () =>
     setState({ isOpen: false, snackBar: { message: '' } });
 
   const showSnackBar = (newInfo: SnackBarInfo) =>
-    setState({ isOpen: true, snackBar: newInfo });
+    setState(({ isOpen }) => {
+      // When SnackBar is visible, close it and show new one
+      if (isOpen) {
+        setShouldResetWithNewInfo({ state: true, info: newInfo });
+        return { isOpen: false, snackBar: newInfo };
+      }
+
+      // When not visible, simply show it
+      return { isOpen: true, snackBar: newInfo };
+    });
+
+  useEffect(() => {
+    if (shouldResetWithNewInfo.state) {
+      setState({
+        isOpen: true,
+        snackBar: shouldResetWithNewInfo.info,
+      });
+      return () =>
+        setShouldResetWithNewInfo({
+          state: false,
+          info: {
+            message: '',
+          },
+        });
+    }
+  }, [shouldResetWithNewInfo]);
 
   return (
     <SnackBarContextProvider value={{ ...state, closeSnackBar, showSnackBar }}>

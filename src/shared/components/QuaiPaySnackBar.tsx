@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
@@ -18,6 +18,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { QuaiPayText } from './QuaiPayText';
 import { useSnackBar } from '../context/snackBarContext';
 
+const SNACK_BAR_DURATION = 3000; // 3 seconds
 const SWIPE_THRESHOLD = 150;
 const Z_INDEX_SNACKBAR = 10;
 
@@ -33,6 +34,19 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
   } = useSnackBar();
   const insets = useSafeAreaInsets();
   const translateX = useSharedValue(0);
+
+  // Start timeout closure only if snackbar is open
+  useEffect(() => {
+    if (isOpen) {
+      const timeout = setTimeout(() => {
+        closeSnackBar();
+      }, SNACK_BAR_DURATION);
+
+      return () => {
+        timeout && clearTimeout(timeout);
+      };
+    }
+  }, [closeSnackBar, isOpen]);
 
   const gestureHandler = useAnimatedGestureHandler({
     onActive: event => {
@@ -66,7 +80,7 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
           layout={Layout.easing(Easing.linear)}
           style={[styles.snackBar, animatedStyle]}
         >
-          <QuaiPayText>{message}</QuaiPayText>
+          <QuaiPayText>{message + Math.random()}</QuaiPayText>
         </Animated.View>
       </PanGestureHandler>
     </View>

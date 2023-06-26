@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
-import { useSnackBar } from 'src/shared/context/snackBarContext';
 import RightChevron from 'src/shared/assets/rightChevron.svg';
 import EditIcon from 'src/shared/assets/edit.svg';
 import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
@@ -27,18 +26,12 @@ export const ExportLandingScreen: React.FC<
 > = ({ navigation }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.landing' });
   const styles = useThemedStyle(themedStyle);
-  const { showSnackBar } = useSnackBar();
-  // TODO: check if seed phrase was already generated
-  const hasSeedPhraseAlready = true;
 
   // TODO: update to use the actual page
   const goToLearnMoreRecovery = () =>
     Linking.openURL('https://docs.quai.network/use-quai/wallets');
   const goToSetupSeedPhrase = () => navigation.navigate('ExportPhrase');
-  const goToQRCode = () =>
-    hasSeedPhraseAlready
-      ? navigation.navigate('ExportQRCode')
-      : showSnackBar({ message: 'Please setup your seed phrase first' });
+  const goToQRCode = () => navigation.navigate('ExportQRCode');
 
   return (
     <QuaiPayContent>

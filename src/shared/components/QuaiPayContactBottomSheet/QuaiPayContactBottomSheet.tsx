@@ -30,12 +30,12 @@ import { QuaiPaySearchbar } from '../QuaiPaySearchbar';
 import { QuaiPayText } from '../QuaiPayText';
 
 enum BottomSheetIndex {
-  INIT = 0,
-  PARTIAL = 1,
-  EXPAND = 2,
+  INIT = 0, // After init, it's removed to avoid swiping it to the bottom
+  PARTIAL = 0,
+  EXPAND = 1,
 }
 
-const ANIMATED_SNAP_POINTS = [1, 2];
+const ANIMATED_SNAP_POINTS = [0, 1];
 // Init to 1 to render but not show BottomSheet
 const INITIAL_SNAP_POINTS = [1];
 // Values of BottomSheet heights for other 2 indexes
@@ -137,11 +137,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     if (snapPoints.length <= 1) {
       const partialSnapPoint = height + PARTIAL_DIFF;
       const expandSnapPoint = height + EXPAND_DIFF;
-      setSnapPoints([
-        ...INITIAL_SNAP_POINTS,
-        partialSnapPoint,
-        expandSnapPoint,
-      ]);
+      setSnapPoints([partialSnapPoint, expandSnapPoint]);
     }
   };
 

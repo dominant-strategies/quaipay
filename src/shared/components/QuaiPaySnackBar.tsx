@@ -16,19 +16,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
 import { QuaiPayText } from './QuaiPayText';
+import { useSnackBar } from '../context/snackBarContext';
 
 const SWIPE_THRESHOLD = 150;
 const Z_INDEX_SNACKBAR = 10;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-interface QuaiPaySnackBarProps {
-  message: string;
-}
+interface QuaiPaySnackBarProps {}
 
-export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
-  message,
-}) => {
+export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = () => {
+  const {
+    isOpen,
+    snackBar: { message },
+  } = useSnackBar();
   const insets = useSafeAreaInsets();
   const translateX = useSharedValue(0);
   const close = () => false;
@@ -56,7 +57,7 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
     ],
   }));
 
-  return (
+  return isOpen ? (
     <View style={[styles.container, { bottom: insets.bottom + 16 }]}>
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View
@@ -69,7 +70,7 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
         </Animated.View>
       </PanGestureHandler>
     </View>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({

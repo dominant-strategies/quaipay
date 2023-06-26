@@ -2,15 +2,27 @@ import React, { useState } from 'react';
 
 import { createCtx } from '.';
 
+export interface SnackBarInfo {
+  message: string;
+}
+
 // State variables only
-interface SnackBarContextState {}
+interface SnackBarContextState {
+  isOpen: boolean;
+  snackBar: SnackBarInfo;
+}
 
 // This interface differentiates from State
 // because it holds any other option or fx
 // that handle the state in some way
 interface SnackBarContext extends SnackBarContextState {}
 
-const INITIAL_STATE: SnackBarContextState = {};
+const INITIAL_STATE: SnackBarContextState = {
+  isOpen: false,
+  snackBar: {
+    message: '',
+  },
+};
 
 const [useContext, SnackBarContextProvider] =
   createCtx<SnackBarContext>('snackBarContext');

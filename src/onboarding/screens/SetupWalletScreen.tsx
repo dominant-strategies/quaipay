@@ -59,6 +59,8 @@ export const SetupWalletScreen: React.FC<
     }
   }, [navigation]);
 
+  const goToLogin = () => navigation.navigate('LoginLanding');
+
   if (settingUpWallet) {
     return <QuaiPayLoader text="Setting up wallet" />;
   }
@@ -118,6 +120,7 @@ export const SetupWalletScreen: React.FC<
             type="secondary"
             underline
             style={styles.loginSection}
+            onPress={goToLogin}
           />
         </View>
         {/* </LinearGradient> */}

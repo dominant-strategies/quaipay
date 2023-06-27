@@ -8,12 +8,13 @@ import {
 import { SetupWalletScreen } from './screens/SetupWalletScreen';
 import { SetupNameAndPFPScreen } from './screens/SetupNameAndPFPScreen';
 import { SetupLocationScreen } from './screens/SetupLocationScreen';
+import { LoginLandingScreen } from './screens/LoginLandingScreen';
 
 type OnboardingStackParamList = {
   SetupWallet: undefined;
   SetupLocation: undefined;
   SetupNameAndPFP: undefined;
-  Login: undefined;
+  LoginLanding: undefined;
 };
 
 export type OnboardingStackNavigationProp<
@@ -35,6 +36,7 @@ const OnboardingStack = () => {
       <Stack.Screen name="SetupWallet" component={SetupWalletScreen} />
       <Stack.Screen name="SetupLocation" component={SetupLocationScreen} />
       <Stack.Screen name="SetupNameAndPFP" component={SetupNameAndPFPScreen} />
+      <Stack.Screen name="LoginLanding" component={LoginLandingScreen} />
     </Stack.Navigator>
   );
 };

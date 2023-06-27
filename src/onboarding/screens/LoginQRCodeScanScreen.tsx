@@ -5,18 +5,16 @@ import { QuaiPayButton, QuaiPayContent } from 'src/shared/components';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
-export const LoginLandingScreen: React.FC<
-  OnboardingStackScreenProps<'LoginLanding'>
+export const LoginQRCodeScanScreen: React.FC<
+  OnboardingStackScreenProps<'LoginQRCodeScan'>
 > = ({ navigation }) => {
-  const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
-
+  const onSuccessfulScan = () => {
+    // TODO: call to setup wallet with scanned entropy value
+    navigation.navigate('SetupNameAndPFP');
+  };
   return (
-    <QuaiPayContent title="LoginLanding" containerStyle={styles.container}>
-      <QuaiPayButton
-        title="Import wallet from device"
-        onPress={goToQRCodeScan}
-      />
-      <QuaiPayButton title="Enter your seed phrase" />
+    <QuaiPayContent title="LoginQRCodeScan" containerStyle={styles.container}>
+      <QuaiPayButton title="On Successful Scan" onPress={onSuccessfulScan} />
     </QuaiPayContent>
   );
 };

@@ -42,7 +42,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['1%', '85%'], []);
+  const snapPoints = useMemo(() => ['85%'], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -85,7 +85,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       <BottomSheetBackdrop
         {...props}
         disappearsOnIndex={-1}
-        appearsOnIndex={1}
+        appearsOnIndex={0}
       />
     ),
     [],
@@ -95,7 +95,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
     <QuaiPayContent noNavButton>
       <BottomSheetModal
         ref={bottomSheetModalRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         onChange={handleSheetChanges}

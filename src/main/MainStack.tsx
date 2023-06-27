@@ -5,10 +5,12 @@ import {
   BottomTabScreenProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
 
+import { QuaiPayContent } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
 import { styledColors } from 'src/shared/styles';
 
@@ -36,9 +38,11 @@ export type MainTabStackScreenProps<Route extends keyof MainTabStackParamList> =
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
 
 const MainStack = () => {
+  const insets = useSafeAreaInsets();
   const { isDarkMode, theme } = useTheme();
 
   return (
+    <QuaiPayContent noNavButton hasBackgroundVariant>
     <Tab.Navigator
       initialRouteName="Home"
       backBehavior="none"
@@ -66,6 +70,15 @@ const MainStack = () => {
           ? styledColors.black
           : styledColors.light,
         headerShown: false,
+          tabBarBadgeStyle: {
+            marginTop: insets.bottom,
+          },
+          tabBarStyle: {
+            marginBottom: -insets.bottom,
+            backgroundColor: isDarkMode
+              ? styledColors.black
+              : styledColors.light,
+          },
       })}
     >
       <Tab.Screen name="Wallet" component={WalletScreen} />
@@ -74,6 +87,7 @@ const MainStack = () => {
       <Tab.Screen name="Earn" component={EarnScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
+    </QuaiPayContent>
   );
 };
 

@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
 import {
@@ -29,12 +23,8 @@ import { useWallet } from 'src/shared/hooks';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/src/components/bottomSheetBackdrop/types';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { QuaiPayBottomSheetModal } from 'src/shared/components/QuaiPayBottomSheetModal';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
@@ -42,13 +32,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['85%'], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
   }, []);
 
   useEffect(() => {
@@ -80,30 +66,11 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       });
   }, []);
 
-  const renderBackdrop = useCallback(
-    (props: BottomSheetDefaultBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    [],
-  );
-
   return (
     <QuaiPayContent noNavButton>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
-        onChange={handleSheetChanges}
-      >
-        <BottomSheetView style={styles.backgroundSurface}>
-          <QuaiPayText type="H1">heeyy</QuaiPayText>
-        </BottomSheetView>
-      </BottomSheetModal>
+      <QuaiPayBottomSheetModal ref={bottomSheetModalRef}>
+        <QuaiPayText>hyeeeye</QuaiPayText>
+      </QuaiPayBottomSheetModal>
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}

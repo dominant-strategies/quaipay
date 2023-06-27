@@ -24,7 +24,7 @@ type SetupWalletScreenProps = {
 
 function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const { isDarkMode } = useTheme();
-  const { setEntropy } = useWalletContext();
+  const { setEntropy, setWallet } = useWalletContext();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const backgroundStyle = {
@@ -44,8 +44,9 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
   const onPressSetup = useCallback(async () => {
     try {
       setSettingUpWallet(true);
-      const { entropy } = await setUpWallet();
+      const { entropy, wallet } = await setUpWallet();
       setEntropy(entropy);
+      setWallet(wallet);
 
       navigation.navigate('SetupNameAndPFP');
     } catch (err) {

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
 import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
+import { retrieveWallet } from '../services/retrieveWallet';
 
 import { createCtx } from '.';
 import { useSnackBar } from './snackBarContext';
+import { Wallet } from '../types';
 
 // State variables only
 interface WalletContextState {
   entropy?: string;
+  wallet?: Wallet;
 }
 
 // This interface differentiates from State
@@ -16,6 +19,8 @@ interface WalletContextState {
 interface WalletContext extends WalletContextState {
   getEntropy: () => void;
   setEntropy: (entropy: string) => void;
+  getWallet: () => void;
+  setWallet: (wallet?: Wallet) => void;
 }
 
 const INITIAL_STATE: WalletContextState = {};
@@ -39,8 +44,25 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setState(prevState => ({ ...prevState, entropy }));
   };
 
+  const getWallet = () => {
+    retrieveWallet().then(wallet =>
+      wallet
+        ? setWallet(wallet)
+        : showSnackBar({
+            message: 'Error',
+            moreInfo: 'Could not retrieve wallet',
+          }),
+    );
+  };
+
+  const setWallet = (wallet?: Wallet) => {
+    setState(prevState => ({ ...prevState, wallet }));
+  };
+
   return (
-    <WalletContextProvider value={{ ...state, getEntropy, setEntropy }}>
+    <WalletContextProvider
+      value={{ ...state, getEntropy, setEntropy, getWallet, setWallet }}
+    >
       {children}
     </WalletContextProvider>
   );

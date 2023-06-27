@@ -4,6 +4,13 @@ import { quais } from 'quais';
 
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
+import { getZone } from 'src/shared/services/retrieveWallet';
+import { Wallet } from 'src/shared/types';
+
+type ZoneIndex = Exclude<
+  keyof typeof keychainKeys,
+  'username' | 'profilePicture' | 'location' | 'entropy'
+>;
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
@@ -27,16 +34,19 @@ export async function setUpWallet(entropy?: Uint8Array) {
     accountHDPath,
   );
 
+  const parsedNodes = childNodes.map((node, ind: number) => {
+    const zoneIndex = `wallet-zone-${Math.floor(ind / 3)}-${ind % 3}`;
+    return {
+      node,
+      key: keychainKeys[zoneIndex as ZoneIndex],
+    };
+  });
+
   await Promise.all(
-    childNodes.map((node, ind: number) => {
-      type ZoneIndex = Exclude<
-        keyof typeof keychainKeys,
-        'username' | 'profilePicture' | 'location' | 'entropy'
-      >;
-      const zoneIndex = `wallet-zone-${Math.floor(ind / 3)}-${ind % 3}`;
+    parsedNodes.map(({ key, node }) => {
       return storeItem(
         {
-          key: keychainKeys[zoneIndex as ZoneIndex],
+          key,
           value: JSON.stringify(node),
         },
         true,
@@ -46,5 +56,8 @@ export async function setUpWallet(entropy?: Uint8Array) {
 
   return {
     entropy: encodedEntropy,
+    wallet: parsedNodes.find(n => n.key === getZone())?.node as unknown as
+      | Wallet
+      | undefined,
   };
 }

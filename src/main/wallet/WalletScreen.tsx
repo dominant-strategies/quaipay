@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
 import {
@@ -23,12 +29,27 @@ import { useWallet } from 'src/shared/hooks';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/src/components/bottomSheetBackdrop/types';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ['1%', '85%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
   useEffect(() => {
     getAccountTransactions({
@@ -59,8 +80,30 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       });
   }, []);
 
+  const renderBackdrop = useCallback(
+    (props: BottomSheetDefaultBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={1}
+      />
+    ),
+    [],
+  );
+
   return (
     <QuaiPayContent noNavButton>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
+        onChange={handleSheetChanges}
+      >
+        <BottomSheetView style={styles.backgroundSurface}>
+          <QuaiPayText type="H1">heeyy</QuaiPayText>
+        </BottomSheetView>
+      </BottomSheetModal>
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
@@ -104,6 +147,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
               styles.filterButton,
               pressed && { opacity: 0.5 },
             ]}
+            onPress={handlePresentModalPress}
           >
             <QuaiPayText style={{ color: styledColors.gray }}>
               {t('filter')}&nbsp;
@@ -112,7 +156,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           </Pressable>
         </View>
         <View style={styles.searchbarWrapper}>
-          <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
+          <QuaiPaySearchbar
+            onSearchChange={() => {}}
+            placeholder={t('searchByTransaction')}
+          />
         </View>
         {transactions.length === 0 ? (
           <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>
@@ -161,7 +208,7 @@ const themedStyle = (theme: Theme) =>
       height: 60,
     },
     cardWrapper: {
-      marginBottom: 20,
+      marginVertical: 20,
     },
     colorOverwrite: {
       color: styledColors.white,
@@ -196,6 +243,9 @@ const themedStyle = (theme: Theme) =>
     searchbarWrapper: {
       marginBottom: 22,
       marginTop: 10,
+    },
+    backgroundSurface: {
+      backgroundColor: theme.background,
     },
   });
 

@@ -11,6 +11,7 @@ import { ThemeProvider } from 'src/shared/context/themeContext';
 import { WalletProvider } from 'src/shared/context/walletContext';
 import { Navigation } from 'src/shared/navigation';
 import { QuaiPayLoader } from 'src/shared/components';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 function App() {
   // TODO: use redux persist instead of AsyncStorage
@@ -32,9 +33,11 @@ function App() {
       <ThemeProvider>
         <WalletProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaProvider>
-              <Navigation onboarded={onboarded} />
-            </SafeAreaProvider>
+            <BottomSheetModalProvider>
+              <SafeAreaProvider>
+                <Navigation onboarded={onboarded} />
+              </SafeAreaProvider>
+            </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </WalletProvider>
       </ThemeProvider>

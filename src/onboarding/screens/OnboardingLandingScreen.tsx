@@ -19,8 +19,8 @@ import { useTheme } from 'src/shared/context/themeContext';
 import { setUpWallet } from '../services/setUpWallet';
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
-export const SetupWalletScreen: React.FC<
-  OnboardingStackScreenProps<'SetupWallet'>
+export const OnboardingLandingScreen: React.FC<
+  OnboardingStackScreenProps<'OnboardingLanding'>
 > = ({ navigation }) => {
   const { isDarkMode } = useTheme();
   const { setEntropy, setWallet } = useWalletContext();

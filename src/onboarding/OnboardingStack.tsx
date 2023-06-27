@@ -5,7 +5,7 @@ import {
   StackScreenProps,
 } from '@react-navigation/stack';
 
-import { SetupWalletScreen } from './screens/SetupWalletScreen';
+import { OnboardingLandingScreen } from './screens/OnboardingLandingScreen';
 import { SetupNameAndPFPScreen } from './screens/SetupNameAndPFPScreen';
 import { SetupLocationScreen } from './screens/SetupLocationScreen';
 import { OnboardingTerms } from './screens/OnboardingTerms';
@@ -14,7 +14,7 @@ import { LoginQRCodeScanScreen } from './screens/LoginQRCodeScanScreen';
 import { LoginSeedPhraseInputScreen } from './screens/LoginSeedPhraseInputScreen';
 
 type OnboardingStackParamList = {
-  SetupWallet: undefined;
+  OnboardingLanding: undefined;
   SetupLocation: undefined;
   SetupNameAndPFP: undefined;
   OnboardingTerms: undefined;
@@ -37,9 +37,12 @@ const OnboardingStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SetupWallet"
+      initialRouteName="OnboardingLanding"
     >
-      <Stack.Screen name="SetupWallet" component={SetupWalletScreen} />
+      <Stack.Screen
+        name="OnboardingLanding"
+        component={OnboardingLandingScreen}
+      />
       <Stack.Screen name="SetupLocation" component={SetupLocationScreen} />
       <Stack.Screen name="SetupNameAndPFP" component={SetupNameAndPFPScreen} />
       <Stack.Screen name="OnboardingTerms" component={OnboardingTerms} />

@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react';
-import { retrieveWallet } from '../services/retrieveWallet';
-import { Wallet } from '../types';
+import { useEffect } from 'react';
+import { useWalletContext } from '../context/walletContext';
 
 export const useWallet = () => {
-  const [wallet, setWallet] = useState<Wallet>();
+  const { wallet, getWallet } = useWalletContext();
   useEffect(() => {
-    const retrieve = async () => {
-      const retrievedWallet = await retrieveWallet();
-      if (!retrievedWallet) {
-        throw new Error('Wallet not found');
-      }
-      setWallet(retrievedWallet);
-    };
-    retrieve();
-  }, []);
+    if (!wallet) {
+      getWallet();
+    }
+  }, [wallet]);
   return wallet;
 };

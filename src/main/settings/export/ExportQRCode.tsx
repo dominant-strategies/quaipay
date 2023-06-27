@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -11,7 +11,6 @@ import { useWalletContext } from 'src/shared/context/walletContext';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { RootNavigator } from 'src/shared/navigation/utils';
-import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 import { ExportStackScreenProps } from './ExportStack';
 
@@ -21,15 +20,12 @@ export const ExportQRCodeScreen: React.FC<
   const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
   const { entropy, getEntropy } = useWalletContext();
-  const [mnemonicPhrase, setMnemonicPhrase] = useState<string>();
 
   useEffect(() => {
     if (!entropy) {
       getEntropy();
-    } else if (!mnemonicPhrase) {
-      setMnemonicPhrase(getSeedPhraseFromEntropy(entropy));
     }
-  }, [entropy, mnemonicPhrase]);
+  }, [entropy]);
 
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });
@@ -42,10 +38,14 @@ export const ExportQRCodeScreen: React.FC<
         <QuaiPayText type="paragraph" themeColor="secondary">
           {t('description')}
         </QuaiPayText>
-        <QuaiPayQRCode
-          containerStyle={styles.qrCodeContainer}
-          value={mnemonicPhrase}
-        />
+        {entropy ? (
+          <QuaiPayQRCode
+            containerStyle={styles.qrCodeContainer}
+            value={entropy}
+          />
+        ) : (
+          <ActivityIndicator color={styles.loader.color} />
+        )}
       </View>
       <QuaiPayText style={styles.underline} themeColor="secondary">
         {t('learnMore')}
@@ -94,5 +94,8 @@ const themedStyle = (theme: Theme) =>
     },
     underline: {
       textDecorationLine: 'underline',
+    },
+    loader: {
+      color: theme.secondary,
     },
   });

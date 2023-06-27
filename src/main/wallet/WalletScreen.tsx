@@ -24,17 +24,23 @@ import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { QuaiPayBottomSheetModal } from 'src/shared/components/QuaiPayBottomSheetModal';
+import { FilterModal } from 'src/main/wallet/FilterModal';
+import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const filterModalRef = useRef<BottomSheetModal>(null);
+  const activeAddressModalRef = useRef<BottomSheetModal>(null);
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+  const handlePresentFilterModalPress = useCallback(() => {
+    filterModalRef.current?.present();
+  }, []);
+
+  const handlePresentActiveAddressModalPress = useCallback(() => {
+    activeAddressModalRef.current?.present();
   }, []);
 
   useEffect(() => {
@@ -68,9 +74,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
 
   return (
     <QuaiPayContent noNavButton>
-      <QuaiPayBottomSheetModal ref={bottomSheetModalRef}>
-        <QuaiPayText>hyeeeye</QuaiPayText>
-      </QuaiPayBottomSheetModal>
+      <FilterModal ref={filterModalRef} />
+      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
@@ -83,6 +88,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       </View>
       <View style={styles.buttonWrapper}>
         <Pressable
+          onPress={handlePresentActiveAddressModalPress}
           style={({ pressed }) => [
             styles.button,
             styles.addressButton,
@@ -114,7 +120,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
               styles.filterButton,
               pressed && { opacity: 0.5 },
             ]}
-            onPress={handlePresentModalPress}
+            onPress={handlePresentFilterModalPress}
           >
             <QuaiPayText style={{ color: styledColors.gray }}>
               {t('filter')}&nbsp;

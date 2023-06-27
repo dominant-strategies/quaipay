@@ -19,9 +19,8 @@ import EyeOutline from 'src/shared/assets/eyeOutline.svg';
 import HideIcon from 'src/shared/assets/hide.svg';
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
-import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
-import { useWalletContext } from 'src/shared/context/walletContext';
 import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
@@ -35,15 +34,13 @@ export const ExportPhraseScreen: React.FC<
 > = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
-  const { entropy, getEntropy } = useWalletContext();
+  const entropy = useEntropy();
 
   const [seedPhrase, setSeedPhrase] = useState<string>();
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
 
   useEffect(() => {
-    if (!entropy) {
-      getEntropy();
-    } else if (!seedPhrase) {
+    if (!seedPhrase && entropy) {
       setSeedPhrase(getSeedPhraseFromEntropy(entropy));
     }
   }, [entropy, seedPhrase]);

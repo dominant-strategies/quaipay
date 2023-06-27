@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -7,9 +7,8 @@ import {
   QuaiPayQRCode,
   QuaiPayText,
 } from 'src/shared/components';
-import { useWalletContext } from 'src/shared/context/walletContext';
 import { Theme } from 'src/shared/types';
-import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { RootNavigator } from 'src/shared/navigation/utils';
 
 import { ExportStackScreenProps } from './ExportStack';
@@ -19,13 +18,7 @@ export const ExportQRCodeScreen: React.FC<
 > = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
-  const { entropy, getEntropy } = useWalletContext();
-
-  useEffect(() => {
-    if (!entropy) {
-      getEntropy();
-    }
-  }, [entropy]);
+  const entropy = useEntropy();
 
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });

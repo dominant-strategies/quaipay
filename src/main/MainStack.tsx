@@ -59,33 +59,19 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
       noNavButton
       hasBackgroundVariant={shouldShowBackgroundVariant}
     >
-    <Tab.Navigator
-      initialRouteName="Home"
-      backBehavior="none"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          if (route.name === 'Wallet') {
-            return <AntIcon name="wallet" size={size} color={color} />;
-          } else if (route.name === 'Exchange') {
-            return <MaterialIcon name="swap-horiz" size={size} color={color} />;
-          } else if (route.name === 'Home') {
-            return <AntIcon name="home" size={size} color={color} />;
-          } else if (route.name === 'Earn') {
-            return <Icon name="dollar" size={size} color={color} />;
-          } else if (route.name === 'Settings') {
-            return <AntIcon name="setting" size={size} color={color} />;
-          } else {
-          }
-        },
-        tabBarActiveTintColor: theme.primary,
-        tabBarInactiveTintColor: theme.primary,
-        tabBarActiveBackgroundColor: isDarkMode
-          ? styledColors.dark
-          : styledColors.lightGray,
-        tabBarInactiveBackgroundColor: isDarkMode
-          ? styledColors.black
-          : styledColors.light,
-        headerShown: false,
+      <Tab.Navigator
+        initialRouteName="Home"
+        backBehavior="none"
+        screenOptions={{
+          tabBarActiveTintColor: theme.primary,
+          tabBarInactiveTintColor: theme.primary,
+          tabBarActiveBackgroundColor: isDarkMode
+            ? styledColors.dark
+            : styledColors.lightGray,
+          tabBarInactiveBackgroundColor: isDarkMode
+            ? styledColors.black
+            : styledColors.light,
+          headerShown: false,
           tabBarBadgeStyle: {
             marginTop: insets.bottom,
           },
@@ -95,14 +81,54 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
               ? styledColors.black
               : styledColors.light,
           },
-      })}
-    >
-      <Tab.Screen name="Wallet" component={WalletScreen} />
-      <Tab.Screen name="Exchange" component={ExchangeScreen} />
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Earn" component={EarnScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
-    </Tab.Navigator>
+        }}
+      >
+        <Tab.Screen
+          name="Wallet"
+          component={WalletScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <AntIcon name="wallet" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Exchange"
+          component={ExchangeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcon name="swap-horiz" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <AntIcon name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Earn"
+          component={EarnScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="dollar" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <AntIcon name="setting" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </QuaiPayContent>
   );
 };

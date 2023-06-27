@@ -10,6 +10,7 @@ import { SetupNameAndPFPScreen } from './screens/SetupNameAndPFPScreen';
 import { SetupLocationScreen } from './screens/SetupLocationScreen';
 import { LoginLandingScreen } from './screens/LoginLandingScreen';
 import { LoginQRCodeScanScreen } from './screens/LoginQRCodeScanScreen';
+import { LoginSeedPhraseInputScreen } from './screens/LoginSeedPhraseInputScreen';
 
 type OnboardingStackParamList = {
   SetupWallet: undefined;
@@ -17,6 +18,7 @@ type OnboardingStackParamList = {
   SetupNameAndPFP: undefined;
   LoginLanding: undefined;
   LoginQRCodeScan: undefined;
+  LoginSeedPhraseInput: undefined;
 };
 
 export type OnboardingStackNavigationProp<
@@ -40,6 +42,10 @@ const OnboardingStack = () => {
       <Stack.Screen name="SetupNameAndPFP" component={SetupNameAndPFPScreen} />
       <Stack.Screen name="LoginLanding" component={LoginLandingScreen} />
       <Stack.Screen name="LoginQRCodeScan" component={LoginQRCodeScanScreen} />
+      <Stack.Screen
+        name="LoginSeedPhraseInput"
+        component={LoginSeedPhraseInputScreen}
+      />
     </Stack.Navigator>
   );
 };

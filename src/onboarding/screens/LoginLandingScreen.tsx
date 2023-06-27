@@ -9,6 +9,7 @@ export const LoginLandingScreen: React.FC<
   OnboardingStackScreenProps<'LoginLanding'>
 > = ({ navigation }) => {
   const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
+  const goToSeedPhraseInput = () => navigation.navigate('LoginSeedPhraseInput');
 
   return (
     <QuaiPayContent title="LoginLanding" containerStyle={styles.container}>
@@ -16,7 +17,10 @@ export const LoginLandingScreen: React.FC<
         title="Import wallet from device"
         onPress={goToQRCodeScan}
       />
-      <QuaiPayButton title="Enter your seed phrase" />
+      <QuaiPayButton
+        title="Enter your seed phrase"
+        onPress={goToSeedPhraseInput}
+      />
     </QuaiPayContent>
   );
 };

@@ -17,12 +17,11 @@ import { QuaiPayButton, QuaiPayLoader } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
 
 import { setUpWallet } from '../services/setUpWallet';
+import { OnboardingStackScreenProps } from '../OnboardingStack';
 
-type SetupWalletScreenProps = {
-  navigation: any;
-};
-
-function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
+export const SetupWalletScreen: React.FC<
+  OnboardingStackScreenProps<'SetupWallet'>
+> = ({ navigation }) => {
   const { isDarkMode } = useTheme();
   const { setEntropy, setWallet } = useWalletContext();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
@@ -125,7 +124,7 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   highlight: {
@@ -169,5 +168,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-
-export default SetupWalletScreen;

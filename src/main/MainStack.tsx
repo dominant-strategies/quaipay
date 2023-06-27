@@ -7,16 +7,19 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 
+import WalletIcon from 'src/shared/assets/account-box-outline.svg';
+import SettingsIcon from 'src/shared/assets/icon-settings.svg';
+import SendReceiveIcon from 'src/shared/assets/icon-send-receive.svg';
 import { QuaiPayContent } from 'src/shared/components';
 import { RootStackScreenProps } from 'src/shared/navigation';
 import { useTheme } from 'src/shared/context/themeContext';
-import { styledColors } from 'src/shared/styles';
+import { styledColors, typography } from 'src/shared/styles';
 
 import SettingsScreen from './settings/SettingsScreen';
 import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
+import { StyleSheet, View } from 'react-native';
 
 export type MainTabStackParamList = {
   Wallet: undefined;
@@ -77,14 +80,15 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
               ? styledColors.darkGray
               : styledColors.border,
           },
+          tabBarLabelStyle: { ...typography.default },
         }}
       >
         <Tab.Screen
           name="Wallet"
           component={WalletScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <AntIcon name="wallet" size={size} color={color} />
+            tabBarIcon: ({ color }) => (
+              <WalletIcon name="wallet" color={color} />
             ),
           }}
         />
@@ -92,17 +96,21 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
           name="Home"
           component={HomeScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <AntIcon name="home" size={size} color={color} />
+            tabBarIcon: ({ color }) => (
+              <View style={styles.homeTabBarIcon}>
+                <SendReceiveIcon name="home" color={color} />
+              </View>
             ),
+            tabBarLabel: 'Send/Receive',
+            tabBarLabelStyle: { ...typography.bold },
           }}
         />
         <Tab.Screen
           name="Settings"
           component={SettingsScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <AntIcon name="setting" size={size} color={color} />
+            tabBarIcon: ({ color }) => (
+              <SettingsIcon name="setting" color={color} />
             ),
           }}
         />
@@ -110,5 +118,11 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
     </QuaiPayContent>
   );
 };
+
+const styles = StyleSheet.create({
+  homeTabBarIcon: {
+    top: -18,
+  },
+});
 
 export default MainStack;

@@ -13,7 +13,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { useWalletContext } from 'src/shared/context/walletContext';
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
-import { QuaiPayLoader } from 'src/shared/components';
+import { QuaiPayButton, QuaiPayLoader } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
 
 import { setUpWallet } from '../services/setUpWallet';
@@ -113,14 +113,13 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
               Setup{' '}
             </Text>
           </TouchableOpacity>
-          <Text
-            style={{ ...fontStyle.fontSmallText, ...styles.loginSection }}
-            onPress={() => {
-              // navigation.navigate('Login');
-            }}
-          >
-            Already have an account? Click here to login.
-          </Text>
+          <QuaiPayButton
+            title="Already have an account? Click here to login."
+            titleType="default"
+            type="secondary"
+            underline
+            style={styles.loginSection}
+          />
         </View>
         {/* </LinearGradient> */}
       </View>
@@ -156,10 +155,6 @@ const styles = StyleSheet.create({
   },
   loginActionSectionView: {},
   loginSection: {
-    color: Colors.black,
-    verticalAlign: 'middle',
-    textDecorationLine: 'underline',
-    textAlign: 'center',
     marginTop: 15,
   },
   welcomeDescriptionView: {

@@ -64,9 +64,6 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
           tabBarActiveBackgroundColor: isDarkMode
             ? styledColors.dark
             : styledColors.lightGray,
-          tabBarInactiveBackgroundColor: isDarkMode
-            ? styledColors.black
-            : styledColors.light,
           headerShown: false,
           tabBarBadgeStyle: {
             marginTop: insets.bottom,
@@ -76,6 +73,9 @@ const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
             backgroundColor: isDarkMode
               ? styledColors.black
               : styledColors.light,
+            borderTopColor: isDarkMode
+              ? styledColors.darkGray
+              : styledColors.border,
           },
         }}
       >

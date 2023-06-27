@@ -32,6 +32,7 @@ export const ReceiveScreen = () => {
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();
+
   if (!profilePicture || !username || !wallet) {
     return <QuaiPayLoader text={'Loading...'} />;
   }
@@ -65,7 +66,6 @@ export const ReceiveScreen = () => {
           onPress={() => {
             navigation.navigate('ReceiveStack', {
               screen: 'ReceiveAmountInput',
-              params: { wallet },
             });
           }}
         >

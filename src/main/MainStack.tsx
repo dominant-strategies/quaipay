@@ -1,16 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   BottomTabNavigationProp,
   BottomTabScreenProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { default as Icon } from 'react-native-vector-icons/FontAwesome';
 import { default as AntIcon } from 'react-native-vector-icons/AntDesign';
 import { default as MaterialIcon } from 'react-native-vector-icons/MaterialIcons';
 
 import { QuaiPayContent } from 'src/shared/components';
+import { RootStackScreenProps } from 'src/shared/navigation';
 import { useTheme } from 'src/shared/context/themeContext';
 import { styledColors } from 'src/shared/styles';
 
@@ -37,12 +39,26 @@ export type MainTabStackScreenProps<Route extends keyof MainTabStackParamList> =
 
 const Tab = createBottomTabNavigator<MainTabStackParamList>();
 
-const MainStack = () => {
+const MainStack: React.FC<RootStackScreenProps<'Main'>> = ({ route }) => {
   const insets = useSafeAreaInsets();
   const { isDarkMode, theme } = useTheme();
+  const [shouldShowBackgroundVariant, setShouldShowBackgroundVariant] =
+    useState(true);
+
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === 'Home' || !routeName) {
+      setShouldShowBackgroundVariant(true);
+    } else {
+      setShouldShowBackgroundVariant(false);
+    }
+  }, [route]);
 
   return (
-    <QuaiPayContent noNavButton hasBackgroundVariant>
+    <QuaiPayContent
+      noNavButton
+      hasBackgroundVariant={shouldShowBackgroundVariant}
+    >
     <Tab.Navigator
       initialRouteName="Home"
       backBehavior="none"

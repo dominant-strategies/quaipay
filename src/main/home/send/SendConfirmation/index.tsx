@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
-import { useAmountInput } from 'src/shared/hooks';
+import { useAmountInput, useWallet } from 'src/shared/hooks';
 import {
   abbreviateAddress,
   waitForTransaction,
@@ -32,7 +32,8 @@ type SendConfirmationScreenProps = NativeStackScreenProps<
 function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { wallet, sender, address, receiver, tip } = route.params;
+  const { sender, address, receiver, tip } = route.params;
+  const wallet = useWallet();
   const [showError, setShowError] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
   // TODO: remove when setShowError and setTxStatus are used
@@ -112,7 +113,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             themeColor="secondary"
             style={styles.address}
           >
-            {abbreviateAddress(wallet.address)}
+            {abbreviateAddress(wallet?.address)}
           </QuaiPayText>
           <QuaiPayText style={styles.ends} type="bold">
             {t('common.sentTo')}

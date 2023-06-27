@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,20 +11,16 @@ import {
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import { useWalletContext } from 'src/shared/context/walletContext';
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
-import { QuaiPayButton, QuaiPayLoader } from 'src/shared/components';
+import { QuaiPayButton } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
 
-import { setUpWallet } from '../services/setUpWallet';
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
 export const OnboardingLandingScreen: React.FC<
   OnboardingStackScreenProps<'OnboardingLanding'>
 > = ({ navigation }) => {
   const { isDarkMode } = useTheme();
-  const { setEntropy, setWallet } = useWalletContext();
-  const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
@@ -40,30 +36,10 @@ export const OnboardingLandingScreen: React.FC<
     marginBottom: 'auto',
   };
 
-  const onPressSetup = useCallback(async () => {
-    try {
-      setSettingUpWallet(true);
-      const { entropy, wallet } = await setUpWallet();
-      setEntropy(entropy);
-      setWallet(wallet);
-
-      navigation.navigate('SetupNameAndPFP');
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log('failed to set up wallet', err.message, err.stack);
-      } else {
-        console.log('failed to set up wallet', err);
-      }
-    } finally {
-      setSettingUpWallet(false);
-    }
-  }, [navigation]);
+  const goToOnboardingTerms = () => navigation.navigate('OnboardingTerms');
 
   const goToLogin = () => navigation.navigate('LoginLanding');
 
-  if (settingUpWallet) {
-    return <QuaiPayLoader text="Setting up wallet" />;
-  }
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -101,7 +77,7 @@ export const OnboardingLandingScreen: React.FC<
         <View style={styles.loginActionSectionView}>
           <TouchableOpacity
             style={{ marginLeft: 21, marginRight: 21 }}
-            onPress={onPressSetup}
+            onPress={goToOnboardingTerms}
           >
             <Text
               style={{

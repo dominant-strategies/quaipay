@@ -4,6 +4,8 @@ import { findBestLanguageTag } from 'react-native-localize';
 
 import common_en from './en/common.json';
 import common_de from './de/common.json';
+import error_en from './en/errors.json';
+import error_de from './de/errors.json';
 import home_en from './en/home.json';
 import home_de from './de/home.json';
 import onboarding_en from './en/onboarding.json';
@@ -22,6 +24,7 @@ i18n.use(initReactI18next).init({
     en: {
       translation: {
         common: common_en,
+        error: error_en,
         home: home_en,
         onboarding: onboarding_en,
         receive: receive_en,
@@ -32,6 +35,7 @@ i18n.use(initReactI18next).init({
     de: {
       translation: {
         common: common_de,
+        error: error_de,
         home: home_de,
         onboarding: onboarding_de,
         receive: receive_de,

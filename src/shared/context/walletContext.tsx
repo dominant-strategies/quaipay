@@ -6,6 +6,7 @@ import { retrieveWallet } from '../services/retrieveWallet';
 import { createCtx } from '.';
 import { useSnackBar } from './snackBarContext';
 import { Wallet } from '../types';
+import { useTranslation } from 'react-i18next';
 
 // State variables only
 interface WalletContextState {
@@ -31,13 +32,19 @@ const [useContext, WalletContextProvider] =
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const [state, setState] = useState<WalletContextState>(INITIAL_STATE);
   const { showSnackBar } = useSnackBar();
 
   const getEntropy = () => {
     retrieveEntropy()
       .then(setEntropy)
-      .catch(e => showSnackBar({ message: 'Error', moreInfo: e }));
+      .catch(() =>
+        showSnackBar({
+          message: t('common.error'),
+          moreInfo: t('error.retrieve.entropy') ?? '',
+        }),
+      );
   };
 
   const setEntropy = (entropy: string) => {
@@ -49,8 +56,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       wallet
         ? setWallet(wallet)
         : showSnackBar({
-            message: 'Error',
-            moreInfo: 'Could not retrieve wallet',
+            message: t('common.error'),
+            moreInfo: t('error.retrieve.wallet') ?? '',
           }),
     );
   };

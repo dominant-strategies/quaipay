@@ -21,7 +21,7 @@ import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors } from 'src/shared/styles';
-import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
+import { useWalletContext } from 'src/shared/context/walletContext';
 import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 import { SeedPhraseDisplay } from './components/SeedPhraseDisplay';
@@ -35,21 +35,24 @@ export const ExportPhraseScreen: React.FC<
 > = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
+  const { entropy, getEntropy } = useWalletContext();
 
   const [seedPhrase, setSeedPhrase] = useState<string>();
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
 
   useEffect(() => {
-    (async () =>
-      retrieveEntropy().then(value =>
-        setSeedPhrase(getSeedPhraseFromEntropy(value)),
-      ))();
-  }, []);
+    if (!entropy) {
+      getEntropy();
+    } else if (!seedPhrase) {
+      setSeedPhrase(getSeedPhraseFromEntropy(entropy));
+    }
+  }, [entropy, seedPhrase]);
 
   const toggleShowSeedPhrase = () =>
     setIsSeedPhraseHidden(prevState => !prevState);
   const copyToClipboard = () => {
     Clipboard.setString(seedPhrase ?? '');
+    // eslint-disable-next-line no-alert
     alert(t('export.phrase.phraseCopied'));
   };
   const goToConfirmPhrase = () =>

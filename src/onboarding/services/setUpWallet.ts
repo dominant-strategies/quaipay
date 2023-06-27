@@ -45,6 +45,6 @@ export async function setUpWallet(entropy?: Uint8Array) {
   );
 
   return {
-    entropy,
+    entropy: encodedEntropy,
   };
 }

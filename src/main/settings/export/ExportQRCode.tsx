@@ -7,27 +7,29 @@ import {
   QuaiPayQRCode,
   QuaiPayText,
 } from 'src/shared/components';
+import { useWalletContext } from 'src/shared/context/walletContext';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
 
 import { ExportStackScreenProps } from './ExportStack';
-import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
-import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
 
 export const ExportQRCodeScreen: React.FC<
   ExportStackScreenProps<'ExportQRCode'>
 > = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
+  const { entropy, getEntropy } = useWalletContext();
   const [mnemonicPhrase, setMnemonicPhrase] = useState<string>();
 
   useEffect(() => {
-    (async () =>
-      retrieveEntropy().then(value =>
-        setMnemonicPhrase(getSeedPhraseFromEntropy(value)),
-      ))();
-  }, []);
+    if (!entropy) {
+      getEntropy();
+    } else if (!mnemonicPhrase) {
+      setMnemonicPhrase(getSeedPhraseFromEntropy(entropy));
+    }
+  }, [entropy, mnemonicPhrase]);
 
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });

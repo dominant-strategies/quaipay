@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -8,26 +8,17 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
-import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
+import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { RootNavigator } from 'src/shared/navigation/utils';
 
 import { ExportStackScreenProps } from './ExportStack';
-import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
-import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
 
 export const ExportQRCodeScreen: React.FC<
   ExportStackScreenProps<'ExportQRCode'>
 > = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'export.qrCode' });
   const styles = useThemedStyle(themedStyle);
-  const [mnemonicPhrase, setMnemonicPhrase] = useState<string>();
-
-  useEffect(() => {
-    (async () =>
-      retrieveEntropy().then(value =>
-        setMnemonicPhrase(getSeedPhraseFromEntropy(value)),
-      ))();
-  }, []);
+  const entropy = useEntropy();
 
   const goToSettings = () =>
     RootNavigator.navigate('Main', { screen: 'Settings' });
@@ -40,10 +31,14 @@ export const ExportQRCodeScreen: React.FC<
         <QuaiPayText type="paragraph" themeColor="secondary">
           {t('description')}
         </QuaiPayText>
-        <QuaiPayQRCode
-          containerStyle={styles.qrCodeContainer}
-          value={mnemonicPhrase}
-        />
+        {entropy ? (
+          <QuaiPayQRCode
+            containerStyle={styles.qrCodeContainer}
+            value={entropy}
+          />
+        ) : (
+          <ActivityIndicator color={styles.loader.color} />
+        )}
       </View>
       <QuaiPayText style={styles.underline} themeColor="secondary">
         {t('learnMore')}
@@ -92,5 +87,8 @@ const themedStyle = (theme: Theme) =>
     },
     underline: {
       textDecorationLine: 'underline',
+    },
+    loader: {
+      color: theme.secondary,
     },
   });

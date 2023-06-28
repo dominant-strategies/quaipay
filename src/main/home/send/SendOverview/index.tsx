@@ -17,7 +17,7 @@ import {
 } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
-import { useAmountInput } from 'src/shared/hooks';
+import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { useTranslation } from 'react-i18next';
 import { transferFunds } from 'src/shared/services/transferFunds';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
@@ -35,7 +35,8 @@ type SendOverviewProps = NativeStackScreenProps<
 function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { wallet, address, receiver, tip, amountInUSD } = route.params;
+  const { address, receiver, tip, amountInUSD } = route.params;
+  const wallet = useWallet();
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
@@ -57,20 +58,21 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
 
   const send = () => {
     setLoading(true);
-    transferFunds(address, eqInput.value, wallet.privateKey)
-      .then(res => {
-        setShowError(false);
-        setLoading(false);
-        navigation.navigate('SendConfirmation', {
-          transaction: res as Transaction,
-          ...route.params,
+    wallet &&
+      transferFunds(address, eqInput.value, wallet.privateKey)
+        .then(res => {
+          setShowError(false);
+          setLoading(false);
+          navigation.navigate('SendConfirmation', {
+            transaction: res as Transaction,
+            ...route.params,
+          });
+        })
+        .catch(err => {
+          console.log('err', err.message);
+          err.message.includes('insufficient funds') && setShowError(true);
+          setLoading(false);
         });
-      })
-      .catch(err => {
-        console.log('err', err.message);
-        err.message.includes('insufficient funds') && setShowError(true);
-        setLoading(false);
-      });
   };
 
   return (

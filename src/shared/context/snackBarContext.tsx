@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import { createCtx } from '.';
+import { QuaiPaySnackBarType } from '../components/QuaiPaySnackBar';
 
 export interface SnackBarInfo {
   message: string;
   moreInfo?: string;
+  type: QuaiPaySnackBarType;
 }
 
 // State variables only
@@ -25,7 +27,7 @@ const INITIAL_STATE: SnackBarContextState = {
   isOpen: false,
   snackBar: {
     message: '',
-    moreInfo: '',
+    type: 'error',
   },
 };
 

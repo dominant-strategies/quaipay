@@ -13,7 +13,7 @@ export const retrieveWallet = async (): Promise<Wallet | undefined> => {
   // location
   const retrievedWallet = await retrieveStoredItem(walletKey);
   if (!retrievedWallet) {
-    return undefined;
+    throw new Error('Wallet not found');
   }
   return JSON.parse(retrievedWallet);
 };

@@ -11,24 +11,25 @@ import { useTranslation } from 'react-i18next';
 
 import { QuaiPayContent, QuaiPayQRCode } from 'src/shared/components';
 import { fontStyle, styledColors } from 'src/shared/styles';
-import { useUsername } from 'src/shared/hooks';
+import { useUsername, useWallet } from 'src/shared/hooks';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { Currency } from 'src/shared/types';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { abbreviateAddress } from 'src/shared/services/quais';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
 import ShareControl from '../ShareControl';
-import { abbreviateAddress } from 'src/shared/services/quais';
 
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
 > = ({ route }) => {
-  const { amount, wallet } = route.params;
+  const { amount } = route.params;
 
   const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
   const username = useUsername();
+  const wallet = useWallet();
 
   const [mainAmount, setMainAmount] = useState(amount);
   const [eqAmount, setEqAmount] = useState(amount / EXCHANGE_RATE);

@@ -37,7 +37,8 @@ type SendConfirmationScreenProps = NativeStackScreenProps<
 function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { wallet, sender, address, receiver, tip } = route.params;
+  const { sender, address, receiver, tip } = route.params;
+  const wallet = useWallet();
   const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const { showSnackBar } = useSnackBar();
   const [showError, setShowError] = useState(false);
@@ -83,14 +84,16 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
 
   useEffect(() => {
     // re-subscribe to transaction if internet connection is lost and regained
-    subscribeToTransaction();
     const unsubscribe = NetInfo.addEventListener(state => {
       setConnectionStatus(state);
     });
-    if (connectionStatus?.isInternetReachable === false) {
+    if (connectionStatus?.isInternetReachable === true) {
+      subscribeToTransaction();
+    } else {
       showSnackBar({
         message: t('home.send.noInternet'),
         moreInfo: t('home.send.noInternetMessage') as string,
+        type: 'error',
       });
     }
     return () => {

@@ -16,11 +16,11 @@ describe.skip('getAccountTransactions', () => {
       sort: 'desc',
       page: 1,
       offset: 10,
-      start_timestamp: 1620000000,
-      end_timestamp: Date.now(),
-      filter_by: 'to',
-      min_amount: 50000000000000000,
-      max_amount: 1000000000000000000,
+      startTimestamp: 1620000000,
+      endTimestamp: Date.now(),
+      filterBy: 'to',
+      minAmount: 50000000000000000,
+      maxAmount: 1000000000000000000,
     });
     const regex = new RegExp(/^[01]$/);
     expect(regex.test(transactions.status)).toBe(true);

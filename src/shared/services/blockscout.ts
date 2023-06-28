@@ -35,11 +35,11 @@ type GetAccountTransactionsProps = {
   sort?: string;
   page?: number;
   offset?: number;
-  start_timestamp?: number;
-  end_timestamp?: number;
-  filter_by?: string;
-  min_amount?: number;
-  max_amount?: number;
+  startTimestamp?: number;
+  endTimestamp?: number;
+  filterBy?: string;
+  minAmount?: number;
+  maxAmount?: number;
 };
 
 /**
@@ -48,11 +48,11 @@ type GetAccountTransactionsProps = {
  * @param props.sort Optional. The field to sort the transactions by. Can be 'asc' or 'desc'. Defaults to 'desc'.
  * @param props.page Optional. The page number to retrieve.
  * @param props.offset Optional. The number of transactions to retrieve per page.
- * @param props.start_timestamp Optional. The start timestamp to filter transactions by.
- * @param props.end_timestamp Optional. The end timestamp to filter transactions by.
- * @param props.filter_by Optional. The field to filter the transactions by. Can be 'from' or 'to'. If not provided, all transactions are returned.
- * @param props.min_amount Optional. The minimum amount to filter transactions by. The amount is in wei.
- * @param props.max_amount Optional. The maximum amount to filter transactions by. The amount is in wei.
+ * @param props.startTimestamp Optional. The start timestamp to filter transactions by.
+ * @param props.endTimestamp Optional. The end timestamp to filter transactions by.
+ * @param props.filterBy Optional. The field to filter the transactions by. Can be 'from' or 'to'. If not provided, all transactions are returned.
+ * @param props.minAmount Optional. The minimum amount to filter transactions by. The amount is in wei.
+ * @param props.maxAmount Optional. The maximum amount to filter transactions by. The amount is in wei.
  * @returns A Promise that resolves with the list of transactions.
  */
 export const getAccountTransactions = (
@@ -64,11 +64,11 @@ export const getAccountTransactions = (
       sort,
       page,
       offset,
-      start_timestamp,
-      end_timestamp,
-      filter_by,
-      min_amount,
-      max_amount,
+      startTimestamp,
+      endTimestamp,
+      filterBy,
+      minAmount,
+      maxAmount,
     } = props;
 
     const zone = getZone();
@@ -83,9 +83,9 @@ export const getAccountTransactions = (
       `${sort ? `&sort=${sort}` : ''}` +
       `${page ? `&page=${page}` : ''}` +
       `${offset ? `&offset=${offset}` : ''}` +
-      `${start_timestamp ? `&start_timestamp=${start_timestamp}` : ''}` +
-      `${end_timestamp ? `&end_timestamp=${end_timestamp}` : ''}` +
-      `${filter_by ? `&filter_by=${filter_by}` : ''}`;
+      `${startTimestamp ? `&start_timestamp=${startTimestamp}` : ''}` +
+      `${endTimestamp ? `&end_timestamp=${endTimestamp}` : ''}` +
+      `${filterBy ? `&filter_by=${filterBy}` : ''}`;
 
     var myHeaders = new Headers();
     myHeaders.append('accept', 'application/json');
@@ -104,8 +104,8 @@ export const getAccountTransactions = (
             const transactionValue = Number(transaction.value);
 
             return (
-              (!min_amount || transactionValue >= min_amount) &&
-              (!max_amount || transactionValue <= max_amount)
+              (!minAmount || transactionValue >= minAmount) &&
+              (!maxAmount || transactionValue <= maxAmount)
             );
           },
         );

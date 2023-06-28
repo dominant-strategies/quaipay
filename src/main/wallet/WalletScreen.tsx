@@ -49,11 +49,11 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       sort: 'desc',
       page: 1,
       offset: 100,
-      start_timestamp: 0,
-      end_timestamp: Date.now(),
-      filter_by: 'to',
-      min_amount: 0,
-      max_amount: 1000000000000000000000000,
+      startTimestamp: 0,
+      endTimestamp: Date.now(),
+      filterBy: 'to',
+      minAmount: 0,
+      maxAmount: 1000000000000000000000000,
     })
       .then(res => {
         setTransactions(

@@ -8,11 +8,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import BaselineError from 'src/shared/assets/baselineError.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
+  QuaiPayLoader,
   QuaiPaySeedPhraseLayoutDisplay,
   QuaiPayText,
   seedPhraseLayoutDisplayWordThemedStyle,
@@ -23,7 +25,8 @@ import { typography } from 'src/shared/styles';
 import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
-import { useTranslation } from 'react-i18next';
+import { setUpWallet } from '../services/setUpWallet';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
 const AMOUNT_OF_WORDS_IN_PHRASE = 24;
 
@@ -38,10 +41,12 @@ export const LoginSeedPhraseInputScreen: React.FC<
     seedPhraseLayoutDisplayWordThemedStyle,
   );
   const styles = useThemedStyle(themedStyle);
+  const { setEntropy, setWallet } = useWalletContext();
   const [seedPhraseWords, setSeedPhraseWords] = useState<string[]>(
     Array(AMOUNT_OF_WORDS_IN_PHRASE).fill(''),
   );
   const [isPhraseValid, setIsPhraseValid] = useState(false);
+  const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const changeWordOnPhrase = (value: string, idx: number) => {
     setSeedPhraseWords(prevState => {
@@ -72,12 +77,28 @@ export const LoginSeedPhraseInputScreen: React.FC<
     return a === b;
   };
 
-  const onSuccessful = () => {
+  const onSuccessful = async () => {
     if (isPhraseValid) {
-      // TODO: setup wallet with given seed phrase
+      setSettingUpWallet(true);
+      const { entropy, wallet } = await setUpWallet(
+        Uint8Array.from(
+          Buffer.from(
+            getEntropyFromSeedPhrase(seedPhraseWords.join(' ').toLowerCase()) ??
+              '',
+            'hex',
+          ),
+        ),
+      ).finally(() => setSettingUpWallet(false));
+      setEntropy(entropy);
+      setWallet(wallet);
+
       navigation.navigate('SetupNameAndPFP');
     }
   };
+
+  if (settingUpWallet) {
+    return <QuaiPayLoader text="Setting up wallet" />;
+  }
 
   return (
     <QuaiPayContent containerStyle={styles.container}>

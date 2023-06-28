@@ -15,7 +15,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
-import { useAmountInput } from 'src/shared/hooks';
+import { useAmountInput, useWallet } from 'src/shared/hooks';
 import {
   abbreviateAddress,
   waitForTransaction,
@@ -141,7 +141,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             themeColor="secondary"
             style={styles.address}
           >
-            {abbreviateAddress(wallet.address)}
+            {abbreviateAddress(wallet?.address)}
           </QuaiPayText>
           <QuaiPayText style={styles.ends} type="bold">
             {t('common.sentTo')}

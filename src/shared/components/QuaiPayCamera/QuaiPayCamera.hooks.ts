@@ -40,7 +40,6 @@ const useSendAmountScannerCamera = () => {
             address,
             amount: amount || 0,
             receiver: username,
-            wallet,
             sender,
           },
         });

@@ -16,24 +16,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
 import RedExclamation from 'src/shared/assets/redExclamation.svg';
+import Done from 'src/shared/assets/done.svg';
 
 import { QuaiPayText } from './QuaiPayText';
 import { useSnackBar } from '../context/snackBarContext';
 import { styledColors } from '../styles';
 
+const ICON_SIZE = 16;
 const SNACK_BAR_DURATION = 3000; // 3 seconds
 const SWIPE_THRESHOLD = 150;
 const Z_INDEX_SNACKBAR = 10;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-type QuaiPaySnackBarType = 'error';
+export type QuaiPaySnackBarType = 'error' | 'success';
 
 const snackBarIconByType: Record<
   QuaiPaySnackBarType,
   React.FC<React.SVGAttributes<SVGElement>>
 > = {
   error: RedExclamation,
+  success: Done,
 };
 
 interface QuaiPaySnackBarProps {
@@ -43,11 +46,10 @@ interface QuaiPaySnackBarProps {
 
 export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
   swipeAnimation = false,
-  type = 'error',
 }) => {
   const {
     isOpen,
-    snackBar: { message, moreInfo },
+    snackBar: { type, message, moreInfo },
     closeSnackBar,
   } = useSnackBar();
   const insets = useSafeAreaInsets();
@@ -100,9 +102,14 @@ export const QuaiPaySnackBar: React.FC<QuaiPaySnackBarProps> = ({
           entering={FadeInDown.delay(300)}
           exiting={FadeOutDown}
           layout={Layout.easing(Easing.linear)}
-          style={[styles.snackBar, styles.row, animatedStyle]}
+          style={[
+            styles.snackBar,
+            styles.row,
+            styles[`${type}Type`],
+            animatedStyle,
+          ]}
         >
-          <Icon />
+          <Icon height={ICON_SIZE} width={ICON_SIZE} />
           <QuaiPayText
             numberOfLines={1}
             adjustsFontSizeToFit
@@ -137,6 +144,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 20,
     zIndex: 1000 + Z_INDEX_SNACKBAR,
+  },
+  errorType: {
+    backgroundColor: styledColors.alertBackground,
+  },
+  successType: {
+    backgroundColor: styledColors.light,
+    borderWidth: 1,
+    borderColor: styledColors.border,
   },
   row: {
     flexDirection: 'row',

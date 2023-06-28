@@ -2,7 +2,10 @@
   "receive": {
     "label": "Erhalten",
     "amount": "Betrag",
-    "address": "Adresse"
+    "address": "Adresse",
+    "quaipayAddress": "QuaiPay Adresse",
+    "shareYourAddress": "Teilen Sie Ihre QuaiPay Adresse",
+    "copiedToClipboard": "In die Zwischenablage kopiert"
   },
   "send": {
     "label": "Senden",

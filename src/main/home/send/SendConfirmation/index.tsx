@@ -10,6 +10,9 @@ import {
   useColorScheme,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput } from 'src/shared/hooks';
@@ -17,12 +20,14 @@ import {
   abbreviateAddress,
   waitForTransaction,
 } from 'src/shared/services/quais';
-import ShareControl from '../../receive/ShareControl';
+import ShareControl from 'src/main/home/receive/ShareControl';
 import { Currency } from 'src/shared/types';
 import { SendStackParamList } from '../SendStack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';
 import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
+import { getZone } from 'src/shared/services/retrieveWallet';
+import { allNodeData } from 'src/shared/constants/nodeData';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -33,10 +38,17 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { wallet, sender, address, receiver, tip } = route.params;
+  const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
+  const { showSnackBar } = useSnackBar();
   const [showError, setShowError] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
   // TODO: remove when setShowError and setTxStatus are used
   console.log(setShowError, setTxStatus);
+  const zone = getZone();
+  const nodeData = allNodeData[zone];
+  const transactionUrl = `${nodeData.provider.replace('rpc.', '')}/tx/${
+    route.params.transaction.hash
+  }`;
   const { eqInput, input } = useAmountInput(
     `${
       Number(
@@ -54,7 +66,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     flex: 1,
   };
 
-  useEffect(() => {
+  const subscribeToTransaction = () => {
     waitForTransaction(route.params.transaction.hash)
       .then(receipt => {
         if (receipt?.status === 0) {
@@ -67,7 +79,24 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
         console.log(error);
         setTxStatus(TxStatus.failed);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    // re-subscribe to transaction if internet connection is lost and regained
+    subscribeToTransaction();
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setConnectionStatus(state);
+    });
+    if (connectionStatus?.isInternetReachable === false) {
+      showSnackBar({
+        message: t('home.send.noInternet'),
+        moreInfo: t('home.send.noInternetMessage') as string,
+      });
+    }
+    return () => {
+      unsubscribe();
+    };
+  }, [connectionStatus?.isInternetReachable]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -128,7 +157,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {abbreviateAddress(address)}
           </QuaiPayText>
           <View style={styles.shareControl}>
-            <ShareControl />
+            <ShareControl share={transactionUrl} />
           </View>
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
@@ -137,11 +166,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText
-            onPress={() => {
-              Linking.openURL(
-                `https://paxos1.colosseum.quaiscan.io/tx/${route.params.transaction.hash}`,
-              );
-            }}
+            onPress={() => Linking.openURL(transactionUrl)}
             style={styles.quaiSnap}
           >
             {t('home.send.viewOnExplorer')}

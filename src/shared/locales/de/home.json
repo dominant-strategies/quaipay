@@ -29,6 +29,8 @@
     "complete": "Fertig",
     "somethingWrong": "Etwas ist schief gelaufen.",
     "retryTransaction": "Bitte noch einmal versuchen.",
-    "viewAll": "Alle anzeigen"
+    "viewAll": "Alle anzeigen",
+    "noInternet": "Keine Internetverbindung",
+    "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!"
   }
 }

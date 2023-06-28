@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Linking,
   SafeAreaView,
@@ -66,7 +66,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     flex: 1,
   };
 
-  const subscribeToTransaction = () => {
+  const subscribeToTransaction = useCallback(() => {
     waitForTransaction(route.params.transaction.hash)
       .then(receipt => {
         if (receipt?.status === 0) {
@@ -79,7 +79,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
         console.log(error);
         setTxStatus(TxStatus.failed);
       });
-  };
+  }, [setTxStatus, route.params.transaction.hash]);
 
   useEffect(() => {
     // re-subscribe to transaction if internet connection is lost and regained
@@ -96,7 +96,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     return () => {
       unsubscribe();
     };
-  }, [connectionStatus?.isInternetReachable]);
+  }, [connectionStatus?.isInternetReachable, subscribeToTransaction]);
 
   return (
     <SafeAreaView style={backgroundStyle}>

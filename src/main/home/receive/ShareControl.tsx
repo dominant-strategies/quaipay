@@ -44,6 +44,7 @@ export default function ShareControl({ share }: ShareControlProps) {
     showSnackBar({
       message: t('receive.copiedToClipboard') as string,
       moreInfo: abbreviateAddress(share),
+      type: 'success',
     });
   };
 

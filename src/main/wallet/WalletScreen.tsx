@@ -49,6 +49,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState<
     (typeof timeframe)[number] | undefined
   >();
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
+
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
 
@@ -69,8 +72,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       startTimestamp: 0,
       endTimestamp: Date.now(),
       filterBy: selectedTxDirection,
-      minAmount: 0,
-      maxAmount: 1000000000000000000000000,
+      minAmount,
+      maxAmount,
     })
       .then(res => {
         setTransactions(
@@ -94,6 +97,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       <FilterModal
         setSelectedTimeframe={setSelectedTimeframe}
         setSelectedTxDirection={setSelectedTxDirection}
+        setMinAmount={setMinAmount}
+        setMaxAmount={setMaxAmount}
         ref={filterModalRef}
       />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />

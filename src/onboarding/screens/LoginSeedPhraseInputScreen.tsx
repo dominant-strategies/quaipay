@@ -10,6 +10,7 @@ import {
 import { useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import { typography } from 'src/shared/styles';
+import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
@@ -22,9 +23,10 @@ export const LoginSeedPhraseInputScreen: React.FC<
     seedPhraseLayoutDisplayWordThemedStyle,
   );
   const styles = useThemedStyle(themedStyle);
-  const [seedPhraseWords, setSeedPhraseWords] = useState(
+  const [seedPhraseWords, setSeedPhraseWords] = useState<string[]>(
     Array(AMOUNT_OF_WORDS_IN_PHRASE).fill(''),
   );
+  const [isPhraseValid, setIsPhraseValid] = useState(false);
 
   const changeWordOnPhrase = (value: string, idx: number) => {
     setSeedPhraseWords(prevState => {
@@ -44,11 +46,22 @@ export const LoginSeedPhraseInputScreen: React.FC<
         });
       }
     });
+    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ').toLowerCase()));
+  };
+
+  const validatePhrase = (phrase: string) => {
+    const a = Uint8Array.from(
+      Buffer.from(getEntropyFromSeedPhrase(phrase) ?? '', 'hex'),
+    )?.byteLength;
+    const b = (seedPhraseWords.length * 8) / 6;
+    return a === b;
   };
 
   const onSuccessful = () => {
-    // TODO: setup wallet with given seed phrase
-    navigation.navigate('SetupNameAndPFP');
+    if (isPhraseValid) {
+      // TODO: setup wallet with given seed phrase
+      navigation.navigate('SetupNameAndPFP');
+    }
   };
 
   return (
@@ -67,6 +80,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
         ))}
       </QuaiPaySeedPhraseLayoutDisplay>
       <QuaiPayButton
+        disabled={!isPhraseValid}
         title="On Successful Seed Phrase"
         onPress={onSuccessful}
         style={styles.continue}

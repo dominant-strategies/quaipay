@@ -1,46 +1,56 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { QuaiPayBottomSheetModal } from 'src/shared/components/QuaiPayBottomSheetModal';
-import { QuaiPayText } from 'src/shared/components';
-import Done from 'src/shared/assets/done.svg';
+import {
+  QuaiPayBottomSheetModal,
+  QuaiPaySelectableCards,
+  QuaiPayText,
+} from 'src/shared/components';
 import { StyleSheet, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
+import { TxDirection } from 'src/main/wallet/WalletScreen';
 
-export const FilterModal = forwardRef<BottomSheetModal>(({}, ref) => {
-  const styles = useThemedStyle(themedStyle);
+type FilterModalProps = {
+  setTxDirection: (txDirection: TxDirection) => void;
+};
 
-  return (
-    <QuaiPayBottomSheetModal ref={ref}>
-      <View style={styles.wrapper}>
-        <QuaiPayText type="H3" style={styles.title}>
-          Filter
-        </QuaiPayText>
-        <QuaiPayText type="H3" style={styles.heading}>
-          Payment Direction
-        </QuaiPayText>
-        <View style={[styles.selectableCard, styles.selectableCardSelected]}>
-          <QuaiPayText
-            type="H3"
-            style={[
-              styles.selectableCardText,
-              styles.selectableCardTextSelected,
-            ]}
-          >
-            Payment Received
+const directionMap = {
+  ['0']: TxDirection.to,
+  ['1']: TxDirection.from,
+};
+
+export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
+  ({ setTxDirection }, ref) => {
+    const [txDirectionIndex, setTxDirectionIndex] = useState<
+      number | undefined
+    >();
+
+    useEffect(() => {
+      // @ts-ignore
+      setTxDirection(directionMap[txDirectionIndex?.toString()]);
+    }, [txDirectionIndex]);
+
+    const styles = useThemedStyle(themedStyle);
+
+    return (
+      <QuaiPayBottomSheetModal ref={ref}>
+        <View style={styles.wrapper}>
+          <QuaiPayText type="H3" style={styles.title}>
+            Filter
           </QuaiPayText>
-          <Done width={20} />
-        </View>
-        <View style={styles.selectableCard}>
-          <QuaiPayText type="H3" style={styles.selectableCardText}>
-            Payment Sent
+          <QuaiPayText type="H3" style={styles.heading}>
+            Payment Direction
           </QuaiPayText>
-          <Done width={20} />
+          <QuaiPaySelectableCards
+            index={txDirectionIndex}
+            options={['Payment Received', 'Payment Sent']}
+            setIndex={setTxDirectionIndex}
+          />
         </View>
-      </View>
-    </QuaiPayBottomSheetModal>
-  );
-});
+      </QuaiPayBottomSheetModal>
+    );
+  },
+);
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
@@ -55,24 +65,5 @@ const themedStyle = (theme: Theme) =>
       marginTop: 32,
       marginBottom: 8,
       textAlign: 'justify',
-    },
-    selectableCard: {
-      flexDirection: 'row',
-      height: 40,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingHorizontal: 8,
-      marginVertical: 4,
-    },
-    selectableCardSelected: {
-      borderRadius: 4,
-      borderWidth: 2,
-      borderColor: theme.normal,
-    },
-    selectableCardText: {
-      color: theme.secondary,
-    },
-    selectableCardTextSelected: {
-      color: theme.normal,
     },
   });

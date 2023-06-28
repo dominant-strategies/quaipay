@@ -27,11 +27,17 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 
+export enum TxDirection {
+  'from' = 'from',
+  'to' = 'to',
+}
+
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [txDirection, setTxDirection] = useState<TxDirection | undefined>();
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
 
@@ -51,7 +57,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       offset: 100,
       startTimestamp: 0,
       endTimestamp: Date.now(),
-      filterBy: 'to',
+      filterBy: txDirection,
       minAmount: 0,
       maxAmount: 1000000000000000000000000,
     })
@@ -74,7 +80,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
 
   return (
     <QuaiPayContent noNavButton>
-      <FilterModal ref={filterModalRef} />
+      <FilterModal setTxDirection={setTxDirection} ref={filterModalRef} />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.cardWrapper}>
         <QuaiPayCard

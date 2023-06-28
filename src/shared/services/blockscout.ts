@@ -1,5 +1,6 @@
 import { allNodeData } from '../constants/nodeData';
 import { getZone } from './retrieveWallet';
+import { TxDirection } from 'src/main/wallet/WalletScreen';
 
 type TransactionList = {
   message: string;
@@ -37,7 +38,7 @@ type GetAccountTransactionsProps = {
   offset?: number;
   startTimestamp?: number;
   endTimestamp?: number;
-  filterBy?: string;
+  filterBy?: TxDirection;
   minAmount?: number;
   maxAmount?: number;
 };

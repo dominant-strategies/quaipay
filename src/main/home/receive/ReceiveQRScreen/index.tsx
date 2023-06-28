@@ -100,7 +100,7 @@ export const ReceiveQRScreen: React.FC<
             </Text>
           </View>
           <View style={styles.shareControl}>
-            <ShareControl />
+            <ShareControl share={wallet?.address} />
           </View>
         </View>
         <View>

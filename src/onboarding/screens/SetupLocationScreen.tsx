@@ -1,10 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
 import React, { useCallback, useState } from 'react';
 import Geolocation, {
@@ -30,12 +24,17 @@ import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { QuaiPayContent, QuaiPayLoader } from 'src/shared/components';
 
+import { OnboardingStackScreenProps } from '../OnboardingStack';
+
 async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
   return new Promise((resolve, reject) =>
     Geolocation.getCurrentPosition(resolve, reject, options),
   );
 }
-function SetupLocationScreen() {
+
+export const SetupLocationScreen: React.FC<
+  OnboardingStackScreenProps<'SetupLocation'>
+> = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [gettingLocation, setGettingLocation] = useState(false);
 
@@ -159,7 +158,7 @@ function SetupLocationScreen() {
       </View>
     </QuaiPayContent>
   );
-}
+};
 
 const styles = StyleSheet.create({
   locationSetupTitle: {
@@ -191,5 +190,3 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
-
-export default SetupLocationScreen;

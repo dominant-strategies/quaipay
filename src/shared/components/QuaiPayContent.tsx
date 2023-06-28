@@ -29,12 +29,14 @@ interface QuaiPayContentProps {
   noNavButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
   containerStyle,
   handleGoBack,
+  style,
   hasBackgroundVariant = false,
   noNavButton = false,
   noInsetBottom = false,
@@ -74,7 +76,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           paddingTop: insets.top,
           paddingBottom: noInsetBottom ? 0 : insets.bottom,
         },
-        ...(containerStyle ? [containerStyle] : []),
+        ...(style ? [style] : []),
       ]}
     >
       <StatusBar
@@ -104,7 +106,11 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           )}
         </View>
       )}
-      {children}
+      <View
+        style={[styles.container, ...(containerStyle ? [containerStyle] : [])]}
+      >
+        {children}
+      </View>
     </View>
   );
 };

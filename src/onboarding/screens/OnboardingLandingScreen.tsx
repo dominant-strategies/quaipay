@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,21 +11,16 @@ import {
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import { useWalletContext } from 'src/shared/context/walletContext';
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
-import { QuaiPayLoader } from 'src/shared/components';
+import { QuaiPayButton } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
 
-import { setUpWallet } from '../services/setUpWallet';
+import { OnboardingStackScreenProps } from '../OnboardingStack';
 
-type SetupWalletScreenProps = {
-  navigation: any;
-};
-
-function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
+export const OnboardingLandingScreen: React.FC<
+  OnboardingStackScreenProps<'OnboardingLanding'>
+> = ({ navigation }) => {
   const { isDarkMode } = useTheme();
-  const { setEntropy, setWallet } = useWalletContext();
-  const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
@@ -41,28 +36,10 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
     marginBottom: 'auto',
   };
 
-  const onPressSetup = useCallback(async () => {
-    try {
-      setSettingUpWallet(true);
-      const { entropy, wallet } = await setUpWallet();
-      setEntropy(entropy);
-      setWallet(wallet);
+  const goToOnboardingTerms = () => navigation.navigate('OnboardingTerms');
 
-      navigation.navigate('SetupNameAndPFP');
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log('failed to set up wallet', err.message, err.stack);
-      } else {
-        console.log('failed to set up wallet', err);
-      }
-    } finally {
-      setSettingUpWallet(false);
-    }
-  }, [navigation]);
+  const goToLogin = () => navigation.navigate('LoginLanding');
 
-  if (settingUpWallet) {
-    return <QuaiPayLoader text="Setting up wallet" />;
-  }
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -100,7 +77,7 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
         <View style={styles.loginActionSectionView}>
           <TouchableOpacity
             style={{ marginLeft: 21, marginRight: 21 }}
-            onPress={onPressSetup}
+            onPress={goToOnboardingTerms}
           >
             <Text
               style={{
@@ -113,20 +90,20 @@ function SetupWalletScreen({ navigation }: SetupWalletScreenProps) {
               Setup{' '}
             </Text>
           </TouchableOpacity>
-          <Text
-            style={{ ...fontStyle.fontSmallText, ...styles.loginSection }}
-            onPress={() => {
-              // navigation.navigate('Login');
-            }}
-          >
-            Already have an account? Click here to login.
-          </Text>
+          <QuaiPayButton
+            title="Already have an account? Click here to login."
+            titleType="default"
+            type="secondary"
+            underline
+            style={styles.loginSection}
+            onPress={goToLogin}
+          />
         </View>
         {/* </LinearGradient> */}
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   highlight: {
@@ -156,10 +133,6 @@ const styles = StyleSheet.create({
   },
   loginActionSectionView: {},
   loginSection: {
-    color: Colors.black,
-    verticalAlign: 'middle',
-    textDecorationLine: 'underline',
-    textAlign: 'center',
     marginTop: 15,
   },
   welcomeDescriptionView: {
@@ -174,5 +147,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-
-export default SetupWalletScreen;

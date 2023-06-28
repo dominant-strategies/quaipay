@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useCallback, useState } from 'react';
 import {
   Image,
@@ -27,18 +20,18 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { useTheme } from 'src/shared/context/themeContext';
 
+import { OnboardingStackScreenProps } from '../OnboardingStack';
+
 interface State {
   selectedImage: string;
 }
 
-type SetupNameAndPFPScreenProps = {
-  navigation: any;
-};
-
 const PFPURLPlaceholder =
   'https://www.pngfind.com/pngs/m/616-6168267_personblack-jack-kicking-at-camera-jack-black-transparent.png';
 
-function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
+export const SetupNameAndPFPScreen: React.FC<
+  OnboardingStackScreenProps<'SetupNameAndPFP'>
+> = ({ navigation }) => {
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [profilePicture, setProfilePicture] =
@@ -131,7 +124,7 @@ function SetupNameAndPFPScreen({ navigation }: SetupNameAndPFPScreenProps) {
       </QuaiPayContent>
     </DismissKeyboard>
   );
-}
+};
 const DismissKeyboard = ({ children }: any) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -200,5 +193,3 @@ const themedStyle = (theme: Theme) =>
       width: '100%',
     },
   });
-
-export default SetupNameAndPFPScreen;

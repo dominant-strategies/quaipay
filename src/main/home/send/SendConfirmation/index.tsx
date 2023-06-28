@@ -160,7 +160,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {abbreviateAddress(address)}
           </QuaiPayText>
           <View style={styles.shareControl}>
-            <ShareControl share={transactionUrl} />
+            <ShareControl />
           </View>
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>

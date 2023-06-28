@@ -19,6 +19,7 @@ import EyeOutline from 'src/shared/assets/eyeOutline.svg';
 import HideIcon from 'src/shared/assets/hide.svg';
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import { Theme } from 'src/shared/types';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
 import { getSeedPhraseFromEntropy } from 'src/shared/utils/seedPhrase';
@@ -35,6 +36,7 @@ export const ExportPhraseScreen: React.FC<
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
   const entropy = useEntropy();
+  const { showSnackBar } = useSnackBar();
 
   const [seedPhrase, setSeedPhrase] = useState<string>();
   const [isSeedPhraseHidden, setIsSeedPhraseHidden] = useState(true);
@@ -49,8 +51,11 @@ export const ExportPhraseScreen: React.FC<
     setIsSeedPhraseHidden(prevState => !prevState);
   const copyToClipboard = () => {
     Clipboard.setString(seedPhrase ?? '');
-    // eslint-disable-next-line no-alert
-    alert(t('export.phrase.phraseCopied'));
+    showSnackBar({
+      message: 'Done',
+      moreInfo: t('export.phrase.phraseCopied') ?? '',
+      type: 'success',
+    });
   };
   const goToConfirmPhrase = () =>
     seedPhrase &&

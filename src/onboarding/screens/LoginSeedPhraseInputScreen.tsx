@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 
+import BaselineError from 'src/shared/assets/baselineError.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
   QuaiPaySeedPhraseLayoutDisplay,
+  QuaiPayText,
   seedPhraseLayoutDisplayWordThemedStyle,
 } from 'src/shared/components';
 import { useThemedStyle } from 'src/shared/hooks';
@@ -13,12 +23,17 @@ import { typography } from 'src/shared/styles';
 import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
+import { useTranslation } from 'react-i18next';
 
 const AMOUNT_OF_WORDS_IN_PHRASE = 24;
+
+const isWindowSmallerThanScreen =
+  Dimensions.get('window').height < Dimensions.get('screen').height;
 
 export const LoginSeedPhraseInputScreen: React.FC<
   OnboardingStackScreenProps<'LoginSeedPhraseInput'>
 > = ({ navigation }) => {
+  const { t } = useTranslation();
   const { word: wordStyle } = useThemedStyle(
     seedPhraseLayoutDisplayWordThemedStyle,
   );
@@ -65,26 +80,50 @@ export const LoginSeedPhraseInputScreen: React.FC<
   };
 
   return (
-    <QuaiPayContent
-      title="LoginSeedPhraseInput"
-      containerStyle={styles.container}
-    >
-      <QuaiPaySeedPhraseLayoutDisplay showIndex>
-        {seedPhraseWords.map((w, idx) => (
-          <TextInput
-            key={idx}
-            style={[typography.bold, wordStyle, styles.input, styles.textInput]}
-            defaultValue={w}
-            onChangeText={value => changeWordOnPhrase(value, idx)}
+    <QuaiPayContent containerStyle={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView alwaysBounceVertical={isWindowSmallerThanScreen}>
+          <View style={styles.textContainer}>
+            <QuaiPayText type="H1" style={styles.title}>
+              {t('onboarding.login.phraseInput.title')}
+            </QuaiPayText>
+            <QuaiPayText type="paragraph" themeColor="secondary">
+              {t('onboarding.login.phraseInput.description')}
+            </QuaiPayText>
+          </View>
+          <View style={styles.bannerContainer}>
+            <BaselineError />
+            <QuaiPayText style={styles.bannerText}>
+              {t('onboarding.login.phraseInput.bannerMsg')}
+            </QuaiPayText>
+          </View>
+          <QuaiPaySeedPhraseLayoutDisplay showIndex>
+            {seedPhraseWords.map((w, idx) => (
+              <TextInput
+                key={idx}
+                style={[
+                  typography.bold,
+                  wordStyle,
+                  styles.input,
+                  styles.textInput,
+                ]}
+                defaultValue={w}
+                onChangeText={value => changeWordOnPhrase(value, idx)}
+              />
+            ))}
+          </QuaiPaySeedPhraseLayoutDisplay>
+          <View style={styles.separator} />
+          <QuaiPayButton
+            disabled={!isPhraseValid}
+            title={t('common.continue')}
+            onPress={onSuccessful}
+            style={styles.continue}
           />
-        ))}
-      </QuaiPaySeedPhraseLayoutDisplay>
-      <QuaiPayButton
-        disabled={!isPhraseValid}
-        title="On Successful Seed Phrase"
-        onPress={onSuccessful}
-        style={styles.continue}
-      />
+          <View style={styles.doubleSeparator} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </QuaiPayContent>
   );
 };
@@ -98,11 +137,41 @@ const themedStyle = (theme: Theme) =>
     },
     continue: {
       marginHorizontal: 20,
+      marginBottom: 12,
     },
     input: {
       paddingBottom: 10,
     },
     textInput: {
       color: theme.primary,
+    },
+    title: {
+      marginBottom: 8,
+    },
+    textContainer: {
+      alignItems: 'center',
+      marginHorizontal: 48,
+    },
+    bannerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surfaceVariant,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      marginVertical: 16,
+      marginHorizontal: 58,
+      borderWidth: 1,
+      borderColor: theme.normal,
+      borderRadius: 4,
+      gap: 4,
+    },
+    bannerText: {
+      maxWidth: '90%',
+    },
+    separator: {
+      height: 40,
+    },
+    doubleSeparator: {
+      height: 80,
     },
   });

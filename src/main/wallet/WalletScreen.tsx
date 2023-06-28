@@ -27,17 +27,28 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 
-export enum TxDirection {
-  'from' = 'from',
-  'to' = 'to',
-}
+export const txDirection = ['from', 'to'];
 
-const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
+export const timeframe = [
+  'All time',
+  'This week',
+  'Past 30 days',
+  'Past 90 days',
+  'Past 6 months',
+  'Past year',
+];
+
+const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [txDirection, setTxDirection] = useState<TxDirection | undefined>();
+  const [selectedTxDirection, setSelectedTxDirection] = useState<
+    (typeof txDirection)[number] | undefined
+  >();
+  const [selectedTimeframe, setSelectedTimeframe] = useState<
+    (typeof timeframe)[number] | undefined
+  >();
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
 
@@ -57,7 +68,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       offset: 100,
       startTimestamp: 0,
       endTimestamp: Date.now(),
-      filterBy: txDirection,
+      filterBy: selectedTxDirection,
       minAmount: 0,
       maxAmount: 1000000000000000000000000,
     })
@@ -76,11 +87,15 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [selectedTxDirection]);
 
   return (
     <QuaiPayContent noNavButton>
-      <FilterModal setTxDirection={setTxDirection} ref={filterModalRef} />
+      <FilterModal
+        setSelectedTimeframe={setSelectedTimeframe}
+        setSelectedTxDirection={setSelectedTxDirection}
+        ref={filterModalRef}
+      />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.cardWrapper}>
         <QuaiPayCard

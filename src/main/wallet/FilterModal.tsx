@@ -8,26 +8,25 @@ import {
 import { StyleSheet, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
-import { TxDirection } from 'src/main/wallet/WalletScreen';
+import { timeframe, txDirection } from 'src/main/wallet/WalletScreen';
 
 type FilterModalProps = {
-  setTxDirection: (txDirection: TxDirection) => void;
-};
-
-const directionMap = {
-  ['0']: TxDirection.to,
-  ['1']: TxDirection.from,
+  setSelectedTxDirection: (
+    selectedTxDirection: (typeof txDirection)[number],
+  ) => void;
+  setSelectedTimeframe: (selectedTimeframe: (typeof timeframe)[number]) => void;
 };
 
 export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
-  ({ setTxDirection }, ref) => {
+  ({ setSelectedTxDirection }, ref) => {
     const [txDirectionIndex, setTxDirectionIndex] = useState<
       number | undefined
     >();
+    const [timeframeIndex, setTimeframeIndex] = useState<number | undefined>();
 
     useEffect(() => {
       // @ts-ignore
-      setTxDirection(directionMap[txDirectionIndex?.toString()]);
+      setSelectedTxDirection(txDirection[txDirectionIndex]);
     }, [txDirectionIndex]);
 
     const styles = useThemedStyle(themedStyle);
@@ -45,6 +44,14 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
             index={txDirectionIndex}
             options={['Payment Received', 'Payment Sent']}
             setIndex={setTxDirectionIndex}
+          />
+          <QuaiPayText type="H3" style={styles.heading}>
+            By Date
+          </QuaiPayText>
+          <QuaiPaySelectableCards
+            index={timeframeIndex}
+            options={timeframe}
+            setIndex={setTimeframeIndex}
           />
         </View>
       </QuaiPayBottomSheetModal>

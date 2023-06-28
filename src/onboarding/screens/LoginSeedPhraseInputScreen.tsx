@@ -28,8 +28,21 @@ export const LoginSeedPhraseInputScreen: React.FC<
 
   const changeWordOnPhrase = (value: string, idx: number) => {
     setSeedPhraseWords(prevState => {
-      prevState.splice(idx, 1, value); // Take element on idx and replace it with value
-      return prevState;
+      const parsedValue = value.split(' ');
+      if (parsedValue.length <= 1) {
+        // Take element on idx and replace it with value
+        prevState.splice(idx, 1, value);
+        return prevState;
+      } else if (parsedValue.length >= AMOUNT_OF_WORDS_IN_PHRASE) {
+        // Replace whole phrase and stop at the end (omit rest if any)
+        return parsedValue.splice(0, AMOUNT_OF_WORDS_IN_PHRASE);
+      } else {
+        // Paste from current until the end
+        return prevState.map((word, n) => {
+          const slicedId = (n - idx) % AMOUNT_OF_WORDS_IN_PHRASE;
+          return parsedValue[slicedId] ? parsedValue[slicedId] : word;
+        });
+      }
     });
   };
 

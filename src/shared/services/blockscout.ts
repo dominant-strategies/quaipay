@@ -1,5 +1,6 @@
 import { allNodeData } from '../constants/nodeData';
 import { getZone } from './retrieveWallet';
+import { quais } from 'quais';
 
 type TransactionList = {
   message: string;
@@ -117,4 +118,49 @@ export const getAccountTransactions = (
         reject(error);
       });
   });
+};
+
+// TODO: rewrite
+export const getBalance = async (address: string): Promise<any> => {
+  const zone = getZone();
+  const nodeData = allNodeData[zone];
+
+  // Get the URL for the API
+  const url = `${nodeData.provider.replace(
+    'rpc.',
+    '',
+  )}/api?module=account&action=eth_get_balance&address=${address}`;
+  console.log(url);
+  var myHeaders = new Headers();
+  myHeaders.append('accept', 'application/json');
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  let resJson;
+  try {
+    const res = await fetch(url, requestOptions);
+    const resString = await res.text();
+    resJson = JSON.parse(resString);
+    if (resJson.error === 'Balance not found') {
+      const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
+      await provider.ready;
+
+      const balance = await provider.getBalance(address as string);
+      console.log({ balance });
+      return Number(balance);
+    } else {
+      return parseInt(resJson.result, 16);
+    }
+  } catch (err) {
+    console.log(err);
+    const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
+    await provider.ready;
+
+    const balance = await provider.getBalance(address as string);
+    console.log({ balance });
+    return Number(balance);
+  }
 };

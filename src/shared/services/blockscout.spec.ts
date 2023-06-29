@@ -1,5 +1,6 @@
 import { getAccountTransactions } from './blockscout';
 
+// TODO: restore after each
 global.fetch = jest.fn(() =>
   Promise.resolve({
     text: () =>

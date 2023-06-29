@@ -7,7 +7,14 @@
     "nameAndPFP": {
       "choose": "Benutzernamen und Profilbild auswählen",
       "username": "Benutzername",
-      "PFPURL": "Profilbild-URL",
+      "PFPURL": "Profilbild-URL"
+    }
+  },
+  "login": {
+    "phraseInput": {
+      "title": "Geben Sie Ihre Seed-Phrase ein",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
+      "bannerMsg": "Sie können Ihre gesamte Seed-Phrase in eines der Felder einfügen."
     }
   }
 }

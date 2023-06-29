@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
@@ -23,10 +24,12 @@ import {
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
+  const { showSnackBar } = useSnackBar();
   const isDarkMode = useColorScheme() === 'dark';
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const profilePicture = useProfilePicture();
@@ -36,6 +39,15 @@ export const ReceiveScreen = () => {
   if (!profilePicture || !username || !wallet) {
     return <QuaiPayLoader text={'Loading...'} />;
   }
+
+  const copyToClipboard = () => {
+    Clipboard.setString(wallet.address);
+    showSnackBar({
+      message: t('receive.copiedToClipboard') as string,
+      moreInfo: abbreviateAddress(wallet.address),
+    });
+  };
+
   return (
     <QuaiPayContent
       noNavButton
@@ -53,11 +65,15 @@ export const ReceiveScreen = () => {
         <QuaiPayText type="H2" style={styles.ownerName}>
           {username}
         </QuaiPayText>
-        <QuaiPayText type="paragraph" style={styles.walletAddress}>
+        <QuaiPayText
+          type="paragraph"
+          style={styles.walletAddress}
+          onPress={copyToClipboard}
+        >
           {abbreviateAddress(wallet.address)}
         </QuaiPayText>
         <View style={styles.shareControlStyle}>
-          <ShareControl />
+          <ShareControl share={wallet.address} />
         </View>
       </View>
       <View style={styles.buttonAreaInfo}>

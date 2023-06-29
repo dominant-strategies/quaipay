@@ -1,10 +1,20 @@
 import { quais } from 'quais';
 import { useEffect } from 'react';
-import { useUsername, useWallet } from 'src/shared/hooks';
-import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
-import { ScannerType } from './QuaiPayCamera.types';
-import { RootNavigator } from 'src/shared/navigation/utils';
+import { useNavigation } from '@react-navigation/native';
 import { Frame } from 'react-native-vision-camera';
+import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
+
+import { setUpWallet } from 'src/onboarding/services/setUpWallet';
+import { OnboardingStackNavigationProp } from 'src/onboarding/OnboardingStack';
+import { useWalletContext } from 'src/shared/context/walletContext';
+import { useUsername, useWallet } from 'src/shared/hooks';
+import { RootNavigator } from 'src/shared/navigation/utils';
+import {
+  getSeedPhraseFromEntropy,
+  validatePhrase,
+} from 'src/shared/utils/seedPhrase';
+
+import { ScannerType } from './QuaiPayCamera.types';
 
 interface HookOutput {
   frameProcessor: (frame: Frame) => void;
@@ -52,8 +62,33 @@ const useSendAmountScannerCamera = () => {
   };
 };
 
+const useLoginCodeScannerCamera = () => {
+  const navigation =
+    useNavigation<OnboardingStackNavigationProp<'LoginQRCodeScan'>>();
+  const { initFromOnboarding } = useWalletContext();
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+    checkInverted: true,
+  });
+
+  useEffect(() => {
+    if (barcodes.length > 0 && barcodes[0].content.data) {
+      const scannedEntropy = barcodes[0].content.data as string;
+      if (validatePhrase(getSeedPhraseFromEntropy(scannedEntropy))) {
+        setUpWallet()
+          .then(info => initFromOnboarding(info))
+          .finally(() => navigation.navigate('SetupNameAndPFP'));
+      }
+    }
+  }, [barcodes]);
+
+  return {
+    frameProcessor,
+  };
+};
+
 const hookByType: Record<ScannerType, () => HookOutput> = {
   [ScannerType.SEND_AMOUNT]: useSendAmountScannerCamera,
+  [ScannerType.LOGIN_CODE]: useLoginCodeScannerCamera,
 };
 
 export const useQuaiPayCamera = (type: ScannerType) => hookByType[type];

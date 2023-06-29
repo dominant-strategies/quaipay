@@ -1,6 +1,6 @@
 export { QuaiPayBanner } from './QuaiPayBanner';
 export { QuaiPayButton } from './QuaiPayButton';
-export { QuaiPayCamera } from './QuaiPayCamera/QuaiPayCamera';
+export { QuaiPayCamera, squareHoleSize } from './QuaiPayCamera/QuaiPayCamera';
 export { QuaiPayCard, CardSize } from './QuaiPayCard';
 export { QuaiPayContactBottomSheet } from './QuaiPayContactBottomSheet/QuaiPayContactBottomSheet';
 export { QuaiPayContent } from './QuaiPayContent';

@@ -27,10 +27,9 @@ import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
-
-export const txDirection = ['from', 'to'];
 import { abbreviateAddress } from 'src/shared/services/quais';
 
+export const txDirection = ['from', 'to'];
 export const timeframe = [
   'All time',
   'This week',

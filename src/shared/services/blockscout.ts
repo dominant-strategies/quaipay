@@ -1,7 +1,7 @@
 import { allNodeData } from '../constants/nodeData';
 import { getZone } from './retrieveWallet';
 import { quais } from 'quais';
-import { TxDirection } from 'src/main/wallet/WalletScreen';
+import { txDirection } from 'src/main/wallet/WalletScreen';
 
 type TransactionList = {
   message: string;
@@ -39,7 +39,7 @@ type GetAccountTransactionsProps = {
   offset?: number;
   startTimestamp?: number;
   endTimestamp?: number;
-  filterBy?: TxDirection;
+  filterBy?: (typeof txDirection)[number];
   minAmount?: number;
   maxAmount?: number;
 };

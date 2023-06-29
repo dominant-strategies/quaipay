@@ -66,6 +66,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
     });
   }, []);
 
+  // TODO: implement actual search logic
+  const onSearchChange = (text: string) => console.log(text);
+
   return (
     <QuaiPayContent noNavButton>
       <View style={styles.cardWrapper}>
@@ -119,7 +122,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           </Pressable>
         </View>
         <View style={styles.searchbarWrapper}>
-          <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
+          <QuaiPaySearchbar
+            onSearchChange={onSearchChange}
+            placeholder={t('searchByTransaction')}
+          />
         </View>
         {transactions.length === 0 ? (
           <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>

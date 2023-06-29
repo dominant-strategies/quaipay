@@ -34,7 +34,7 @@ export default function ShareControl({ share }: ShareControlProps) {
 
   const shareAddress = () => {
     Share.share({
-      title: t('receive.shareYourAddress') as string,
+      title: t('receive.shareYourAddress') ?? '',
       message: share,
     });
   };
@@ -42,7 +42,7 @@ export default function ShareControl({ share }: ShareControlProps) {
   const copyToClipboard = () => {
     Clipboard.setString(share);
     showSnackBar({
-      message: t('receive.copiedToClipboard') as string,
+      message: t('receive.copiedToClipboard'),
       moreInfo: abbreviateAddress(share),
       type: 'success',
     });

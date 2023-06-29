@@ -43,6 +43,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         showSnackBar({
           message: t('common.error'),
           moreInfo: t('error.retrieve.entropy') ?? '',
+          type: 'error',
         }),
       );
   };
@@ -58,6 +59,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         : showSnackBar({
             message: t('common.error'),
             moreInfo: t('error.retrieve.wallet') ?? '',
+            type: 'error',
           }),
     );
   };

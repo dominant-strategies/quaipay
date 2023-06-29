@@ -45,6 +45,7 @@ export const ReceiveScreen = () => {
     showSnackBar({
       message: t('receive.copiedToClipboard') as string,
       moreInfo: abbreviateAddress(wallet.address),
+      type: 'success',
     });
   };
 

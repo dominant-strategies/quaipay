@@ -20,6 +20,7 @@ import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 
 const MARGIN_RIGHT_OFFSET = 16;
+const HIT_SLOPE_SIZE = 16;
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
@@ -88,6 +89,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           {noNavButton ? null : (
             <Pressable
               onPress={goBack}
+              hitSlop={HIT_SLOPE_SIZE}
               style={({ pressed }) => [
                 pressed && { opacity: 0.5 },
                 styles.navIconMargin,

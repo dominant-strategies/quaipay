@@ -1,4 +1,4 @@
-import { entropyToMnemonic, mnemonicToEntropy } from 'bip39';
+import { entropyToMnemonic, mnemonicToEntropy, validateMnemonic } from 'bip39';
 
 export const getSeedPhraseFromEntropy = (entropy?: string) => {
   if (!entropy) {
@@ -22,4 +22,12 @@ export const getEntropyFromSeedPhrase = (seedPhrase?: string) => {
   } catch {
     return undefined;
   }
+};
+
+export const validatePhrase = (phrase?: string) => {
+  if (!phrase) {
+    return false;
+  }
+
+  return validateMnemonic(phrase.toLocaleLowerCase());
 };

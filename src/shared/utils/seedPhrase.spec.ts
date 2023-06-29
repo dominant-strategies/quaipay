@@ -1,6 +1,7 @@
 import {
   getEntropyFromSeedPhrase,
   getSeedPhraseFromEntropy,
+  validatePhrase,
 } from './seedPhrase';
 
 // Phrase generated with bip39 lib
@@ -79,5 +80,43 @@ describe('seedPhraseToEntropy', () => {
 
       expect(output).toBe(input);
     });
+  });
+});
+
+describe('validatePhrase', () => {
+  it('should work for happy path', () => {
+    const entropy = Buffer.from(generateSecureRandom(16)).toString('hex');
+    const phrase = getSeedPhraseFromEntropy(entropy);
+
+    expect(validatePhrase(phrase)).toBe(true);
+  });
+
+  it('should work with case insensitivity', () => {
+    const entropy = Buffer.from(generateSecureRandom(16)).toString('hex');
+    const phrase = getSeedPhraseFromEntropy(entropy);
+
+    const upperCasePhrase = phrase
+      ?.split(' ')
+      .map(w => w.toUpperCase())
+      .join(' ');
+
+    expect(validatePhrase(upperCasePhrase)).toBe(true);
+  });
+
+  it('should return false for wrong phrase', () => {
+    const entropy = Buffer.from(generateSecureRandom(16)).toString('hex');
+    const phrase = getSeedPhraseFromEntropy(entropy);
+
+    const shortenPhrase = phrase?.split(' ').slice(0, 5).join(' ');
+
+    expect(validatePhrase(shortenPhrase)).toBe(false);
+  });
+
+  it('should return false for empty phrase', () => {
+    expect(validatePhrase('')).toBe(false);
+  });
+
+  it('should return false for undefined phrase', () => {
+    expect(validatePhrase()).toBe(false);
   });
 });

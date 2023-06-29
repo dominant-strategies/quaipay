@@ -22,7 +22,10 @@ import {
 import { useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import { typography } from 'src/shared/styles';
-import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
+import {
+  getEntropyFromSeedPhrase,
+  validatePhrase,
+} from 'src/shared/utils/seedPhrase';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 import { setUpWallet } from '../services/setUpWallet';
@@ -66,15 +69,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
         });
       }
     });
-    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ').toLowerCase()));
-  };
-
-  const validatePhrase = (phrase: string) => {
-    const a = Uint8Array.from(
-      Buffer.from(getEntropyFromSeedPhrase(phrase) ?? '', 'hex'),
-    )?.byteLength;
-    const b = (seedPhraseWords.length * 8) / 6;
-    return a === b;
+    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ')));
   };
 
   const onSuccessful = async () => {

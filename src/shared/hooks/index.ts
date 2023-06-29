@@ -1,5 +1,6 @@
 export { useAmountInput } from './useAmountInput';
 export { useContacts } from './useContacts';
+export { useEntropy } from './useEntropy';
 export { useProfilePicture } from './useProfilePicture';
 export { useRetrieve } from './useRetrieve';
 export { useThemedStyle } from './useThemedStyle';

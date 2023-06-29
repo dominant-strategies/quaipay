@@ -3,8 +3,12 @@ import {
   StyleSheet,
   View,
   useColorScheme,
+  Linking,
+  Share,
 } from 'react-native';
 import React from 'react';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import { styledColors } from 'src/shared/styles';
 
@@ -16,9 +20,44 @@ import ChatWhiteIcon from '../../../../assets/icons/chat_white.svg';
 import UploadWhiteIcon from '../../../../assets/icons/upload_white.svg';
 import EmailWhiteIcon from '../../../../assets/icons/email_white.svg';
 import PrinterWhiteIcon from '../../../../assets/icons/printer_white.svg';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
+import { abbreviateAddress } from 'src/shared/services/quais';
 
-export default function ShareControl() {
+type ShareControlProps = {
+  share: string;
+};
+
+export default function ShareControl({ share }: ShareControlProps) {
+  const { t } = useTranslation('translation', { keyPrefix: 'home' });
   const isDarkMode = useColorScheme() === 'dark';
+  const { showSnackBar } = useSnackBar();
+
+  const shareAddress = () => {
+    Share.share({
+      title: t('receive.shareYourAddress') as string,
+      message: share,
+    });
+  };
+
+  const copyToClipboard = () => {
+    Clipboard.setString(share);
+    showSnackBar({
+      message: t('receive.copiedToClipboard') as string,
+      moreInfo: abbreviateAddress(share),
+      type: 'success',
+    });
+  };
+
+  const sendEmail = () => {
+    Linking.openURL(
+      `mailto:?subject=${t('receive.quaipayAddress')}&body=${share}`,
+    );
+  };
+
+  const sendSMS = () => {
+    Linking.openURL(`sms:?body=${share}`);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.item}>
@@ -31,7 +70,7 @@ export default function ShareControl() {
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={sendEmail}>
           {isDarkMode ? (
             <EmailWhiteIcon width={32} height={32} />
           ) : (
@@ -40,7 +79,7 @@ export default function ShareControl() {
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={sendSMS}>
           {isDarkMode ? (
             <ChatWhiteIcon width={32} height={32} />
           ) : (
@@ -49,7 +88,7 @@ export default function ShareControl() {
         </TouchableOpacity>
       </View>
       <View style={styles.item}>
-        <TouchableOpacity>
+        <TouchableOpacity onLongPress={copyToClipboard} onPress={shareAddress}>
           {isDarkMode ? (
             <UploadWhiteIcon width={32} height={32} />
           ) : (

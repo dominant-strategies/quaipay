@@ -20,7 +20,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
-import { useAmountInput } from 'src/shared/hooks';
+import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -33,8 +33,9 @@ type SendAmountScreenProps = NativeStackScreenProps<
 >;
 
 const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
-  const { amount, address, receiver, wallet, sender } = route.params;
+  const { amount, address, receiver, sender } = route.params;
   const { t } = useTranslation();
+  const wallet = useWallet();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
@@ -72,7 +73,6 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
       input,
       address,
       receiver,
-      wallet,
     });
   };
 
@@ -98,7 +98,6 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
       input: input,
       address,
       receiver,
-      wallet,
       totalAmount: amountInUSD,
       tip: 0,
     });

@@ -7,14 +7,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { styledColors } from 'src/shared/styles';
-import { Currency } from 'src/shared/types';
+import { Currency, Transaction } from 'src/shared/types';
 
 import SendScanScreen from './SendScan';
 import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
-import { Transaction, Wallet } from 'src/shared/types';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
@@ -22,7 +21,6 @@ export type SendStackParamList = {
     address: string;
     amount: number;
     receiver: string;
-    wallet: Wallet;
     sender: string;
   };
   SendTip: {
@@ -39,10 +37,8 @@ export type SendStackParamList = {
     };
     amountInUSD: string;
     amountInQUAI: string;
-    wallet: Wallet;
   };
   SendOverview: {
-    wallet: Wallet;
     address: string;
     receiver: string;
     sender: string;
@@ -60,7 +56,6 @@ export type SendStackParamList = {
     totalAmount: string;
   };
   SendConfirmation: {
-    wallet: Wallet;
     transaction: Transaction;
     address: string;
     receiver: string;

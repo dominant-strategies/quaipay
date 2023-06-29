@@ -12,6 +12,10 @@ export { QuaiPayLoader } from './QuaiPayLoader';
 export { QuaiPayQRCode } from './QuaiPayQRCode';
 export { QuaiPaySearchbar } from './QuaiPaySearchbar';
 export { QuaiPaySelectableCards } from './QuaiPaySelectableCards';
+export {
+  QuaiPaySeedPhraseLayoutDisplay,
+  seedPhraseLayoutDisplayWordThemedStyle,
+} from './QuaiPaySeedPhraseLayoutDisplay';
 export { QuaiPaySnackBar } from './QuaiPaySnackBar';
 export { QuaiPayText } from './QuaiPayText';
 

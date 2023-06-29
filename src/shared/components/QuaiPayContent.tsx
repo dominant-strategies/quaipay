@@ -20,6 +20,7 @@ import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
 
 const MARGIN_RIGHT_OFFSET = 16;
+const HIT_SLOPE_SIZE = 16;
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
@@ -29,12 +30,14 @@ interface QuaiPayContentProps {
   noNavButton?: boolean;
   noInsetBottom?: boolean;
   title?: string | null;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
   children,
   containerStyle,
   handleGoBack,
+  style,
   hasBackgroundVariant = false,
   noNavButton = false,
   noInsetBottom = false,
@@ -74,7 +77,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           paddingTop: insets.top,
           paddingBottom: noInsetBottom ? 0 : insets.bottom,
         },
-        ...(containerStyle ? [containerStyle] : []),
+        ...(style ? [style] : []),
       ]}
     >
       <StatusBar
@@ -86,6 +89,7 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           {noNavButton ? null : (
             <Pressable
               onPress={goBack}
+              hitSlop={HIT_SLOPE_SIZE}
               style={({ pressed }) => [
                 pressed && { opacity: 0.5 },
                 styles.navIconMargin,
@@ -104,7 +108,11 @@ export const QuaiPayContent: React.FC<QuaiPayContentProps> = ({
           )}
         </View>
       )}
-      {children}
+      <View
+        style={[styles.container, ...(containerStyle ? [containerStyle] : [])]}
+      >
+        {children}
+      </View>
     </View>
   );
 };

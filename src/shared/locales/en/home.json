@@ -2,7 +2,10 @@
   "receive": {
     "label": "Receive",
     "amount": "Amount",
-    "address": "Address"
+    "address": "Address",
+    "quaipayAddress": "QuaiPay Address",
+    "shareYourAddress": "Share your QuaiPay address",
+    "copiedToClipboard": "Copied to clipboard!"
   },
   "send": {
     "label": "Send",
@@ -29,6 +32,8 @@
     "complete": "Complete",
     "somethingWrong": "Something went wrong.",
     "retryTransaction": "Please retry the transaction.",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "noInternet": "No Internet Connection",
+    "noInternetMessage": "Please check your internet connection"
   }
 }

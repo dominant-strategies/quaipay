@@ -37,6 +37,7 @@ export const ExportConfirmationPhraseScreen: React.FC<
     showSnackBar({
       message: t('export.confirmation.wrongPhraseMessage.main'),
       moreInfo: t('export.confirmation.wrongPhraseMessage.moreInfo') ?? '',
+      type: 'error',
     });
   const goToCheckout = () => navigation.navigate('ExportCheckout');
 

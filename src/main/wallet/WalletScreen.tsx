@@ -18,6 +18,7 @@ import { styledColors } from 'src/shared/styles';
 import {
   Transaction,
   getAccountTransactions,
+  getBalance,
 } from 'src/shared/services/blockscout';
 import { useWallet } from 'src/shared/hooks';
 import { quais } from 'quais';
@@ -28,6 +29,7 @@ import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 
 export const txDirection = ['from', 'to'];
+import { abbreviateAddress } from 'src/shared/services/quais';
 
 export const timeframe = [
   'All time',
@@ -62,7 +64,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const handlePresentActiveAddressModalPress = useCallback(() => {
     activeAddressModalRef.current?.present();
   }, []);
+  const [balance, setBalance] = useState(0);
 
+  // TODO: show loader while fetching transactions and balance
   useEffect(() => {
     getAccountTransactions({
       address: wallet?.address as string,
@@ -90,6 +94,12 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       .catch(err => {
         console.log(err);
       });
+    getBalance('0x26746086cbB0D0AD0b3a586F758A4AAb1E628070' as string).then(
+      res => {
+        // console.log(res);
+        setBalance(Number(quais.utils.formatEther(res)));
+      },
+    );
   }, [selectedTxDirection]);
 
   return (
@@ -105,10 +115,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
-          quaiAmount="142.123"
-          address="0x123453.....0934823"
-          zone="Cyprus-02"
-          fiatAmount="1,000"
+          quaiAmount={balance.toString()}
+          address={abbreviateAddress(wallet?.address as string)}
+          zone="Paxos-01"
+          fiatAmount={(balance * EXCHANGE_RATE).toFixed(3)}
           title={t('balance')}
         />
       </View>

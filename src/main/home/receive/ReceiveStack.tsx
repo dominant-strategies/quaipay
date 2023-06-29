@@ -7,15 +7,11 @@ import {
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
 import { ReceiveQRScreen } from './ReceiveQRScreen';
-import { Wallet } from 'src/shared/types/Wallet';
 
 export type ReceiveStackParamList = {
-  ReceiveAmountInput: {
-    wallet: Wallet;
-  };
+  ReceiveAmountInput: undefined;
   ReceiveQR: {
     amount: number;
-    wallet: Wallet;
   };
 };
 

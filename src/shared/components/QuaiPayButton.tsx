@@ -59,6 +59,10 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
    * Typography to be used on title's component instead of the one on typed style
    */
   titleType?: Typography;
+  /*
+   * Underline title on button
+   */
+  underline?: boolean;
 }
 
 export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
@@ -71,6 +75,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   pill = false,
   type = 'default',
   titleType = 'H3',
+  underline = false,
   ...props
 }) => {
   const buttonStyles = useThemedStyle(t =>
@@ -94,6 +99,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
       >
         <QuaiPayText
           type={titleType}
+          underline={underline}
           style={[
             styles.text,
             outlined && styles.outlinedText,

@@ -41,7 +41,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
     seedPhraseLayoutDisplayWordThemedStyle,
   );
   const styles = useThemedStyle(themedStyle);
-  const { setEntropy, setWallet } = useWalletContext();
+  const { initFromOnboarding } = useWalletContext();
   const [seedPhraseWords, setSeedPhraseWords] = useState<string[]>(
     Array(AMOUNT_OF_WORDS_IN_PHRASE).fill(''),
   );
@@ -80,7 +80,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
   const onSuccessful = async () => {
     if (isPhraseValid) {
       setSettingUpWallet(true);
-      const { entropy, wallet } = await setUpWallet(
+      setUpWallet(
         Uint8Array.from(
           Buffer.from(
             getEntropyFromSeedPhrase(seedPhraseWords.join(' ').toLowerCase()) ??
@@ -88,11 +88,12 @@ export const LoginSeedPhraseInputScreen: React.FC<
             'hex',
           ),
         ),
-      ).finally(() => setSettingUpWallet(false));
-      setEntropy(entropy);
-      setWallet(wallet);
-
-      navigation.navigate('SetupNameAndPFP');
+      )
+        .then(initFromOnboarding)
+        .finally(() => {
+          setSettingUpWallet(false);
+          navigation.navigate('SetupNameAndPFP');
+        });
     }
   };
 

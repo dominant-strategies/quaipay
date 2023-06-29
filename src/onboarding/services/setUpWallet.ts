@@ -6,6 +6,7 @@ import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { getZone } from 'src/shared/services/retrieveWallet';
 import { Wallet } from 'src/shared/types';
+import { OnboardingInfo } from 'src/shared/context/walletContext';
 
 type ZoneIndex = Exclude<
   keyof typeof keychainKeys,
@@ -15,7 +16,9 @@ type ZoneIndex = Exclude<
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
-export async function setUpWallet(entropy?: Uint8Array) {
+export async function setUpWallet(
+  entropy?: Uint8Array,
+): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
   }
@@ -56,7 +59,7 @@ export async function setUpWallet(entropy?: Uint8Array) {
 
   return {
     entropy: encodedEntropy,
-    wallet: parsedNodes.find(n => n.key === getZone())?.node as unknown as
+    wallet: parsedNodes.find(n => n.key === getZone())?.node as
       | Wallet
       | undefined,
   };

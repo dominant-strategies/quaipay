@@ -22,12 +22,18 @@ interface WalletContext extends WalletContextState {
   setEntropy: (entropy: string) => void;
   getWallet: () => void;
   setWallet: (wallet?: Wallet) => void;
+  initFromOnboarding: (info: OnboardingInfo) => void;
 }
 
 const INITIAL_STATE: WalletContextState = {};
 
 const [useContext, WalletContextProvider] =
   createCtx<WalletContext>('walletContext');
+
+export interface OnboardingInfo {
+  entropy: string;
+  wallet?: Wallet;
+}
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -68,9 +74,21 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setState(prevState => ({ ...prevState, wallet }));
   };
 
+  const initFromOnboarding = (info: OnboardingInfo) => {
+    setEntropy(info.entropy);
+    setWallet(info.wallet);
+  };
+
   return (
     <WalletContextProvider
-      value={{ ...state, getEntropy, setEntropy, getWallet, setWallet }}
+      value={{
+        ...state,
+        getEntropy,
+        setEntropy,
+        getWallet,
+        setWallet,
+        initFromOnboarding,
+      }}
     >
       {children}
     </WalletContextProvider>

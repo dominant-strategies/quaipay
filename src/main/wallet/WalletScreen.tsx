@@ -33,6 +33,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState(0);
 
+  // TODO: show loader while fetching transactions and balance
   useEffect(() => {
     getAccountTransactions({
       address: wallet?.address as string,

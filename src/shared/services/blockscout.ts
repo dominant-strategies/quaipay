@@ -120,6 +120,7 @@ export const getAccountTransactions = (
   });
 };
 
+// TODO: rewrite
 export const getBalance = async (address: string): Promise<any> => {
   const zone = getZone();
   const nodeData = allNodeData[zone];

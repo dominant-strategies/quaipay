@@ -16,6 +16,7 @@ export const QuaiPayBanner = ({
   text,
 }: QuaiPayBannerProps) => {
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <View style={[styles.wrapper, { opacity: showError ? 1 : 0 }]}>
       <RedExclamation />
       <QuaiPayText type="bold" themeColor="alert">

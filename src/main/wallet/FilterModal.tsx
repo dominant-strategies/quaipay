@@ -162,24 +162,14 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
           <View style={styles.buttonsWrapper}>
             <QuaiPayButton
               title={'Apply Filters'}
-              containerStyle={{ width: 220 }}
-              style={{
-                height: 32,
-                padding: 0,
-                justifyContent: 'center',
-              }}
+              containerStyle={styles.applyButtonContainer}
+              style={styles.button}
               onPress={applyFilters}
             />
             <QuaiPayButton
               title={'Reset'}
-              containerStyle={{ width: 120 }}
-              style={{
-                height: 32,
-                padding: 0,
-                justifyContent: 'center',
-                borderColor: styledColors.gray,
-                borderWidth: 1,
-              }}
+              containerStyle={styles.clearButtonContainer}
+              style={[styles.button, styles.clearButton]}
               type="secondary"
               onPress={clearFilters}
             />
@@ -232,5 +222,18 @@ const themedStyle = (theme: Theme) =>
       height: Dimensions.get('window').height * 0.15,
       borderColor: theme.border,
       borderTopWidth: 1,
+    },
+    applyButtonContainer: {
+      width: 220,
+    },
+    button: {
+      height: 32,
+      padding: 0,
+      justifyContent: 'center',
+    },
+    clearButtonContainer: { width: 120 },
+    clearButton: {
+      borderColor: styledColors.gray,
+      borderWidth: 1,
     },
   });

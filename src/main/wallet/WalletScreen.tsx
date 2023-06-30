@@ -47,6 +47,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
   const [shards, setShards] = useState<number[]>([]);
+  // TODO: remove console.log when we use these values
+  console.log(shards, selectedTimeframe);
 
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);

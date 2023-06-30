@@ -8,9 +8,19 @@ import {
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
-import { timeframe, txDirection } from 'src/main/wallet/WalletScreen';
 import { styledColors } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
+import { ShardFilterMultiSelect } from 'src/main/wallet/ShardFilterMultiSelect';
+
+export const txDirection = ['from', 'to'];
+export const timeframe = [
+  'All time',
+  'This week',
+  'Past 30 days',
+  'Past 90 days',
+  'Past 6 months',
+  'Past year',
+];
 
 type FilterModalProps = {
   setSelectedTxDirection: (

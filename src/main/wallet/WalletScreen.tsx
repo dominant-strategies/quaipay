@@ -25,19 +25,13 @@ import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FilterModal } from 'src/main/wallet/FilterModal';
+import {
+  FilterModal,
+  timeframe,
+  txDirection,
+} from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
-
-export const txDirection = ['from', 'to'];
-export const timeframe = [
-  'All time',
-  'This week',
-  'Past 30 days',
-  'Past 90 days',
-  'Past 6 months',
-  'Past year',
-];
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });

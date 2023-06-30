@@ -1,7 +1,7 @@
 import { allNodeData } from '../constants/nodeData';
 import { getZone } from './retrieveWallet';
 import { quais } from 'quais';
-import { txDirection } from 'src/main/wallet/WalletScreen';
+import { txDirection } from 'src/main/wallet/FilterModal';
 
 type TransactionList = {
   message: string;

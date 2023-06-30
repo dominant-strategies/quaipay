@@ -148,19 +148,15 @@ export const getBalance = async (address: string): Promise<any> => {
       const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
       await provider.ready;
 
-      const balance = await provider.getBalance(address as string);
-      console.log({ balance });
-      return Number(balance);
+      return await provider.getBalance(address as string);
     } else {
-      return parseInt(resJson.result, 16);
+      return resJson.result;
     }
   } catch (err) {
     console.log(err);
     const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
     await provider.ready;
 
-    const balance = await provider.getBalance(address as string);
-    console.log({ balance });
-    return Number(balance);
+    return await provider.getBalance(address as string);
   }
 };

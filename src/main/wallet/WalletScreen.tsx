@@ -91,6 +91,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         console.log(err);
       });
     getBalance(wallet?.address as string).then(res => {
+      console.log('hey');
+      console.log(res);
       setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
     });
   }, [selectedTxDirection]);

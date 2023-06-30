@@ -6,6 +6,7 @@ import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { getZone } from 'src/shared/services/retrieveWallet';
 import { Wallet } from 'src/shared/types';
+import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
 
 type ZoneIndex = Exclude<
   keyof typeof keychainKeys,
@@ -35,7 +36,7 @@ export async function setUpWallet(entropy?: Uint8Array) {
   );
 
   const parsedNodes = childNodes.map((node, ind: number) => {
-    const zoneIndex = `wallet-zone-${Math.floor(ind / 3)}-${ind % 3}`;
+    const zoneIndex = getZoneIndex(ind);
     return {
       node,
       key: keychainKeys[zoneIndex as ZoneIndex],

@@ -67,11 +67,11 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
 
     return (
       <QuaiPayBottomSheetModal ref={ref}>
-        <ScrollView>
-          <View style={styles.wrapper}>
-            <QuaiPayText type="H3" style={styles.title}>
-              Filter
-            </QuaiPayText>
+        <View style={styles.wrapper}>
+          <QuaiPayText type="H3" style={styles.title}>
+            Filter
+          </QuaiPayText>
+          <ScrollView>
             <QuaiPayText type="H3" style={styles.heading}>
               Payment Direction
             </QuaiPayText>
@@ -116,8 +116,8 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
               Shard
             </QuaiPayText>
             <ShardFilterMultiSelect setShards={setShards} shards={shards} />
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </QuaiPayBottomSheetModal>
     );
   },
@@ -142,6 +142,7 @@ const themedStyle = (theme: Theme) =>
       borderColor: styledColors.lightGray,
       borderRadius: 4,
       borderWidth: 1,
+      color: theme.primary,
       height: 40,
       padding: 8,
       width: 150,

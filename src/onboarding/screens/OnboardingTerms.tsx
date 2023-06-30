@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import {
   QuaiPayButton,
   QuaiPayContent,
   QuaiPayLoader,
+  QuaiPayText,
 } from 'src/shared/components';
 import { useWalletContext } from 'src/shared/context/walletContext';
 
@@ -14,6 +16,10 @@ import { setUpWallet } from '../services/setUpWallet';
 export const OnboardingTerms: React.FC<
   OnboardingStackScreenProps<'OnboardingTerms'>
 > = ({ navigation }) => {
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'onboarding.terms',
+  });
+  const { t: tCommon } = useTranslation('translation', { keyPrefix: 'common' });
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { setEntropy, setWallet } = useWalletContext();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
@@ -44,11 +50,14 @@ export const OnboardingTerms: React.FC<
   }
 
   return (
-    <QuaiPayContent title="OnBoardingTerms" containerStyle={styles.container}>
-      <QuaiPayButton title="Press to accept terms" onPress={toggleTerms} />
+    <QuaiPayContent containerStyle={styles.container}>
+      <QuaiPayText>{t('title')}</QuaiPayText>
+      <QuaiPayText>{t('termsAndConditions')}</QuaiPayText>
+      <QuaiPayText>{t('termsContent')}</QuaiPayText>
+      <QuaiPayButton title={t('agree')} onPress={toggleTerms} />
       <QuaiPayButton
         disabled={!termsAccepted}
-        title="On Terms Accepted"
+        title={tCommon('continue')}
         onPress={onContinue}
       />
     </QuaiPayContent>

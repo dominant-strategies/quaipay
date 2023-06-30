@@ -46,7 +46,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   >();
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
-  const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+  const [shards, setShards] = useState<number[]>([]);
 
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
@@ -101,7 +101,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         setMinAmount={setMinAmount}
         setMaxAmount={setMaxAmount}
         setShards={setShards}
-        shards={shards}
         ref={filterModalRef}
       />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />

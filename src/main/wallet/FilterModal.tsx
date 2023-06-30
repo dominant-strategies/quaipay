@@ -2,10 +2,17 @@ import React, { forwardRef, useCallback, useState } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   QuaiPayBottomSheetModal,
+  QuaiPayButton,
   QuaiPaySelectableCards,
   QuaiPayText,
 } from 'src/shared/components';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
@@ -24,13 +31,14 @@ export const timeframe = [
 
 type FilterModalProps = {
   setSelectedTxDirection: (
-    selectedTxDirection: (typeof txDirection)[number],
+    selectedTxDirection?: (typeof txDirection)[number],
   ) => void;
-  setSelectedTimeframe: (selectedTimeframe: (typeof timeframe)[number]) => void;
+  setSelectedTimeframe: (
+    selectedTimeframe?: (typeof timeframe)[number],
+  ) => void;
   setMinAmount: (minAmount: number) => void;
   setMaxAmount: (maxAmount: number) => void;
   setShards: (shards: number[]) => void;
-  shards: number[];
 };
 
 export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
@@ -41,7 +49,6 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setMinAmount,
       setMaxAmount,
       setShards,
-      shards,
     },
     ref,
   ) => {
@@ -52,6 +59,9 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
     const [timeframeIndex, setTimeframeIndex] = useState<number | undefined>();
     const [minAmountIn, setMinAmountIn] = useState('');
     const [maxAmountIn, setMaxAmountIn] = useState('');
+    const [shardIndeces, setShardIndeces] = useState<number[]>([
+      0, 1, 2, 3, 4, 5, 6, 7, 8,
+    ]);
 
     const applyFilters = useCallback(() => {
       // @ts-ignore
@@ -60,18 +70,47 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setSelectedTimeframe(timeframe[timeframeIndex]);
       setMinAmount(Number(minAmountIn));
       setMaxAmount(Number(maxAmountIn));
-    }, [txDirectionIndex]);
-    console.log(applyFilters);
+      setShards(shardIndeces);
+    }, [
+      txDirectionIndex,
+      timeframeIndex,
+      minAmountIn,
+      maxAmountIn,
+      shardIndeces,
+    ]);
+
+    const clearFilters = useCallback(() => {
+      setSelectedTxDirection(undefined);
+      setTxDirectionIndex(undefined);
+      setSelectedTimeframe(undefined);
+      setTimeframeIndex(undefined);
+      setMinAmount(0);
+      setMinAmountIn('');
+      setMaxAmount(1000000000000000000000000);
+      setMaxAmountIn('');
+      setShards([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+      setShardIndeces([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    }, [
+      txDirectionIndex,
+      timeframeIndex,
+      minAmountIn,
+      maxAmountIn,
+      shardIndeces,
+    ]);
 
     const styles = useThemedStyle(themedStyle);
 
     return (
       <QuaiPayBottomSheetModal ref={ref}>
         <View style={styles.wrapper}>
-          <QuaiPayText type="H3" style={styles.title}>
-            Filter
-          </QuaiPayText>
-          <ScrollView>
+          <View style={styles.titleWrapper}>
+            <QuaiPayText type="H3" style={styles.title}>
+              Filter
+            </QuaiPayText>
+          </View>
+          <ScrollView
+            style={{ height: Dimensions.get('window').height * 0.65 }}
+          >
             <QuaiPayText type="H3" style={styles.heading}>
               Payment Direction
             </QuaiPayText>
@@ -115,8 +154,36 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
             <QuaiPayText type="H3" style={styles.heading}>
               Shard
             </QuaiPayText>
-            <ShardFilterMultiSelect setShards={setShards} shards={shards} />
+            <ShardFilterMultiSelect
+              setShards={setShardIndeces}
+              shards={shardIndeces}
+            />
           </ScrollView>
+          <View style={styles.buttonsWrapper}>
+            <QuaiPayButton
+              title={'Apply Filters'}
+              containerStyle={{ width: 220 }}
+              style={{
+                height: 32,
+                padding: 0,
+                justifyContent: 'center',
+              }}
+              onPress={applyFilters}
+            />
+            <QuaiPayButton
+              title={'Reset'}
+              containerStyle={{ width: 120 }}
+              style={{
+                height: 32,
+                padding: 0,
+                justifyContent: 'center',
+                borderColor: styledColors.gray,
+                borderWidth: 1,
+              }}
+              type="secondary"
+              onPress={clearFilters}
+            />
+          </View>
         </View>
       </QuaiPayBottomSheetModal>
     );
@@ -131,6 +198,11 @@ const themedStyle = (theme: Theme) =>
     },
     title: {
       fontSize: 16,
+      height: 26,
+    },
+    titleWrapper: {
+      borderBottomWidth: 1,
+      borderBottomColor: theme.border,
     },
     heading: {
       fontSize: 16,
@@ -151,5 +223,14 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
+    },
+    buttonsWrapper: {
+      width: '100%',
+      flexDirection: 'row',
+      paddingTop: (Dimensions.get('window').height * 0.15 - 32) / 4,
+      justifyContent: 'space-between',
+      height: Dimensions.get('window').height * 0.15,
+      borderColor: theme.border,
+      borderTopWidth: 1,
     },
   });

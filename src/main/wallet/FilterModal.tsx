@@ -5,7 +5,7 @@ import {
   QuaiPaySelectableCards,
   QuaiPayText,
 } from 'src/shared/components';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
@@ -29,6 +29,8 @@ type FilterModalProps = {
   setSelectedTimeframe: (selectedTimeframe: (typeof timeframe)[number]) => void;
   setMinAmount: (minAmount: number) => void;
   setMaxAmount: (maxAmount: number) => void;
+  setShards: (shards: number[]) => void;
+  shards: number[];
 };
 
 export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
@@ -38,6 +40,8 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setSelectedTimeframe,
       setMinAmount,
       setMaxAmount,
+      setShards,
+      shards,
     },
     ref,
   ) => {
@@ -57,56 +61,63 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setMinAmount(Number(minAmountIn));
       setMaxAmount(Number(maxAmountIn));
     }, [txDirectionIndex]);
+    console.log(applyFilters);
 
     const styles = useThemedStyle(themedStyle);
 
     return (
       <QuaiPayBottomSheetModal ref={ref}>
-        <View style={styles.wrapper}>
-          <QuaiPayText type="H3" style={styles.title}>
-            Filter
-          </QuaiPayText>
-          <QuaiPayText type="H3" style={styles.heading}>
-            Payment Direction
-          </QuaiPayText>
-          <QuaiPaySelectableCards
-            index={txDirectionIndex}
-            options={['Payment Received', 'Payment Sent']}
-            setIndex={setTxDirectionIndex}
-          />
-          <QuaiPayText type="H3" style={styles.heading}>
-            By Date
-          </QuaiPayText>
-          <QuaiPaySelectableCards
-            index={timeframeIndex}
-            options={timeframe}
-            setIndex={setTimeframeIndex}
-          />
-          <QuaiPayText type="H3" style={styles.heading}>
-            By amount
-          </QuaiPayText>
-          <View style={styles.amountWrapper}>
-            <TextInput
-              onChangeText={setMinAmountIn}
-              keyboardType="numeric"
-              placeholderTextColor={theme.secondary}
-              placeholder="$ Minimum"
-              style={styles.amountInput}
-              value={minAmountIn}
-            />
-            <QuaiPayText themeColor="secondary" type="bold">
-              to
+        <ScrollView>
+          <View style={styles.wrapper}>
+            <QuaiPayText type="H3" style={styles.title}>
+              Filter
             </QuaiPayText>
-            <TextInput
-              onChangeText={setMaxAmountIn}
-              keyboardType="numeric"
-              placeholderTextColor={theme.secondary}
-              placeholder="$ Maximum"
-              style={styles.amountInput}
-              value={maxAmountIn}
+            <QuaiPayText type="H3" style={styles.heading}>
+              Payment Direction
+            </QuaiPayText>
+            <QuaiPaySelectableCards
+              index={txDirectionIndex}
+              options={['Payment Received', 'Payment Sent']}
+              setIndex={setTxDirectionIndex}
             />
+            <QuaiPayText type="H3" style={styles.heading}>
+              By Date
+            </QuaiPayText>
+            <QuaiPaySelectableCards
+              index={timeframeIndex}
+              options={timeframe}
+              setIndex={setTimeframeIndex}
+            />
+            <QuaiPayText type="H3" style={styles.heading}>
+              By amount
+            </QuaiPayText>
+            <View style={styles.amountWrapper}>
+              <TextInput
+                onChangeText={setMinAmountIn}
+                keyboardType="numeric"
+                placeholderTextColor={theme.secondary}
+                placeholder="$ Minimum"
+                style={styles.amountInput}
+                value={minAmountIn}
+              />
+              <QuaiPayText themeColor="secondary" type="bold">
+                to
+              </QuaiPayText>
+              <TextInput
+                onChangeText={setMaxAmountIn}
+                keyboardType="numeric"
+                placeholderTextColor={theme.secondary}
+                placeholder="$ Maximum"
+                style={styles.amountInput}
+                value={maxAmountIn}
+              />
+            </View>
+            <QuaiPayText type="H3" style={styles.heading}>
+              Shard
+            </QuaiPayText>
+            <ShardFilterMultiSelect setShards={setShards} shards={shards} />
           </View>
-        </View>
+        </ScrollView>
       </QuaiPayBottomSheetModal>
     );
   },
@@ -116,6 +127,7 @@ const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     wrapper: {
       padding: 16,
+      backgroundColor: theme.surface,
     },
     title: {
       fontSize: 16,

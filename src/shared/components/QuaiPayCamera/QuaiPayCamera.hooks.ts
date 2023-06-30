@@ -62,7 +62,7 @@ const useSendAmountScannerCamera = () => {
   };
 };
 
-const useLoginCodeScannerCamera = () => {
+const useLoginCodeScannerCamera = (toggleLoader?: () => void) => {
   const navigation =
     useNavigation<OnboardingStackNavigationProp<'LoginQRCodeScan'>>();
   const { initFromOnboarding } = useWalletContext();
@@ -74,9 +74,13 @@ const useLoginCodeScannerCamera = () => {
     if (barcodes.length > 0 && barcodes[0].content.data) {
       const scannedEntropy = barcodes[0].content.data as string;
       if (validatePhrase(getSeedPhraseFromEntropy(scannedEntropy))) {
+        toggleLoader && toggleLoader();
         setUpWallet()
           .then(info => initFromOnboarding(info))
-          .finally(() => navigation.navigate('SetupNameAndPFP'));
+          .finally(() => {
+            navigation.navigate('SetupNameAndPFP');
+            toggleLoader && toggleLoader();
+          });
       }
     }
   }, [barcodes]);
@@ -86,9 +90,11 @@ const useLoginCodeScannerCamera = () => {
   };
 };
 
-const hookByType: Record<ScannerType, () => HookOutput> = {
+const hookByType: Record<ScannerType, (action?: () => void) => HookOutput> = {
   [ScannerType.SEND_AMOUNT]: useSendAmountScannerCamera,
-  [ScannerType.LOGIN_CODE]: useLoginCodeScannerCamera,
+  [ScannerType.LOGIN_CODE]: (action?: () => void) =>
+    useLoginCodeScannerCamera(action),
 };
 
-export const useQuaiPayCamera = (type: ScannerType) => hookByType[type];
+export const useQuaiPayCamera = (type: ScannerType, action?: () => void) =>
+  hookByType[type](action);

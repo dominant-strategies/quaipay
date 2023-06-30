@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
   QuaiPayCamera,
   QuaiPayContent,
+  QuaiPayLoader,
   QuaiPayText,
   ScannerType,
-  useQuaiPayCamera,
   squareHoleSize,
+  useQuaiPayCamera,
 } from 'src/shared/components';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
@@ -19,9 +20,17 @@ export const LoginQRCodeScanScreen: React.FC<
   const { t } = useTranslation('translation', {
     keyPrefix: 'onboarding.login.qrCodeScan',
   });
-  const { frameProcessor } = useQuaiPayCamera(ScannerType.LOGIN_CODE)();
+  const [loading, setLoading] = useState(false);
 
-  return (
+  const toggleLoader = () => setLoading(prevState => !prevState);
+  const { frameProcessor } = useQuaiPayCamera(
+    ScannerType.LOGIN_CODE,
+    toggleLoader,
+  );
+
+  return loading ? (
+    <QuaiPayLoader text="Setting up wallet" />
+  ) : (
     <QuaiPayContent hasBackgroundVariant>
       <QuaiPayCamera frameProcessor={frameProcessor} />
       <QuaiPayText type="H1" style={[styles.textContainer, styles.title]}>

@@ -63,7 +63,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const handlePresentActiveAddressModalPress = useCallback(() => {
     activeAddressModalRef.current?.present();
   }, []);
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState('0');
 
   // TODO: show loader while fetching transactions and balance
   useEffect(() => {
@@ -94,7 +94,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         console.log(err);
       });
     getBalance(wallet?.address as string).then(res => {
-      setBalance(Number(quais.utils.formatEther(res)));
+      setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
     });
   }, [selectedTxDirection]);
 
@@ -114,7 +114,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           quaiAmount={balance.toString()}
           address={abbreviateAddress(wallet?.address as string)}
           zone="Paxos-01"
-          fiatAmount={(balance * EXCHANGE_RATE).toFixed(3)}
+          fiatAmount={(Number(balance) * EXCHANGE_RATE).toFixed(3)}
           title={t('balance')}
         />
       </View>

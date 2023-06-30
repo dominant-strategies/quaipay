@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import CheckBold from 'src/shared/assets/checkBold.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
@@ -9,6 +10,8 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useWalletContext } from 'src/shared/context/walletContext';
+import { useThemedStyle } from 'src/shared/hooks';
+import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 import { setUpWallet } from '../services/setUpWallet';
@@ -20,6 +23,8 @@ export const OnboardingTerms: React.FC<
     keyPrefix: 'onboarding.terms',
   });
   const { t: tCommon } = useTranslation('translation', { keyPrefix: 'common' });
+  const styles = useThemedStyle(themedStyle);
+
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { setEntropy, setWallet } = useWalletContext();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
@@ -51,24 +56,71 @@ export const OnboardingTerms: React.FC<
 
   return (
     <QuaiPayContent containerStyle={styles.container}>
-      <QuaiPayText>{t('title')}</QuaiPayText>
-      <QuaiPayText>{t('termsAndConditions')}</QuaiPayText>
-      <QuaiPayText>{t('termsContent')}</QuaiPayText>
-      <QuaiPayButton title={t('agree')} onPress={toggleTerms} />
+      <QuaiPayText type="H1">{t('title')}</QuaiPayText>
+      <View style={styles.separator} />
+      <ScrollView>
+        <QuaiPayText type="bold" style={styles.terms}>
+          {t('termsAndConditions')}
+        </QuaiPayText>
+        <QuaiPayText style={styles.terms}>{t('termsContent')}</QuaiPayText>
+      </ScrollView>
+      <Pressable onPress={toggleTerms} style={styles.agree}>
+        <View style={styles.checkBoldContainer}>
+          {termsAccepted ? (
+            <CheckBold />
+          ) : (
+            <View style={styles.checkBoldBlank} />
+          )}
+        </View>
+        <QuaiPayText style={styles.agreeText}>{t('agree')}</QuaiPayText>
+      </Pressable>
       <QuaiPayButton
         disabled={!termsAccepted}
         title={tCommon('continue')}
         onPress={onContinue}
       />
+      <View style={styles.doubleSeparator} />
     </QuaiPayContent>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 40,
-    marginHorizontal: 20,
-  },
-});
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 16,
+    },
+    terms: {
+      textAlign: 'left',
+      paddingHorizontal: 10,
+    },
+    agree: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'flex-start',
+      gap: 16,
+      marginBottom: 24,
+    },
+    agreeText: {
+      flexShrink: 1,
+      textAlign: 'left',
+      fontSize: 15,
+    },
+    checkBoldContainer: {
+      borderWidth: 1,
+      borderColor: theme.border,
+    },
+    checkBoldBlank: {
+      height: 24,
+      width: 24,
+    },
+    separator: {
+      marginVertical: 4,
+      flex: 1,
+    },
+    doubleSeparator: {
+      marginVertical: 4,
+      flex: 2,
+    },
+  });

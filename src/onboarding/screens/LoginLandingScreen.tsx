@@ -1,35 +1,124 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-import { QuaiPayButton, QuaiPayContent } from 'src/shared/components';
+import RightChevron from 'src/shared/assets/rightChevron.svg';
+import EditIcon from 'src/shared/assets/edit.svg';
+import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
+import {
+  QuaiPayButton,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
+import { useThemedStyle } from 'src/shared/hooks';
+import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
 export const LoginLandingScreen: React.FC<
   OnboardingStackScreenProps<'LoginLanding'>
 > = ({ navigation }) => {
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'onboarding.login.landing',
+  });
+  const styles = useThemedStyle(themedStyle);
+
   const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
   const goToSeedPhraseInput = () => navigation.navigate('LoginSeedPhraseInput');
+  // TODO: update to use the actual page
+  const goToLearnMoreRecovery = () =>
+    Linking.openURL('https://docs.quai.network/use-quai/wallets');
 
   return (
-    <QuaiPayContent title="LoginLanding" containerStyle={styles.container}>
-      <QuaiPayButton
-        title="Import wallet from device"
+    <QuaiPayContent>
+      <View style={styles.textContainer}>
+        <QuaiPayText type="H1" style={styles.title}>
+          {t('title')}
+        </QuaiPayText>
+        <QuaiPayText type="paragraph" themeColor="secondary">
+          {t('description')}
+        </QuaiPayText>
+      </View>
+      <View style={styles.separator} />
+      <Pressable
         onPress={goToQRCodeScan}
-      />
-      <QuaiPayButton
-        title="Enter your seed phrase"
+        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+      >
+        <PhoneWithQR />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            {t('cards.qr.title')}
+          </QuaiPayText>
+          <QuaiPayText themeColor="secondary" style={styles.cardText}>
+            {t('cards.qr.description')}
+          </QuaiPayText>
+        </View>
+        <RightChevron />
+      </Pressable>
+      <Pressable
         onPress={goToSeedPhraseInput}
+        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+      >
+        <EditIcon />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            {t('cards.phrase.title')}
+          </QuaiPayText>
+          <QuaiPayText themeColor="secondary" style={styles.cardText}>
+            {t('cards.phrase.description')}
+          </QuaiPayText>
+        </View>
+        <RightChevron />
+      </Pressable>
+      <View style={styles.doubleSeparator} />
+      <QuaiPayButton
+        underline
+        type="secondary"
+        titleType="default"
+        title={t('learnMore')}
+        onPress={goToLearnMoreRecovery}
+        style={styles.learnMore}
       />
     </QuaiPayContent>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 40,
-    marginHorizontal: 20,
-  },
-});
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    title: {
+      marginBottom: 8,
+    },
+    textContainer: {
+      alignItems: 'center',
+      marginHorizontal: 48,
+    },
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surfaceVariant,
+      marginBottom: 12,
+      paddingVertical: 40,
+      marginHorizontal: 24,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+    },
+    cardTextContainer: {
+      flexShrink: 1,
+      marginRight: 'auto',
+      paddingHorizontal: 16,
+    },
+    cardText: {
+      textAlign: 'left',
+    },
+    learnMore: {
+      marginBottom: 70,
+      paddingVertical: 10,
+      marginHorizontal: 24,
+    },
+    separator: {
+      flex: 1,
+    },
+    doubleSeparator: {
+      flex: 2,
+    },
+  });

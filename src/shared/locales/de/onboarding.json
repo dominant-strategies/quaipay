@@ -11,6 +11,21 @@
     }
   },
   "login": {
+    "landing": {
+      "title": "Konto wiederherstellen",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
+      "cards": {
+        "qr": {
+          "title": "Wallet vom Gerät importieren",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a "
+        },
+        "phrase": {
+          "title": "Geben Sie Ihre Seed-Phrase ein",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a "
+        }
+      },
+      "learnMore": "Erfahren Sie mehr über den Wiederherstellungsprozess."
+    },
     "phraseInput": {
       "title": "Geben Sie Ihre Seed-Phrase ein",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",

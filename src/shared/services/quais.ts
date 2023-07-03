@@ -78,7 +78,8 @@ export const abbreviateAddress = (address?: string) => {
 export const waitForTransaction = async (
   txHash: string,
 ): Promise<quais.providers.TransactionReceipt> => {
-  const provider = getWebSocketsProvider();
+  // TODO: diagnose the issue with the websocket provider
+  const provider = getProvider();
   await provider.ready;
 
   const txReceipt = await provider.waitForTransaction(

@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 16.x ]
+        node-version: [16.x]
     timeout-minutes: 5
     steps:
       - name: Check out Git repository
@@ -50,6 +50,8 @@ jobs:
           path: node_modules
           key: yarn-${{ hashFiles('yarn.lock') }}
       - run: mkdir -p ~/reports
+      - name: TypeScript check
+        run: tsc --noEmit
       - name: Lint
         run: yarn lint
       - name: Upload linting report

@@ -2,7 +2,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, useColorScheme } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +13,7 @@ import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
+import Left from 'src/shared/assets/leftChevron.svg';
 
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
@@ -109,7 +109,7 @@ const SendStack = () => {
           ),
           headerLeft: () => (
             <Pressable style={buttonStyle} onPress={goBack}>
-              <FontAwesome5 name="chevron-left" color={textColor} size={24} />
+              <Left />
             </Pressable>
           ),
           headerBackTitleVisible: false,

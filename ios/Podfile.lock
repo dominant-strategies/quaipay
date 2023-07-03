@@ -547,8 +547,6 @@ PODS:
     - React
   - RNSVG (13.9.0):
     - React-Core
-  - RNVectorIcons (9.2.0):
-    - React-Core
   - SocketRocket (0.6.0)
   - TOCropViewController (2.6.1)
   - vision-camera-code-scanner (0.2.0):
@@ -642,7 +640,6 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSecureRandom (from `../node_modules/react-native-securerandom`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - vision-camera-code-scanner (from `../node_modules/vision-camera-code-scanner`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -785,8 +782,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-securerandom"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   vision-camera-code-scanner:
     :path: "../node_modules/vision-camera-code-scanner"
   VisionCamera:
@@ -873,7 +868,6 @@ SPEC CHECKSUMS:
   RNScreens: 68fd1060f57dd1023880bf4c05d74784b5392789
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   vision-camera-code-scanner: dda884a7f3ec8243a2a6d6489b91860648371bca

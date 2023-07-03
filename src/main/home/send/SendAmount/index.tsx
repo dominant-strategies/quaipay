@@ -11,7 +11,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -20,6 +19,8 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
+import Eye from 'src/shared/assets/eyeOutline.svg';
+import EyeClosed from 'src/shared/assets/hide.svg';
 import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
@@ -146,13 +147,12 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
               {t('home.send.yourBalance')}
               {hideBalance ? 'X.XX' : quaiBalance.toFixed(5)} QUAI
             </Text>
-            <FontAwesome5
-              name={hideBalance ? 'eye-slash' : 'eye'}
-              size={12}
-              color={styledColors.gray}
-              style={styles.balanceIcon}
+            <TouchableOpacity
               onPress={() => setHideBalance(!hideBalance)}
-            />
+              style={styles.balanceIcon}
+            >
+              {hideBalance ? <EyeClosed /> : <Eye />}
+            </TouchableOpacity>
           </View>
           <View style={[styles.row, styles.marginTop16]}>
             <QuaiPayInputDisplay

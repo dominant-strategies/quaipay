@@ -43,7 +43,6 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -72,8 +71,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
         .catch(err => {
           console.log(err);
           setLoading(false);
-          setShowError(true);
-          setErrorMessage(err.reason);
+          err.reason.includes('insufficient funds') && setShowError(true);
         });
   };
 
@@ -87,9 +85,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
         <View style={styles.bannerWrapper}>
           <View style={styles.banner}>
             <QuaiPayBanner
-              boldText={'Error'}
+              boldText="Insufficient Funds."
               showError={showError}
-              text={errorMessage}
+              text="You need more QUAI."
             />
           </View>
         </View>

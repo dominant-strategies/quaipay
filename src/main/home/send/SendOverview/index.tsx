@@ -26,6 +26,7 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SendStackParamList } from '../SendStack';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 type SendOverviewProps = NativeStackScreenProps<
   SendStackParamList,
@@ -34,6 +35,7 @@ type SendOverviewProps = NativeStackScreenProps<
 
 function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
+  const { showSnackBar } = useSnackBar();
   const isDarkMode = useColorScheme() === 'dark';
   const { address, receiver, tip, amountInUSD } = route.params;
   const wallet = useWallet();
@@ -70,8 +72,13 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
         })
         .catch(err => {
           console.log('err', err.message);
-          err.message.includes('insufficient funds') && setShowError(true);
+          console.log(err);
           setLoading(false);
+          showSnackBar({
+            message: err.code,
+            moreInfo: err.reason,
+            type: 'error',
+          });
         });
   };
 

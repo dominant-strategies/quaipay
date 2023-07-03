@@ -1,7 +1,7 @@
 import { allNodeData } from '../constants/nodeData';
-import { getZone } from './retrieveWallet';
 import { quais } from 'quais';
 import { txDirection } from 'src/main/wallet/FilterModal';
+import { Zone } from 'src/shared/types';
 
 type TransactionList = {
   message: string;
@@ -59,6 +59,7 @@ type GetAccountTransactionsProps = {
  */
 export const getAccountTransactions = (
   props: GetAccountTransactionsProps,
+  zone: Zone,
 ): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
     const {
@@ -73,7 +74,6 @@ export const getAccountTransactions = (
       maxAmount,
     } = props;
 
-    const zone = getZone();
     const nodeData = allNodeData[zone];
 
     // Get the URL for the API
@@ -122,8 +122,7 @@ export const getAccountTransactions = (
 };
 
 // TODO: rewrite
-export const getBalance = async (address: string): Promise<any> => {
-  const zone = getZone();
+export const getBalance = async (address: string, zone: Zone): Promise<any> => {
   const nodeData = allNodeData[zone];
 
   // Get the URL for the API

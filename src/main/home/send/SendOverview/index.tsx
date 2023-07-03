@@ -26,6 +26,7 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SendStackParamList } from '../SendStack';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import { useZone } from 'src/shared/hooks/useZone';
 
 type SendOverviewProps = NativeStackScreenProps<
   SendStackParamList,
@@ -37,6 +38,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const { address, receiver, tip, amountInUSD } = route.params;
   const wallet = useWallet();
+  const zone = useZone();
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tip)}`,
   );
@@ -59,7 +61,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const send = () => {
     setLoading(true);
     wallet &&
-      transferFunds(address, eqInput.value, wallet.privateKey)
+      transferFunds(address, eqInput.value, wallet.privateKey, zone)
         .then(res => {
           setShowError(false);
           setLoading(false);

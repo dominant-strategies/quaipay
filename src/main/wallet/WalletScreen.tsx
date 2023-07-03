@@ -32,11 +32,13 @@ import {
 } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
+import { useZone } from 'src/shared/hooks/useZone';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
+  const zone = useZone();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
     (typeof txDirection)[number] | undefined
@@ -64,17 +66,20 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
 
   // TODO: show loader while fetching transactions and balance
   useEffect(() => {
-    getAccountTransactions({
-      address: wallet?.address as string,
-      sort: 'desc',
-      page: 1,
-      offset: 100,
-      startTimestamp: 0,
-      endTimestamp: Date.now(),
-      filterBy: selectedTxDirection,
-      minAmount,
-      maxAmount,
-    })
+    getAccountTransactions(
+      {
+        address: wallet?.address as string,
+        sort: 'desc',
+        page: 1,
+        offset: 100,
+        startTimestamp: 0,
+        endTimestamp: Date.now(),
+        filterBy: selectedTxDirection,
+        minAmount,
+        maxAmount,
+      },
+      zone,
+    )
       .then(res => {
         setTransactions(
           res.result.map(item => {
@@ -90,7 +95,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       .catch(err => {
         console.log(err);
       });
-    getBalance(wallet?.address as string).then(res => {
+    getBalance(wallet?.address as string, zone).then(res => {
       console.log('hey');
       console.log(res);
       setBalance(Number(quais.utils.formatEther(res)).toFixed(3));

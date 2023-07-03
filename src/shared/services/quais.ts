@@ -3,26 +3,21 @@ import { quais } from 'quais';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
-import { getZone } from './retrieveWallet';
 import { CONFIRMATIONS_REQUIRED } from '../constants/quais';
+import { Zone } from 'src/shared/types';
 
-export const getProvider = () => {
-  const zone = getZone();
+export const getProvider = (zone: Zone) => {
   const nodeData = allNodeData[zone];
-  const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
-  return provider;
+  return new quais.providers.JsonRpcProvider(nodeData.provider);
 };
 
-export const getWebSocketsProvider = () => {
-  const zone = getZone();
+export const getWebSocketsProvider = (zone: Zone) => {
   const nodeData = allNodeData[zone];
-  const provider = new quais.providers.WebSocketProvider(nodeData.url);
-
-  return provider;
+  return new quais.providers.WebSocketProvider(nodeData.url);
 };
 
-export const getBalance = async (address: string) => {
-  const provider = getProvider();
+export const getBalance = async (address: string, zone: Zone) => {
+  const provider = getProvider(zone);
   await provider.ready;
 
   const balance = await provider.getBalance(address);
@@ -34,8 +29,8 @@ export const getBalance = async (address: string) => {
   };
 };
 
-export const getGasPrice = async () => {
-  const provider = getProvider();
+export const getGasPrice = async (zone: Zone) => {
+  const provider = getProvider(zone);
   await provider.ready;
 
   const gasPrice = await provider.getGasPrice();
@@ -46,9 +41,9 @@ export const getGasPrice = async () => {
   };
 };
 
-export const estimateGas = async (to: string, amount: string) => {
+export const estimateGas = async (to: string, amount: string, zone: Zone) => {
   try {
-    const provider = getProvider();
+    const provider = getProvider(zone);
     await provider.ready;
 
     const valueToTransferInWei = quais.utils.parseEther(amount);
@@ -71,15 +66,17 @@ export const estimateGas = async (to: string, amount: string) => {
   }
 };
 
+// TODO: move to utils/
 export const abbreviateAddress = (address?: string) => {
   return address ? `${address.slice(0, 8)}...${address.slice(-8)}` : '';
 };
 
 export const waitForTransaction = async (
   txHash: string,
+  zone: Zone,
 ): Promise<quais.providers.TransactionReceipt> => {
   // TODO: diagnose the issue with the websocket provider
-  const provider = getProvider();
+  const provider = getProvider(zone);
   await provider.ready;
 
   const txReceipt = await provider.waitForTransaction(

@@ -5,13 +5,16 @@ import { retrieveWallet } from '../services/retrieveWallet';
 
 import { createCtx } from '.';
 import { useSnackBar } from './snackBarContext';
-import { Wallet } from '../types';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Wallet, Zone } from 'src/shared/types';
 
 // State variables only
 interface WalletContextState {
   entropy?: string;
   wallet?: Wallet;
+  walletObject?: Record<Zone, Wallet>;
+  zone: Zone;
 }
 
 // This interface differentiates from State
@@ -22,9 +25,14 @@ interface WalletContext extends WalletContextState {
   setEntropy: (entropy: string) => void;
   getWallet: () => void;
   setWallet: (wallet?: Wallet) => void;
+  setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
+  getZone: () => void;
+  setZone: (zone: Zone) => void;
 }
 
-const INITIAL_STATE: WalletContextState = {};
+const INITIAL_STATE: WalletContextState = {
+  zone: Zone['zone-0-0'],
+};
 
 const [useContext, WalletContextProvider] =
   createCtx<WalletContext>('walletContext');
@@ -70,7 +78,16 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <WalletContextProvider
-      value={{ ...state, getEntropy, setEntropy, getWallet, setWallet }}
+      value={{
+        ...state,
+        getEntropy,
+        setEntropy,
+        getWallet,
+        setWallet,
+        setWalletObject,
+        getZone,
+        setZone,
+      }}
     >
       {children}
     </WalletContextProvider>

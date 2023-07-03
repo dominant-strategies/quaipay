@@ -4,19 +4,13 @@ import { quais } from 'quais';
 
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
-import { getZone } from 'src/shared/services/retrieveWallet';
-import { Wallet } from 'src/shared/types';
+import { Wallet, Zone } from 'src/shared/types';
 import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
-
-type ZoneIndex = Exclude<
-  keyof typeof keychainKeys,
-  'username' | 'profilePicture' | 'location' | 'entropy'
->;
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
-export async function setUpWallet(entropy?: Uint8Array) {
+export async function setUpWallet(entropy?: Uint8Array, zone?: string) {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
   }

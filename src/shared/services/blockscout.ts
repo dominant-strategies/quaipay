@@ -32,7 +32,7 @@ export type Transaction = {
 };
 
 type GetAccountTransactionsProps = {
-  addresses: string[];
+  address: string;
   sort?: string;
   page?: number;
   offset?: number;
@@ -44,8 +44,8 @@ type GetAccountTransactionsProps = {
 };
 
 /**
- * Retrieves a list of transactions for a given addresses.
- * @param props.addresses The addresses to retrieve transactions for.
+ * Retrieves a list of transactions for a given address.
+ * @param props.address The address to retrieve transactions for.
  * @param props.sort Optional. The field to sort the transactions by. Can be 'asc' or 'desc'. Defaults to 'desc'.
  * @param props.page Optional. The page number to retrieve.
  * @param props.offset Optional. The number of transactions to retrieve per page.
@@ -55,14 +55,13 @@ type GetAccountTransactionsProps = {
  * @param props.min_amount Optional. The minimum amount to filter transactions by. The amount is in wei.
  * @param props.max_amount Optional. The maximum amount to filter transactions by. The amount is in wei.
  * @returns A Promise that resolves with the list of transactions.
- * TODO: clarify the zone
  */
 export const getAccountTransactions = (
   props: GetAccountTransactionsProps,
-): Promise<Transaction[]> => {
+): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
     const {
-      addresses,
+      address,
       sort,
       page,
       offset,
@@ -76,60 +75,47 @@ export const getAccountTransactions = (
     const zone = getZone();
     const nodeData = allNodeData[zone];
 
-    const promises: Promise<TransactionList>[] = addresses.map(address => {
-      const url =
-        `${nodeData.provider.replace(
-          'rpc.',
-          '',
-        )}/api?module=account&action=txlist&address=${address}` +
-        `${sort ? `&sort=${sort}` : ''}` +
-        `${page ? `&page=${page}` : ''}` +
-        `${offset ? `&offset=${offset}` : ''}` +
-        `${start_timestamp ? `&start_timestamp=${start_timestamp}` : ''}` +
-        `${end_timestamp ? `&end_timestamp=${end_timestamp}` : ''}` +
-        `${filter_by ? `&filter_by=${filter_by}` : ''}`;
+    // Get the URL for the API
+    const url =
+      `${nodeData.provider.replace(
+        'rpc.',
+        '',
+      )}/api?module=account&action=txlist&address=${address}` +
+      `${sort ? `&sort=${sort}` : ''}` +
+      `${page ? `&page=${page}` : ''}` +
+      `${offset ? `&offset=${offset}` : ''}` +
+      `${start_timestamp ? `&start_timestamp=${start_timestamp}` : ''}` +
+      `${end_timestamp ? `&end_timestamp=${end_timestamp}` : ''}` +
+      `${filter_by ? `&filter_by=${filter_by}` : ''}`;
 
-      var myHeaders = new Headers();
-      myHeaders.append('accept', 'application/json');
+    var myHeaders = new Headers();
+    myHeaders.append('accept', 'application/json');
 
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-      };
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
 
-      return fetch(url, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-          const transactions: TransactionList = JSON.parse(result);
-          const filteredTransactions = transactions.result.filter(
-            (transaction: any) => {
-              const transactionValue = Number(transaction.value);
+    fetch(url, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        const transactions: TransactionList = JSON.parse(result);
+        const filteredTransactions = transactions.result.filter(
+          (transaction: any) => {
+            const transactionValue = Number(transaction.value);
 
-              return (
-                (!min_amount || transactionValue >= min_amount) &&
-                (!max_amount || transactionValue <= max_amount)
-              );
-            },
-          );
+            return (
+              (!min_amount || transactionValue >= min_amount) &&
+              (!max_amount || transactionValue <= max_amount)
+            );
+          },
+        );
 
-          transactions.result = filteredTransactions;
-          return transactions;
-        });
-    });
-
-    Promise.allSettled(promises)
-      .then(results => {
-        const transactions: Transaction[] = [];
-        results.forEach(result => {
-          if (result.status === 'fulfilled') {
-            transactions.push(...result.value.result);
-          }
-        });
+        transactions.result = filteredTransactions;
         resolve(transactions);
       })
-      .catch(err => {
-        console.log(err);
-        reject(err);
+      .catch(error => {
+        reject(error);
       });
   });
 };

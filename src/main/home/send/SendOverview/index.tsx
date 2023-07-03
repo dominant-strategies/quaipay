@@ -69,9 +69,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
           });
         })
         .catch(err => {
-          console.log('err', err.message);
-          err.message.includes('insufficient funds') && setShowError(true);
+          console.log(err);
           setLoading(false);
+          err.reason.includes('insufficient funds') && setShowError(true);
         });
   };
 

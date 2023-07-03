@@ -1,3 +1,5 @@
+import { Mnemonic } from '@quais/hdnode/src.ts';
+
 export type Wallet = {
   privateKey: string;
   publicKey: string;
@@ -7,6 +9,6 @@ export type Wallet = {
   chainCode: string;
   index: number;
   depth: number;
-  mnemonic: string | null;
+  mnemonic?: Mnemonic;
   path: string | null;
 };

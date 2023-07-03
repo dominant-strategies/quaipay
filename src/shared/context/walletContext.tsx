@@ -61,19 +61,43 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getWallet = () => {
-    retrieveWallet().then(wallet =>
-      wallet
-        ? setWallet(wallet)
-        : showSnackBar({
-            message: t('common.error'),
-            moreInfo: t('error.retrieve.wallet') ?? '',
-            type: 'error',
-          }),
-    );
+    const { zone } = state;
+    retrieveWallet().then(wallet => {
+      if (wallet) {
+        setWallet(wallet[zone as Zone]);
+        setWalletObject(wallet);
+      } else {
+        showSnackBar({
+          message: t('common.error'),
+          moreInfo: t('error.retrieve.wallet') ?? '',
+          type: 'error',
+        });
+      }
+    });
   };
 
   const setWallet = (wallet?: Wallet) => {
     setState(prevState => ({ ...prevState, wallet }));
+  };
+
+  const setWalletObject = (walletObject?: Record<Zone, Wallet>) => {
+    setState(prevState => ({ ...prevState, walletObject }));
+  };
+
+  const getZone = async () => {
+    let zone: Zone;
+    try {
+      zone = (await AsyncStorage.getItem('zone')) as Zone;
+      return zone;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const setZone = (zone: Zone) => {
+    AsyncStorage.setItem('zone', zone).then(() => {
+      setState(prevState => ({ ...prevState, zone }));
+    });
   };
 
   return (

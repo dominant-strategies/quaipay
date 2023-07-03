@@ -29,30 +29,21 @@ export async function setUpWallet(entropy?: Uint8Array, zone?: string) {
     accountHDPath,
   );
 
-  const parsedNodes = childNodes.map((node, ind: number) => {
+  let walletObject: Record<Zone, Wallet>;
+  childNodes.forEach((node, ind: number) => {
     const zoneIndex = getZoneIndex(ind);
-    return {
-      node,
-      key: keychainKeys[zoneIndex as ZoneIndex],
-    };
+    walletObject[zoneIndex] = node;
   });
 
-  await Promise.all(
-    parsedNodes.map(({ key, node }) => {
-      return storeItem(
-        {
-          key,
-          value: JSON.stringify(node),
-        },
-        true,
-      );
-    }),
+  await storeItem(
+    // @ts-ignore
+    { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
+    true,
   );
 
   return {
     entropy: encodedEntropy,
-    wallet: parsedNodes.find(n => n.key === getZone())?.node as unknown as
-      | Wallet
-      | undefined,
+    // @ts-ignore
+    wallet: walletObject[zone],
   };
 }

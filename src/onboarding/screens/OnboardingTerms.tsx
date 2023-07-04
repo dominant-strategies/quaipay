@@ -26,7 +26,7 @@ export const OnboardingTerms: React.FC<
   const styles = useThemedStyle(themedStyle);
 
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const { setEntropy, setWallet } = useWalletContext();
+  const { initFromOnboarding } = useWalletContext();
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const toggleTerms = () => setTermsAccepted(prevState => !prevState);
@@ -34,9 +34,8 @@ export const OnboardingTerms: React.FC<
   const onContinue = useCallback(async () => {
     try {
       setSettingUpWallet(true);
-      const { entropy, wallet } = await setUpWallet();
-      setEntropy(entropy);
-      setWallet(wallet);
+      const onboardingInfo = await setUpWallet();
+      initFromOnboarding(onboardingInfo);
 
       navigation.navigate('SetupNameAndPFP');
     } catch (err) {

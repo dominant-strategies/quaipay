@@ -22,7 +22,10 @@ import {
 import { useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import { typography } from 'src/shared/styles';
-import { getEntropyFromSeedPhrase } from 'src/shared/utils/seedPhrase';
+import {
+  getEntropyFromSeedPhrase,
+  validatePhrase,
+} from 'src/shared/utils/seedPhrase';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 import { setUpWallet } from '../services/setUpWallet';
@@ -41,7 +44,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
     seedPhraseLayoutDisplayWordThemedStyle,
   );
   const styles = useThemedStyle(themedStyle);
-  const { setEntropy, setWallet } = useWalletContext();
+  const { initFromOnboarding } = useWalletContext();
   const [seedPhraseWords, setSeedPhraseWords] = useState<string[]>(
     Array(AMOUNT_OF_WORDS_IN_PHRASE).fill(''),
   );
@@ -66,21 +69,13 @@ export const LoginSeedPhraseInputScreen: React.FC<
         });
       }
     });
-    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ').toLowerCase()));
-  };
-
-  const validatePhrase = (phrase: string) => {
-    const a = Uint8Array.from(
-      Buffer.from(getEntropyFromSeedPhrase(phrase) ?? '', 'hex'),
-    )?.byteLength;
-    const b = (seedPhraseWords.length * 8) / 6;
-    return a === b;
+    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ')));
   };
 
   const onSuccessful = async () => {
     if (isPhraseValid) {
       setSettingUpWallet(true);
-      const { entropy, wallet } = await setUpWallet(
+      setUpWallet(
         Uint8Array.from(
           Buffer.from(
             getEntropyFromSeedPhrase(seedPhraseWords.join(' ').toLowerCase()) ??
@@ -88,11 +83,12 @@ export const LoginSeedPhraseInputScreen: React.FC<
             'hex',
           ),
         ),
-      ).finally(() => setSettingUpWallet(false));
-      setEntropy(entropy);
-      setWallet(wallet);
-
-      navigation.navigate('SetupNameAndPFP');
+      )
+        .then(initFromOnboarding)
+        .finally(() => {
+          setSettingUpWallet(false);
+          navigation.navigate('SetupNameAndPFP');
+        });
     }
   };
 

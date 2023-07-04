@@ -6,11 +6,15 @@ import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { Wallet, Zone } from 'src/shared/types';
 import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
+import { OnboardingInfo } from 'src/shared/context/walletContext';
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
-export async function setUpWallet(entropy?: Uint8Array, zone?: string) {
+export async function setUpWallet(
+  entropy?: Uint8Array,
+  zone?: string,
+): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
   }

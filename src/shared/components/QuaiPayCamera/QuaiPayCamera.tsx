@@ -6,8 +6,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { styledColors } from '../../styles';
 
 const windowWidth = Dimensions.get('window').width;
-const squareSize = windowWidth * 0.65;
-const squarePaddingRight = (windowWidth - squareSize) / 2;
+export const squareHoleSize = windowWidth * 0.65;
+const squarePaddingRight = (windowWidth - squareHoleSize) / 2;
 
 interface QuaiPayCameraProps {
   frameProcessor: (frame: Frame) => void;
@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
   squareItem: {
     x: squarePaddingRight,
     y: 120,
-    width: squareSize,
-    height: squareSize,
+    width: squareHoleSize,
+    height: squareHoleSize,
     borderRadius: 10,
   },
 });

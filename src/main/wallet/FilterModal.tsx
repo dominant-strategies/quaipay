@@ -13,7 +13,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { Theme } from 'src/shared/types';
+import { Theme, Wallet, Zone } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
@@ -39,6 +39,7 @@ type FilterModalProps = {
   setMinAmount: (minAmount: number) => void;
   setMaxAmount: (maxAmount: number) => void;
   setShards: (shards: number[]) => void;
+  walletObject: Record<Zone, Wallet>;
 };
 
 export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
@@ -49,6 +50,7 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setMinAmount,
       setMaxAmount,
       setShards,
+      walletObject,
     },
     ref,
   ) => {
@@ -157,6 +159,7 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
             <ShardFilterMultiSelect
               setShards={setShardIndeces}
               shards={shardIndeces}
+              walletObject={walletObject}
             />
           </ScrollView>
           <View style={styles.buttonsWrapper}>

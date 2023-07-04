@@ -15,7 +15,7 @@ export const useWallet = (): Wallet | undefined => {
 export const useWalletObject = () => {
   const { walletObject, getWallet } = useWalletContext();
   useEffect(() => {
-    if (walletObject) {
+    if (!walletObject) {
       getWallet();
     }
   }, [walletObject]);

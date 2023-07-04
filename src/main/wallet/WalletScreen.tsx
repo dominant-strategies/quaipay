@@ -6,6 +6,7 @@ import {
   QuaiPayCard,
   QuaiPayContent,
   QuaiPayListItem,
+  QuaiPayLoader,
   QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
@@ -20,7 +21,6 @@ import {
   getAccountTransactions,
   getBalance,
 } from 'src/shared/services/blockscout';
-import { useWallet } from 'src/shared/hooks';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
@@ -33,11 +33,13 @@ import {
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useZone } from 'src/shared/hooks/useZone';
+import { useWallet, useWalletObject } from 'src/shared/hooks';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
+  const walletObject = useWalletObject();
   const zone = useZone();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
@@ -49,6 +51,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
   const [shards, setShards] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
   // TODO: remove console.log when we use these values
   console.log(shards, selectedTimeframe);
 
@@ -66,6 +69,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
 
   // TODO: show loader while fetching transactions and balance
   useEffect(() => {
+    setLoading(true);
     getAccountTransactions(
       {
         address: wallet?.address as string,
@@ -95,15 +99,22 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       .catch(err => {
         console.log(err);
       });
-    getBalance(wallet?.address as string, zone).then(res => {
-      console.log('hey');
-      console.log(res);
-      setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
-    });
+
+    getBalance(wallet?.address as string, zone)
+      .then(res => {
+        setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [selectedTxDirection]);
 
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
+
+  if (loading || !wallet || !walletObject) {
+    return <QuaiPayLoader text={t('loading')} />;
+  }
 
   return (
     <QuaiPayContent noNavButton>
@@ -114,6 +125,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         setMaxAmount={setMaxAmount}
         setShards={setShards}
         ref={filterModalRef}
+        walletObject={walletObject}
       />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.cardWrapper}>

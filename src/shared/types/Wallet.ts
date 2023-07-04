@@ -1,4 +1,8 @@
-import { Mnemonic } from '@quais/hdnode/src.ts';
+export interface Mnemonic {
+  readonly phrase: string;
+  readonly path: string;
+  readonly locale: string;
+}
 
 export type Wallet = {
   privateKey: string;

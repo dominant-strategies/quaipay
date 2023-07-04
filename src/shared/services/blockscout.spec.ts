@@ -1,5 +1,5 @@
 import { getAccountTransactions } from './blockscout';
-import { Zone } from 'src/shared/types';
+import { Zone } from '../types';
 
 // TODO: restore after each
 global.fetch = jest.fn(() =>

@@ -5,5 +5,21 @@
   "transactionsHistory": "Transactions History",
   "filter": "Filter",
   "searchByTransaction": "Search by recent transaction",
-  "noTransaction": "No transactions found"
+  "noTransaction": "No transactions found",
+  "paymentDirection": "Payment Direction",
+  "byDate": "By Date",
+  "byAmount": "By Amount",
+  "from": "From",
+  "toDirection": "To",
+  "toAmount": "To",
+  "applyFilters": "Apply Filters",
+  "reset": "Reset",
+  "minimum": "Minimum",
+  "maximum": "Maximum",
+  "allTime": "All time",
+  "week": "This week",
+  "month": "Past 30 days",
+  "quarter": "Past 90 days",
+  "semester": "Past 6 months",
+  "year": "Past year"
 }

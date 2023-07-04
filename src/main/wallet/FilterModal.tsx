@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   QuaiPayBottomSheetModal,
@@ -18,24 +18,11 @@ import { useThemedStyle } from 'src/shared/hooks';
 import { styledColors } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
 import { ShardFilterMultiSelect } from 'src/main/wallet/ShardFilterMultiSelect';
-
-export const txDirection = ['from', 'to'];
-export const timeframe = [
-  'All time',
-  'This week',
-  'Past 30 days',
-  'Past 90 days',
-  'Past 6 months',
-  'Past year',
-];
+import { useTranslation } from 'react-i18next';
 
 type FilterModalProps = {
-  setSelectedTxDirection: (
-    selectedTxDirection?: (typeof txDirection)[number],
-  ) => void;
-  setSelectedTimeframe: (
-    selectedTimeframe?: (typeof timeframe)[number],
-  ) => void;
+  setSelectedTxDirection: (selectedTxDirection?: string) => void;
+  setSelectedTimeframe: (selectedTimeframe?: string) => void;
   setMinAmount: (minAmount: number) => void;
   setMaxAmount: (maxAmount: number) => void;
   setShards: (shards: number[]) => void;
@@ -54,6 +41,7 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
     },
     ref,
   ) => {
+    const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
     const { theme } = useTheme();
     const [txDirectionIndex, setTxDirectionIndex] = useState<
       number | undefined
@@ -61,9 +49,23 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
     const [timeframeIndex, setTimeframeIndex] = useState<number | undefined>();
     const [minAmountIn, setMinAmountIn] = useState('');
     const [maxAmountIn, setMaxAmountIn] = useState('');
-    const [shardIndeces, setShardIndeces] = useState<number[]>([
+    const [shardIndices, setShardIndices] = useState<number[]>([
       0, 1, 2, 3, 4, 5, 6, 7, 8,
     ]);
+
+    const txDirection = useMemo(() => [t('from'), t('toDirection')], []);
+
+    const timeframe = useMemo(
+      () => [
+        t('allTime'),
+        t('week'),
+        t('month'),
+        t('quarter'),
+        t('semester'),
+        t('year'),
+      ],
+      [],
+    );
 
     const applyFilters = useCallback(() => {
       // @ts-ignore
@@ -72,13 +74,13 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setSelectedTimeframe(timeframe[timeframeIndex]);
       setMinAmount(Number(minAmountIn));
       setMaxAmount(Number(maxAmountIn));
-      setShards(shardIndeces);
+      setShards(shardIndices);
     }, [
       txDirectionIndex,
       timeframeIndex,
       minAmountIn,
       maxAmountIn,
-      shardIndeces,
+      shardIndices,
     ]);
 
     const clearFilters = useCallback(() => {
@@ -91,13 +93,13 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setMaxAmount(1000000000000000000000000);
       setMaxAmountIn('');
       setShards([0, 1, 2, 3, 4, 5, 6, 7, 8]);
-      setShardIndeces([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+      setShardIndices([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     }, [
       txDirectionIndex,
       timeframeIndex,
       minAmountIn,
       maxAmountIn,
-      shardIndeces,
+      shardIndices,
     ]);
 
     const styles = useThemedStyle(themedStyle);
@@ -107,14 +109,14 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
         <View style={styles.wrapper}>
           <View style={styles.titleWrapper}>
             <QuaiPayText type="H3" style={styles.title}>
-              Filter
+              {t('filter')}
             </QuaiPayText>
           </View>
           <ScrollView
             style={{ height: Dimensions.get('window').height * 0.65 }}
           >
             <QuaiPayText type="H3" style={styles.heading}>
-              Payment Direction
+              {t('paymentDirection')}
             </QuaiPayText>
             <QuaiPaySelectableCards
               index={txDirectionIndex}
@@ -122,7 +124,7 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
               setIndex={setTxDirectionIndex}
             />
             <QuaiPayText type="H3" style={styles.heading}>
-              By Date
+              {t('byDate')}
             </QuaiPayText>
             <QuaiPaySelectableCards
               index={timeframeIndex}
@@ -130,25 +132,25 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
               setIndex={setTimeframeIndex}
             />
             <QuaiPayText type="H3" style={styles.heading}>
-              By amount
+              {t('byAmount')}
             </QuaiPayText>
             <View style={styles.amountWrapper}>
               <TextInput
                 onChangeText={setMinAmountIn}
                 keyboardType="numeric"
                 placeholderTextColor={theme.secondary}
-                placeholder="$ Minimum"
+                placeholder={`$ ${t('minimum')}`}
                 style={styles.amountInput}
                 value={minAmountIn}
               />
               <QuaiPayText themeColor="secondary" type="bold">
-                to
+                {t('toAmount')}
               </QuaiPayText>
               <TextInput
                 onChangeText={setMaxAmountIn}
                 keyboardType="numeric"
                 placeholderTextColor={theme.secondary}
-                placeholder="$ Maximum"
+                placeholder={`$ ${t('maximum')}`}
                 style={styles.amountInput}
                 value={maxAmountIn}
               />
@@ -157,20 +159,20 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
               Shard
             </QuaiPayText>
             <ShardFilterMultiSelect
-              setShards={setShardIndeces}
-              shards={shardIndeces}
+              setShards={setShardIndices}
+              shards={shardIndices}
               walletObject={walletObject}
             />
           </ScrollView>
           <View style={styles.buttonsWrapper}>
             <QuaiPayButton
-              title={'Apply Filters'}
+              title={t('applyFilters')}
               containerStyle={styles.applyButtonContainer}
               style={styles.button}
               onPress={applyFilters}
             />
             <QuaiPayButton
-              title={'Reset'}
+              title={t('reset')}
               containerStyle={styles.clearButtonContainer}
               style={[styles.button, styles.clearButton]}
               type="secondary"

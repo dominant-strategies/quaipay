@@ -1,6 +1,5 @@
 import { allNodeData } from '../constants/nodeData';
 import { quais } from 'quais';
-import { txDirection } from 'src/main/wallet/FilterModal';
 import { Zone } from 'src/shared/types';
 
 type TransactionList = {
@@ -39,7 +38,7 @@ type GetAccountTransactionsProps = {
   offset?: number;
   startTimestamp?: number;
   endTimestamp?: number;
-  filterBy?: (typeof txDirection)[number];
+  filterBy?: string;
   minAmount?: number;
   maxAmount?: number;
 };

@@ -25,11 +25,7 @@ import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import {
-  FilterModal,
-  timeframe,
-  txDirection,
-} from 'src/main/wallet/FilterModal';
+import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useZone } from 'src/shared/hooks/useZone';
@@ -43,10 +39,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const zone = useZone();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
-    (typeof txDirection)[number] | undefined
+    string | undefined
   >();
   const [selectedTimeframe, setSelectedTimeframe] = useState<
-    (typeof timeframe)[number] | undefined
+    string | undefined
   >();
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);

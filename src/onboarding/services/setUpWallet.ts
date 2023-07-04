@@ -29,7 +29,8 @@ export async function setUpWallet(entropy?: Uint8Array, zone?: string) {
     accountHDPath,
   );
 
-  let walletObject: Record<Zone, Wallet>;
+  // @ts-ignore
+  let walletObject: Record<Zone, Wallet> = {};
   childNodes.forEach((node, ind: number) => {
     const zoneIndex = getZoneIndex(ind);
     walletObject[zoneIndex] = node;

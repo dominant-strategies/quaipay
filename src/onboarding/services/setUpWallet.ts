@@ -11,7 +11,10 @@ import { OnboardingInfo } from 'src/shared/context/walletContext';
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
-export async function setUpWallet(entropy?: Uint8Array, zone?: string): Promise<OnboardingInfo> {
+export async function setUpWallet(
+  entropy?: Uint8Array,
+  zone?: string,
+): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
   }

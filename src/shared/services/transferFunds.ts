@@ -1,14 +1,14 @@
 import { allNodeData } from '../constants/nodeData';
-import { getZone } from './retrieveWallet';
 import { quais } from 'quais';
+import { Zone } from 'src/shared/types';
 
 export const transferFunds = (
   to: string,
   amount: string,
   privateKey: string,
+  zone: Zone,
 ) => {
   return new Promise((resolve, reject) => {
-    const zone = getZone();
     const sendNodeData = allNodeData[zone];
 
     const provider = new quais.providers.JsonRpcProvider(sendNodeData.provider);

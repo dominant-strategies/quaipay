@@ -5,3 +5,4 @@ export type { Theme, ThemeColor } from './Theme';
 export type { Typography } from './Typography';
 export type { Transaction } from './Transaction';
 export type { Wallet } from './Wallet';
+export { Zone } from './Zone';

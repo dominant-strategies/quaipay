@@ -27,6 +27,7 @@ import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
 
 import { SendStackParamList } from '../SendStack';
+import { useZone } from 'src/shared/hooks/useZone';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -37,6 +38,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const { amount, address, receiver, sender } = route.params;
   const { t } = useTranslation();
   const wallet = useWallet();
+  const zone = useZone();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
@@ -106,7 +108,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
 
   useEffect(() => {
     if (wallet) {
-      getBalance(wallet.address).then(balance =>
+      getBalance(wallet.address, zone).then(balance =>
         setQuaiBalance(balance.balanceInQuai),
       );
     }

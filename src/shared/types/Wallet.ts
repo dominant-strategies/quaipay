@@ -1,3 +1,9 @@
+export interface Mnemonic {
+  readonly phrase: string;
+  readonly path: string;
+  readonly locale: string;
+}
+
 export type Wallet = {
   privateKey: string;
   publicKey: string;
@@ -7,6 +13,6 @@ export type Wallet = {
   chainCode: string;
   index: number;
   depth: number;
-  mnemonic: string | null;
+  mnemonic?: Mnemonic;
   path: string | null;
 };

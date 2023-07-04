@@ -16,7 +16,7 @@ export const QuaiPayBanner = ({
   text,
 }: QuaiPayBannerProps) => {
   return (
-    <View style={[styles.wrapper, { opacity: showError ? 1 : 0 }]}>
+    <View style={[styles.wrapper, !showError && styles.hiddenBanner]}>
       <RedExclamation />
       <QuaiPayText type="bold" themeColor="alert">
         &nbsp;{boldText}
@@ -35,5 +35,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingVertical: 8,
     height: 34,
+  },
+  hiddenBanner: {
+    opacity: 0,
   },
 });

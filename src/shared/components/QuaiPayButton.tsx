@@ -44,6 +44,10 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
    */
   style?: StyleProp<ViewStyle>;
   /*
+   * Custom style props to overwrite any style that is applied to button's container
+   */
+  containerStyle?: StyleProp<ViewStyle>;
+  /*
    * Text string to use as title for the button
    */
   title: string;
@@ -71,6 +75,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   titleColor,
   RightIcon,
   style,
+  containerStyle,
   outlined = false,
   pill = false,
   type = 'default',
@@ -83,7 +88,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
   );
   const styles = stylesByType(buttonStyles, props.disabled ?? false);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Pressable
         {...props}
         style={({ pressed }) => [

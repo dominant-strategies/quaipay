@@ -5,13 +5,16 @@ import { retrieveWallet } from '../services/retrieveWallet';
 
 import { createCtx } from '.';
 import { useSnackBar } from './snackBarContext';
-import { Wallet } from '../types';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Wallet, Zone } from 'src/shared/types';
 
 // State variables only
 interface WalletContextState {
   entropy?: string;
   wallet?: Wallet;
+  walletObject?: Record<Zone, Wallet>;
+  zone: Zone;
 }
 
 // This interface differentiates from State
@@ -22,10 +25,15 @@ interface WalletContext extends WalletContextState {
   setEntropy: (entropy: string) => void;
   getWallet: () => void;
   setWallet: (wallet?: Wallet) => void;
+  setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
+  getZone: () => void;
+  setZone: (zone: Zone) => void;
   initFromOnboarding: (info: OnboardingInfo) => void;
 }
 
-const INITIAL_STATE: WalletContextState = {};
+const INITIAL_STATE: WalletContextState = {
+  zone: Zone['zone-0-0'],
+};
 
 const [useContext, WalletContextProvider] =
   createCtx<WalletContext>('walletContext');
@@ -59,19 +67,43 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getWallet = () => {
-    retrieveWallet().then(wallet =>
-      wallet
-        ? setWallet(wallet)
-        : showSnackBar({
-            message: t('common.error'),
-            moreInfo: t('error.retrieve.wallet') ?? '',
-            type: 'error',
-          }),
-    );
+    const { zone } = state;
+    retrieveWallet().then(wallet => {
+      if (wallet) {
+        setWallet(wallet[zone as Zone]);
+        setWalletObject(wallet);
+      } else {
+        showSnackBar({
+          message: t('common.error'),
+          moreInfo: t('error.retrieve.wallet') ?? '',
+          type: 'error',
+        });
+      }
+    });
   };
 
   const setWallet = (wallet?: Wallet) => {
     setState(prevState => ({ ...prevState, wallet }));
+  };
+
+  const setWalletObject = (walletObject?: Record<Zone, Wallet>) => {
+    setState(prevState => ({ ...prevState, walletObject }));
+  };
+
+  const getZone = async () => {
+    let zone: Zone;
+    try {
+      zone = (await AsyncStorage.getItem('zone')) as Zone;
+      return zone;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const setZone = (zone: Zone) => {
+    AsyncStorage.setItem('zone', zone).then(() => {
+      setState(prevState => ({ ...prevState, zone }));
+    });
   };
 
   const initFromOnboarding = (info: OnboardingInfo) => {
@@ -87,6 +119,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         setEntropy,
         getWallet,
         setWallet,
+        setWalletObject,
+        getZone,
+        setZone,
         initFromOnboarding,
       }}
     >

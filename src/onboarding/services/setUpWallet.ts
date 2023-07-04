@@ -4,21 +4,14 @@ import { quais } from 'quais';
 
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
-import { getZone } from 'src/shared/services/retrieveWallet';
-import { Wallet } from 'src/shared/types';
+import { Wallet, Zone } from 'src/shared/types';
+import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
 import { OnboardingInfo } from 'src/shared/context/walletContext';
-
-type ZoneIndex = Exclude<
-  keyof typeof keychainKeys,
-  'username' | 'profilePicture' | 'location' | 'entropy'
->;
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
 
-export async function setUpWallet(
-  entropy?: Uint8Array,
-): Promise<OnboardingInfo> {
+export async function setUpWallet(entropy?: Uint8Array, zone?: string): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
   }
@@ -37,30 +30,22 @@ export async function setUpWallet(
     accountHDPath,
   );
 
-  const parsedNodes = childNodes.map((node, ind: number) => {
-    const zoneIndex = `wallet-zone-${Math.floor(ind / 3)}-${ind % 3}`;
-    return {
-      node,
-      key: keychainKeys[zoneIndex as ZoneIndex],
-    };
+  // @ts-ignore
+  let walletObject: Record<Zone, Wallet> = {};
+  childNodes.forEach((node, ind: number) => {
+    const zoneIndex = getZoneIndex(ind);
+    walletObject[zoneIndex] = node;
   });
 
-  await Promise.all(
-    parsedNodes.map(({ key, node }) => {
-      return storeItem(
-        {
-          key,
-          value: JSON.stringify(node),
-        },
-        true,
-      );
-    }),
+  await storeItem(
+    // @ts-ignore
+    { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
+    true,
   );
 
   return {
     entropy: encodedEntropy,
-    wallet: parsedNodes.find(n => n.key === getZone())?.node as
-      | Wallet
-      | undefined,
+    // @ts-ignore
+    wallet: walletObject[zone],
   };
 }

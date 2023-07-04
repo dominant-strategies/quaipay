@@ -5,5 +5,21 @@
   "transactions": "Transaktionen",
   "filter": "Filter",
   "searchByTransaction": "Nach aktueller Transaktion suchen",
-  "noTransaction": "Keine Transaktion gefunden"
+  "noTransaction": "Keine Transaktion gefunden",
+  "paymentDirection": "Zahlungsrichtung",
+  "byDate": "Nach Datum",
+  "byAmount": "Nach Betrag",
+  "from": "Von",
+  "toDirection": "Nach",
+  "toAmount": "Bis",
+  "applyFilters": "Filter anwenden",
+  "reset": "Zurücksetzen",
+  "minimum": "Minimum",
+  "maximum": "Maximum",
+  "allTime": "Immer",
+  "week": "Letzte Woche",
+  "month": "Letzter Monat",
+  "quarter": "Letztes Quartal",
+  "semester": "Letztes Semester",
+  "year": "Letztes Jahr"
 }

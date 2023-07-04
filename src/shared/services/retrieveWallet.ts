@@ -1,19 +1,15 @@
 import { retrieveStoredItem } from './keychain';
 import { keychainKeys } from '../constants/keychainKeys';
 import { Wallet } from '../types/Wallet';
+import { Zone } from 'src/shared/types';
 
-export const getZone = () =>
-  // location: string
-  keychainKeys['wallet-zone-1-0'];
-
-export const retrieveWallet = async (): Promise<Wallet | undefined> => {
-  // TODO: use location when getWalletKey is updated
-  // const location = await retrieveStoredItem('location');
-  const walletKey = getZone();
-  // location
-  const retrievedWallet = await retrieveStoredItem(walletKey);
+export const retrieveWallet = async (): Promise<
+  Record<Zone, Wallet> | undefined
+> => {
+  const retrievedWallet = await retrieveStoredItem(keychainKeys.wallet);
   if (!retrievedWallet) {
     throw new Error('Wallet not found');
   }
+
   return JSON.parse(retrievedWallet);
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { MainTabStackScreenProps } from '../MainStack';
 import {
@@ -6,6 +6,7 @@ import {
   QuaiPayCard,
   QuaiPayContent,
   QuaiPayListItem,
+  QuaiPayLoader,
   QuaiPaySearchbar,
   QuaiPayText,
 } from 'src/shared/components';
@@ -20,32 +21,65 @@ import {
   getAccountTransactions,
   getBalance,
 } from 'src/shared/services/blockscout';
-import { useWallet } from 'src/shared/hooks';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { FilterModal } from 'src/main/wallet/FilterModal';
+import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
+import { useZone } from 'src/shared/hooks/useZone';
+import { useWallet, useWalletObject } from 'src/shared/hooks';
 
-const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
+const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
   const wallet = useWallet();
+  const walletObject = useWalletObject();
+  const zone = useZone();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [balance, setBalance] = useState(0);
+  const [selectedTxDirection, setSelectedTxDirection] = useState<
+    string | undefined
+  >();
+  const [selectedTimeframe, setSelectedTimeframe] = useState<
+    string | undefined
+  >();
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
+  const [shards, setShards] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
+  // TODO: remove console.log when we use these values
+  console.log(shards, selectedTimeframe);
+
+  const filterModalRef = useRef<BottomSheetModal>(null);
+  const activeAddressModalRef = useRef<BottomSheetModal>(null);
+
+  const handlePresentFilterModalPress = useCallback(() => {
+    filterModalRef.current?.present();
+  }, []);
+
+  const handlePresentActiveAddressModalPress = useCallback(() => {
+    activeAddressModalRef.current?.present();
+  }, []);
+  const [balance, setBalance] = useState('0');
 
   // TODO: show loader while fetching transactions and balance
   useEffect(() => {
-    getAccountTransactions({
-      address: wallet?.address as string,
-      sort: 'desc',
-      page: 1,
-      offset: 100,
-      start_timestamp: 0,
-      end_timestamp: Date.now(),
-      filter_by: 'to',
-      min_amount: 0,
-      max_amount: 1000000000000000000000000,
-    })
+    setLoading(true);
+    getAccountTransactions(
+      {
+        address: wallet?.address as string,
+        sort: 'desc',
+        page: 1,
+        offset: 100,
+        startTimestamp: 0,
+        endTimestamp: Date.now(),
+        filterBy: selectedTxDirection,
+        minAmount,
+        maxAmount,
+      },
+      zone,
+    )
       .then(res => {
         setTransactions(
           res.result.map(item => {
@@ -61,28 +95,48 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
       .catch(err => {
         console.log(err);
       });
-    getBalance('0x26746086cbB0D0AD0b3a586F758A4AAb1E628070' as string).then(
-      res => {
-        // console.log(res);
-        setBalance(Number(quais.utils.formatEther(res)));
-      },
-    );
-  }, []);
+
+    getBalance(wallet?.address as string, zone)
+      .then(res => {
+        setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [selectedTxDirection]);
+
+  // TODO: implement actual search logic
+  const onSearchChange = (text: string) => console.log(text);
+
+  if (loading || !wallet || !walletObject) {
+    return <QuaiPayLoader text={t('loading')} />;
+  }
 
   return (
     <QuaiPayContent noNavButton>
+      <FilterModal
+        setSelectedTimeframe={setSelectedTimeframe}
+        setSelectedTxDirection={setSelectedTxDirection}
+        setMinAmount={setMinAmount}
+        setMaxAmount={setMaxAmount}
+        setShards={setShards}
+        ref={filterModalRef}
+        walletObject={walletObject}
+      />
+      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
           quaiAmount={balance.toString()}
           address={abbreviateAddress(wallet?.address as string)}
           zone="Paxos-01"
-          fiatAmount={(balance * EXCHANGE_RATE).toFixed(3)}
+          fiatAmount={(Number(balance) * EXCHANGE_RATE).toFixed(3)}
           title={t('balance')}
         />
       </View>
       <View style={styles.buttonWrapper}>
         <Pressable
+          onPress={handlePresentActiveAddressModalPress}
           style={({ pressed }) => [
             styles.button,
             styles.addressButton,
@@ -114,6 +168,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
               styles.filterButton,
               pressed && { opacity: 0.5 },
             ]}
+            onPress={handlePresentFilterModalPress}
           >
             <QuaiPayText style={{ color: styledColors.gray }}>
               {t('filter')}&nbsp;
@@ -122,7 +177,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = ({}) => {
           </Pressable>
         </View>
         <View style={styles.searchbarWrapper}>
-          <QuaiPaySearchbar placeholder={t('searchByTransaction')} />
+          <QuaiPaySearchbar
+            onSearchChange={onSearchChange}
+            placeholder={t('searchByTransaction')}
+          />
         </View>
         {transactions.length === 0 ? (
           <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>
@@ -171,7 +229,7 @@ const themedStyle = (theme: Theme) =>
       height: 60,
     },
     cardWrapper: {
-      marginBottom: 20,
+      marginVertical: 20,
     },
     colorOverwrite: {
       color: styledColors.white,
@@ -206,6 +264,9 @@ const themedStyle = (theme: Theme) =>
     searchbarWrapper: {
       marginBottom: 22,
       marginTop: 10,
+    },
+    backgroundSurface: {
+      backgroundColor: theme.background,
     },
   });
 

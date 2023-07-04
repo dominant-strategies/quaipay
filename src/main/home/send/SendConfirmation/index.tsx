@@ -25,9 +25,9 @@ import { Currency } from 'src/shared/types';
 import { SendStackParamList } from '../SendStack';
 import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';
 import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
-import { getZone } from 'src/shared/services/retrieveWallet';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
+import { useZone } from 'src/shared/hooks/useZone';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -39,13 +39,13 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const { sender, address, receiver, tip } = route.params;
   const wallet = useWallet();
+  const zone = useZone();
   const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const { showSnackBar } = useSnackBar();
   const [showError, setShowError] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
   // TODO: remove when setShowError and setTxStatus are used
   console.log(setShowError, setTxStatus);
-  const zone = getZone();
   const nodeData = allNodeData[zone];
   const transactionUrl = `${nodeData.provider.replace('rpc.', '')}/tx/${
     route.params.transaction.hash
@@ -68,7 +68,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   };
 
   const subscribeToTransaction = useCallback(() => {
-    waitForTransaction(route.params.transaction.hash)
+    waitForTransaction(route.params.transaction.hash, zone)
       .then(receipt => {
         if (receipt?.status === 0) {
           setTxStatus(TxStatus.failed);
@@ -160,7 +160,8 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {abbreviateAddress(address)}
           </QuaiPayText>
           <View style={styles.shareControl}>
-            <ShareControl />
+            {/* TODO: ask product what should be shared here */}
+            <ShareControl share={''} />
           </View>
           <TouchableOpacity style={[styles.button, styles.saveContact]}>
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>

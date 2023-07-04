@@ -9,7 +9,7 @@ import {
 } from 'src/shared/components';
 
 const SendScanScreen: React.FC = () => {
-  const { frameProcessor } = useQuaiPayCamera(ScannerType.SEND_AMOUNT)();
+  const { frameProcessor } = useQuaiPayCamera(ScannerType.SEND_AMOUNT);
 
   return (
     <QuaiPayContent noNavButton hasBackgroundVariant>

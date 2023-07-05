@@ -51,7 +51,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
-  const [detectedAddress, setDetectedAddress] = useState<string>();
+  const [detectedAddress, setDetectedAddress] = useState<string>('');
 
   // ===== Search =====
   const [searchText, setSearchText] = useState<string>();
@@ -166,13 +166,25 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       try {
         const address = data?.match(/0x[a-fA-F0-9]{40}(?![a-fA-F0-9])/g)?.[0];
         if (quais.utils.isAddress(address || '')) {
-          setDetectedAddress(address);
+          setDetectedAddress(address || '');
         }
       } catch (error) {
         console.log('error', error);
       }
     });
   }, [detectedAddress]);
+
+  const navigateToAmount = (address: string) => {
+    RootNavigator.navigate('SendStack', {
+      screen: 'SendAmount',
+      params: {
+        address,
+        amount: 0,
+        receiver: '',
+        sender,
+      },
+    });
+  };
 
   // ===============
   return contacts || detectedAddress ? (
@@ -233,6 +245,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               onSearchChange={setSearchText}
               placeholder={t('home.send.searchByAddress')}
               onPress={expandBottomSheet}
+              onPressPaste={() => navigateToAmount(detectedAddress)}
             />
           </TouchableOpacity>
 
@@ -248,17 +261,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               {detectedAddress && (
                 <TouchableOpacity
                   style={styles.detectedAddress}
-                  onPress={() => {
-                    RootNavigator.navigate('SendStack', {
-                      screen: 'SendAmount',
-                      params: {
-                        address: detectedAddress,
-                        amount: 0,
-                        receiver: '',
-                        sender,
-                      },
-                    });
-                  }}
+                  onPress={() => navigateToAmount(detectedAddress)}
                 >
                   <Paste />
                   <View style={styles.column}>
@@ -339,7 +342,8 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 4,
-      padding: 20,
+      paddingHorizontal: 20,
+      paddingVertical: 8,
     },
     column: {
       padding: 10,

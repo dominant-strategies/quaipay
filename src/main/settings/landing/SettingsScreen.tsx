@@ -27,6 +27,8 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   const wallet = useWallet();
   const goToExport = () =>
     RootNavigator.navigate('ExportStack', { screen: 'ExportLanding' });
+  const goToAccountDetails = () =>
+    RootNavigator.navigate('SettingsStack', { screen: 'AccountDetails' });
 
   if (!wallet) {
     return <QuaiPayLoader text={'Loading wallet...'} />;
@@ -48,7 +50,9 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
             title={t('chooseAddress')}
             containerStyle={styles.chooseAddressButtonContainer}
             style={styles.button}
-            onPress={() => {}}
+            onPress={() => {
+              goToAccountDetails();
+            }}
           />
           <QuaiPayButton
             title={t('earn')}

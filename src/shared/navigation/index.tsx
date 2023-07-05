@@ -20,6 +20,9 @@ import OnboardingStack from 'src/onboarding/OnboardingStack';
 import ExportStack, {
   ExportStackParamList,
 } from 'src/main/settings/export/ExportStack';
+import SettingsStack, {
+  SettingsStackParamList,
+} from 'src/main/settings/SettingsStack';
 
 import { useTheme } from '../context/themeContext';
 import { RootNavigator } from './utils';
@@ -31,6 +34,7 @@ export type RootStackParamList = {
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
   SendStack: NavigatorScreenParams<SendStackParamList>;
   ExportStack: NavigatorScreenParams<ExportStackParamList>;
+  SettingsStack: NavigatorScreenParams<SettingsStackParamList>;
 };
 
 export type RootStackNavigationProps<Route extends keyof RootStackParamList> =
@@ -101,6 +105,13 @@ const AppNavigator = ({ onboarded }: NavigationProps) => {
         component={ExportStack}
         options={{
           title: 'ExportStack',
+        }}
+      />
+      <Stack.Screen
+        name="SettingsStack"
+        component={SettingsStack}
+        options={{
+          title: 'SettingsStack',
         }}
       />
     </Stack.Navigator>

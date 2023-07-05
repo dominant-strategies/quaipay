@@ -81,7 +81,6 @@ const themedStyle = (theme: Theme) =>
     middle: {
       backgroundColor: theme.surface,
       paddingHorizontal: 32,
-      height: Dimensions.get('window').height * 0.2,
       borderBottomColor: theme.border,
       borderBottomWidth: 1,
     },
@@ -113,8 +112,7 @@ const themedStyle = (theme: Theme) =>
     buttonContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 24,
-      marginBottom: 16,
+      marginVertical: 24,
     },
   });
 

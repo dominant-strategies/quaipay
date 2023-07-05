@@ -16,6 +16,7 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { SettingsLinks } from 'src/main/settings/landing/SettingsLinks';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   const { t } = useTranslation('translation', {
@@ -59,7 +60,9 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
             containerStyle={styles.earnButtonContainer}
             style={[styles.button, styles.earnButton]}
             type="secondary"
-            onPress={() => {}}
+            onPress={() => {
+              RootNavigator.navigate('SettingsStack', { screen: 'Referral' });
+            }}
           />
         </View>
       </View>

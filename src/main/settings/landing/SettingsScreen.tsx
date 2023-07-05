@@ -69,8 +69,10 @@ const themedStyle = (theme: Theme) =>
       borderBottomColor: theme.border,
       borderBottomWidth: 1,
       position: 'relative',
+      zIndex: 2,
     },
     middle: {
+      backgroundColor: theme.surface,
       paddingHorizontal: 32,
       borderBottomColor: theme.border,
       borderBottomWidth: 1,

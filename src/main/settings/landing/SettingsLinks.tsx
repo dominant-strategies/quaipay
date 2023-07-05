@@ -12,6 +12,7 @@ import DollarSign from 'src/shared/assets/dollarSign.svg';
 import SpeechBubble from 'src/shared/assets/speechBubble.svg';
 
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { Theme } from 'src/shared/types';
 
 export const SettingsLinks = () => {
   const { t } = useTranslation('translation', {
@@ -74,7 +75,11 @@ export const SettingsLinks = () => {
   );
 };
 
-const themedStyle = () =>
+const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    wrapper: { paddingHorizontal: 32, paddingVertical: 24 },
+    wrapper: {
+      paddingHorizontal: 32,
+      paddingVertical: 24,
+      backgroundColor: theme.surface,
+    },
   });

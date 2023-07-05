@@ -6,6 +6,12 @@
     "receive": "Empfangen",
     "account": "Konto",
     "chooseAddress": "Aktive Adresse auswählen",
-    "earn": "Verdienen"
+    "earn": "Verdienen",
+    "accountDetails": "Kontodetails",
+    "accountRecovery": "Kontowiederherstellung",
+    "notifications": "Benachrichtigungen",
+    "feedback": "Hilfe & Feedback",
+    "referral": "Empfehlungsprogramm",
+    "legal": "Rechtliches"
   }
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { RootNavigator } from 'src/shared/navigation/utils';
-
 import { MainTabStackScreenProps } from 'src/main/MainStack';
 import { Theme } from 'src/shared/types';
 import AvatarPlaceHolder from 'src/shared/assets/avatarPlaceholder.svg';
@@ -16,6 +14,7 @@ import {
 } from 'src/shared/components';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { Icons } from 'src/main/settings/landing/Icons';
+import { SettingsLinks } from 'src/main/settings/landing/SettingsLinks';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   const { t } = useTranslation('translation', {
@@ -25,10 +24,6 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
 
   const username = useUsername();
   const wallet = useWallet();
-  const goToExport = () =>
-    RootNavigator.navigate('ExportStack', { screen: 'ExportLanding' });
-  const goToAccountDetails = () =>
-    RootNavigator.navigate('SettingsStack', { screen: 'AccountDetails' });
 
   if (!wallet) {
     return <QuaiPayLoader text={'Loading wallet...'} />;
@@ -50,9 +45,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
             title={t('chooseAddress')}
             containerStyle={styles.chooseAddressButtonContainer}
             style={styles.button}
-            onPress={() => {
-              goToAccountDetails();
-            }}
+            onPress={() => {}}
           />
           <QuaiPayButton
             title={t('earn')}
@@ -63,6 +56,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
           />
         </View>
       </View>
+      <SettingsLinks />
     </View>
   );
 };

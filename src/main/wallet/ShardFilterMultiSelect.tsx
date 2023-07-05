@@ -67,8 +67,8 @@ export const ShardFilterMultiSelect: React.FC<QuaiPaySelectableCardsProps> = ({
                       areAllSelected
                         ? styles.text
                         : isSelected
-                        ? [styles.textNotSelected, styles.textSelected]
-                        : styles.textNotSelected
+                        ? styles.textSelected
+                        : styles.text
                     }
                   >
                     {shardName}
@@ -85,8 +85,8 @@ export const ShardFilterMultiSelect: React.FC<QuaiPaySelectableCardsProps> = ({
                     areAllSelected
                       ? styles.text
                       : isSelected
-                      ? [styles.textNotSelected, styles.textSelected]
-                      : styles.textNotSelected
+                      ? styles.textSelected
+                      : styles.text
                   }
                 >
                   XXXX Quai
@@ -105,10 +105,11 @@ const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     card: {
       alignItems: 'center',
-      borderColor: theme.surface,
+      borderColor: theme.border,
+      borderRadius: 4,
       borderWidth: 2,
       flexDirection: 'row',
-      height: 48,
+      height: 72,
       marginVertical: 4,
       justifyContent: 'space-between',
       paddingHorizontal: 8,
@@ -119,9 +120,6 @@ const themedStyle = (theme: Theme) =>
     },
     text: {
       color: theme.primary,
-    },
-    textNotSelected: {
-      color: theme.secondary,
     },
     textSelected: {
       color: theme.normal,

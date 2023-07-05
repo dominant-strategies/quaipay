@@ -102,7 +102,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const setZone = (zone: Zone) => {
     AsyncStorage.setItem('zone', zone).then(() => {
-      setState(prevState => ({ ...prevState, zone }));
+      setState(prevState => ({
+        ...prevState,
+        zone,
+        wallet: prevState.walletObject![zone],
+      }));
     });
   };
 

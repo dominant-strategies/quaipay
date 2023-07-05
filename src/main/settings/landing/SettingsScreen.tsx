@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +13,9 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { abbreviateAddress } from 'src/shared/services/quais';
-import { Icons } from 'src/main/settings/landing/Icons';
 import { SettingsLinks } from 'src/main/settings/landing/SettingsLinks';
+import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   const { t } = useTranslation('translation', {
@@ -22,8 +23,14 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
   });
   const styles = useThemedStyle(themedStyle);
 
+  const activeAddressModalRef = useRef<BottomSheetModal>(null);
+
   const username = useUsername();
   const wallet = useWallet();
+
+  const handlePresentActiveAddressModalPress = useCallback(() => {
+    activeAddressModalRef.current?.present();
+  }, []);
 
   if (!wallet) {
     return <QuaiPayLoader text={'Loading wallet...'} />;
@@ -31,6 +38,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
 
   return (
     <View>
+      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.top}>
         <AvatarPlaceHolder style={styles.avatar} width={96} height={96} />
       </View>
@@ -39,13 +47,12 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
         <QuaiPayText themeColor="secondary">
           {abbreviateAddress(wallet.address)}
         </QuaiPayText>
-        <Icons />
         <View style={styles.buttonContainer}>
           <QuaiPayButton
             title={t('chooseAddress')}
             containerStyle={styles.chooseAddressButtonContainer}
             style={styles.button}
-            onPress={() => {}}
+            onPress={handlePresentActiveAddressModalPress}
           />
           <QuaiPayButton
             title={t('earn')}
@@ -74,6 +81,7 @@ const themedStyle = (theme: Theme) =>
     middle: {
       backgroundColor: theme.surface,
       paddingHorizontal: 32,
+      height: Dimensions.get('window').height * 0.2,
       borderBottomColor: theme.border,
       borderBottomWidth: 1,
     },
@@ -90,7 +98,6 @@ const themedStyle = (theme: Theme) =>
       fontSize: 20,
       marginTop: 30,
     },
-
     chooseAddressButtonContainer: {
       width: 200,
     },
@@ -106,6 +113,7 @@ const themedStyle = (theme: Theme) =>
     buttonContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      marginTop: 24,
       marginBottom: 16,
     },
   });

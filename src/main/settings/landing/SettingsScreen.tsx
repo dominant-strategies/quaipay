@@ -7,11 +7,6 @@ import { RootNavigator } from 'src/shared/navigation/utils';
 import { MainTabStackScreenProps } from 'src/main/MainStack';
 import { Theme } from 'src/shared/types';
 import AvatarPlaceHolder from 'src/shared/assets/avatarPlaceholder.svg';
-import PiggyBank from 'src/shared/assets/piggyBank.svg';
-import Card from 'src/shared/assets/card.svg';
-import Send from 'src/shared/assets/send.svg';
-import Receive from 'src/shared/assets/receive.svg';
-import Account from 'src/shared/assets/account.svg';
 import { useThemedStyle, useUsername, useWallet } from 'src/shared/hooks';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import {
@@ -20,12 +15,13 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { abbreviateAddress } from 'src/shared/services/quais';
+import { Icons } from 'src/main/settings/landing/Icons';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
-  const styles = useThemedStyle(themedStyle);
   const { t } = useTranslation('translation', {
     keyPrefix: 'settings.landing',
   });
+  const styles = useThemedStyle(themedStyle);
 
   const username = useUsername();
   const wallet = useWallet();
@@ -46,38 +42,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
         <QuaiPayText themeColor="secondary">
           {abbreviateAddress(wallet.address)}
         </QuaiPayText>
-        <View style={styles.iconsWrapper}>
-          <View style={styles.iconText}>
-            <View style={styles.icon}>
-              <PiggyBank />
-            </View>
-            <QuaiPayText>{t('invest')}</QuaiPayText>
-          </View>
-          <View style={styles.iconText}>
-            <View style={styles.icon}>
-              <Card />
-            </View>
-            <QuaiPayText>{t('payment')}</QuaiPayText>
-          </View>
-          <View style={styles.iconText}>
-            <View style={styles.icon}>
-              <Send />
-            </View>
-            <QuaiPayText>{t('send')}</QuaiPayText>
-          </View>
-          <View style={styles.iconText}>
-            <View style={styles.icon}>
-              <Receive />
-            </View>
-            <QuaiPayText>{t('receive')}</QuaiPayText>
-          </View>
-          <View style={styles.iconText}>
-            <View style={styles.icon}>
-              <Account />
-            </View>
-            <QuaiPayText>{t('account')}</QuaiPayText>
-          </View>
-        </View>
+        <Icons />
         <View style={styles.buttonContainer}>
           <QuaiPayButton
             title={t('chooseAddress')}
@@ -125,24 +90,7 @@ const themedStyle = (theme: Theme) =>
       fontSize: 20,
       marginTop: 30,
     },
-    icon: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderColor: theme.border,
-      borderWidth: 1,
-      width: 48,
-      height: 48,
-      borderRadius: 24,
-    },
-    iconText: {
-      justifyContent: 'center',
-    },
-    iconsWrapper: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 30,
-      marginBottom: 20,
-    },
+
     chooseAddressButtonContainer: {
       width: 200,
     },

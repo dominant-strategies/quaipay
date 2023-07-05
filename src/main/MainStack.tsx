@@ -16,7 +16,7 @@ import { RootStackScreenProps } from 'src/shared/navigation';
 import { useTheme } from 'src/shared/context/themeContext';
 import { styledColors, typography } from 'src/shared/styles';
 
-import SettingsScreen from './settings/SettingsScreen';
+import SettingsScreen from 'src/main/settings/landing/SettingsScreen';
 import HomeScreen from './home/HomeScreen';
 import WalletScreen from './wallet/WalletScreen';
 import { StyleSheet, View } from 'react-native';

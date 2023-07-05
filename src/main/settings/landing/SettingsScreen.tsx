@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { RootNavigator } from 'src/shared/navigation/utils';
 
-import { MainTabStackScreenProps } from '../MainStack';
+import { MainTabStackScreenProps } from 'src/main/MainStack';
 import { Theme } from 'src/shared/types';
 import AvatarPlaceHolder from 'src/shared/assets/avatarPlaceholder.svg';
 import PiggyBank from 'src/shared/assets/piggyBank.svg';

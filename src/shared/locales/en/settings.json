@@ -1,0 +1,9 @@
+{
+  "landing": {
+    "invest": "Invest",
+    "payment": "Payment",
+    "send": "Send",
+    "receive": "Receive",
+    "account": "Account"
+  }
+}

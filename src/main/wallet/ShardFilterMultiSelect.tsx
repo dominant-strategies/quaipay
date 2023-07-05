@@ -103,6 +103,7 @@ export const ShardFilterMultiSelect: React.FC<QuaiPaySelectableCardsProps> = ({
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
+    // TODO: add box shadow
     card: {
       alignItems: 'center',
       borderColor: theme.surface,

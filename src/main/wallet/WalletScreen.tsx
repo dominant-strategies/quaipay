@@ -30,6 +30,7 @@ import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAd
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useZone } from 'src/shared/hooks/useZone';
 import { useWallet, useWalletObject } from 'src/shared/hooks';
+import { allNodeData } from 'src/shared/constants/nodeData';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
@@ -129,7 +130,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           size={CardSize.Small}
           quaiAmount={balance.toString()}
           address={abbreviateAddress(wallet?.address as string)}
-          zone="Paxos-01"
+          zone={allNodeData[zone].name}
           fiatAmount={(Number(balance) * EXCHANGE_RATE).toFixed(3)}
           title={t('balance')}
         />

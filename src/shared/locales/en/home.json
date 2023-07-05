@@ -34,6 +34,7 @@
     "retryTransaction": "Please retry the transaction.",
     "viewAll": "View All",
     "noInternet": "No Internet Connection",
-    "noInternetMessage": "Please check your internet connection"
+    "noInternetMessage": "Please check your internet connection",
+    "pasteFromClipboard": "Paste from Clipboard",
   }
 }

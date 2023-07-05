@@ -34,6 +34,7 @@
     "retryTransaction": "Bitte noch einmal versuchen.",
     "viewAll": "Alle anzeigen",
     "noInternet": "Keine Internetverbindung",
-    "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!"
+    "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!",
+    "pasteFromClipboard": "Aus Zwischenablage einfügen",
   }
 }

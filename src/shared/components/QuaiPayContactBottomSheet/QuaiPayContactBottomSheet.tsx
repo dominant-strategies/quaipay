@@ -1,5 +1,4 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { t } from 'i18next';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Image,
@@ -15,8 +14,12 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { quais } from 'quais';
 
 import DownChevron from 'src/shared/assets/downChevron.svg';
+import Paste from 'src/shared/assets/paste.svg';
 
 import { RootNavigator } from '../../navigation/utils';
 import { styledColors } from '../../styles';
@@ -45,7 +48,10 @@ const EXPAND_DIFF = 475;
 export const QuaiPayContactBottomSheet: React.FC = () => {
   const sender = useUsername();
   const { isDarkMode } = useTheme();
+  const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
+
+  const [detectedAddress, setDetectedAddress] = useState<string>();
 
   // ===== Search =====
   const [searchText, setSearchText] = useState<string>();
@@ -155,8 +161,21 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     }
   });
 
+  useEffect(() => {
+    Clipboard.getString().then(data => {
+      try {
+        const address = data?.match(/0x[a-fA-F0-9]{40}(?![a-fA-F0-9])/g)?.[0];
+        if (quais.utils.isAddress(address || '')) {
+          setDetectedAddress(address);
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    });
+  }, [detectedAddress]);
+
   // ===============
-  return contacts ? (
+  return contacts || detectedAddress ? (
     <BottomSheet
       backgroundStyle={styles.backgroundSurface}
       handleIndicatorStyle={{
@@ -226,6 +245,32 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               }
               contentContainerStyle={styles.marginHorizontal20}
             >
+              {detectedAddress && (
+                <TouchableOpacity
+                  style={styles.detectedAddress}
+                  onPress={() => {
+                    RootNavigator.navigate('SendStack', {
+                      screen: 'SendAmount',
+                      params: {
+                        address: detectedAddress,
+                        amount: 0,
+                        receiver: '',
+                        sender,
+                      },
+                    });
+                  }}
+                >
+                  <Paste />
+                  <View style={styles.column}>
+                    <QuaiPayText type="H3" style={styles.pasteTitle}>
+                      {t('home.send.pasteFromClipboard')}
+                    </QuaiPayText>
+                    <QuaiPayText type="paragraph" style={styles.addressText}>
+                      {detectedAddress}
+                    </QuaiPayText>
+                  </View>
+                </TouchableOpacity>
+              )}
               {filteredContacts.map((contact: Contact, index: number) => (
                 <TouchableOpacity
                   key={index}
@@ -288,5 +333,25 @@ const themedStyle = (theme: Theme) =>
     },
     chevron: {
       color: theme.primary,
+    },
+    detectedAddress: {
+      backgroundColor: theme.normal,
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: 4,
+      padding: 20,
+    },
+    column: {
+      padding: 10,
+      flexDirection: 'column',
+    },
+    pasteTitle: {
+      color: styledColors.white,
+      alignSelf: 'flex-start',
+    },
+    addressText: {
+      color: styledColors.white,
+      marginRight: 20,
+      textAlign: 'left',
     },
   });

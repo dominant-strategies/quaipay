@@ -4,6 +4,8 @@
     "payment": "Zahlung",
     "send": "Senden",
     "receive": "Empfangen",
-    "account": "Konto"
+    "account": "Konto",
+    "chooseAddress": "Aktive Adresse auswählen",
+    "earn": "Verdienen"
   }
 }

@@ -4,6 +4,8 @@
     "payment": "Payment",
     "send": "Send",
     "receive": "Receive",
-    "account": "Account"
+    "account": "Account",
+    "chooseAddress": "Choose Active Address",
+    "earn": "Earn"
   }
 }

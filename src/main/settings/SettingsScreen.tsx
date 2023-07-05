@@ -13,8 +13,12 @@ import Send from 'src/shared/assets/send.svg';
 import Receive from 'src/shared/assets/receive.svg';
 import Account from 'src/shared/assets/account.svg';
 import { useThemedStyle, useUsername, useWallet } from 'src/shared/hooks';
-import { fontStyle } from 'src/shared/styles';
-import { QuaiPayLoader, QuaiPayText } from 'src/shared/components';
+import { fontStyle, styledColors } from 'src/shared/styles';
+import {
+  QuaiPayButton,
+  QuaiPayLoader,
+  QuaiPayText,
+} from 'src/shared/components';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
 const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
@@ -74,6 +78,21 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
             <QuaiPayText>{t('account')}</QuaiPayText>
           </View>
         </View>
+        <View style={styles.buttonContainer}>
+          <QuaiPayButton
+            title={t('chooseAddress')}
+            containerStyle={styles.chooseAddressButtonContainer}
+            style={styles.button}
+            onPress={() => {}}
+          />
+          <QuaiPayButton
+            title={t('earn')}
+            containerStyle={styles.earnButtonContainer}
+            style={[styles.button, styles.earnButton]}
+            type="secondary"
+            onPress={() => {}}
+          />
+        </View>
       </View>
     </View>
   );
@@ -89,7 +108,9 @@ const themedStyle = (theme: Theme) =>
       position: 'relative',
     },
     middle: {
-      paddingHorizontal: Dimensions.get('window').width * 0.1,
+      paddingHorizontal: 32,
+      borderBottomColor: theme.border,
+      borderBottomWidth: 1,
     },
     avatar: {
       borderColor: theme.surface,
@@ -119,7 +140,25 @@ const themedStyle = (theme: Theme) =>
     iconsWrapper: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginVertical: 30,
+      marginTop: 30,
+      marginBottom: 20,
+    },
+    chooseAddressButtonContainer: {
+      width: 200,
+    },
+    earnButtonContainer: {
+      width: 100,
+    },
+    button: {
+      height: 32,
+      padding: 0,
+      justifyContent: 'center',
+    },
+    earnButton: { borderColor: styledColors.gray, borderWidth: 1 },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
     },
   });
 

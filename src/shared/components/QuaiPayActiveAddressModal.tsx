@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { QuaiPayBottomSheetModal, QuaiPayText } from 'src/shared/components';
 import { Theme, Zone } from 'src/shared/types';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Done from 'src/shared/assets/done.svg';
 import GreyDone from 'src/shared/assets/greyDone.svg';
 import { abbreviateAddress } from 'src/shared/services/quais';
@@ -19,33 +19,50 @@ export const QuaiPayActiveAddressModal = forwardRef<BottomSheetModal>(
 
     return (
       <QuaiPayBottomSheetModal ref={ref}>
-        <QuaiPayText>Choose Active Address</QuaiPayText>
-        <View style={styles.wrapper}>
-          {zones.map((zone: Zone) => {
-            const isSelected = selectedZone === zone;
-            return (
-              <Pressable
-                key={zone}
-                onPress={() => {
-                  if (!isSelected) {
-                    setZone(zone);
-                  }
-                }}
-              >
-                <View
-                  style={
-                    isSelected
-                      ? [styles.card, styles.cardSelected]
-                      : styles.card
-                  }
+        <QuaiPayText style={styles.title}>Choose Active Address</QuaiPayText>
+        <ScrollView>
+          <View style={styles.wrapper}>
+            {zones.map((zone: Zone) => {
+              const isSelected = selectedZone === zone;
+              return (
+                <Pressable
+                  key={zone}
+                  onPress={() => {
+                    if (!isSelected) {
+                      setZone(zone);
+                    }
+                  }}
                 >
-                  <View style={styles.leftColumn}>
-                    {isSelected ? (
-                      <Done width={20} height={20} />
-                    ) : (
-                      <GreyDone width={20} height={20} />
-                    )}
-                    <View style={styles.leftText}>
+                  <View
+                    style={
+                      isSelected
+                        ? [styles.card, styles.cardSelected]
+                        : styles.card
+                    }
+                  >
+                    <View style={styles.leftColumn}>
+                      {isSelected ? (
+                        <Done width={20} height={20} />
+                      ) : (
+                        <GreyDone width={20} height={20} />
+                      )}
+                      <View style={styles.leftText}>
+                        <QuaiPayText
+                          type="H3"
+                          style={
+                            isSelected
+                              ? [styles.textNotSelected, styles.textSelected]
+                              : styles.textNotSelected
+                          }
+                        >
+                          {allNodeData[zone].name}
+                        </QuaiPayText>
+                        <QuaiPayText themeColor="secondary">
+                          {abbreviateAddress(walletObject![zone].address)}
+                        </QuaiPayText>
+                      </View>
+                    </View>
+                    <View style={styles.rightText}>
                       <QuaiPayText
                         type="H3"
                         style={
@@ -54,31 +71,16 @@ export const QuaiPayActiveAddressModal = forwardRef<BottomSheetModal>(
                             : styles.textNotSelected
                         }
                       >
-                        {allNodeData[zone].name}
+                        XXXX Quai
                       </QuaiPayText>
-                      <QuaiPayText themeColor="secondary">
-                        {abbreviateAddress(walletObject![zone].address)}
-                      </QuaiPayText>
+                      <QuaiPayText themeColor="secondary">$0.00</QuaiPayText>
                     </View>
                   </View>
-                  <View style={styles.rightText}>
-                    <QuaiPayText
-                      type="H3"
-                      style={
-                        isSelected
-                          ? [styles.textNotSelected, styles.textSelected]
-                          : styles.textNotSelected
-                      }
-                    >
-                      XXXX Quai
-                    </QuaiPayText>
-                    <QuaiPayText themeColor="secondary">$0.00</QuaiPayText>
-                  </View>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
+                </Pressable>
+              );
+            })}
+          </View>
+        </ScrollView>
       </QuaiPayBottomSheetModal>
     );
   },
@@ -88,12 +90,17 @@ const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     wrapper: {
       padding: 8,
+      backgroundColor: theme.surface,
+    },
+    title: {
+      backgroundColor: theme.surface,
     },
     card: {
       alignItems: 'center',
       borderColor: theme.border,
       borderRadius: 4,
       borderWidth: 2,
+      backgroundColor: theme.surface,
       flexDirection: 'row',
       height: 72,
       marginVertical: 4,

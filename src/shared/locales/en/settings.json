@@ -1,0 +1,17 @@
+{
+  "landing": {
+    "invest": "Invest",
+    "payment": "Payment",
+    "send": "Send",
+    "receive": "Receive",
+    "account": "Account",
+    "chooseAddress": "Choose Active Address",
+    "earn": "Earn",
+    "accountDetails": "Account Details",
+    "accountRecovery": "Account Recovery",
+    "notifications": "Notifications",
+    "feedback": "Help & Feedback",
+    "referral": "Referral",
+    "legal": "Legal"
+  }
+}

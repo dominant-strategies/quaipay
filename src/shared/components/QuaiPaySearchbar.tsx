@@ -1,9 +1,15 @@
 import React from 'react';
-import { Pressable, StyleSheet, TextInput } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  ViewStyle,
+} from 'react-native';
 import MagnifyingGlass from '../assets/magnifyingGlass.svg';
 import Paste from 'src/shared/assets/paste_dark.svg';
 import { Theme } from '../types';
-import { useThemedStyle } from '../hooks/useThemedStyle';
+import { useThemedStyle } from 'src/shared/hooks';
 
 type QuaiPaySearchbarProps = {
   placeholder: string;
@@ -11,6 +17,7 @@ type QuaiPaySearchbarProps = {
   onSearchChange: (search: string) => void;
   onPress?: () => void;
   onPressPaste?: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
@@ -19,11 +26,15 @@ export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
   onSearchChange,
   onPress,
   onPressPaste,
+  style,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <Pressable onPress={onPress} style={[styles.contactSearch]}>
+    <Pressable
+      onPress={onPress}
+      style={style ? [styles.contactSearch, style] : styles.contactSearch}
+    >
       <MagnifyingGlass style={styles.searchIcon} />
       <TextInput
         onPressOut={onPress}

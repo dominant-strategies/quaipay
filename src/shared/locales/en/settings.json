@@ -20,6 +20,7 @@
     "linkPFP": "Link a Profile Picture",
     "localCurrency": "Local Currency",
     "selectCurrency": "Select native currency to display exchange rates.",
-    "save": "Save"
+    "save": "Save",
+    "loading": "Loading..."
   }
 }

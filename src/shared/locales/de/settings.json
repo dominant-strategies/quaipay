@@ -20,6 +20,7 @@
     "linkPFP": "Profilbild verknüpfen",
     "localCurrency": "Lokale Währung",
     "selectCurrency": "Wählen Sie die Landeswährung aus, um die Wechselkurse anzuzeigen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "loading": "Wird geladen..."
   }
 }

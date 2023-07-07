@@ -1,19 +1,27 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Theme } from 'src/shared/types';
 import { styledColors } from 'src/shared/styles';
 import { useThemedStyle } from 'src/shared/hooks';
 
 type QuaiPayAvatarProps = {
+  containerStyle?: StyleProp<ViewStyle>;
   profilePicture: string;
 };
 
 export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
+  containerStyle,
   profilePicture,
 }) => {
   const styles = useThemedStyle(themedStyle);
   return (
-    <View style={styles.imageCenterer}>
+    <View
+      style={
+        containerStyle
+          ? [styles.imageCenterer, containerStyle]
+          : styles.imageCenterer
+      }
+    >
       <View style={styles.imageNormalBorder}>
         <View style={styles.imageSurfaceBorder}>
           <Image

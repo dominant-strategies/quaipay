@@ -1,3 +1,4 @@
+export { QuaiPayAvatar } from './QuaiPayAvatar';
 export { QuaiPayBanner } from './QuaiPayBanner';
 export { QuaiPayBottomSheetModal } from './QuaiPayBottomSheetModal';
 export { QuaiPayButton } from './QuaiPayButton';

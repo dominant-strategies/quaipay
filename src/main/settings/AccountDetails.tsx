@@ -29,6 +29,7 @@ export const AccountDetails = () => {
   const { setUsername } = useWalletContext();
   const { setProfilePicture } = useWalletContext();
 
+  const [loading, setLoading] = useState(false);
   const [usernameInput, setUsernameInput] = useState(username);
   const [profilePictureInput, setProfilePictureInput] =
     useState(profilePicture);
@@ -44,11 +45,13 @@ export const AccountDetails = () => {
   }, [username, profilePicture]);
 
   const handleSave = useCallback(async () => {
+    setLoading(true);
     await setUsername(usernameInput ?? '');
     await setProfilePicture(profilePictureInput);
+    setLoading(false);
   }, [usernameInput, profilePictureInput]);
 
-  if (!profilePicture || !username) {
+  if (!profilePicture || !username || loading) {
     return <QuaiPayLoader text={t('loading')} />;
   }
 

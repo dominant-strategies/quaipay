@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -9,9 +9,14 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
-import { useProfilePicture, useThemedStyle } from 'src/shared/hooks';
+import {
+  useProfilePicture,
+  useThemedStyle,
+  useUsername,
+} from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import Link from 'src/shared/assets/link.svg';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
 export const AccountDetails = () => {
   const { t } = useTranslation('translation', {
@@ -19,15 +24,31 @@ export const AccountDetails = () => {
   });
   const styles = useThemedStyle(themedStyle);
 
+  const username = useUsername();
+  const profilePicture = useProfilePicture();
+  const { setUsername } = useWalletContext();
+  const { setProfilePicture } = useWalletContext();
+
+  const [usernameInput, setUsernameInput] = useState(username);
+  const [profilePictureInput, setProfilePictureInput] =
+    useState(profilePicture);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('USD');
   const [items, setItems] = useState([
     { label: 'USD - United States Dollar', value: 'USD' },
   ]);
 
-  const profilePicture = useProfilePicture();
+  useEffect(() => {
+    setUsernameInput(username);
+    setProfilePictureInput(profilePicture);
+  }, [username, profilePicture]);
 
-  if (!profilePicture) {
+  const handleSave = useCallback(async () => {
+    await setUsername(usernameInput ?? '');
+    await setProfilePicture(profilePictureInput);
+  }, [usernameInput, profilePictureInput]);
+
+  if (!profilePicture || !username) {
     return <QuaiPayLoader text={t('loading')} />;
   }
 
@@ -39,11 +60,18 @@ export const AccountDetails = () => {
       />
       <View style={styles.container}>
         <QuaiPayText type="H3">{t('displayName')}</QuaiPayText>
-        <TextInput style={styles.input}>asd</TextInput>
+        <TextInput style={styles.input} onChangeText={setUsernameInput}>
+          {usernameInput}
+        </TextInput>
         <QuaiPayText type="H3">{t('linkPFP')}</QuaiPayText>
         <View style={styles.iconInput}>
           <Link />
-          <TextInput style={[styles.input, styles.narrowInput]}>asd</TextInput>
+          <TextInput
+            style={[styles.input, styles.narrowInput]}
+            onChangeText={setProfilePictureInput}
+          >
+            {profilePictureInput}
+          </TextInput>
         </View>
       </View>
       <View style={styles.bottomContainer}>
@@ -60,7 +88,7 @@ export const AccountDetails = () => {
           dropDownContainerStyle={[styles.input, styles.dropdownInput]}
           textStyle={styles.dropdownText}
         />
-        <QuaiPayButton title={t('save')} />
+        <QuaiPayButton title={t('save')} onPress={handleSave} />
       </View>
     </QuaiPaySettingsContent>
   );

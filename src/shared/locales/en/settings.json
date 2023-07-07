@@ -1,4 +1,13 @@
 {
+  "notifications": {
+    "pushNotifications": "Push Notifications",
+    "bankTransfer": "Bank Transfer",
+    "bankTransferDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "paymentReceived": "Payment Received",
+    "paymentReceivedDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "on": "ON",
+    "off": "OFF"
+  },
   "landing": {
     "invest": "Invest",
     "payment": "Payment",

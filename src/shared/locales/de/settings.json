@@ -24,5 +24,23 @@
     "thirdStep": "3. Earn rewards when your friends buy Quai through QuaiPay",
     "thirdStepDescription": "Jedes Mal, wenn jemand, den Sie empfehlen, Quai über die QuaiPay-App kauft, erhalten Sie zusätzlich XYZ % des gekauften Quai, ohne dass ihm dadurch Kosten entstehen.\n\nWenn beispielsweise einer Ihrer Empfehlungen 100 Quai kauft, erhält Ihr Freund 100 Quai und Sie erhalten ABC Quai als Empfehlungsbelohnung.\n\n",
     "buttonText": "Link zum App Store teilen"
+  },
+  "legal": {
+    "title": "Legales",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "firstPoint": "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "firstPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "secondPoint": "2. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "secondPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "thirdPoint": "3. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "thirdPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "fourthPoint": "4. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "fourthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "fifthPoint": "5. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "fifthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "sixthPoint": "6. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "sixthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "seventhPoint": "7. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "seventhPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et "
   }
 }

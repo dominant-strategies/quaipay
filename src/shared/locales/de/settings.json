@@ -13,5 +13,16 @@
     "feedback": "Hilfe & Feedback",
     "referral": "Empfehlungsprogramm",
     "legal": "Rechtliches"
+  },
+  "referral": {
+    "title": "So verdienen Sie mit dem Empfehlungsprogramm",
+    "description": "Das QuaiPay-Empfehlungsprogramm bietet Belohnungen für die Einrichtung eines Kontos mit einem Empfehlungscode und für die Empfehlung von Benutzern, die Quai kaufen.",
+    "firstStep": "Bringen Sie Freunde dazu, die QuaiPay-App herunterzuladen",
+    "firstStepDescription": "Erzählen Sie Ihren Freunden von QuaiPay und bitten Sie sie, die App aus dem App Store oder Play Store herunterzuladen.",
+    "secondStep": "2. Bitten Sie Freunde, Ihren Empfehlungscode zu scannen, wenn sie ihr QuaiPay-Konto einrichten",
+    "secondStepDescription": "Wenn Ihre Freunde ihre Konten einrichten, stellen Sie sicher, dass sie die Option „Mit Empfehlung einrichten“ auswählen und Ihren Empfehlungs-QR-Code scannen, um beim Kauf ihres ersten ABC Quai kostenlose XYZ-Quai-Token zu erhalten.",
+    "thirdStep": "3. Earn rewards when your friends buy Quai through QuaiPay",
+    "thirdStepDescription": "Jedes Mal, wenn jemand, den Sie empfehlen, Quai über die QuaiPay-App kauft, erhalten Sie zusätzlich XYZ % des gekauften Quai, ohne dass ihm dadurch Kosten entstehen.\n\nWenn beispielsweise einer Ihrer Empfehlungen 100 Quai kauft, erhält Ihr Freund 100 Quai und Sie erhalten ABC Quai als Empfehlungsbelohnung.\n\n",
+    "buttonText": "Link zum App Store teilen"
   }
 }

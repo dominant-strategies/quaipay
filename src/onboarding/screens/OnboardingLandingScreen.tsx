@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
+import Logo from 'src/shared/assets/logo.svg';
 import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
 import { QuaiPayButton } from 'src/shared/components';
 import { useTheme } from 'src/shared/context/themeContext';
@@ -48,10 +48,7 @@ export const OnboardingLandingScreen: React.FC<
       />
       <View style={topViewStyle}>
         <View style={styles.welcomeLogoView}>
-          <Image
-            source={require('../../shared/assets/logo.png')}
-            style={{ width: 160, height: 160, alignContent: 'center' }}
-          />
+          <Logo />
         </View>
         <View style={styles.welcomeTitleView}>
           <Text

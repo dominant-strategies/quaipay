@@ -22,5 +22,14 @@
     "feedback": "Help & Feedback",
     "referral": "Referral",
     "legal": "Legal"
+  },
+  "details": {
+    "accountDetails": "Account Details",
+    "displayName": "Display Name",
+    "linkPFP": "Link a Profile Picture",
+    "localCurrency": "Local Currency",
+    "selectCurrency": "Select native currency to display exchange rates.",
+    "save": "Save",
+    "loading": "Loading..."
   }
 }

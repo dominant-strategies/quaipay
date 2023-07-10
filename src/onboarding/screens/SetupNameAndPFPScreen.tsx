@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
@@ -14,7 +13,11 @@ import {
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { styledColors } from 'src/shared/styles';
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayAvatar,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
@@ -70,18 +73,7 @@ export const SetupNameAndPFPScreen: React.FC<
               </QuaiPayText>
             </View>
             <View style={styles.body}>
-              <View style={styles.imageCenterer}>
-                <View style={styles.imageNormalBorder}>
-                  <View style={styles.imageSurfaceBorder}>
-                    <Image
-                      source={{
-                        uri: profilePicture,
-                      }}
-                      style={styles.image}
-                    />
-                  </View>
-                </View>
-              </View>
+              <QuaiPayAvatar profilePicture={profilePicture} />
               <QuaiPayText type="H3">
                 {t('onboarding.setup.nameAndPFP.username')}
               </QuaiPayText>
@@ -130,6 +122,7 @@ const DismissKeyboard = ({ children }: any) => (
     {children}
   </TouchableWithoutFeedback>
 );
+
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     body: {
@@ -148,26 +141,6 @@ const themedStyle = (theme: Theme) =>
     buttonText: {
       color: styledColors.white,
       fontWeight: '700',
-    },
-    imageCenterer: {
-      width: '100%',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    image: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-    },
-    imageSurfaceBorder: {
-      borderRadius: 44,
-      borderWidth: 4,
-      borderColor: theme.surface,
-    },
-    imageNormalBorder: {
-      borderRadius: 48,
-      borderWidth: 4,
-      borderColor: styledColors.normal,
     },
     keyboardAvoiding: {
       flex: 1,

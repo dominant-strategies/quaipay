@@ -1,17 +1,14 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import Logo from 'src/shared/assets/logo.svg';
-import { fontStyle, buttonStyle } from 'src/shared/styles';
 import {
   QuaiPayButton,
   QuaiPayContent,
   QuaiPayText,
 } from 'src/shared/components';
 import { useThemedStyle } from 'src/shared/hooks';
-import { useTheme } from 'src/shared/context/themeContext';
 import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
@@ -19,7 +16,6 @@ import { OnboardingStackScreenProps } from '../OnboardingStack';
 export const OnboardingLandingScreen: React.FC<
   OnboardingStackScreenProps<'OnboardingLanding'>
 > = ({ navigation }) => {
-  const { isDarkMode } = useTheme();
   const { t } = useTranslation('translation', {
     keyPrefix: 'onboarding.landing',
   });
@@ -43,28 +39,21 @@ export const OnboardingLandingScreen: React.FC<
           {t('title')}
         </QuaiPayText>
         <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
-        <View>
-          <TouchableOpacity onPress={goToOnboardingTerms}>
-            <Text
-              style={{
-                ...fontStyle.fontH3,
-                ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
-                borderRadius: 30,
-              }}
-            >
-              {' '}
-              Setup{' '}
-            </Text>
-          </TouchableOpacity>
-          <QuaiPayButton
-            title="Already have an account? Click here to login."
-            titleType="default"
-            type="secondary"
-            underline
-            style={styles.loginButton}
-            onPress={goToLogin}
-          />
-        </View>
+        <QuaiPayButton
+          type="secondary"
+          bgColor="white"
+          titleColor="normal"
+          title={t('setupButton')}
+          onPress={goToOnboardingTerms}
+        />
+        <QuaiPayButton
+          title="Already have an account? Click here to login."
+          titleType="default"
+          type="secondary"
+          underline
+          style={styles.loginButton}
+          onPress={goToLogin}
+        />
       </View>
       <View style={styles.separator} />
     </QuaiPayContent>
@@ -96,6 +85,7 @@ const themedStyle = (theme: Theme) =>
     },
     body: {
       gap: 8,
+      width: '100%',
     },
     loginButton: {
       marginTop: 15,

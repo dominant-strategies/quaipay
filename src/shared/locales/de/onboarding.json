@@ -1,7 +1,8 @@
 {
   "landing": {
     "title": "Welcome to the first decentralized payment app.",
-    "description": "In QuaiPay, you own what's yours. QuaiPay is the first payments app where you are the only person in control of your assets."
+    "description": "In QuaiPay, you own what's yours. QuaiPay is the first payments app where you are the only person in control of your assets.",
+    "setupButton": "Setup"
   },
   "setup": {
     "wallet": {

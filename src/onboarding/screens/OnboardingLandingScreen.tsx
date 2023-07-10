@@ -38,35 +38,33 @@ export const OnboardingLandingScreen: React.FC<
       <View style={styles.tripleSeparator} />
       <Logo />
       <View style={styles.separator} />
-      <View style={styles.titleContainer}>
+      <View style={styles.body}>
         <QuaiPayText type="H1" style={styles.title}>
           {t('title')}
         </QuaiPayText>
         <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
-      <View>
-        <TouchableOpacity
-          style={{ marginLeft: 21, marginRight: 21 }}
-          onPress={goToOnboardingTerms}
-        >
-          <Text
-            style={{
-              ...fontStyle.fontH3,
-              ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
-              borderRadius: 30,
-            }}
-          >
-            {' '}
-            Setup{' '}
-          </Text>
-        </TouchableOpacity>
-        <QuaiPayButton
-          title="Already have an account? Click here to login."
-          titleType="default"
-          type="secondary"
-          underline
-          style={styles.loginButton}
-          onPress={goToLogin}
-        />
+        <View>
+          <TouchableOpacity onPress={goToOnboardingTerms}>
+            <Text
+              style={{
+                ...fontStyle.fontH3,
+                ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
+                borderRadius: 30,
+              }}
+            >
+              {' '}
+              Setup{' '}
+            </Text>
+          </TouchableOpacity>
+          <QuaiPayButton
+            title="Already have an account? Click here to login."
+            titleType="default"
+            type="secondary"
+            underline
+            style={styles.loginButton}
+            onPress={goToLogin}
+          />
+        </View>
       </View>
       <View style={styles.separator} />
     </QuaiPayContent>
@@ -93,11 +91,11 @@ const themedStyle = (theme: Theme) =>
     logoContainer: {
       marginBottom: 25,
     },
-    titleContainer: {
-      marginBottom: 25,
-    },
     title: {
       textAlign: 'left',
+    },
+    body: {
+      gap: 8,
     },
     loginButton: {
       marginTop: 15,

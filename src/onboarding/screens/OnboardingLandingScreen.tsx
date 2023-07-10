@@ -42,15 +42,7 @@ export const OnboardingLandingScreen: React.FC<
         <QuaiPayText type="H1" style={styles.title}>
           {t('title')}
         </QuaiPayText>
-      </View>
-      <View style={styles.descriptionContainer}>
-        <Text style={{ ...fontStyle.fontParagraph, ...styles.description }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-          turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
-          fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus
-          elit sed risus. Maecenas eget condimentum
-        </Text>
-      </View>
+        <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
       <View>
         <TouchableOpacity
           style={{ marginLeft: 21, marginRight: 21 }}
@@ -110,12 +102,8 @@ const themedStyle = (theme: Theme) =>
     loginButton: {
       marginTop: 15,
     },
-    descriptionContainer: {
-      marginBottom: 50,
-    },
     description: {
-      color: '#808080',
-      verticalAlign: 'middle',
-      textAlign: 'center',
+      textAlign: 'left',
+      marginHorizontal: 8,
     },
   });

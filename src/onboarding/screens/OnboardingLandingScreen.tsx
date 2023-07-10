@@ -36,10 +36,12 @@ export const OnboardingLandingScreen: React.FC<
       <Logo />
       <View style={styles.separator} />
       <View style={styles.body}>
-        <QuaiPayText type="H1" style={styles.title}>
+        <QuaiPayText type="H1" style={styles.text}>
           {t('title')}
         </QuaiPayText>
-        <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
+        <QuaiPayText type="paragraph" style={styles.text}>
+          {t('description')}
+        </QuaiPayText>
         <QuaiPayButton
           type="secondary"
           bgColor="white"
@@ -86,14 +88,11 @@ const themedStyle = (theme: Theme) =>
     logoContainer: {
       marginBottom: 25,
     },
-    title: {
-      textAlign: 'left',
-    },
     body: {
       gap: 8,
       width: '100%',
     },
-    description: {
+    text: {
       textAlign: 'left',
       marginHorizontal: 8,
     },

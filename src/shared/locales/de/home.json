@@ -29,6 +29,8 @@
     "paymentPending": "Zahlung ausstehend...",
     "retry": "Wiederholen",
     "saveToContacts": "Empfänger zu Kontakten hinzufügen",
+    "savedToContacts": "Empfänger zu Kontakten hinzugefügt",
+    "alreadySavedToContacts": "Empfänger bereits zu Kontakten hinzugefügt",
     "complete": "Fertig",
     "somethingWrong": "Etwas ist schief gelaufen.",
     "retryTransaction": "Bitte noch einmal versuchen.",

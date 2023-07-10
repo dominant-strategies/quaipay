@@ -1,4 +1,15 @@
 {
+  "notifications": {
+    "notifications": "Notifications",
+    "pushNotifications": "Push Notifications",
+    "bankTransfer": "Bank Transfer",
+    "bankTransferDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "paymentReceived": "Payment Received",
+    "paymentReceivedDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "on": "ON",
+    "off": "OFF",
+    "learnMore": "Learn more about Blockchain Technologies"
+  },
   "landing": {
     "invest": "Invest",
     "payment": "Payment",

@@ -1,4 +1,15 @@
 {
+  "notifications": {
+    "notifications": "Benachrichtigungen",
+    "pushNotifications": "Push-Benachrichtigungen",
+    "bankTransfers": "Banküberweisungen",
+    "bankTransfersDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "paymentReceived": "Zahlung erhalten",
+    "paymentReceivedDescription": "Lorem ipsum dolor sit amet, consectetur.",
+    "on": "AN",
+    "off": "AUS",
+    "learnMore": "Mehr über Blockchain Technologien erfahren",
+  },
   "landing": {
     "invest": "Investieren",
     "payment": "Zahlung",

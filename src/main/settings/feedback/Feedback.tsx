@@ -6,6 +6,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
 export const Feedback = () => {
   const { t } = useTranslation('translation', {
@@ -15,6 +16,9 @@ export const Feedback = () => {
   // TODO: update link
   const goToLearnMore = () =>
     Linking.openURL('https://docs.quai.network/use-quai/wallets');
+
+  const goToSubmit = () =>
+    RootNavigator.navigate('SettingsStack', { screen: 'SubmitFeedback' });
 
   return (
     <QuaiPaySettingsContent
@@ -52,9 +56,10 @@ export const Feedback = () => {
           outlined
         />
         <QuaiPayButton
+          outlined
+          onPress={goToSubmit}
           style={styles.button}
           title={t('submitFeedback')}
-          outlined
         />
       </View>
       <QuaiPayButton

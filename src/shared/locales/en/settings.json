@@ -79,6 +79,16 @@
       "contactSupport": "Contact Support",
       "submitFeedback": "Submit Feedback",
       "learnMore": "Learn more about Blockchain Technologies"
+    },
+    "submit": {
+      "submitFeedback": "Submit Feedback",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "email": "Email",
+      "name": "Name",
+      "message": "Message",
+      "messagePlaceholder": "Please type your message here...",
+      "attachLogs": "Attach Logs",
+      "logsExplanation": "By submitting, I agree to share the above information and any attached application log data with QuaiPay Support."
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import Logo from 'src/shared/assets/logo.svg';
@@ -9,6 +9,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useThemedStyle } from 'src/shared/hooks';
+import { styledColors } from 'src/shared/styles';
 import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
@@ -32,6 +33,7 @@ export const OnboardingLandingScreen: React.FC<
       style={styles.backgroundColor}
       containerStyle={styles.mainContainer}
     >
+      <StatusBar barStyle={'light-content'} />
       <View style={styles.tripleSeparator} />
       <Logo />
       <View style={styles.separator} />
@@ -39,9 +41,7 @@ export const OnboardingLandingScreen: React.FC<
         <QuaiPayText type="H1" style={styles.text}>
           {t('title')}
         </QuaiPayText>
-        <QuaiPayText type="paragraph" style={styles.text}>
-          {t('description')}
-        </QuaiPayText>
+        <QuaiPayText style={styles.text}>{t('description')}</QuaiPayText>
         <QuaiPayButton
           type="secondary"
           bgColor="white"
@@ -52,6 +52,7 @@ export const OnboardingLandingScreen: React.FC<
         <QuaiPayButton
           outlined
           type="secondary"
+          titleColor="white"
           title={t('referralButton')}
           onPress={goToReferral}
         />
@@ -59,6 +60,7 @@ export const OnboardingLandingScreen: React.FC<
           title={t('loginButton')}
           titleType="default"
           type="secondary"
+          titleColor="white"
           underline
           onPress={goToLogin}
         />
@@ -95,5 +97,6 @@ const themedStyle = (theme: Theme) =>
     text: {
       textAlign: 'left',
       marginHorizontal: 8,
+      color: styledColors.white,
     },
   });

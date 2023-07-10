@@ -1,11 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { useTranslation } from 'react-i18next';
 
 import Logo from 'src/shared/assets/logo.svg';
 import { fontStyle, buttonStyle } from 'src/shared/styles';
-import { QuaiPayButton, QuaiPayContent } from 'src/shared/components';
+import {
+  QuaiPayButton,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
 import { useThemedStyle } from 'src/shared/hooks';
 import { useTheme } from 'src/shared/context/themeContext';
 import { Theme } from 'src/shared/types';
@@ -16,6 +20,9 @@ export const OnboardingLandingScreen: React.FC<
   OnboardingStackScreenProps<'OnboardingLanding'>
 > = ({ navigation }) => {
   const { isDarkMode } = useTheme();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'onboarding.landing',
+  });
   const styles = useThemedStyle(themedStyle);
 
   const goToOnboardingTerms = () => navigation.navigate('OnboardingTerms');
@@ -32,15 +39,9 @@ export const OnboardingLandingScreen: React.FC<
       <Logo />
       <View style={styles.separator} />
       <View style={styles.titleContainer}>
-        <Text
-          style={{
-            ...fontStyle.fontH1,
-            ...styles.title,
-            color: isDarkMode ? Colors.white : Colors.black,
-          }}
-        >
-          Welcome to{'\n'}QuaiPay.
-        </Text>
+        <QuaiPayText type="H1" style={styles.title}>
+          {t('title')}
+        </QuaiPayText>
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={{ ...fontStyle.fontParagraph, ...styles.description }}>
@@ -104,8 +105,7 @@ const themedStyle = (theme: Theme) =>
       marginBottom: 25,
     },
     title: {
-      verticalAlign: 'middle',
-      paddingHorizontal: 70,
+      textAlign: 'left',
     },
     loginButton: {
       marginTop: 15,

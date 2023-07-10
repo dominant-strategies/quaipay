@@ -1,4 +1,7 @@
 {
+  "landing": {
+    "title": "Welcome to the first decentralized payment app."
+  },
   "setup": {
     "wallet": {
       "title": "Wallet",

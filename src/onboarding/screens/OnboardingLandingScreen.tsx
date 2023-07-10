@@ -54,11 +54,10 @@ export const OnboardingLandingScreen: React.FC<
           onPress={goToReferral}
         />
         <QuaiPayButton
-          title="Already have an account? Click here to login."
+          title={t('loginButton')}
           titleType="default"
           type="secondary"
           underline
-          style={styles.loginButton}
           onPress={goToLogin}
         />
       </View>
@@ -93,9 +92,6 @@ const themedStyle = (theme: Theme) =>
     body: {
       gap: 8,
       width: '100%',
-    },
-    loginButton: {
-      marginTop: 15,
     },
     description: {
       textAlign: 'left',

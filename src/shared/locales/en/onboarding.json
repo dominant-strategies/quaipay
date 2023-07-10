@@ -3,7 +3,8 @@
     "title": "Welcome to the first decentralized payment app.",
     "description": "In QuaiPay, you own what's yours. QuaiPay is the first payments app where you are the only person in control of your assets.",
     "setupButton": "Setup",
-    "referralButton": "Set up with Referral"
+    "referralButton": "Set up with Referral",
+    "loginButton": "Already have an account? Click here to login."
   },
   "setup": {
     "wallet": {

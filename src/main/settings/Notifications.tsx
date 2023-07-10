@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { QuaiPaySettingsContent, QuaiPayText } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Switch, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, Switch, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
 import { useTheme } from 'src/shared/context/themeContext';
@@ -21,57 +21,72 @@ export const Notifications = () => {
     useState(false);
   const togglePaymentSwitch = () =>
     setPaymentNotificationsEnabled(previousState => !previousState);
+  const goToLearnMoreRecovery = () =>
+    Linking.openURL('https://docs.quai.network/use-quai/wallets');
 
   return (
     <QuaiPaySettingsContent title={t('notifications')}>
       <View style={styles.container}>
-        <QuaiPayText style={styles.title} type="bold">
-          {t('pushNotifications')}
-        </QuaiPayText>
-        <View style={styles.notificationContainer}>
-          <View style={styles.notificationText}>
-            <QuaiPayText type="H3">{t('bankTransfer')}</QuaiPayText>
-            <QuaiPayText style={styles.notificationSubtitle}>
-              {t('bankTransferDescription')}
-            </QuaiPayText>
+        <View>
+          <QuaiPayText style={styles.title} type="bold">
+            {t('pushNotifications')}
+          </QuaiPayText>
+          <View style={styles.notificationContainer}>
+            <View style={styles.notificationText}>
+              <QuaiPayText type="H3">{t('bankTransfer')}</QuaiPayText>
+              <QuaiPayText style={styles.notificationSubtitle}>
+                {t('bankTransferDescription')}
+              </QuaiPayText>
+            </View>
+            <View style={styles.switchContainer}>
+              <Switch
+                trackColor={{ false: theme.background, true: theme.background }}
+                thumbColor={
+                  bankNotificationsEnabled ? theme.normal : theme.secondary
+                }
+                ios_backgroundColor={theme.background}
+                onValueChange={toggleBankSwitch}
+                value={bankNotificationsEnabled}
+              />
+              <QuaiPayText style={styles.switchText}>
+                {bankNotificationsEnabled ? t('on') : t('off')}
+              </QuaiPayText>
+            </View>
           </View>
-          <View style={styles.switchContainer}>
-            <Switch
-              trackColor={{ false: theme.background, true: theme.background }}
-              thumbColor={
-                bankNotificationsEnabled ? theme.normal : theme.secondary
-              }
-              ios_backgroundColor={theme.background}
-              onValueChange={toggleBankSwitch}
-              value={bankNotificationsEnabled}
-            />
-            <QuaiPayText style={styles.switchText}>
-              {bankNotificationsEnabled ? t('on') : t('off')}
-            </QuaiPayText>
+          <View style={styles.notificationContainer}>
+            <View style={styles.notificationText}>
+              <QuaiPayText type="H3">{t('paymentReceived')}</QuaiPayText>
+              <QuaiPayText style={styles.notificationSubtitle}>
+                {t('paymentReceivedDescription')}
+              </QuaiPayText>
+            </View>
+            <View style={styles.switchContainer}>
+              <Switch
+                trackColor={{ false: theme.background, true: theme.background }}
+                thumbColor={
+                  paymentNotificationsEnabled ? theme.normal : theme.secondary
+                }
+                ios_backgroundColor={theme.background}
+                onValueChange={togglePaymentSwitch}
+                value={paymentNotificationsEnabled}
+              />
+              <QuaiPayText style={styles.switchText}>
+                {paymentNotificationsEnabled ? t('on') : t('off')}
+              </QuaiPayText>
+            </View>
           </View>
         </View>
-        <View style={styles.notificationContainer}>
-          <View style={styles.notificationText}>
-            <QuaiPayText type="H3">{t('paymentReceived')}</QuaiPayText>
-            <QuaiPayText style={styles.notificationSubtitle}>
-              {t('paymentReceivedDescription')}
-            </QuaiPayText>
-          </View>
-          <View style={styles.switchContainer}>
-            <Switch
-              trackColor={{ false: theme.background, true: theme.background }}
-              thumbColor={
-                paymentNotificationsEnabled ? theme.normal : theme.secondary
-              }
-              ios_backgroundColor={theme.background}
-              onValueChange={togglePaymentSwitch}
-              value={paymentNotificationsEnabled}
-            />
-            <QuaiPayText style={styles.switchText}>
-              {paymentNotificationsEnabled ? t('on') : t('off')}
-            </QuaiPayText>
-          </View>
-        </View>
+        <Pressable
+          onPress={goToLearnMoreRecovery}
+          style={({ pressed }) => [
+            styles.learnMoreContainer,
+            pressed && { opacity: 0.5 },
+          ]}
+        >
+          <QuaiPayText style={styles.learnMoreText} themeColor="secondary">
+            {t('learnMore')}
+          </QuaiPayText>
+        </Pressable>
       </View>
     </QuaiPaySettingsContent>
   );
@@ -82,6 +97,8 @@ const themedStyle = (theme: Theme) =>
     container: {
       alignItems: 'flex-start',
       padding: 16,
+      justifyContent: 'space-between',
+      height: '100%',
     },
     title: {
       fontSize: 16,
@@ -105,5 +122,13 @@ const themedStyle = (theme: Theme) =>
     },
     switchText: {
       width: 32,
+    },
+    learnMoreContainer: {
+      width: '100%',
+      paddingBottom: 32,
+      alignItems: 'center',
+    },
+    learnMoreText: {
+      textDecorationLine: 'underline',
     },
   });

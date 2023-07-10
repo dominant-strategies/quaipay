@@ -7,7 +7,8 @@
     "paymentReceived": "Payment Received",
     "paymentReceivedDescription": "Lorem ipsum dolor sit amet, consectetur.",
     "on": "ON",
-    "off": "OFF"
+    "off": "OFF",
+    "learnMore": "Learn more about Blockchain Technologies"
   },
   "landing": {
     "invest": "Invest",

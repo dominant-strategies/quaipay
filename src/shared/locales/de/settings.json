@@ -1,5 +1,6 @@
 {
   "notifications": {
+    "notifications": "Benachrichtigungen",
     "pushNotifications": "Push-Benachrichtigungen",
     "bankTransfers": "Banküberweisungen",
     "bankTransfersDescription": "Lorem ipsum dolor sit amet, consectetur.",

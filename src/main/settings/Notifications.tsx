@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import { QuaiPaySettingsContent, QuaiPayText } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch, View } from 'react-native';
 import { Theme } from 'src/shared/types';
@@ -23,7 +23,7 @@ export const Notifications = () => {
     setPaymentNotificationsEnabled(previousState => !previousState);
 
   return (
-    <QuaiPayContent>
+    <QuaiPaySettingsContent title={t('notifications')}>
       <View style={styles.container}>
         <QuaiPayText style={styles.title} type="bold">
           {t('pushNotifications')}
@@ -73,7 +73,7 @@ export const Notifications = () => {
           </View>
         </View>
       </View>
-    </QuaiPayContent>
+    </QuaiPaySettingsContent>
   );
 };
 

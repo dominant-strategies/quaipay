@@ -25,25 +25,25 @@ export const Referral = () => {
         <QuaiPayText style={styles.titleText} type="H3">
           {t('title')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('description')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('firstStep')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('firstStepDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('secondStep')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('secondStepDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('thirdStep')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('thirdStepDescription')}
         </QuaiPayText>
       </View>
@@ -71,9 +71,6 @@ const themedStyle = (theme: Theme) =>
     descriptionText: {
       textAlign: 'left',
       marginBottom: 16,
-    },
-    secondary: {
-      color: theme.secondary,
     },
     button: {
       justifyContent: 'center',

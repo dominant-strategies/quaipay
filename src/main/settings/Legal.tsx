@@ -15,49 +15,49 @@ export const Legal = () => {
     <QuaiPaySettingsContent title={t('legal')}>
       <ScrollView contentContainerStyle={styles.container}>
         <QuaiPayText type="H3">{t('title')}</QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('description')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('firstPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('firstPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('secondPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('secondPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('thirdPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('thirdPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('fourthPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('fourthPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('fifthPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('fifthPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('sixthPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('sixthPointDescription')}
         </QuaiPayText>
-        <QuaiPayText style={styles.secondary} type="bold">
+        <QuaiPayText themeColor="secondary" type="bold">
           {t('seventhPoint')}
         </QuaiPayText>
-        <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
+        <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
           {t('seventhPointDescription')}
         </QuaiPayText>
       </ScrollView>
@@ -74,9 +74,6 @@ const themedStyle = (theme: Theme) =>
     descriptionText: {
       textAlign: 'left',
       marginBottom: 16,
-    },
-    secondary: {
-      color: theme.secondary,
     },
     button: {
       justifyContent: 'center',

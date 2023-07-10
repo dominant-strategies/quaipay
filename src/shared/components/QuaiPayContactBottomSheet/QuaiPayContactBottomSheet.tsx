@@ -127,7 +127,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
         address: contact.address,
         amount: 0,
         receiver: contact.username,
-        sender,
+        sender: sender!,
       },
     });
 
@@ -181,7 +181,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
         address,
         amount: 0,
         receiver: '',
-        sender,
+        sender: sender!,
       },
     });
   };

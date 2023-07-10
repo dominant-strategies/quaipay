@@ -14,6 +14,15 @@
     "referral": "Referral",
     "legal": "Legal"
   },
+  "details": {
+    "accountDetails": "Account Details",
+    "displayName": "Display Name",
+    "linkPFP": "Link a Profile Picture",
+    "localCurrency": "Local Currency",
+    "selectCurrency": "Select native currency to display exchange rates.",
+    "save": "Save",
+    "loading": "Loading..."
+  },
   "referral": {
     "title": "How to Earn through the referral program",
     "description": "The QuaiPay Referral Program offers rewards for setting up an account using a referral code, and for referring users who buy Quai.",

@@ -14,6 +14,15 @@
     "referral": "Empfehlungsprogramm",
     "legal": "Rechtliches"
   },
+  "details": {
+    "accountDetails": "Kontodetails",
+    "displayName": "Anzeigename",
+    "linkPFP": "Profilbild verknüpfen",
+    "localCurrency": "Lokale Währung",
+    "selectCurrency": "Wählen Sie die Landeswährung aus, um die Wechselkurse anzuzeigen",
+    "save": "Speichern",
+    "loading": "Wird geladen..."
+  },
   "referral": {
     "title": "So verdienen Sie mit dem Empfehlungsprogramm",
     "description": "Das QuaiPay-Empfehlungsprogramm bietet Belohnungen für die Einrichtung eines Kontos mit einem Empfehlungscode und für die Empfehlung von Benutzern, die Quai kaufen.",

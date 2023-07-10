@@ -8,10 +8,14 @@ import { useSnackBar } from './snackBarContext';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Wallet, Zone } from 'src/shared/types';
+import { retrieveStoredItem, storeItem } from 'src/shared/services/keychain';
+import { keychainKeys } from 'src/shared/constants/keychainKeys';
 
 // State variables only
 interface WalletContextState {
   entropy?: string;
+  profilePicture?: string;
+  username?: string;
   wallet?: Wallet;
   walletObject?: Record<Zone, Wallet>;
   zone: Zone;
@@ -23,6 +27,10 @@ interface WalletContextState {
 interface WalletContext extends WalletContextState {
   getEntropy: () => void;
   setEntropy: (entropy: string) => void;
+  getProfilePicture: () => void;
+  setProfilePicture: (profilePicture?: string) => void;
+  getUsername: () => void;
+  setUsername: (username: string) => void;
   getWallet: () => void;
   setWallet: (wallet?: Wallet) => void;
   setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
@@ -64,6 +72,34 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const setEntropy = (entropy: string) => {
     setState(prevState => ({ ...prevState, entropy }));
+  };
+
+  const getProfilePicture = () => {
+    retrieveStoredItem(keychainKeys.profilePicture).then(profilePicture => {
+      setProfilePicture(profilePicture ? profilePicture : undefined);
+    });
+  };
+
+  const setProfilePicture = (profilePicture?: string) => {
+    setState(prevState => ({ ...prevState, profilePicture }));
+  };
+
+  const getUsername = async () => {
+    const username = await retrieveStoredItem(keychainKeys.username);
+    if (username) {
+      await setUsername(username);
+    } else {
+      showSnackBar({
+        message: t('common.error'),
+        moreInfo: t('error.retrieve.username') ?? '',
+        type: 'error',
+      });
+    }
+  };
+
+  const setUsername = async (username: string) => {
+    await storeItem({ key: keychainKeys.username, value: username });
+    setState(prevState => ({ ...prevState, username }));
   };
 
   const getWallet = () => {
@@ -123,6 +159,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         setEntropy,
         getWallet,
         setWallet,
+        getProfilePicture,
+        setProfilePicture,
+        getUsername,
+        setUsername,
         setWalletObject,
         getZone,
         setZone,

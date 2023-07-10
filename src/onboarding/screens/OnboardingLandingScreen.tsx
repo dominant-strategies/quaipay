@@ -23,33 +23,34 @@ export const OnboardingLandingScreen: React.FC<
   const goToLogin = () => navigation.navigate('LoginLanding');
 
   return (
-    <QuaiPayContent noNavButton containerStyle={styles.mainContainer}>
+    <QuaiPayContent
+      noNavButton
+      style={styles.backgroundColor}
+      containerStyle={styles.mainContainer}
+    >
       <View style={styles.tripleSeparator} />
-      <View style={styles.welcomeLogoView}>
-        <Logo />
-      </View>
-      <View style={styles.welcomeTitleView}>
+      <Logo />
+      <View style={styles.separator} />
+      <View style={styles.titleContainer}>
         <Text
           style={{
             ...fontStyle.fontH1,
-            ...styles.welcomeTitle,
+            ...styles.title,
             color: isDarkMode ? Colors.white : Colors.black,
           }}
         >
           Welcome to{'\n'}QuaiPay.
         </Text>
       </View>
-      <View style={styles.welcomeDescriptionView}>
-        <Text
-          style={{ ...fontStyle.fontParagraph, ...styles.welcomeDescription }}
-        >
+      <View style={styles.descriptionContainer}>
+        <Text style={{ ...fontStyle.fontParagraph, ...styles.description }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
           turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
           fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus
           elit sed risus. Maecenas eget condimentum
         </Text>
       </View>
-      <View style={styles.loginActionSectionView}>
+      <View>
         <TouchableOpacity
           style={{ marginLeft: 21, marginRight: 21 }}
           onPress={goToOnboardingTerms}
@@ -70,7 +71,7 @@ export const OnboardingLandingScreen: React.FC<
           titleType="default"
           type="secondary"
           underline
-          style={styles.loginSection}
+          style={styles.loginButton}
           onPress={goToLogin}
         />
       </View>
@@ -81,53 +82,40 @@ export const OnboardingLandingScreen: React.FC<
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    mainContainer: {
+    backgroundColor: {
       backgroundColor: theme.normal,
+    },
+    mainContainer: {
+      alignItems: 'center',
+      paddingHorizontal: 20,
     },
     separator: {
       flex: 1,
+      marginVertical: 1,
     },
     tripleSeparator: {
       flex: 3,
+      marginVertical: 1,
     },
-    highlight: {
-      fontWeight: '700',
-    },
-    linearGradient: {
-      flex: 1,
-      paddingLeft: 15,
-      paddingRight: 15,
-      borderRadius: 5,
-    },
-    welcomeLogoView: {
-      alignItems: 'center',
+    logoContainer: {
       marginBottom: 25,
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
-    welcomeTitleView: {
-      alignItems: 'center',
+    titleContainer: {
       marginBottom: 25,
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
-    welcomeTitle: {
+    title: {
       verticalAlign: 'middle',
       paddingHorizontal: 70,
     },
-    loginActionSectionView: {},
-    loginSection: {
+    loginButton: {
       marginTop: 15,
     },
-    welcomeDescriptionView: {
+    descriptionContainer: {
       marginBottom: 50,
     },
-    welcomeDescription: {
+    description: {
       color: '#808080',
       verticalAlign: 'middle',
       textAlign: 'center',
-      marginLeft: 30,
-      marginRight: 30,
-      paddingHorizontal: 20,
     },
   });

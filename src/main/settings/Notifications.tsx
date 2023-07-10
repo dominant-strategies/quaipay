@@ -6,15 +6,12 @@ import {
 } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, Switch, View } from 'react-native';
-import { Theme } from 'src/shared/types';
-import { useThemedStyle } from 'src/shared/hooks';
 import { useTheme } from 'src/shared/context/themeContext';
 
 export const Notifications = () => {
   const { t } = useTranslation('translation', {
     keyPrefix: 'settings.notifications',
   });
-  const styles = useThemedStyle(themedStyle);
   const { theme } = useTheme();
 
   const [bankNotificationsEnabled, setBankNotificationsEnabled] =
@@ -38,7 +35,7 @@ export const Notifications = () => {
           <View style={styles.notificationContainer}>
             <View style={styles.notificationText}>
               <QuaiPayText type="H3">{t('bankTransfer')}</QuaiPayText>
-              <QuaiPayText style={styles.notificationSubtitle}>
+              <QuaiPayText themeColor="secondary">
                 {t('bankTransferDescription')}
               </QuaiPayText>
             </View>
@@ -60,7 +57,7 @@ export const Notifications = () => {
           <View style={styles.notificationContainer}>
             <View style={styles.notificationText}>
               <QuaiPayText type="H3">{t('paymentReceived')}</QuaiPayText>
-              <QuaiPayText style={styles.notificationSubtitle}>
+              <QuaiPayText themeColor="secondary">
                 {t('paymentReceivedDescription')}
               </QuaiPayText>
             </View>
@@ -93,38 +90,34 @@ export const Notifications = () => {
   );
 };
 
-const themedStyle = (theme: Theme) =>
-  StyleSheet.create({
-    container: {
-      alignItems: 'flex-start',
-      padding: 16,
-      justifyContent: 'space-between',
-      height: '100%',
-    },
-    title: {
-      fontSize: 16,
-    },
-    notificationContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginVertical: 8,
-      width: '100%',
-    },
-    notificationText: {
-      alignItems: 'flex-start',
-    },
-    notificationSubtitle: {
-      color: theme.secondary,
-    },
-    switchContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    switchText: {
-      width: 32,
-    },
-    learnMore: {
-      marginHorizontal: 24,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'flex-start',
+    padding: 16,
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+  title: {
+    fontSize: 16,
+  },
+  notificationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    width: '100%',
+  },
+  notificationText: {
+    alignItems: 'flex-start',
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  switchText: {
+    width: 32,
+  },
+  learnMore: {
+    marginHorizontal: 24,
+  },
+});

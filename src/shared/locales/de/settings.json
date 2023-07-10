@@ -13,5 +13,14 @@
     "feedback": "Hilfe & Feedback",
     "referral": "Empfehlungsprogramm",
     "legal": "Rechtliches"
+  },
+  "details": {
+    "accountDetails": "Kontodetails",
+    "displayName": "Anzeigename",
+    "linkPFP": "Profilbild verknüpfen",
+    "localCurrency": "Lokale Währung",
+    "selectCurrency": "Wählen Sie die Landeswährung aus, um die Wechselkurse anzuzeigen",
+    "save": "Speichern",
+    "loading": "Wird geladen..."
   }
 }

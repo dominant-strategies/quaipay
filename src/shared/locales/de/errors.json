@@ -1,6 +1,7 @@
 {
   "retrieve": {
     "entropy": "Entropie nicht gefunden",
-    "wallet": "Wallet nicht gefunden"
+    "wallet": "Wallet nicht gefunden",
+    "username": "Benutzername nicht gefunden"
   }
 }

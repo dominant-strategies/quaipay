@@ -1,3 +1,4 @@
+export { QuaiPayAvatar } from './QuaiPayAvatar';
 export { QuaiPayBanner } from './QuaiPayBanner';
 export { QuaiPayBottomSheetModal } from './QuaiPayBottomSheetModal';
 export { QuaiPayButton } from './QuaiPayButton';
@@ -5,6 +6,7 @@ export { QuaiPayCamera, squareHoleSize } from './QuaiPayCamera/QuaiPayCamera';
 export { QuaiPayCard, CardSize } from './QuaiPayCard';
 export { QuaiPayContactBottomSheet } from './QuaiPayContactBottomSheet/QuaiPayContactBottomSheet';
 export { QuaiPayContent } from './QuaiPayContent';
+export { QuaiPaySettingsContent } from './QuaiPaySettingsContent';
 export { QuaiPayInputDisplay } from './QuaiPayInputDisplay';
 export { QuaiPayKeyboard } from './QuaiPayKeyboard';
 export { QuaiPayListItem } from './QuaiPayListItem';

@@ -6,16 +6,12 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
-import { useThemedStyle } from 'src/shared/hooks';
-import { Theme } from 'src/shared/types';
 import Upload from 'src/shared/assets/upload.svg';
 
 export const Referral = () => {
   const { t } = useTranslation('translation', {
     keyPrefix: 'settings.referral',
   });
-  const styles = useThemedStyle(themedStyle);
-
   return (
     <QuaiPaySettingsContent
       title={t('referral')}
@@ -47,36 +43,22 @@ export const Referral = () => {
           {t('thirdStepDescription')}
         </QuaiPayText>
       </View>
-      <QuaiPayButton
-        containerStyle={styles.button}
-        RightIcon={Upload}
-        title={t('buttonText')}
-        titleColor="normal"
-        type="secondary"
-      />
+      <QuaiPayButton RightIcon={Upload} title={t('buttonText')} outlined />
     </QuaiPaySettingsContent>
   );
 };
 
-const themedStyle = (theme: Theme) =>
-  StyleSheet.create({
-    container: {
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      padding: 16,
-    },
-    titleText: {
-      textAlign: 'left',
-    },
-    descriptionText: {
-      textAlign: 'left',
-      marginBottom: 16,
-    },
-    button: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderColor: theme.normal,
-      borderRadius: 4,
-      borderWidth: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  titleText: {
+    textAlign: 'left',
+  },
+  descriptionText: {
+    textAlign: 'left',
+    marginBottom: 16,
+  },
+});

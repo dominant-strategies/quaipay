@@ -28,6 +28,7 @@ import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useZone } from 'src/shared/hooks/useZone';
+import { addContact, useContacts } from 'src/shared/hooks/useContacts';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -38,6 +39,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { sender, address, receiver, tip } = route.params;
+  const contacts = useContacts();
   const wallet = useWallet();
   const zone = useZone();
   const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
@@ -101,6 +103,29 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     };
   }, [connectionStatus?.isInternetReachable, subscribeToTransaction]);
 
+  const saveToContacts = () => {
+    // check if contact already exists
+    if (contacts?.find(contact => contact.address === address)) {
+      showSnackBar({
+        message: t('common.error'),
+        moreInfo: t('home.send.alreadySavedToContacts') || '',
+        type: 'error',
+      });
+      return;
+    }
+    addContact({
+      address,
+      username: receiver,
+      profilePicture: '',
+    }).then(() => {
+      showSnackBar({
+        message: t('common.success'),
+        moreInfo: t('home.send.savedToContacts') || '',
+        type: 'success',
+      });
+    });
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -163,7 +188,10 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {/* TODO: ask product what should be shared here */}
             <ShareControl share={''} />
           </View>
-          <TouchableOpacity style={[styles.button, styles.saveContact]}>
+          <TouchableOpacity
+            style={[styles.button, styles.saveContact]}
+            onPress={saveToContacts}
+          >
             <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
           </TouchableOpacity>
           <BottomButton txStatus={txStatus} />

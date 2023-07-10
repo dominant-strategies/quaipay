@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { QuaiPaySettingsContent, QuaiPayText } from 'src/shared/components';
+import {
+  QuaiPayButton,
+  QuaiPaySettingsContent,
+  QuaiPayText,
+} from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
-import { Linking, Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Linking, StyleSheet, Switch, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks';
 import { useTheme } from 'src/shared/context/themeContext';
@@ -76,17 +80,14 @@ export const Notifications = () => {
             </View>
           </View>
         </View>
-        <Pressable
+        <QuaiPayButton
+          underline
+          type="secondary"
+          titleType="default"
+          title={t('learnMore')}
           onPress={goToLearnMoreRecovery}
-          style={({ pressed }) => [
-            styles.learnMoreContainer,
-            pressed && { opacity: 0.5 },
-          ]}
-        >
-          <QuaiPayText style={styles.learnMoreText} themeColor="secondary">
-            {t('learnMore')}
-          </QuaiPayText>
-        </Pressable>
+          style={styles.learnMore}
+        />
       </View>
     </QuaiPaySettingsContent>
   );
@@ -123,12 +124,7 @@ const themedStyle = (theme: Theme) =>
     switchText: {
       width: 32,
     },
-    learnMoreContainer: {
-      width: '100%',
-      paddingBottom: 32,
-      alignItems: 'center',
-    },
-    learnMoreText: {
-      textDecorationLine: 'underline',
+    learnMore: {
+      marginHorizontal: 24,
     },
   });

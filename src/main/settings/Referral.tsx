@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   QuaiPayButton,
-  QuaiPayContent,
+  QuaiPaySettingsContent,
   QuaiPayText,
 } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +17,14 @@ export const Referral = () => {
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <QuaiPayContent containerStyle={styles.container}>
+    <QuaiPaySettingsContent
+      title={t('referral')}
+      containerStyle={styles.container}
+    >
       <View>
-        <QuaiPayText type="H3">{t('title')}</QuaiPayText>
+        <QuaiPayText style={styles.titleText} type="H3">
+          {t('title')}
+        </QuaiPayText>
         <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
           {t('description')}
         </QuaiPayText>
@@ -49,7 +54,7 @@ export const Referral = () => {
         titleColor="normal"
         type="secondary"
       />
-    </QuaiPayContent>
+    </QuaiPaySettingsContent>
   );
 };
 
@@ -59,6 +64,9 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'flex-start',
       justifyContent: 'space-between',
       padding: 16,
+    },
+    titleText: {
+      textAlign: 'left',
     },
     descriptionText: {
       textAlign: 'left',

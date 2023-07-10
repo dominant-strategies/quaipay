@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import { QuaiPaySettingsContent, QuaiPayText } from 'src/shared/components';
 import { useTranslation } from 'react-i18next';
 import { useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
@@ -12,7 +12,7 @@ export const Legal = () => {
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <QuaiPayContent>
+    <QuaiPaySettingsContent title={t('legal')}>
       <ScrollView contentContainerStyle={styles.container}>
         <QuaiPayText type="H3">{t('title')}</QuaiPayText>
         <QuaiPayText style={[styles.descriptionText, styles.secondary]}>
@@ -61,7 +61,7 @@ export const Legal = () => {
           {t('seventhPointDescription')}
         </QuaiPayText>
       </ScrollView>
-    </QuaiPayContent>
+    </QuaiPaySettingsContent>
   );
 };
 

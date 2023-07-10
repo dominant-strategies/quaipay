@@ -24,6 +24,7 @@
     "loading": "Loading..."
   },
   "referral": {
+    "referral": "Referral",
     "title": "How to Earn through the referral program",
     "description": "The QuaiPay Referral Program offers rewards for setting up an account using a referral code, and for referring users who buy Quai.",
     "firstStep": "1. Get friends to download the QuaiPay App",
@@ -35,6 +36,7 @@
     "buttonText": "Share Link to App Store"
   },
   "legal": {
+    "legal": "Legal",
     "title": "Legal Stuff",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
     "firstPoint": "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",

@@ -24,6 +24,7 @@
     "loading": "Wird geladen..."
   },
   "referral": {
+    "referral": "Empfehlungsprogramm",
     "title": "So verdienen Sie mit dem Empfehlungsprogramm",
     "description": "Das QuaiPay-Empfehlungsprogramm bietet Belohnungen für die Einrichtung eines Kontos mit einem Empfehlungscode und für die Empfehlung von Benutzern, die Quai kaufen.",
     "firstStep": "Bringen Sie Freunde dazu, die QuaiPay-App herunterzuladen",
@@ -35,6 +36,7 @@
     "buttonText": "Link zum App Store teilen"
   },
   "legal": {
+    "legal": "Rechtliches",
     "title": "Legales",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
     "firstPoint": "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",

@@ -134,6 +134,7 @@ const stylesByType = (ref: QuaiPayButtonStyle, disabled?: boolean) =>
       backgroundColor: disabled
         ? ref.disabled.backgroundColor
         : ref.backgroundColor,
+      justifyContent: 'center',
     },
     pill: {
       borderRadius: 60,

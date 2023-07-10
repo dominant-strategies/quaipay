@@ -33,5 +33,36 @@
     "selectCurrency": "Select native currency to display exchange rates.",
     "save": "Save",
     "loading": "Loading..."
+  },
+  "referral": {
+    "referral": "Referral",
+    "title": "How to Earn through the referral program",
+    "description": "The QuaiPay Referral Program offers rewards for setting up an account using a referral code, and for referring users who buy Quai.",
+    "firstStep": "1. Get friends to download the QuaiPay App",
+    "firstStepDescription": "Tell your friends about QuaiPay and get them to download the app from the App Store or Play Store.",
+    "secondStep": "2. Get friends to scan your referral code when they set up their QuaiPay account",
+    "secondStepDescription": "When your friends are setting up their accounts, make sure they select the \"Set Up with Referral\" option and scan your referral QR code to receive XYZ free Quai tokens when they buy their first ABC Quai.",
+    "thirdStep": "3. Earn rewards when your friends buy Quai through QuaiPay",
+    "thirdStepDescription": "Each time someone you refer buys Quai through the QuaiPay App, you receive an additional XYZ% of the Quai they purchase at no cost to them. \n\nFor example, if one of your referrals buys 100 Quai, your friend will receive 100 Quai and you will receive ABC Quai as a referral reward.",
+    "buttonText": "Share Link to App Store"
+  },
+  "legal": {
+    "legal": "Legal",
+    "title": "Legal Stuff",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "firstPoint": "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "firstPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "secondPoint": "2. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "secondPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "thirdPoint": "3. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "thirdPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "fourthPoint": "4. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "fourthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "fifthPoint": "5. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "fifthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "sixthPoint": "6. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "sixthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+    "seventhPoint": "7. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "seventhPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et "
   }
 }

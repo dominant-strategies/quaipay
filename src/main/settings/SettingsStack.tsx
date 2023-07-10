@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/stack';
 
 import { AccountDetails } from 'src/main/settings/AccountDetails';
-import { Feedback } from 'src/main/settings/Feedback';
+import { Feedback } from 'src/main/settings/feedback/Feedback';
 import { Legal } from 'src/main/settings/Legal';
 import { Notifications } from 'src/main/settings/Notifications';
 import { Referral } from 'src/main/settings/Referral';

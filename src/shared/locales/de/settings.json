@@ -8,7 +8,7 @@
     "paymentReceivedDescription": "Lorem ipsum dolor sit amet, consectetur.",
     "on": "AN",
     "off": "AUS",
-    "learnMore": "Mehr über Blockchain Technologien erfahren",
+    "learnMore": "Mehr über Blockchain Technologien erfahren"
   },
   "landing": {
     "invest": "Investieren",
@@ -64,5 +64,31 @@
     "sixthPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
     "seventhPoint": "7. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
     "seventhPointDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et "
+  },
+  "feedback": {
+    "landing": {
+      "helpAndFeedback": "Hilfe & Feedback",
+      "title": "Häufig gestellte Fragen",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "firstQuestion": "1. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+      "firstAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "secondQuestion": "2. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+      "secondAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "thirdQuestion": "3. Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+      "thirdAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "contactSupport": "Support Kontaktieren",
+      "submitFeedback": "Feedback senden",
+      "learnMore": "Mehr über Blockchain Technologien erfahren"
+    },
+    "submit": {
+      "submitFeedback": "Feedback senden",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
+      "email": "E-Mail",
+      "name": "Name",
+      "message": "Nachricht",
+      "messagePlaceholder": "Bitte Nachricht hier eingeben...",
+      "attachLogs": "Logs anhängen",
+      "logsExplanation": "Durch das Absenden erkläre ich mich damit einverstanden, die oben genannten Informationen und alle angehängten Anwendungsprotokolldaten an den QuaiPay-Support weiterzugeben."
+    }
   }
 }

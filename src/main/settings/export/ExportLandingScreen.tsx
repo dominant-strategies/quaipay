@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
+import { QuaiPaySettingsContent, QuaiPayText } from 'src/shared/components';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import RightChevron from 'src/shared/assets/rightChevron.svg';
@@ -34,46 +34,48 @@ export const ExportLandingScreen: React.FC<
   const goToQRCode = () => navigation.navigate('ExportQRCode');
 
   return (
-    <QuaiPayContent>
-      <ScrollView alwaysBounceVertical={isWindowSmallerThanScreen}>
-        <View style={styles.textContainer}>
-          <QuaiPayText type="H1" style={styles.title}>
-            {t('title')}
-          </QuaiPayText>
-          <QuaiPayText type="paragraph">{t('description')}</QuaiPayText>
-        </View>
-        <Pressable
-          onPress={goToSetupSeedPhrase}
-          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-        >
-          <EditIcon />
-          <View style={styles.cardTextContainer}>
-            <QuaiPayText type="H3" style={styles.cardText}>
-              {t('cards.setup.title')}
-            </QuaiPayText>
-            <QuaiPayText style={styles.cardText}>
-              {t('cards.setup.description')}
-            </QuaiPayText>
-          </View>
-          <RightChevron />
-        </Pressable>
-        <Pressable
-          onPress={goToQRCode}
-          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-        >
-          <PhoneWithQR />
-          <View style={styles.cardTextContainer}>
-            <QuaiPayText type="H3" style={styles.cardText}>
-              {t('cards.qr.title')}
-            </QuaiPayText>
-            <QuaiPayText style={styles.cardText}>
-              {t('cards.qr.description')}
-            </QuaiPayText>
-          </View>
+    <QuaiPaySettingsContent title={t('title')}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        alwaysBounceVertical={isWindowSmallerThanScreen}
+      >
+        <View />
+        <View>
+          <Pressable
+            onPress={goToSetupSeedPhrase}
+            style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+          >
+            <EditIcon />
+            <View style={styles.cardTextContainer}>
+              <QuaiPayText type="H3" style={styles.cardText}>
+                {t('cards.setup.title')}
+              </QuaiPayText>
+              <QuaiPayText style={styles.cardText}>
+                {t('cards.setup.description')}
+              </QuaiPayText>
+            </View>
+            <RightChevron />
+          </Pressable>
+          <Pressable
+            onPress={goToQRCode}
+            style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+          >
+            <PhoneWithQR />
+            <View style={styles.cardTextContainer}>
+              <QuaiPayText type="H3" style={styles.cardText}>
+                {t('cards.qr.title')}
+              </QuaiPayText>
+              <QuaiPayText style={styles.cardText}>
+                {t('cards.qr.description')}
+              </QuaiPayText>
+            </View>
 
-          <RightChevron />
-        </Pressable>
-        <View style={styles.separator} />
+            <RightChevron />
+          </Pressable>
+          <QuaiPayText themeColor="secondary" style={styles.descriptionText}>
+            {t('description')}
+          </QuaiPayText>
+        </View>
         <Pressable
           onPress={goToLearnMoreRecovery}
           style={({ pressed }) => [
@@ -86,16 +88,17 @@ export const ExportLandingScreen: React.FC<
           </QuaiPayText>
         </Pressable>
       </ScrollView>
-    </QuaiPayContent>
+    </QuaiPaySettingsContent>
   );
 };
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    textContainer: {
-      alignItems: 'center',
-      marginBottom: 20,
-      marginHorizontal: 48,
+    container: {
+      marginTop: 32,
+      height: '100%',
+      paddingHorizontal: 24,
+      justifyContent: 'space-between',
     },
     card: {
       flexDirection: 'row',
@@ -103,7 +106,6 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.surfaceVariant,
       marginBottom: 12,
       paddingVertical: 40,
-      marginHorizontal: 24,
       paddingHorizontal: 16,
       borderRadius: 8,
     },
@@ -115,9 +117,6 @@ const themedStyle = (theme: Theme) =>
     cardText: {
       textAlign: 'left',
     },
-    title: {
-      marginBottom: 8,
-    },
     learnMoreContainer: {
       marginBottom: 70,
       paddingVertical: 10,
@@ -126,7 +125,7 @@ const themedStyle = (theme: Theme) =>
     learnMoreText: {
       textDecorationLine: 'underline',
     },
-    separator: {
-      flex: 1,
+    descriptionText: {
+      padding: 32,
     },
   });

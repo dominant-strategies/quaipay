@@ -22,6 +22,8 @@ export const Notifications = () => {
     useState(false);
   const togglePaymentSwitch = () =>
     setPaymentNotificationsEnabled(previousState => !previousState);
+
+  // TODO: update link
   const goToLearnMoreRecovery = () =>
     Linking.openURL('https://docs.quai.network/use-quai/wallets');
 

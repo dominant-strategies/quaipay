@@ -21,5 +21,6 @@
   "month": "Past 30 days",
   "quarter": "Past 90 days",
   "semester": "Past 6 months",
-  "year": "Past year"
+  "year": "Past year",
+  "loading": "Loading..."
 }

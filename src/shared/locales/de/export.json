@@ -1,6 +1,6 @@
 {
   "landing": {
-    "title": "Konto-\nWiederherstellung einrichten",
+    "title": "Konto-\nWiederherstellung",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Se",
     "cards": {
       "setup": {
@@ -12,7 +12,7 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a,"
       }
     },
-    "learnMore": "Erfahren Sie mehr über den Wiederherstellungsprozess."
+    "learnMore": "Mehr über Blockchain Technologien erfahren."
   },
   "phrase": {
     "title": "Schreiben Sie Ihre Seed-Phrase auf",

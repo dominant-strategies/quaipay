@@ -23,8 +23,7 @@ export const OnboardingLandingScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
 
   const goToOnboardingTerms = () => navigation.navigate('OnboardingTerms');
-  // TODO: add referral screen
-  const goToReferral = () => false;
+  const goToReferral = () => navigation.navigate('OnboardingReferralScan');
   const goToLogin = () => navigation.navigate('LoginLanding');
 
   return (

@@ -12,6 +12,7 @@ import { OnboardingTerms } from './screens/OnboardingTerms';
 import { LoginLandingScreen } from './screens/LoginLandingScreen';
 import { LoginQRCodeScanScreen } from './screens/LoginQRCodeScanScreen';
 import { LoginSeedPhraseInputScreen } from './screens/LoginSeedPhraseInputScreen';
+import { OnboardingReferralScanScreen } from './screens/OnboardingReferralScanScreen';
 
 type OnboardingStackParamList = {
   OnboardingLanding: undefined;
@@ -21,6 +22,7 @@ type OnboardingStackParamList = {
   LoginLanding: undefined;
   LoginQRCodeScan: undefined;
   LoginSeedPhraseInput: undefined;
+  OnboardingReferralScan: undefined;
 };
 
 export type OnboardingStackNavigationProp<
@@ -51,6 +53,10 @@ const OnboardingStack = () => {
       <Stack.Screen
         name="LoginSeedPhraseInput"
         component={LoginSeedPhraseInputScreen}
+      />
+      <Stack.Screen
+        name="OnboardingReferralScan"
+        component={OnboardingReferralScanScreen}
       />
     </Stack.Navigator>
   );

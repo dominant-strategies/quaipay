@@ -42,9 +42,10 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const contacts = useContacts();
   const wallet = useWallet();
   const zone = useZone();
-  const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const { showSnackBar } = useSnackBar();
+  const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const [showError, setShowError] = useState(false);
+  const [contactSaved, setContactSaved] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
   // TODO: remove when setShowError and setTxStatus are used
   console.log(setShowError, setTxStatus);
@@ -103,21 +104,22 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     };
   }, [connectionStatus?.isInternetReachable, subscribeToTransaction]);
 
-  const saveToContacts = () => {
-    // check if contact already exists
-    if (contacts?.find(contact => contact.address === address)) {
-      showSnackBar({
-        message: t('common.error'),
-        moreInfo: t('home.send.alreadySavedToContacts') || '',
-        type: 'error',
-      });
-      return;
+  useEffect(() => {
+    console.log('contacts', contacts);
+    console.log('transaction', route.params.transaction);
+    if (contacts) {
+      contacts?.find(contact => contact.address === address) &&
+        setContactSaved(true);
     }
+  }, [contacts]);
+
+  const saveToContacts = () => {
     addContact({
       address,
       username: receiver,
       profilePicture: '',
     }).then(() => {
+      setContactSaved(true);
       showSnackBar({
         message: t('common.success'),
         moreInfo: t('home.send.savedToContacts') || '',
@@ -190,9 +192,14 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
           </View>
           <TouchableOpacity
             style={[styles.button, styles.saveContact]}
+            disabled={contactSaved}
             onPress={saveToContacts}
           >
-            <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
+            <QuaiPayText type="H3">
+              {!contactSaved
+                ? t('home.send.saveToContacts')
+                : t('home.send.alreadySavedToContacts')}
+            </QuaiPayText>
           </TouchableOpacity>
           <BottomButton txStatus={txStatus} />
         </ScrollView>

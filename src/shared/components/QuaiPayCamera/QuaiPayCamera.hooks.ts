@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Frame } from 'react-native-vision-camera';
 import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
+import { Linking } from 'react-native';
 
 import { setUpWallet } from 'src/onboarding/services/setUpWallet';
 import { OnboardingStackNavigationProp } from 'src/onboarding/OnboardingStack';
@@ -90,10 +91,32 @@ const useLoginCodeScannerCamera = (toggleLoader?: () => void) => {
   };
 };
 
+const useReferralCodeScannerCamera = (toggleRedirecting?: () => void) => {
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+    checkInverted: true,
+  });
+  useEffect(() => {
+    if (barcodes.length > 0 && barcodes[0].content.data) {
+      const link = barcodes[0].content.data as string;
+      if (link) {
+        toggleRedirecting && toggleRedirecting();
+        Linking.openURL(link);
+        toggleRedirecting && toggleRedirecting();
+      }
+    }
+  }, [barcodes]);
+
+  return {
+    frameProcessor,
+  };
+};
+
 const hookByType: Record<ScannerType, (action?: () => void) => HookOutput> = {
   [ScannerType.SEND_AMOUNT]: useSendAmountScannerCamera,
   [ScannerType.LOGIN_CODE]: (action?: () => void) =>
     useLoginCodeScannerCamera(action),
+  [ScannerType.REFERRAL_CODE]: (action?: () => void) =>
+    useReferralCodeScannerCamera(action),
 };
 
 export const useQuaiPayCamera = (type: ScannerType, action?: () => void) =>

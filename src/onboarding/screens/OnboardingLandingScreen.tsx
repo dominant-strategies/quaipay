@@ -35,7 +35,9 @@ export const OnboardingLandingScreen: React.FC<
     >
       <StatusBar barStyle={'light-content'} />
       <View style={styles.tripleSeparator} />
-      <Logo />
+      <View style={styles.logoContainer}>
+        <Logo />
+      </View>
       <View style={styles.separator} />
       <View style={styles.body}>
         <QuaiPayText type="H1" style={styles.text}>
@@ -88,7 +90,7 @@ const themedStyle = (theme: Theme) =>
       marginVertical: 1,
     },
     logoContainer: {
-      marginBottom: 25,
+      marginBottom: 18,
     },
     body: {
       gap: 8,

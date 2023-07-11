@@ -498,15 +498,6 @@ PODS:
     - React-Core
   - RNHoleView (2.2.1):
     - React-Core
-  - RNImageCropPicker (0.39.0):
-    - React-Core
-    - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.39.0)
-    - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.39.0):
-    - React-Core
-    - React-RCTImage
-    - TOCropViewController
   - RNKeychain (8.1.1):
     - React-Core
   - RNLocalize (3.0.1):
@@ -540,7 +531,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.22.0):
+  - RNScreens (3.22.1):
     - React-Core
     - React-RCTImage
   - RNSecureRandom (1.0.1):
@@ -548,7 +539,6 @@ PODS:
   - RNSVG (13.9.0):
     - React-Core
   - SocketRocket (0.6.0)
-  - TOCropViewController (2.6.1)
   - vision-camera-code-scanner (0.2.0):
     - GoogleMLKit/BarcodeScanning
     - React-Core
@@ -632,7 +622,6 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNHoleView (from `../node_modules/react-native-hole-view`)
-  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -672,7 +661,6 @@ SPEC REPOS:
     - OpenSSL-Universal
     - PromisesObjC
     - SocketRocket
-    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -766,8 +754,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNHoleView:
     :path: "../node_modules/react-native-hole-view"
-  RNImageCropPicker:
-    :path: "../node_modules/react-native-image-crop-picker"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
@@ -860,16 +846,14 @@ SPEC CHECKSUMS:
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNHoleView: 2a1929191141775058fc0a9fd79836edc200640a
-  RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNLocalize: 6dd9226886fa61bf0cefc7644e3f9620770b1a31
   RNPermissions: b471c990fd2bc1c5550af807d9f4e0313ee0b081
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
-  RNScreens: 68fd1060f57dd1023880bf4c05d74784b5392789
+  RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   vision-camera-code-scanner: dda884a7f3ec8243a2a6d6489b91860648371bca
   VisionCamera: c6356b309f7b8e185b7be2e703ec67bb35acf345
   Yoga: d56980c8914db0b51692f55533409e844b66133c

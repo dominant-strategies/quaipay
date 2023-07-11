@@ -1,149 +1,102 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-import { fontStyle, buttonStyle, styledColors } from 'src/shared/styles';
-import { QuaiPayButton } from 'src/shared/components';
-import { useTheme } from 'src/shared/context/themeContext';
+import Logo from 'src/shared/assets/logo.svg';
+import {
+  QuaiPayButton,
+  QuaiPayContent,
+  QuaiPayText,
+} from 'src/shared/components';
+import { useThemedStyle } from 'src/shared/hooks';
+import { styledColors } from 'src/shared/styles';
+import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
 export const OnboardingLandingScreen: React.FC<
   OnboardingStackScreenProps<'OnboardingLanding'>
 > = ({ navigation }) => {
-  const { isDarkMode } = useTheme();
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    width: '100%',
-    height: '100%',
-  };
-
-  const topViewStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.white,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 'auto',
-    marginBottom: 'auto',
-  };
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'onboarding.landing',
+  });
+  const styles = useThemedStyle(themedStyle);
 
   const goToOnboardingTerms = () => navigation.navigate('OnboardingTerms');
-
+  // TODO: add referral screen
+  const goToReferral = () => false;
   const goToLogin = () => navigation.navigate('LoginLanding');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <View style={topViewStyle}>
-        <View style={styles.welcomeLogoView}>
-          <Image
-            source={require('../../shared/assets/logo.png')}
-            style={{ width: 160, height: 160, alignContent: 'center' }}
-          />
-        </View>
-        <View style={styles.welcomeTitleView}>
-          <Text
-            style={{
-              ...fontStyle.fontH1,
-              ...styles.welcomeTitle,
-              color: isDarkMode ? Colors.white : Colors.black,
-            }}
-          >
-            Welcome to{'\n'}QuaiPay.
-          </Text>
-        </View>
-        <View style={styles.welcomeDescriptionView}>
-          <Text
-            style={{ ...fontStyle.fontParagraph, ...styles.welcomeDescription }}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-            nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
-            tellus elit sed risus. Maecenas eget condimentum
-          </Text>
-        </View>
-        <View style={styles.loginActionSectionView}>
-          <TouchableOpacity
-            style={{ marginLeft: 21, marginRight: 21 }}
-            onPress={goToOnboardingTerms}
-          >
-            <Text
-              style={{
-                ...fontStyle.fontH3,
-                ...(isDarkMode ? buttonStyle.white : buttonStyle.normal),
-                borderRadius: 30,
-              }}
-            >
-              {' '}
-              Setup{' '}
-            </Text>
-          </TouchableOpacity>
-          <QuaiPayButton
-            title="Already have an account? Click here to login."
-            titleType="default"
-            type="secondary"
-            underline
-            style={styles.loginSection}
-            onPress={goToLogin}
-          />
-        </View>
-        {/* </LinearGradient> */}
+    <QuaiPayContent
+      noNavButton
+      style={styles.backgroundColor}
+      containerStyle={styles.mainContainer}
+    >
+      <StatusBar barStyle={'light-content'} />
+      <View style={styles.tripleSeparator} />
+      <Logo />
+      <View style={styles.separator} />
+      <View style={styles.body}>
+        <QuaiPayText type="H1" style={styles.text}>
+          {t('title')}
+        </QuaiPayText>
+        <QuaiPayText style={styles.text}>{t('description')}</QuaiPayText>
+        <QuaiPayButton
+          type="secondary"
+          bgColor="white"
+          titleColor="normal"
+          title={t('setupButton')}
+          onPress={goToOnboardingTerms}
+        />
+        <QuaiPayButton
+          outlined
+          type="secondary"
+          titleColor="white"
+          title={t('referralButton')}
+          onPress={goToReferral}
+        />
+        <QuaiPayButton
+          title={t('loginButton')}
+          titleType="default"
+          type="secondary"
+          titleColor="white"
+          underline
+          onPress={goToLogin}
+        />
       </View>
-    </SafeAreaView>
+      <View style={styles.separator} />
+    </QuaiPayContent>
   );
 };
 
-const styles = StyleSheet.create({
-  highlight: {
-    fontWeight: '700',
-  },
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5,
-  },
-  welcomeLogoView: {
-    alignItems: 'center',
-    marginBottom: 25,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  welcomeTitleView: {
-    alignItems: 'center',
-    marginBottom: 25,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  welcomeTitle: {
-    verticalAlign: 'middle',
-    paddingHorizontal: 70,
-  },
-  loginActionSectionView: {},
-  loginSection: {
-    marginTop: 15,
-  },
-  welcomeDescriptionView: {
-    marginBottom: 50,
-  },
-  welcomeDescription: {
-    color: '#808080',
-    verticalAlign: 'middle',
-    textAlign: 'center',
-    marginLeft: 30,
-    marginRight: 30,
-    paddingHorizontal: 20,
-  },
-});
+const themedStyle = (theme: Theme) =>
+  StyleSheet.create({
+    backgroundColor: {
+      backgroundColor: theme.normal,
+    },
+    mainContainer: {
+      alignItems: 'center',
+      paddingHorizontal: 20,
+    },
+    separator: {
+      flex: 1,
+      marginVertical: 1,
+    },
+    tripleSeparator: {
+      flex: 3,
+      marginVertical: 1,
+    },
+    logoContainer: {
+      marginBottom: 25,
+    },
+    body: {
+      gap: 8,
+      width: '100%',
+    },
+    text: {
+      textAlign: 'left',
+      marginHorizontal: 8,
+      color: styledColors.white,
+    },
+  });

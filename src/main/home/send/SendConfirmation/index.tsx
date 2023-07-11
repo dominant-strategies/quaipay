@@ -28,6 +28,7 @@ import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useZone } from 'src/shared/hooks/useZone';
+import { addContact, useContacts } from 'src/shared/hooks/useContacts';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -38,11 +39,13 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { sender, address, receiver, tip } = route.params;
+  const contacts = useContacts();
   const wallet = useWallet();
   const zone = useZone();
-  const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const { showSnackBar } = useSnackBar();
+  const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const [showError, setShowError] = useState(false);
+  const [contactSaved, setContactSaved] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
   // TODO: remove when setShowError and setTxStatus are used
   console.log(setShowError, setTxStatus);
@@ -100,6 +103,30 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
       unsubscribe();
     };
   }, [connectionStatus?.isInternetReachable, subscribeToTransaction]);
+
+  useEffect(() => {
+    console.log('contacts', contacts);
+    console.log('transaction', route.params.transaction);
+    if (contacts) {
+      contacts?.find(contact => contact.address === address) &&
+        setContactSaved(true);
+    }
+  }, [contacts]);
+
+  const saveToContacts = () => {
+    addContact({
+      address,
+      username: receiver,
+      profilePicture: '',
+    }).then(() => {
+      setContactSaved(true);
+      showSnackBar({
+        message: t('common.success'),
+        moreInfo: t('home.send.savedToContacts') || '',
+        type: 'success',
+      });
+    });
+  };
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -163,8 +190,16 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {/* TODO: ask product what should be shared here */}
             <ShareControl share={''} />
           </View>
-          <TouchableOpacity style={[styles.button, styles.saveContact]}>
-            <QuaiPayText type="H3">{t('home.send.saveToContacts')}</QuaiPayText>
+          <TouchableOpacity
+            style={[styles.button, styles.saveContact]}
+            disabled={contactSaved}
+            onPress={saveToContacts}
+          >
+            <QuaiPayText type="H3">
+              {!contactSaved
+                ? t('home.send.saveToContacts')
+                : t('home.send.alreadySavedToContacts')}
+            </QuaiPayText>
           </TouchableOpacity>
           <BottomButton txStatus={txStatus} />
         </ScrollView>

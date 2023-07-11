@@ -159,7 +159,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           <View style={[styles.row, styles.marginTop16]}>
             <QuaiPayInputDisplay
               prefix={input.unit === Currency.USD ? '$' : undefined}
-              value={input.value}
+              value={parseFloat(Number(input.value).toFixed(6)).toString()}
               suffix={` ${input.unit}`}
             />
           </View>
@@ -168,7 +168,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
         <View style={styles.row}>
           <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
             {eqInput.unit === Currency.USD && '$'}
-            {eqInput.value} {eqInput.unit}
+            {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
           </Text>
           <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
             <QuaiPayText>{input.unit}</QuaiPayText>

@@ -6,5 +6,6 @@
   "to": "To",
   "sentTo": "Sent to",
   "learnMore": "Learn more about QuaiPay",
-  "error": "Error"
+  "error": "Error",
+  "success": "Success"
 }

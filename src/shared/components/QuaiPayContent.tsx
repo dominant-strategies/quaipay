@@ -21,6 +21,7 @@ import { Theme } from '../types';
 
 const MARGIN_RIGHT_OFFSET = 16;
 const HIT_SLOPE_SIZE = 16;
+export const MIN_HEIGHT_CONTENT_HEADER = 60;
 
 interface QuaiPayContentProps {
   children: React.ReactNode;
@@ -127,7 +128,7 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       paddingHorizontal: 20,
       paddingVertical: 8,
-      minHeight: 60,
+      minHeight: MIN_HEIGHT_CONTENT_HEADER,
     },
     navIconMargin: {
       marginRight: MARGIN_RIGHT_OFFSET - 12,

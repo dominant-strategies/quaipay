@@ -12,7 +12,8 @@
       "description": "Wallet is a place where you can store your money."
     },
     "nameAndPFP": {
-      "choose": "Benutzernamen und Profilbild auswählen",
+      "title": "Personalisieren Sie Ihr Konto",
+      "usernamePlaceholder": "Wählt deine Benutzername aus",
       "username": "Benutzername",
       "PFPURL": "Profilbild-URL"
     }

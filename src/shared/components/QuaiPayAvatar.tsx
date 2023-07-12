@@ -1,4 +1,11 @@
-import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import { Theme } from 'src/shared/types';
 import { styledColors } from 'src/shared/styles';
@@ -7,11 +14,15 @@ import { useThemedStyle } from 'src/shared/hooks';
 type QuaiPayAvatarProps = {
   containerStyle?: StyleProp<ViewStyle>;
   profilePicture: string;
+  bottomRightIcon?: React.ReactNode;
+  onBottomRightIconPress?: () => void;
 };
 
 export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
   containerStyle,
   profilePicture,
+  bottomRightIcon,
+  onBottomRightIconPress,
 }) => {
   const styles = useThemedStyle(themedStyle);
   return (
@@ -22,7 +33,12 @@ export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
           : styles.imageCenterer
       }
     >
-      <View style={styles.imageNormalBorder}>
+      <View
+        style={[
+          styles.imageNormalBorder,
+          ...(bottomRightIcon ? [styles.bottomRightIconPosition] : []),
+        ]}
+      >
         <View style={styles.imageSurfaceBorder}>
           <Image
             source={{
@@ -31,6 +47,20 @@ export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
             style={styles.image}
           />
         </View>
+        {bottomRightIcon && (
+          // Wrap pressable to avoid showing actual background when pressed
+          <View style={styles.button}>
+            <Pressable
+              onPress={onBottomRightIconPress}
+              style={({ pressed }) => [
+                styles.button,
+                pressed && { opacity: 0.8 },
+              ]}
+            >
+              {bottomRightIcon}
+            </Pressable>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -57,5 +87,18 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 48,
       borderWidth: 4,
       borderColor: styledColors.normal,
+    },
+    bottomRightIconPosition: {
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+    },
+    button: {
+      position: 'absolute',
+      height: 30,
+      width: 30,
+      borderRadius: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.normal,
     },
   });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { Picker } from '@react-native-picker/picker';
@@ -14,7 +14,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { Zone } from 'src/shared/types';
-import { zoneRegionMap } from 'src/shared/assets/regions';
+import { regionImgs, zoneRegionMap } from 'src/shared/assets/regions';
 import { typography } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
 
@@ -53,6 +53,12 @@ export const SetupLocationScreen: React.FC<
       <QuaiPayText type="H1">{t('title')}</QuaiPayText>
       <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
       <View style={styles.separator} />
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={regionImgs[zoneRegionMap[selectedZone]]}
+        />
+      </View>
       <Picker
         mode="dropdown"
         selectedValue={selectedZone}
@@ -75,6 +81,7 @@ export const SetupLocationScreen: React.FC<
         onPress={setupLocation}
         style={styles.continueButton}
       />
+      <View style={styles.separator} />
     </QuaiPayContent>
   );
 };
@@ -86,6 +93,16 @@ const styles = StyleSheet.create({
   description: {
     marginVertical: 16,
     marginHorizontal: 32,
+  },
+  imageContainer: {
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    alignSelf: 'center',
+    width: '100%',
+    height: undefined,
+    aspectRatio: 359 / 182,
   },
   continueButton: {
     marginVertical: 16,

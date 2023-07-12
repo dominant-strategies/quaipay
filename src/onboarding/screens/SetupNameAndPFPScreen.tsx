@@ -7,7 +7,9 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import PersonOutlineIcon from 'src/shared/assets/personOutline.svg';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import {
@@ -50,39 +52,42 @@ export const SetupNameAndPFPScreen: React.FC<
 
   return (
     <QuaiPayContent hasBackgroundVariant containerStyle={styles.mainContainer}>
-        <KeyboardAvoidingView
-          style={styles.keyboardAvoiding}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
         keyboardVerticalOffset={MIN_HEIGHT_CONTENT_HEADER}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+      >
         <View style={styles.separator} />
         <QuaiPayText type="H1" style={styles.title}>
           {t('title')}
         </QuaiPayText>
         <View style={styles.separator} />
-              <QuaiPayAvatar profilePicture={PFPURLPlaceholder} />
+        <QuaiPayAvatar profilePicture={PFPURLPlaceholder} />
         <View style={styles.separator} />
-              <TextInput
-                autoFocus
-                style={styles.textInput}
-                onChangeText={setUsername}
-                placeholder={t('usernamePlaceholder') as string}
-                placeholderTextColor={theme.secondary}
-                value={username}
-              />
+        <View style={styles.row}>
+          <PersonOutlineIcon />
+          <TextInput
+            autoFocus
+            style={styles.textInput}
+            onChangeText={setUsername}
+            placeholder={t('usernamePlaceholder') as string}
+            placeholderTextColor={theme.secondary}
+            value={username}
+          />
+        </View>
         <View style={styles.baseline} />
         <View style={styles.doubleSeparator} />
-              <QuaiPayButton
-                title={tCommon('continue')}
-                onPress={saveUserName}
+        <QuaiPayButton
+          title={tCommon('continue')}
+          onPress={saveUserName}
           style={{
             ...styles.continueButton,
             marginBottom:
               styles.continueButton.marginBottom + insets.bottom ?? 0,
           }}
-              />
-        </KeyboardAvoidingView>
-      </QuaiPayContent>
+        />
+      </KeyboardAvoidingView>
+    </QuaiPayContent>
   );
 };
 
@@ -97,6 +102,11 @@ const themedStyle = (theme: Theme) =>
     title: {
       paddingHorizontal: 40,
     },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
     textInput: {
       height: 40,
       color: theme.primary,
@@ -106,5 +116,14 @@ const themedStyle = (theme: Theme) =>
       borderColor: theme.normal,
       width: '100%',
       marginBottom: 8,
+    },
+    continueButton: {
+      marginBottom: 32,
+    },
+    separator: {
+      flex: 1,
+    },
+    doubleSeparator: {
+      flex: 2,
     },
   });

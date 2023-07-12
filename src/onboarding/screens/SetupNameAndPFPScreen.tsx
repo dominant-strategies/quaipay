@@ -36,6 +36,7 @@ export const SetupNameAndPFPScreen: React.FC<
   const [username, setUsername] = useState('');
   const styles = useThemedStyle(themedStyle);
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const saveUserName = useCallback(async () => {
     try {
@@ -74,6 +75,11 @@ export const SetupNameAndPFPScreen: React.FC<
               <QuaiPayButton
                 title={tCommon('continue')}
                 onPress={saveUserName}
+          style={{
+            ...styles.continueButton,
+            marginBottom:
+              styles.continueButton.marginBottom + insets.bottom ?? 0,
+          }}
               />
         </KeyboardAvoidingView>
       </QuaiPayContent>

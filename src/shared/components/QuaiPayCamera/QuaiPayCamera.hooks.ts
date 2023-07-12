@@ -97,7 +97,7 @@ const useReferralCodeScannerCamera = (toggleRedirecting?: () => void) => {
   });
   useEffect(() => {
     if (barcodes.length > 0 && barcodes[0].content.data) {
-      const link = barcodes[0].content.data as string;
+      const { link } = JSON.parse(barcodes[0].content.data as string);
       if (link) {
         toggleRedirecting && toggleRedirecting();
         Linking.openURL(link);

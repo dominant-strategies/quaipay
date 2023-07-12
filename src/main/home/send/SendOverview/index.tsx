@@ -36,11 +36,12 @@ type SendOverviewProps = NativeStackScreenProps<
 function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { address, receiver, tip, amountInUSD, amountInQUAI } = route.params;
+  const { address, receiver, tip, tipInUSD, amountInUSD, amountInQUAI } =
+    route.params;
   const wallet = useWallet();
   const zone = useZone();
   const { eqInput, input, onSwap } = useAmountInput(
-    `${Number(amountInUSD) + Number(tip)}`,
+    `${Number(amountInUSD) + Number(tipInUSD)}`,
   );
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -119,7 +120,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
               </QuaiPayText>
               <QuaiPayInputDisplay
-                value={parseFloat(Number(input.value).toFixed(6)).toString()}
+                value={parseFloat(Number(input.value).toFixed(6))}
                 suffix={` ${input.unit}`}
               />
               <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
@@ -173,8 +174,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 </View>
                 <View>
                   <Text style={styles.unit}>
-                    {parseFloat(Number(eqInput.value).toFixed(6))}{' '}
-                    {eqInput.unit}
+                    {eqInput.value} {eqInput.unit}
                   </Text>
                   <Text style={styles.unitUSD}>
                     {input.unit === Currency.USD
@@ -197,13 +197,21 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                   <View>
                     <Text style={styles.unit}>
                       {input.value === Currency.USD
-                        ? `$${Number(tip)} ${Currency.USD}`
-                        : `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`}
+                        ? `$${parseFloat(Number(tip).toFixed(6))} ${
+                            Currency.USD
+                          }`
+                        : `${
+                            parseFloat(Number(tip).toFixed(6)) / EXCHANGE_RATE
+                          } ${Currency.QUAI}`}
                     </Text>
                     <Text style={styles.unitUSD}>
                       {input.value === Currency.USD
-                        ? `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`
-                        : `$${Number(tip)} ${Currency.USD}`}
+                        ? `${
+                            parseFloat(Number(tip).toFixed(6)) / EXCHANGE_RATE
+                          } ${Currency.QUAI}`
+                        : `$${parseFloat(Number(tip).toFixed(6))} ${
+                            Currency.USD
+                          }`}
                     </Text>
                   </View>
                 </View>
@@ -242,7 +250,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
               </View>
               <View>
                 <Text style={styles.unit}>
-                  {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
+                  {eqInput.value} {eqInput.unit}
                 </Text>
                 <Text style={styles.unitUSD}>
                   {input.unit === Currency.USD
@@ -277,7 +285,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
               }}
             >
               {`${t('home.send.pay')} $(${(
-                Number(amountInUSD) + Number(tip)
+                Number(amountInUSD) + Number(tipInUSD)
               ).toFixed(2)})`}
             </QuaiPayText>
           )}

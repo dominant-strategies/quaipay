@@ -53,6 +53,7 @@ export type SendStackParamList = {
     amountInUSD: string;
     amountInQUAI: string;
     tip: number;
+    tipInUSD: string;
     totalAmount: string;
   };
   SendConfirmation: {

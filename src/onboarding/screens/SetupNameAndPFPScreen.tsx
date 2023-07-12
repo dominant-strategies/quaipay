@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import PersonOutlineIcon from 'src/shared/assets/personOutline.svg';
+import RefreshIcon from 'src/shared/assets/refresh.svg';
 import { storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import {
@@ -40,6 +41,8 @@ export const SetupNameAndPFPScreen: React.FC<
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
 
+  const onRefreshButton = () => false;
+
   const saveUserName = useCallback(async () => {
     try {
       // TODO: show error banner when no username provided
@@ -62,7 +65,11 @@ export const SetupNameAndPFPScreen: React.FC<
           {t('title')}
         </QuaiPayText>
         <View style={styles.separator} />
-        <QuaiPayAvatar profilePicture={PFPURLPlaceholder} />
+        <QuaiPayAvatar
+          profilePicture={PFPURLPlaceholder}
+          bottomRightIcon={<RefreshIcon />}
+          onBottomRightIconPress={onRefreshButton}
+        />
         <View style={styles.separator} />
         <View style={styles.row}>
           <PersonOutlineIcon />

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import makeBlockie from 'ethereum-blockies-base64';
 
 import PersonOutlineIcon from 'src/shared/assets/personOutline.svg';
 import RefreshIcon from 'src/shared/assets/refresh.svg';
@@ -19,15 +20,16 @@ import {
   QuaiPayContent,
   QuaiPayText,
 } from 'src/shared/components';
-import { Theme } from 'src/shared/types';
-import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
-import { useTheme } from 'src/shared/context/themeContext';
 import { MIN_HEIGHT_CONTENT_HEADER } from 'src/shared/components/QuaiPayContent';
+import { useThemedStyle, useWallet, useWalletObject } from 'src/shared/hooks';
+import { Theme, Zone } from 'src/shared/types';
+import { useTheme } from 'src/shared/context/themeContext';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
 const PFPURLPlaceholder =
   'https://www.pngfind.com/pngs/m/616-6168267_personblack-jack-kicking-at-camera-jack-black-transparent.png';
+const indexedZones = Object.values(Zone);
 
 export const SetupNameAndPFPScreen: React.FC<
   OnboardingStackScreenProps<'SetupNameAndPFP'>
@@ -40,8 +42,21 @@ export const SetupNameAndPFPScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
+  const wallet = useWallet();
+  const walletObject = useWalletObject();
+  const [currentWalletIndex, setCurrentWalletIndex] = useState(0);
 
-  const onRefreshButton = () => false;
+  const walletBlockie = walletObject?.[indexedZones[currentWalletIndex]]
+    ?.address
+    ? makeBlockie(walletObject?.[indexedZones[currentWalletIndex]]?.address)
+    : wallet?.address // Default to wallet address if indexed wallet object is undefined
+    ? makeBlockie(wallet?.address)
+    : PFPURLPlaceholder; // If anything fails, show placeholder
+
+  const onRefreshButton = () =>
+    setCurrentWalletIndex(prevState =>
+      prevState + 1 < indexedZones.length ? prevState + 1 : 0,
+    );
 
   const saveUserName = useCallback(async () => {
     try {
@@ -66,7 +81,7 @@ export const SetupNameAndPFPScreen: React.FC<
         </QuaiPayText>
         <View style={styles.separator} />
         <QuaiPayAvatar
-          profilePicture={PFPURLPlaceholder}
+          profilePicture={walletBlockie}
           bottomRightIcon={<RefreshIcon />}
           onBottomRightIconPress={onRefreshButton}
         />

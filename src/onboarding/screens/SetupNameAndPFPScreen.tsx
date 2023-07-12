@@ -66,7 +66,6 @@ export const SetupNameAndPFPScreen: React.FC<
 
   const saveUserName = useCallback(async () => {
     try {
-      // TODO: show error banner when no username provided
       await storeItem({ key: keychainKeys.username, value: username });
       if (!profilePicture) {
         await storeItem({
@@ -112,6 +111,7 @@ export const SetupNameAndPFPScreen: React.FC<
         <View style={styles.baseline} />
         <View style={styles.doubleSeparator} />
         <QuaiPayButton
+          disabled={!username}
           title={tCommon('continue')}
           onPress={saveUserName}
           style={{

@@ -5,6 +5,7 @@ import {
   useColorScheme,
   Linking,
   Share,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -49,13 +50,11 @@ export default function ShareControl({ share }: ShareControlProps) {
   };
 
   const sendEmail = () => {
-    Linking.openURL(
-      `mailto:?subject=${t('receive.quaipayAddress')}&body=${share}`,
-    );
+    Linking.openURL(`mailto:?body=${share}`);
   };
 
   const sendSMS = () => {
-    Linking.openURL(`sms:?body=${share}`);
+    Linking.openURL(`sms:$${Platform.OS === 'ios' ? '&' : '?'}body=${share}`);
   };
 
   return (

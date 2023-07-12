@@ -17,6 +17,7 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 
 import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { storeItem } from 'src/shared/services/keychain';
@@ -35,8 +36,12 @@ async function getPosition(options?: GeoOptions): Promise<GeoPosition> {
 export const SetupLocationScreen: React.FC<
   OnboardingStackScreenProps<'SetupLocation'>
 > = () => {
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'onboarding.setup.location',
+  });
+  const { t: tCommon } = useTranslation('translation', { keyPrefix: 'common' });
   const isDarkMode = useColorScheme() === 'dark';
-  const [gettingLocation, setGettingLocation] = useState(false);
+  const [loading, setGettingLocation] = useState(false);
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
@@ -101,11 +106,9 @@ export const SetupLocationScreen: React.FC<
     marginBottom: 'auto',
   };
 
-  if (gettingLocation) {
-    return <QuaiPayLoader text="Almost there!" />;
-  }
-
-  return (
+  return loading ? (
+    <QuaiPayLoader text={t('loading')} />
+  ) : (
     <QuaiPayContent hasBackgroundVariant>
       <View style={topViewStyle}>
         <Text
@@ -115,7 +118,7 @@ export const SetupLocationScreen: React.FC<
             color: isDarkMode ? Colors.white : Colors.black,
           }}
         >
-          QuaiPay{'\n'}uses your location
+          {t('title')}
         </Text>
         <View style={styles.locationSetupDescriptionView}>
           <Text
@@ -124,20 +127,7 @@ export const SetupLocationScreen: React.FC<
               ...styles.locationSetupDescription,
             }}
           >
-            Lorem ipsum dolor sit amet, consecteturadipiscing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-            nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum
-            tellus elit sed risus. Maecenas eget condimentum
-          </Text>
-        </View>
-        <View style={styles.locationSetupDescriptionView}>
-          <Text
-            style={{
-              ...fontStyle.fontSmallText,
-              ...styles.locationSetupDescription,
-            }}
-          >
-            Learn More
+            {t('description')}
           </Text>
         </View>
         <TouchableOpacity
@@ -151,8 +141,7 @@ export const SetupLocationScreen: React.FC<
               borderRadius: 30,
             }}
           >
-            {' '}
-            Setup{' '}
+            {tCommon('continue')}
           </Text>
         </TouchableOpacity>
       </View>

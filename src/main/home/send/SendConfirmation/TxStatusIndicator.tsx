@@ -3,7 +3,7 @@ import RedExclamationBig from 'src/shared/assets/redExclamationBig.svg';
 import LoaderCircle from 'src/shared/assets/loaderCircle.svg';
 import LoaderDots from 'src/shared/assets/loaderDots.svg';
 import { QuaiPayText } from 'src/shared/components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
@@ -31,18 +31,20 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
   const { t } = useTranslation();
 
   const rotation = useSharedValue(0);
-  rotation.value = withRepeat(
-    withTiming(360, {
-      duration: 1200,
-      easing: Easing.linear,
-    }),
-    -1,
-  );
+  useEffect(() => {
+    rotation.value = withRepeat(
+      withTiming(360, { duration: 2000, easing: Easing.linear }),
+      -1,
+      false,
+    );
+  }, []);
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ rotateZ: `${rotation.value}deg` }],
     };
   });
+
   // TODO: https://github.com/dominant-strategies/quaipay/pull/128#discussion_r1234770045
   switch (txStatus) {
     case TxStatus.success:

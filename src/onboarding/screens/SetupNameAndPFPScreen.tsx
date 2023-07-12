@@ -80,7 +80,7 @@ export const SetupNameAndPFPScreen: React.FC<
   }, [username]);
 
   return (
-    <QuaiPayContent hasBackgroundVariant containerStyle={styles.mainContainer}>
+    <QuaiPayContent containerStyle={styles.mainContainer}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoiding}
         keyboardVerticalOffset={MIN_HEIGHT_CONTENT_HEADER}

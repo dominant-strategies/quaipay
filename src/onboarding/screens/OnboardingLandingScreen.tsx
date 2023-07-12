@@ -32,7 +32,7 @@ export const OnboardingLandingScreen: React.FC<
       style={styles.backgroundColor}
       containerStyle={styles.mainContainer}
     >
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'transparent'} />
       <View style={styles.tripleSeparator} />
       <View style={styles.logoContainer}>
         <Logo />

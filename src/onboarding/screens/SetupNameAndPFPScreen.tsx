@@ -21,7 +21,12 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { MIN_HEIGHT_CONTENT_HEADER } from 'src/shared/components/QuaiPayContent';
-import { useThemedStyle, useWallet, useWalletObject } from 'src/shared/hooks';
+import {
+  useProfilePicture,
+  useThemedStyle,
+  useWallet,
+  useWalletObject,
+} from 'src/shared/hooks';
 import { Theme, Zone } from 'src/shared/types';
 import { useTheme } from 'src/shared/context/themeContext';
 
@@ -44,6 +49,7 @@ export const SetupNameAndPFPScreen: React.FC<
   const insets = useSafeAreaInsets();
   const wallet = useWallet();
   const walletObject = useWalletObject();
+  const profilePicture = useProfilePicture();
   const [currentWalletIndex, setCurrentWalletIndex] = useState(0);
 
   const walletBlockie = walletObject?.[indexedZones[currentWalletIndex]]
@@ -62,6 +68,12 @@ export const SetupNameAndPFPScreen: React.FC<
     try {
       // TODO: show error banner when no username provided
       await storeItem({ key: keychainKeys.username, value: username });
+      if (!profilePicture) {
+        await storeItem({
+          key: keychainKeys.profilePicture,
+          value: walletBlockie,
+        });
+      }
       navigation.navigate('SetupLocation');
     } catch (error) {
       console.log(error);
@@ -81,8 +93,8 @@ export const SetupNameAndPFPScreen: React.FC<
         </QuaiPayText>
         <View style={styles.separator} />
         <QuaiPayAvatar
-          profilePicture={walletBlockie}
-          bottomRightIcon={<RefreshIcon />}
+          profilePicture={profilePicture ? profilePicture : walletBlockie}
+          bottomRightIcon={profilePicture ? undefined : <RefreshIcon />}
           onBottomRightIconPress={onRefreshButton}
         />
         <View style={styles.separator} />

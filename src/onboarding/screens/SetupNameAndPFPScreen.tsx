@@ -54,11 +54,13 @@ export const SetupNameAndPFPScreen: React.FC<
         keyboardVerticalOffset={MIN_HEIGHT_CONTENT_HEADER}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-            <View style={styles.title}>
-              <QuaiPayText type="H1">{t('title')}</QuaiPayText>
-            </View>
-            <View style={styles.body}>
+        <View style={styles.separator} />
+        <QuaiPayText type="H1" style={styles.title}>
+          {t('title')}
+        </QuaiPayText>
+        <View style={styles.separator} />
               <QuaiPayAvatar profilePicture={PFPURLPlaceholder} />
+        <View style={styles.separator} />
               <TextInput
                 autoFocus
                 style={styles.textInput}
@@ -67,6 +69,8 @@ export const SetupNameAndPFPScreen: React.FC<
                 placeholderTextColor={theme.secondary}
                 value={username}
               />
+        <View style={styles.baseline} />
+        <View style={styles.doubleSeparator} />
               <QuaiPayButton
                 title={tCommon('continue')}
                 onPress={saveUserName}
@@ -90,7 +94,11 @@ const themedStyle = (theme: Theme) =>
     textInput: {
       height: 40,
       color: theme.primary,
+    },
+    baseline: {
+      borderBottomWidth: 2,
       borderColor: theme.normal,
       width: '100%',
+      marginBottom: 8,
     },
   });

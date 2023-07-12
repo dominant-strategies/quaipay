@@ -3,7 +3,7 @@ import Geolocation, {
   GeoOptions,
   GeoPosition,
 } from 'react-native-geolocation-service';
-import { PermissionsAndroid, Platform, StyleSheet } from 'react-native';
+import { PermissionsAndroid, Platform, StyleSheet, View } from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
@@ -96,7 +96,12 @@ export const SetupLocationScreen: React.FC<
     <QuaiPayContent hasBackgroundVariant containerStyle={styles.mainContainer}>
       <QuaiPayText type="H1">{t('title')}</QuaiPayText>
       <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
-      <QuaiPayButton title={tCommon('continue')} onPress={getLocation} />
+      <View style={styles.separator} />
+      <QuaiPayButton
+        title={tCommon('continue')}
+        onPress={getLocation}
+        style={styles.continueButton}
+      />
     </QuaiPayContent>
   );
 };
@@ -108,5 +113,11 @@ const styles = StyleSheet.create({
   description: {
     marginVertical: 16,
     marginHorizontal: 32,
+  },
+  continueButton: {
+    marginVertical: 16,
+  },
+  separator: {
+    flex: 1,
   },
 });

@@ -37,11 +37,13 @@ export async function setUpWallet(
     accountHDPath,
   );
 
-  let walletObject: Partial<Record<Zone, Wallet>> = {};
-  childNodes.forEach((node, ind: number) => {
+  const walletObject = childNodes.reduce((acc, node, ind: number) => {
     const zoneIndex = getZoneIndex(ind);
-    walletObject[zoneIndex] = node;
-  });
+    return {
+      ...acc,
+      [zoneIndex]: node,
+    };
+  }, {} as Record<Zone, Wallet>);
 
   await storeItem(
     { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
@@ -51,5 +53,6 @@ export async function setUpWallet(
   return {
     entropy: encodedEntropy,
     wallet: walletObject[zone],
+    walletObject,
   };
 }

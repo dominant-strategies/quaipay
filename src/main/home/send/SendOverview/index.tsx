@@ -5,7 +5,7 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
+  // QuaiPayText,
   TouchableOpacity,
   View,
   useColorScheme,
@@ -108,14 +108,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
             ]}
           >
             <View style={styles.container}>
-              <QuaiPayText
-                style={[
-                  styles.amountUnit,
-                  {
-                    color: isDarkMode ? styledColors.gray : styledColors.black,
-                  },
-                ]}
-              >
+              <QuaiPayText themeColor="secondary" style={styles.amountUnit}>
                 {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
               </QuaiPayText>
               <QuaiPayInputDisplay
@@ -123,13 +116,13 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 suffix={` ${input.unit}`}
               />
               <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-                <Text
+                <QuaiPayText
                   style={{
                     color: isDarkMode ? styledColors.white : styledColors.black,
                   }}
                 >
                   {input.unit}
-                </Text>
+                </QuaiPayText>
                 <ExchangeIcon
                   color={isDarkMode ? styledColors.white : styledColors.black}
                 />
@@ -145,7 +138,9 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 },
               ]}
             />
-            <Text style={styles.date}>{dateToLocaleString(new Date())}</Text>
+            <QuaiPayText style={styles.date}>
+              {dateToLocaleString(new Date())}
+            </QuaiPayText>
             <View style={styles.receiver}>
               <QuaiPayText style={styles.username} type="paragraph">
                 {t('common:to')} {receiver}
@@ -172,11 +167,11 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                   </QuaiPayText>
                 </View>
                 <View>
-                  <Text style={styles.unit}>
+                  <QuaiPayText style={styles.unit}>
                     {parseFloat(Number(eqInput.value).toFixed(6))}{' '}
                     {eqInput.unit}
-                  </Text>
-                  <Text style={styles.unitUSD}>
+                  </QuaiPayText>
+                  <QuaiPayText style={styles.unitUSD}>
                     {input.unit === Currency.USD
                       ? `$${parseFloat(Number(input.value).toFixed(6))} ${
                           input.unit
@@ -184,7 +179,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                       : `${parseFloat(Number(input.value).toFixed(6))} ${
                           input.unit
                         }`}
-                  </Text>
+                  </QuaiPayText>
                 </View>
               </View>
               {tip && Number(tip) > 0 ? (
@@ -195,16 +190,16 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                     </QuaiPayText>
                   </View>
                   <View>
-                    <Text style={styles.unit}>
+                    <QuaiPayText style={styles.unit}>
                       {input.value === Currency.USD
                         ? `$${Number(tip)} ${Currency.USD}`
                         : `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`}
-                    </Text>
-                    <Text style={styles.unitUSD}>
+                    </QuaiPayText>
+                    <QuaiPayText style={styles.unitUSD}>
                       {input.value === Currency.USD
                         ? `${Number(tip) / EXCHANGE_RATE} ${Currency.QUAI}`
                         : `$${Number(tip)} ${Currency.USD}`}
-                    </Text>
+                    </QuaiPayText>
                   </View>
                 </View>
               ) : null}
@@ -215,12 +210,12 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                   </QuaiPayText>
                 </View>
                 <View>
-                  <Text style={styles.unit}>
+                  <QuaiPayText style={styles.unit}>
                     {gasFee.toFixed(5)} {eqInput.unit}
-                  </Text>
-                  <Text style={styles.unitUSD}>
+                  </QuaiPayText>
+                  <QuaiPayText style={styles.unitUSD}>
                     {(gasFee * EXCHANGE_RATE).toFixed(2)} {input.unit}
-                  </Text>
+                  </QuaiPayText>
                 </View>
               </View>
             </View>
@@ -241,10 +236,10 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 </QuaiPayText>
               </View>
               <View>
-                <Text style={styles.unit}>
+                <QuaiPayText style={styles.unit}>
                   {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
-                </Text>
-                <Text style={styles.unitUSD}>
+                </QuaiPayText>
+                <QuaiPayText style={styles.unitUSD}>
                   {input.unit === Currency.USD
                     ? `$${parseFloat(Number(input.value).toFixed(6))} ${
                         input.unit
@@ -252,7 +247,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                     : `${parseFloat(Number(input.value).toFixed(6))} ${
                         input.unit
                       }`}
-                </Text>
+                </QuaiPayText>
               </View>
             </View>
           </View>

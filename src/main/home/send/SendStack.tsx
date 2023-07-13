@@ -82,7 +82,7 @@ const SendStack = () => {
   const textColor = isDarkMode ? styledColors.white : styledColors.black;
 
   const textStyle = { color: textColor, fontSize: 24 };
-  const buttonStyle = { backgroundColor, marginLeft: 8 };
+  const buttonStyle = { backgroundColor, marginLeft: 8, width: 30, height: 40 };
 
   const goBack = useCallback(
     () => (navigation.canGoBack() ? navigation.goBack() : false),

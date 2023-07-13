@@ -120,7 +120,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 {parseFloat(Number(eqInput.value).toFixed(6))} {eqInput.unit}
               </QuaiPayText>
               <QuaiPayInputDisplay
-                value={parseFloat(Number(input.value).toFixed(6))}
+                value={parseFloat(Number(input.value).toFixed(6)).toString()}
                 suffix={` ${input.unit}`}
               />
               <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>

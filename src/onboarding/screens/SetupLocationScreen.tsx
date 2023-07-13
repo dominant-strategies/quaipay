@@ -4,19 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { Picker } from '@react-native-picker/picker';
 
-import { storeItem } from 'src/shared/services/keychain';
-import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import {
   QuaiPayButton,
   QuaiPayContent,
-  QuaiPayLoader,
   QuaiPayText,
 } from 'src/shared/components';
 import { Zone } from 'src/shared/types';
 import { regionImgs, zoneRegionMap } from 'src/shared/assets/regions';
 import { typography } from 'src/shared/styles';
 import { useTheme } from 'src/shared/context/themeContext';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
 
@@ -30,25 +28,16 @@ export const SetupLocationScreen: React.FC<
   });
   const { theme } = useTheme();
   const { t: tCommon } = useTranslation('translation', { keyPrefix: 'common' });
-  const [loading, setGettingLocation] = useState(false);
+  const { setZone } = useWalletContext();
   const [selectedZone, setSelectedZone] = useState(INITIAL_ZONE);
 
   const setupLocation = async () => {
-    setGettingLocation(true);
-    await storeItem({
-      key: keychainKeys.location,
-      // TODO: get from selector
-      value: JSON.stringify({ zone: selectedZone }),
-    });
-
-    setGettingLocation(false);
+    setZone(selectedZone);
     await AsyncStorage.setItem('onboarded', 'true');
     RootNavigator.goHome();
   };
 
-  return loading ? (
-    <QuaiPayLoader text={t('loading')} />
-  ) : (
+  return (
     <QuaiPayContent hasBackgroundVariant containerStyle={styles.mainContainer}>
       <QuaiPayText type="H1">{t('title')}</QuaiPayText>
       <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>

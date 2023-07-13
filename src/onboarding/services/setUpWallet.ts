@@ -7,6 +7,7 @@ import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { Wallet, Zone } from 'src/shared/types';
 import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
 import { OnboardingInfo } from 'src/shared/context/walletContext';
+import { isUniq } from 'src/shared/utils/isUniq';
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
@@ -17,6 +18,9 @@ export async function setUpWallet(
 ): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
+    while (!isUniq(entropy)) {
+      entropy = await generateSecureRandom(32);
+    }
   }
   const encodedEntropy = buffer.Buffer.from(entropy).toString('hex');
   await storeItem(
@@ -33,11 +37,13 @@ export async function setUpWallet(
     accountHDPath,
   );
 
-  let walletObject: Partial<Record<Zone, Wallet>> = {};
-  childNodes.forEach((node, ind: number) => {
+  const walletObject = childNodes.reduce((acc, node, ind: number) => {
     const zoneIndex = getZoneIndex(ind);
-    walletObject[zoneIndex] = node;
-  });
+    return {
+      ...acc,
+      [zoneIndex]: node,
+    };
+  }, {} as Record<Zone, Wallet>);
 
   await storeItem(
     { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
@@ -47,5 +53,6 @@ export async function setUpWallet(
   return {
     entropy: encodedEntropy,
     wallet: walletObject[zone],
+    walletObject,
   };
 }

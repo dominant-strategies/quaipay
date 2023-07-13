@@ -49,6 +49,7 @@ const [useContext, WalletContextProvider] =
 export interface OnboardingInfo {
   entropy: string;
   wallet?: Wallet;
+  walletObject?: Record<Zone, Wallet>;
 }
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -149,6 +150,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const initFromOnboarding = (info: OnboardingInfo) => {
     setEntropy(info.entropy);
     setWallet(info.wallet);
+    setWalletObject(info.walletObject);
   };
 
   return (

@@ -13,7 +13,7 @@ const accountHDPath = `m/44'/994'/0'/0`;
 
 export async function setUpWallet(
   entropy?: Uint8Array,
-  zone?: string,
+  zone = Zone['zone-0-0'],
 ): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
@@ -33,22 +33,19 @@ export async function setUpWallet(
     accountHDPath,
   );
 
-  // @ts-ignore
-  let walletObject: Record<Zone, Wallet> = {};
+  let walletObject: Partial<Record<Zone, Wallet>> = {};
   childNodes.forEach((node, ind: number) => {
     const zoneIndex = getZoneIndex(ind);
     walletObject[zoneIndex] = node;
   });
 
   await storeItem(
-    // @ts-ignore
     { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
     true,
   );
 
   return {
     entropy: encodedEntropy,
-    // @ts-ignore
     wallet: walletObject[zone],
   };
 }

@@ -7,6 +7,7 @@ import { keychainKeys } from 'src/shared/constants/keychainKeys';
 import { Wallet, Zone } from 'src/shared/types';
 import { getZoneIndex } from 'src/shared/utils/getZoneIndex';
 import { OnboardingInfo } from 'src/shared/context/walletContext';
+import { isUniq } from 'src/shared/utils/isUniq';
 
 // eslint-disable-next-line quotes
 const accountHDPath = `m/44'/994'/0'/0`;
@@ -17,6 +18,9 @@ export async function setUpWallet(
 ): Promise<OnboardingInfo> {
   if (!entropy) {
     entropy = await generateSecureRandom(32);
+    while (!isUniq(entropy)) {
+      entropy = await generateSecureRandom(32);
+    }
   }
   const encodedEntropy = buffer.Buffer.from(entropy).toString('hex');
   await storeItem(

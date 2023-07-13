@@ -29,7 +29,7 @@ import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useZone } from 'src/shared/hooks/useZone';
-import { useWallet, useWalletObject } from 'src/shared/hooks';
+import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
@@ -38,6 +38,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const wallet = useWallet();
   const walletObject = useWalletObject();
   const zone = useZone();
+  const contacts = useContacts();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
     string | undefined
@@ -84,8 +85,19 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       .then(res => {
         setTransactions(
           res.result.map(item => {
+            const isUserSender =
+              item.from.toLowerCase() === wallet?.address.toLowerCase();
+            let contact = contacts?.find(
+              c => c.address === (isUserSender ? item.to : item.from),
+            )?.username;
+            if (!contact) {
+              contact = isUserSender
+                ? abbreviateAddress(item.to)
+                : abbreviateAddress(item.from);
+            }
             return {
               ...item,
+              contact: contact as string,
               fiatAmount:
                 Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
               quaiAmount: Number(quais.utils.formatEther(item.value)),
@@ -194,7 +206,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                   new Date(Number(item.timeStamp) * 1000),
                 )}
                 fiatAmount={item.fiatAmount.toFixed(3)}
-                name="John Doe"
+                name={item.contact}
                 picture="https://picsum.photos/666"
                 quaiAmount={item.quaiAmount.toFixed(3)}
               />

@@ -9,7 +9,9 @@ export const useAmountInput = (initialAmount: string = INITIAL_AMOUNT) => {
   const [amount, setAmount] = useState(initialAmount);
   const [unit, setUnit] = useState(Currency.USD);
   const [eqValue, setEqValue] = useState(
-    (Number(initialAmount) / EXCHANGE_RATE).toString(),
+    parseFloat(
+      (Number(initialAmount) / EXCHANGE_RATE).toFixed(6).toString(),
+    ).toString(),
   );
 
   const input = {
@@ -25,10 +27,18 @@ export const useAmountInput = (initialAmount: string = INITIAL_AMOUNT) => {
   const updateInputs = (value: string) => {
     if (unit === Currency.USD) {
       setAmount(value);
-      setEqValue((Number(value) / EXCHANGE_RATE).toString());
+      setEqValue(
+        parseFloat(
+          (Number(value) / EXCHANGE_RATE).toFixed(6).toString(),
+        ).toString(),
+      );
     } else {
       setAmount(value);
-      setEqValue((Number(value) * EXCHANGE_RATE).toString());
+      setEqValue(
+        parseFloat(
+          (Number(value) * EXCHANGE_RATE).toFixed(6).toString(),
+        ).toString(),
+      );
     }
   };
 

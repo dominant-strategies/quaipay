@@ -9,6 +9,7 @@ type TransactionList = {
 };
 
 export type Transaction = {
+  contact?: any;
   blockHash: string;
   blockNumber: string;
   confirmations: string;

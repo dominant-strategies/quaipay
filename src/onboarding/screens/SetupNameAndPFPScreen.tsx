@@ -24,7 +24,6 @@ import { MIN_HEIGHT_CONTENT_HEADER } from 'src/shared/components/QuaiPayContent'
 import {
   useProfilePicture,
   useThemedStyle,
-  useWallet,
   useWalletObject,
 } from 'src/shared/hooks';
 import { Theme, Zone } from 'src/shared/types';
@@ -47,7 +46,6 @@ export const SetupNameAndPFPScreen: React.FC<
   const styles = useThemedStyle(themedStyle);
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
-  const wallet = useWallet();
   const walletObject = useWalletObject();
   const profilePicture = useProfilePicture();
   const [currentWalletIndex, setCurrentWalletIndex] = useState(0);
@@ -55,8 +53,6 @@ export const SetupNameAndPFPScreen: React.FC<
   const walletBlockie = walletObject?.[indexedZones[currentWalletIndex]]
     ?.address
     ? makeBlockie(walletObject?.[indexedZones[currentWalletIndex]]?.address)
-    : wallet?.address // Default to wallet address if indexed wallet object is undefined
-    ? makeBlockie(wallet?.address)
     : PFPURLPlaceholder; // If anything fails, show placeholder
 
   const onRefreshButton = () =>

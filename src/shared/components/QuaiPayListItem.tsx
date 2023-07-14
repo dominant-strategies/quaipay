@@ -7,7 +7,7 @@ import { styledColors } from '../styles';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
 type QuaiPayListItemProps = {
-  picture: string | SVGElement;
+  picture: string | React.ReactNode;
   name: string;
   date?: string;
   quaiAmount?: string;
@@ -30,7 +30,6 @@ export const QuaiPayListItem: React.FC<QuaiPayListItemProps> = ({
       {typeof picture === 'string' ? (
         <Image source={{ uri: picture }} style={styles.image} />
       ) : (
-        // @ts-ignore
         <View style={styles.image}>{picture}</View>
       )}
       <View style={styles.textWrapper}>

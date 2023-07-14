@@ -11,7 +11,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { Contact, Theme } from 'src/shared/types';
+import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import UserIcon from 'src/shared/assets/accountDetails.svg';
@@ -22,6 +22,7 @@ import {
   Transaction,
   getAccountTransactions,
   getBalance,
+  Recipient,
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
@@ -93,23 +94,27 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           res.result.map(item => {
             const isUserSender =
               item.from.toLowerCase() === wallet?.address.toLowerCase();
-            let contact: Partial<Contact> | undefined = contacts?.find(
+            const contact = contacts?.find(
               c =>
                 c.address.toLowerCase() ===
                 (isUserSender
                   ? item.to.toLowerCase()
                   : item.from.toLowerCase()),
             );
-            if (!contact) {
-              contact = {
-                username: isUserSender
-                  ? abbreviateAddress(item.to)
-                  : abbreviateAddress(item.from),
-              };
-            }
+            const recipient: Recipient = contact
+              ? {
+                  display: contact.username,
+                  profilePicture: contact.profilePicture,
+                }
+              : {
+                  display: isUserSender
+                    ? abbreviateAddress(item.to)
+                    : abbreviateAddress(item.from),
+                };
+
             return {
               ...item,
-              contact,
+              recipient,
               fiatAmount:
                 Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
               quaiAmount: Number(quais.utils.formatEther(item.value)),
@@ -218,10 +223,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                   new Date(Number(item.timeStamp) * 1000),
                 )}
                 fiatAmount={item.fiatAmount.toFixed(3)}
-                name={item.contact!.username!}
+                name={item.recipient.display}
                 picture={
-                  item.contact?.profilePicture ? (
-                    item.contact.profilePicture
+                  item.recipient.profilePicture ? (
+                    item.recipient.profilePicture
                   ) : isDarkMode ? (
                     <UserIconWhite />
                   ) : (

@@ -212,28 +212,25 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         ) : (
           <FlatList
             data={transactions}
-            renderItem={({ item }) => {
-              console.log(item.contact?.profilePicture);
-              return (
-                <QuaiPayListItem
-                  date={dateToLocaleString(
-                    new Date(Number(item.timeStamp) * 1000),
-                  )}
-                  fiatAmount={item.fiatAmount.toFixed(3)}
-                  name={item.contact!.username!}
-                  picture={
-                    item.contact?.profilePicture ? (
-                      item.contact.profilePicture
-                    ) : isDarkMode ? (
-                      <UserIconWhite />
-                    ) : (
-                      <UserIcon />
-                    )
-                  }
-                  quaiAmount={item.quaiAmount.toFixed(3)}
-                />
-              );
-            }}
+            renderItem={({ item }) => (
+              <QuaiPayListItem
+                date={dateToLocaleString(
+                  new Date(Number(item.timeStamp) * 1000),
+                )}
+                fiatAmount={item.fiatAmount.toFixed(3)}
+                name={item.contact!.username!}
+                picture={
+                  item.contact?.profilePicture ? (
+                    item.contact.profilePicture
+                  ) : isDarkMode ? (
+                    <UserIconWhite />
+                  ) : (
+                    <UserIcon />
+                  )
+                }
+                quaiAmount={item.quaiAmount.toFixed(3)}
+              />
+            )}
             keyExtractor={item => item.hash}
           />
         )}

@@ -223,7 +223,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                   name={item.contact!.username!}
                   picture={
                     item.contact?.profilePicture ? (
-                      item.contact!.profilePicture!
+                      item.contact.profilePicture
                     ) : isDarkMode ? (
                       <UserIconWhite />
                     ) : (

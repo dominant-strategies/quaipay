@@ -14,12 +14,15 @@ import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
+import UserIcon from 'src/shared/assets/accountDetails.svg';
+import UserIconWhite from 'src/shared/assets/accountDetailsWhite.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
 import {
   Transaction,
   getAccountTransactions,
   getBalance,
+  Recipient,
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
@@ -31,10 +34,12 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { useZone } from 'src/shared/hooks/useZone';
 import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
+import { useTheme } from 'src/shared/context/themeContext';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
   const styles = useThemedStyle(themedStyle);
+  const { isDarkMode } = useTheme();
   const wallet = useWallet();
   const walletObject = useWalletObject();
   const zone = useZone();
@@ -65,8 +70,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   }, []);
   const [balance, setBalance] = useState('0');
 
-  // TODO: show loader while fetching transactions and balance
   useEffect(() => {
+    if (!contacts) {
+      return;
+    }
     setLoading(true);
     getAccountTransactions(
       {
@@ -87,17 +94,27 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           res.result.map(item => {
             const isUserSender =
               item.from.toLowerCase() === wallet?.address.toLowerCase();
-            let contact = contacts?.find(
-              c => c.address === (isUserSender ? item.to : item.from),
-            )?.username;
-            if (!contact) {
-              contact = isUserSender
-                ? abbreviateAddress(item.to)
-                : abbreviateAddress(item.from);
-            }
+            const contact = contacts?.find(
+              c =>
+                c.address.toLowerCase() ===
+                (isUserSender
+                  ? item.to.toLowerCase()
+                  : item.from.toLowerCase()),
+            );
+            const recipient: Recipient = contact
+              ? {
+                  display: contact.username,
+                  profilePicture: contact.profilePicture,
+                }
+              : {
+                  display: isUserSender
+                    ? abbreviateAddress(item.to)
+                    : abbreviateAddress(item.from),
+                };
+
             return {
               ...item,
-              contact: contact as string,
+              recipient,
               fiatAmount:
                 Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
               quaiAmount: Number(quais.utils.formatEther(item.value)),
@@ -116,7 +133,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [selectedTxDirection]);
+  }, [selectedTxDirection, contacts]);
 
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
@@ -206,8 +223,16 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                   new Date(Number(item.timeStamp) * 1000),
                 )}
                 fiatAmount={item.fiatAmount.toFixed(3)}
-                name={item.contact}
-                picture="https://picsum.photos/666"
+                name={item.recipient.display}
+                picture={
+                  item.recipient.profilePicture ? (
+                    item.recipient.profilePicture
+                  ) : isDarkMode ? (
+                    <UserIconWhite />
+                  ) : (
+                    <UserIcon />
+                  )
+                }
                 quaiAmount={item.quaiAmount.toFixed(3)}
               />
             )}

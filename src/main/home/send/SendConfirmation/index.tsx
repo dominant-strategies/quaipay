@@ -38,7 +38,8 @@ type SendConfirmationScreenProps = NativeStackScreenProps<
 function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { sender, address, receiver, tip } = route.params;
+  const { sender, receiverAddress, receiverPFP, receiverUsername, tip } =
+    route.params;
   const contacts = useContacts();
   const wallet = useWallet();
   const zone = useZone();
@@ -47,8 +48,8 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const [showError, setShowError] = useState(false);
   const [contactSaved, setContactSaved] = useState(false);
   const [txStatus, setTxStatus] = useState(TxStatus.pending);
-  // TODO: remove when setShowError and setTxStatus are used
-  console.log(setShowError, setTxStatus);
+  // TODO: remove when setShowError is used
+  console.log(setShowError);
   const nodeData = allNodeData[zone];
   const transactionUrl = `${nodeData.provider.replace('rpc.', '')}/tx/${
     route.params.transaction.hash
@@ -108,16 +109,16 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     console.log('contacts', contacts);
     console.log('transaction', route.params.transaction);
     if (contacts) {
-      contacts?.find(contact => contact.address === address) &&
+      contacts?.find(contact => contact.address === receiverAddress) &&
         setContactSaved(true);
     }
   }, [contacts]);
 
   const saveToContacts = () => {
     addContact({
-      address,
-      username: receiver,
-      profilePicture: '',
+      address: receiverAddress,
+      username: receiverUsername!,
+      profilePicture: receiverPFP!,
     }).then(() => {
       setContactSaved(true);
       showSnackBar({
@@ -177,30 +178,30 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
             {t('common.sentTo')}
           </QuaiPayText>
           <QuaiPayText style={styles.username} type="bold">
-            {receiver}
+            {receiverUsername}
           </QuaiPayText>
           <QuaiPayText
             type="bold"
             themeColor="secondary"
             style={styles.address}
           >
-            {abbreviateAddress(address)}
+            {abbreviateAddress(receiverAddress)}
           </QuaiPayText>
           <View style={styles.shareControl}>
             {/* TODO: ask product what should be shared here */}
             <ShareControl share={''} />
           </View>
-          <TouchableOpacity
-            style={[styles.button, styles.saveContact]}
-            disabled={contactSaved}
-            onPress={saveToContacts}
-          >
-            <QuaiPayText type="H3">
-              {!contactSaved
-                ? t('home.send.saveToContacts')
-                : t('home.send.alreadySavedToContacts')}
-            </QuaiPayText>
-          </TouchableOpacity>
+          {receiverUsername && !contactSaved ? (
+            <TouchableOpacity
+              style={[styles.button, styles.saveContact]}
+              disabled={contactSaved}
+              onPress={saveToContacts}
+            >
+              <QuaiPayText type="H3">
+                {t('home.send.saveToContacts')}
+              </QuaiPayText>
+            </TouchableOpacity>
+          ) : null}
           <BottomButton txStatus={txStatus} />
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>

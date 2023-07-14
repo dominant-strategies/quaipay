@@ -8,8 +8,13 @@ type TransactionList = {
   status: string;
 };
 
+export type Recipient = {
+  display: string;
+  profilePicture?: string;
+};
+
 export type Transaction = {
-  contact?: any;
+  recipient: Recipient;
   blockHash: string;
   blockNumber: string;
   confirmations: string;

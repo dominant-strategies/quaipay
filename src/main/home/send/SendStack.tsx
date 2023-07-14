@@ -18,15 +18,17 @@ import Left from 'src/shared/assets/leftChevron.svg';
 export type SendStackParamList = {
   SendScan: { address: string; amount: number; username: string };
   SendAmount: {
-    address: string;
     amount: number;
-    receiver: string;
+    receiverAddress: string;
+    receiverPFP?: string;
+    receiverUsername?: string;
     sender: string;
   };
   SendTip: {
-    address: string;
     sender: string;
-    receiver: string;
+    receiverAddress: string;
+    receiverPFP?: string;
+    receiverUsername?: string;
     input: {
       unit: Currency;
       value: string;
@@ -39,8 +41,9 @@ export type SendStackParamList = {
     amountInQUAI: string;
   };
   SendOverview: {
-    address: string;
-    receiver: string;
+    receiverAddress: string;
+    receiverPFP?: string;
+    receiverUsername?: string;
     sender: string;
     input: {
       unit: Currency;
@@ -58,8 +61,9 @@ export type SendStackParamList = {
   };
   SendConfirmation: {
     transaction: Transaction;
-    address: string;
-    receiver: string;
+    receiverAddress: string;
+    receiverPFP?: string;
+    receiverUsername?: string;
     tip: number;
     sender: string;
     input: {

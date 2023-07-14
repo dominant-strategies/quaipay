@@ -49,6 +49,7 @@ export async function setUpWallet(
     { key: keychainKeys.wallet, value: JSON.stringify(walletObject) },
     true,
   );
+  await storeItem({ key: keychainKeys.contacts, value: '[]' });
 
   return {
     entropy: encodedEntropy,

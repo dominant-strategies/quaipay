@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   useColorScheme,
+  Image,
 } from 'react-native';
 import {
   QuaiPayBanner,
@@ -36,8 +37,15 @@ type SendOverviewProps = NativeStackScreenProps<
 function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
-  const { address, receiver, tip, tipInUSD, amountInUSD, amountInQUAI } =
-    route.params;
+  const {
+    receiverAddress,
+    receiverPFP,
+    receiverUsername,
+    tip,
+    tipInUSD,
+    amountInUSD,
+    amountInQUAI,
+  } = route.params;
   const wallet = useWallet();
   const zone = useZone();
   const { eqInput, input, onSwap } = useAmountInput(
@@ -62,7 +70,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const send = () => {
     setLoading(true);
     wallet &&
-      transferFunds(address, amountInQUAI, wallet.privateKey, zone)
+      transferFunds(receiverAddress, amountInQUAI, wallet.privateKey, zone)
         .then(res => {
           setShowError(false);
           setLoading(false);
@@ -147,12 +155,13 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
               ]}
             />
             <Text style={styles.date}>{dateToLocaleString(new Date())}</Text>
+            <Image style={styles.image} source={{ uri: receiverPFP }} />
             <View style={styles.receiver}>
               <QuaiPayText style={styles.username} type="paragraph">
-                {t('common:to')} {receiver}
+                {t('common:to')} {receiverUsername}
               </QuaiPayText>
               <QuaiPayText themeColor="secondary" style={styles.wallet}>
-                {abbreviateAddress(address)}
+                {abbreviateAddress(receiverAddress)}
               </QuaiPayText>
             </View>
             <View
@@ -415,6 +424,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: styledColors.gray,
     textAlign: 'right',
+  },
+  image: {
+    borderRadius: 70,
+    height: 60,
+    width: 60,
   },
 });
 

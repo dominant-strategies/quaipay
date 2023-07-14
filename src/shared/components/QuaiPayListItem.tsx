@@ -1,13 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useThemedStyle } from '../hooks/useThemedStyle';
+import { useThemedStyle } from 'src/shared/hooks';
 import { Theme } from '../types';
 import { QuaiPayText } from './QuaiPayText';
 import { styledColors } from '../styles';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
 type QuaiPayListItemProps = {
-  picture: string;
+  picture: string | React.ReactNode;
   name: string;
   date?: string;
   quaiAmount?: string;
@@ -27,7 +27,11 @@ export const QuaiPayListItem: React.FC<QuaiPayListItemProps> = ({
 
   return (
     <View style={styles.wrapper}>
-      <Image source={{ uri: picture }} style={styles.image} />
+      {typeof picture === 'string' ? (
+        <Image source={{ uri: picture }} style={styles.image} />
+      ) : (
+        <View style={styles.image}>{picture}</View>
+      )}
       <View style={styles.textWrapper}>
         <View style={styles.leftTextWrapper}>
           <QuaiPayText type="paragraph">{name}</QuaiPayText>
@@ -63,6 +67,8 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 16,
       height: 32,
       width: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     wrapper: {
       flex: 1,

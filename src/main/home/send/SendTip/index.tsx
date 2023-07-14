@@ -25,7 +25,8 @@ import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
 const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
-  const { address, receiver, input, amountInUSD } = route.params;
+  const { receiverAddress, receiverUsername, input, amountInUSD } =
+    route.params;
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -177,10 +178,10 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <QuaiPayText style={styles.username}>
-                {t('common:to')} {receiver}
+                {t('common:to')} {receiverUsername}
               </QuaiPayText>
               <QuaiPayText themeColor="secondary">
-                {abbreviateAddress(address)}
+                {abbreviateAddress(receiverAddress)}
               </QuaiPayText>
             </View>
             <QuaiPayText style={styles.tipText}>

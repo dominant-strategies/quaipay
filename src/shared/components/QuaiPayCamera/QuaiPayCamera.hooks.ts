@@ -41,16 +41,17 @@ const useSendAmountScannerCamera = () => {
       return;
     }
     if (barcodes.length > 0 && barcodes[0].content.data) {
-      const { address, amount, username } = JSON.parse(
+      const { address, amount, username, profilePicture } = JSON.parse(
         barcodes[0].content.data as string,
       );
       if (quais.utils.isAddress(address)) {
         RootNavigator.navigate('SendStack', {
           screen: 'SendAmount',
           params: {
-            address,
             amount: amount || 0,
-            receiver: username,
+            receiverAddress: address,
+            receiverPFP: profilePicture,
+            receiverUsername: username,
             sender: sender!,
           },
         });

@@ -61,6 +61,7 @@ export const ReceiveScreen = () => {
           value={JSON.stringify({
             address: wallet.address,
             username,
+            profilePicture,
           })}
         />
         <QuaiPayText type="H2" style={styles.ownerName}>

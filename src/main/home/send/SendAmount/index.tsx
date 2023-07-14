@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +36,8 @@ type SendAmountScreenProps = NativeStackScreenProps<
 >;
 
 const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
-  const { amount, address, receiver, sender } = route.params;
+  const { amount, receiverAddress, receiverUsername, receiverPFP, sender } =
+    route.params;
   const { t } = useTranslation();
   const wallet = useWallet();
   const zone = useZone();
@@ -74,8 +76,9 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
       amountInQUAI,
       eqInput,
       input,
-      address,
-      receiver,
+      receiverAddress,
+      receiverPFP,
+      receiverUsername,
     });
   };
 
@@ -99,8 +102,9 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
       amountInQUAI,
       eqInput: eqInput,
       input: input,
-      address,
-      receiver,
+      receiverAddress: receiverAddress,
+      receiverPFP,
+      receiverUsername,
       totalAmount: amountInUSD,
       tip: 0,
       tipInUSD: '0',
@@ -132,12 +136,12 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
         style={styles.scrollView}
       >
         <View style={styles.container}>
-          {/* <Image style={styles.image} source={{ uri: profilePicture }} /> */}
+          <Image style={styles.image} source={{ uri: receiverPFP }} />
           <QuaiPayText type="H3" style={styles.receiver}>
-            {t('common.to')} {receiver}
+            {t('common.to')} {receiverUsername}
           </QuaiPayText>
           <QuaiPayText style={styles.wallet}>
-            {abbreviateAddress(address)}
+            {abbreviateAddress(receiverAddress)}
           </QuaiPayText>
         </View>
         <View>

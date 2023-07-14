@@ -124,9 +124,9 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     RootNavigator.navigate('SendStack', {
       screen: 'SendAmount',
       params: {
-        address: contact.address,
+        receiverAddress: contact.address,
+        receiverUsername: contact.username,
         amount: 0,
-        receiver: contact.username,
         sender: sender!,
       },
     });
@@ -178,9 +178,8 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     RootNavigator.navigate('SendStack', {
       screen: 'SendAmount',
       params: {
-        address,
+        receiverAddress: address,
         amount: 0,
-        receiver: '',
         sender: sender!,
       },
     });

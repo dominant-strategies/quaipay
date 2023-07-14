@@ -1,6 +1,6 @@
 import { allNodeData } from '../constants/nodeData';
 import { quais } from 'quais';
-import { Zone } from 'src/shared/types';
+import { Contact, Zone } from 'src/shared/types';
 
 type TransactionList = {
   message: string;
@@ -9,7 +9,7 @@ type TransactionList = {
 };
 
 export type Transaction = {
-  contact?: any;
+  contact?: Partial<Contact>;
   blockHash: string;
   blockNumber: string;
   confirmations: string;

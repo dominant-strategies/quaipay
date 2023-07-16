@@ -22,19 +22,21 @@ interface SeedPhraseConfirmationProps {
 interface WordBoxProps {
   onPress?: (w: string) => void;
   word: string;
+  disabled?: boolean;
 }
 
-const WordBox = ({ onPress, word }: WordBoxProps) => {
+const WordBox = ({ disabled = false, onPress, word }: WordBoxProps) => {
   const styles = useThemedStyle(themedStyle);
 
   const handleOnPress = () => onPress && onPress(word);
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={handleOnPress}
       style={({ pressed }) => [
         styles.box,
-        styles.wordButton,
+        disabled ? styles.disabledWordButton : styles.wordButton,
         pressed && { opacity: 0.5 },
       ]}
     >
@@ -112,7 +114,11 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
             ]}
           >
             {!result.find(w => w === word) && (
-              <WordBox word={word} onPress={appendWord} />
+              <WordBox
+                disabled={hasFullAnswer}
+                word={word}
+                onPress={appendWord}
+              />
             )}
           </View>
         ))}
@@ -142,6 +148,9 @@ const themedStyle = (theme: Theme) =>
     },
     wordButton: {
       backgroundColor: theme.normal,
+    },
+    disabledWordButton: {
+      backgroundColor: theme.secondary,
     },
     word: {
       paddingVertical: 12,

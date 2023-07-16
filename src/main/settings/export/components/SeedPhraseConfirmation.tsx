@@ -10,6 +10,8 @@ import { shuffle } from 'src/shared/utils/shuffle';
 const BOX_HEIGHT = 40;
 const BOX_WIDTH = 85;
 
+const AMOUNT_OF_WORDS_TO_CONFIRM = 4;
+
 interface SeedPhraseConfirmationProps {
   shouldShuffle?: boolean;
   seedPhrase: string;
@@ -54,7 +56,29 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
     [seedPhrase],
   );
 
+  const expectedIndexes = useMemo(
+    () =>
+      shuffle([...seedPhraseWords].map((_, idx) => idx)).slice(
+        0,
+        AMOUNT_OF_WORDS_TO_CONFIRM,
+      ),
+    [seedPhraseWords],
+  );
+
+  const expectedWords = useMemo(
+    () =>
+      seedPhraseWords.filter((_, idx) =>
+        expectedIndexes.find(index => index === idx),
+      ),
+    [seedPhraseWords],
+  );
+
+  const hasFullAnswer = result.length === expectedWords.length;
+
   const appendWord = (word: string) => {
+    if (hasFullAnswer) {
+      return;
+    }
     if (result.find(w => w === word)) {
       return;
     }
@@ -68,7 +92,7 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   return (
     <>
       <View style={styles.mainContainer}>
-        {seedPhraseWords.map((_, idx) => (
+        {expectedWords.map((_, idx) => (
           <View
             key={idx}
             style={[styles.box, !result[idx] && styles.boxBorder]}

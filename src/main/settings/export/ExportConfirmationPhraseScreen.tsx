@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -34,7 +34,10 @@ export const ExportConfirmationPhraseScreen: React.FC<
     proposedSeedPhrase.length === seedPhrase.split('').length;
   const isPhraseOk = seedPhrase === proposedSeedPhrase;
 
-  const indexesToConfirm = getIndexesToConfirm(seedPhrase);
+  const indexesToConfirm = useMemo(
+    () => getIndexesToConfirm(seedPhrase),
+    [seedPhrase],
+  );
 
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();

@@ -17,6 +17,7 @@ interface SeedPhraseConfirmationProps {
   seedPhrase: string;
   result: string[];
   setResult: React.Dispatch<React.SetStateAction<string[]>>;
+  indexesToConfirm: number[];
 }
 
 interface WordBoxProps {
@@ -45,11 +46,18 @@ const WordBox = ({ disabled = false, onPress, word }: WordBoxProps) => {
   );
 };
 
+// Shuffles indexes and returns a sorted array of indexes to confirm
+export const getIndexesToConfirm = (seedPhrase: string) =>
+  shuffle([...seedPhrase.split(' ')].map((_, idx) => idx))
+    .slice(0, AMOUNT_OF_WORDS_TO_CONFIRM)
+    .sort((a, b) => a - b);
+
 export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   shouldShuffle = true,
   seedPhrase,
   result,
   setResult,
+  indexesToConfirm,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
@@ -58,19 +66,10 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
     [seedPhrase],
   );
 
-  const expectedIndexes = useMemo(
-    () =>
-      shuffle([...seedPhraseWords].map((_, idx) => idx)).slice(
-        0,
-        AMOUNT_OF_WORDS_TO_CONFIRM,
-      ),
-    [seedPhraseWords],
-  );
-
   const expectedWords = useMemo(
     () =>
       seedPhraseWords.filter((_, idx) =>
-        expectedIndexes.find(index => index === idx),
+        indexesToConfirm.find(index => index === idx),
       ),
     [seedPhraseWords],
   );

@@ -48,7 +48,7 @@ const WordBox = ({ disabled = false, onPress, word }: WordBoxProps) => {
 
 // Shuffles indexes and returns a sorted array of indexes to confirm
 export const getIndexesToConfirm = (seedPhrase: string) =>
-  shuffle([...seedPhrase.split(' ')].map((_, idx) => idx))
+  shuffle(seedPhrase.split(' ').map((_, idx) => idx))
     .slice(0, AMOUNT_OF_WORDS_TO_CONFIRM)
     .sort((a, b) => a - b);
 
@@ -66,15 +66,7 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
     [seedPhrase],
   );
 
-  const expectedWords = useMemo(
-    () =>
-      seedPhraseWords.filter((_, idx) =>
-        indexesToConfirm.find(index => index === idx),
-      ),
-    [seedPhraseWords],
-  );
-
-  const hasFullAnswer = result.length === expectedWords.length;
+  const hasFullAnswer = result.length === indexesToConfirm.length;
 
   const appendWord = (word: string) => {
     if (hasFullAnswer) {
@@ -93,7 +85,7 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   return (
     <>
       <View style={styles.mainContainer}>
-        {expectedWords.map((_, idx) => (
+        {indexesToConfirm.map((_, idx) => (
           <View
             key={idx}
             style={[styles.box, !result[idx] && styles.boxBorder]}

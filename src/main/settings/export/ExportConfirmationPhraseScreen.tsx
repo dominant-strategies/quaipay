@@ -29,15 +29,22 @@ export const ExportConfirmationPhraseScreen: React.FC<
     string[]
   >([]);
 
-  const proposedSeedPhrase = proposedSeedPhraseWords.join(' ');
-  const isPhraseComplete =
-    proposedSeedPhrase.length === seedPhrase.split('').length;
-  const isPhraseOk = seedPhrase === proposedSeedPhrase;
-
   const indexesToConfirm = useMemo(
     () => getIndexesToConfirm(seedPhrase),
     [seedPhrase],
   );
+
+  const expectedWords = useMemo(
+    () =>
+      seedPhrase
+        .split(' ')
+        .filter((_, idx) => indexesToConfirm.find(index => index === idx)),
+    [seedPhrase],
+  );
+
+  const isPhraseComplete =
+    proposedSeedPhraseWords.length === expectedWords.length;
+  const isPhraseOk = expectedWords === proposedSeedPhraseWords;
 
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();
@@ -57,9 +64,9 @@ export const ExportConfirmationPhraseScreen: React.FC<
           <QuaiPayText type="H3">
             {t('export.confirmation.description')}
             {/* TODO: review proper copy for this section */}
-            {`\n\nInput the words with position ${indexesToConfirm.join(
-              ', ',
-            )} in the right order.`}
+            {`\n\nInput the words with position ${indexesToConfirm
+              .map(value => value + 1)
+              .join(', ')} in the right order.`}
           </QuaiPayText>
         </View>
         <SeedPhraseConfirmation

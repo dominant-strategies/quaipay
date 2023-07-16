@@ -44,7 +44,8 @@ export const ExportConfirmationPhraseScreen: React.FC<
 
   const isPhraseComplete =
     proposedSeedPhraseWords.length === expectedWords.length;
-  const isPhraseOk = expectedWords === proposedSeedPhraseWords;
+  const isPhraseOk =
+    expectedWords.join(' ') === proposedSeedPhraseWords.join(' ');
 
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();

@@ -13,7 +13,7 @@ import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 
-import ShareControl from '../ShareControl';
+import ShareControl from './ShareControl';
 import { useTranslation } from 'react-i18next';
 import {
   QuaiPayContent,

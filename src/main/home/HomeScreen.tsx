@@ -11,7 +11,7 @@ import { useTheme } from 'src/shared/context/themeContext';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors, typography } from 'src/shared/styles';
 
-import { ReceiveScreen } from './receive/ReceiveScreen/';
+import { ReceiveScreen } from './receive/ReceiveScreen';
 import SendScanScreen from './send/SendScan';
 import { MainTabStackScreenProps } from '../MainStack';
 

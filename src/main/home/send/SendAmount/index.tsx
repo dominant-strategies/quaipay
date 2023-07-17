@@ -47,6 +47,9 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const inputRef = useRef<TextInput>(null);
   const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
 
+  const shouldDisableContinueButton =
+    Number(input.value) === 0 || Number(eqInput.value) === 0;
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
     flex: 1,
@@ -196,7 +199,8 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={goToOverview}
-            style={[styles.continueButton]}
+            style={styles.continueButton}
+            disabled={shouldDisableContinueButton}
           >
             <QuaiPayText style={{ color: styledColors.white }}>
               {t('common.continue')}

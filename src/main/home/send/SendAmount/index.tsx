@@ -15,6 +15,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import {
+  QuaiPayButton,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
   QuaiPayText,
@@ -46,6 +47,9 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
   const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
+
+  const shouldDisableContinueButton =
+    Number(input.value) === 0 || Number(eqInput.value) === 0;
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
@@ -194,14 +198,12 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           >
             <QuaiPayText>{t('home.send.includeTip')}</QuaiPayText>
           </TouchableOpacity>
-          <TouchableOpacity
+          <QuaiPayButton
             onPress={goToOverview}
-            style={[styles.continueButton]}
-          >
-            <QuaiPayText style={{ color: styledColors.white }}>
-              {t('common.continue')}
-            </QuaiPayText>
-          </TouchableOpacity>
+            style={styles.continueButton}
+            disabled={shouldDisableContinueButton}
+            title={t('common.continue')}
+          />
         </View>
       </ScrollView>
       {!amount && (
@@ -271,13 +273,9 @@ const styles = StyleSheet.create({
     paddingTop: 32,
   },
   continueButton: {
-    borderRadius: 5,
-    backgroundColor: styledColors.normal,
     alignSelf: 'center',
     paddingVertical: 16,
     width: '80%',
-    alignItems: 'center',
-    maxHeight: 48,
   },
   tipButton: {
     borderRadius: 5,

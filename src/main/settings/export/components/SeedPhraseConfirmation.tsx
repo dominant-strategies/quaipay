@@ -10,29 +10,34 @@ import { shuffle } from 'src/shared/utils/shuffle';
 const BOX_HEIGHT = 40;
 const BOX_WIDTH = 85;
 
+const AMOUNT_OF_WORDS_TO_CONFIRM = 4;
+
 interface SeedPhraseConfirmationProps {
   shouldShuffle?: boolean;
   seedPhrase: string;
   result: string[];
   setResult: React.Dispatch<React.SetStateAction<string[]>>;
+  indexesToConfirm: number[];
 }
 
 interface WordBoxProps {
   onPress?: (w: string) => void;
   word: string;
+  disabled?: boolean;
 }
 
-const WordBox = ({ onPress, word }: WordBoxProps) => {
+const WordBox = ({ disabled = false, onPress, word }: WordBoxProps) => {
   const styles = useThemedStyle(themedStyle);
 
   const handleOnPress = () => onPress && onPress(word);
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={handleOnPress}
       style={({ pressed }) => [
         styles.box,
-        styles.wordButton,
+        disabled ? styles.disabledWordButton : styles.wordButton,
         pressed && { opacity: 0.5 },
       ]}
     >
@@ -41,11 +46,18 @@ const WordBox = ({ onPress, word }: WordBoxProps) => {
   );
 };
 
+// Shuffles indexes and returns a sorted array of indexes to confirm
+export const getIndexesToConfirm = (seedPhrase: string) =>
+  shuffle(seedPhrase.split(' ').map((_, idx) => idx))
+    .slice(0, AMOUNT_OF_WORDS_TO_CONFIRM)
+    .sort((a, b) => a - b);
+
 export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   shouldShuffle = true,
   seedPhrase,
   result,
   setResult,
+  indexesToConfirm,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
@@ -54,7 +66,12 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
     [seedPhrase],
   );
 
+  const hasFullAnswer = result.length === indexesToConfirm.length;
+
   const appendWord = (word: string) => {
+    if (hasFullAnswer) {
+      return;
+    }
     if (result.find(w => w === word)) {
       return;
     }
@@ -68,7 +85,7 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
   return (
     <>
       <View style={styles.mainContainer}>
-        {seedPhraseWords.map((_, idx) => (
+        {indexesToConfirm.map((_, idx) => (
           <View
             key={idx}
             style={[styles.box, !result[idx] && styles.boxBorder]}
@@ -88,7 +105,11 @@ export const SeedPhraseConfirmation: React.FC<SeedPhraseConfirmationProps> = ({
             ]}
           >
             {!result.find(w => w === word) && (
-              <WordBox word={word} onPress={appendWord} />
+              <WordBox
+                disabled={hasFullAnswer}
+                word={word}
+                onPress={appendWord}
+              />
             )}
           </View>
         ))}
@@ -118,6 +139,9 @@ const themedStyle = (theme: Theme) =>
     },
     wordButton: {
       backgroundColor: theme.normal,
+    },
+    disabledWordButton: {
+      backgroundColor: theme.secondary,
     },
     word: {
       paddingVertical: 12,

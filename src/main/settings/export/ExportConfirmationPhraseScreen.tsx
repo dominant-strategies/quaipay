@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,10 @@ import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { styledColors } from 'src/shared/styles';
 
 import { ExportStackScreenProps } from './ExportStack';
-import { SeedPhraseConfirmation } from './components/SeedPhraseConfirmation';
+import {
+  SeedPhraseConfirmation,
+  getIndexesToConfirm,
+} from './components/SeedPhraseConfirmation';
 
 export const ExportConfirmationPhraseScreen: React.FC<
   ExportStackScreenProps<'ExportConfirmationPhrase'>
@@ -26,10 +29,23 @@ export const ExportConfirmationPhraseScreen: React.FC<
     string[]
   >([]);
 
-  const proposedSeedPhrase = proposedSeedPhraseWords.join(' ');
+  const indexesToConfirm = useMemo(
+    () => getIndexesToConfirm(seedPhrase),
+    [seedPhrase],
+  );
+
+  const expectedWords = useMemo(
+    () =>
+      seedPhrase
+        .split(' ')
+        .filter((_, idx) => indexesToConfirm.find(index => index === idx)),
+    [seedPhrase],
+  );
+
   const isPhraseComplete =
-    proposedSeedPhrase.length === seedPhrase.split('').length;
-  const isPhraseOk = seedPhrase === proposedSeedPhrase;
+    proposedSeedPhraseWords.length === expectedWords.length;
+  const isPhraseOk =
+    expectedWords.join(' ') === proposedSeedPhraseWords.join(' ');
 
   const handleCTAPress = () =>
     isPhraseOk ? goToCheckout() : popWrongPhraseMessage();
@@ -48,12 +64,17 @@ export const ExportConfirmationPhraseScreen: React.FC<
           <QuaiPayText type="H1">{t('export.confirmation.title')}</QuaiPayText>
           <QuaiPayText type="H3">
             {t('export.confirmation.description')}
+            {/* TODO: review proper copy for this section */}
+            {`\n\nInput the words with position ${indexesToConfirm
+              .map(value => value + 1)
+              .join(', ')} in the right order.`}
           </QuaiPayText>
         </View>
         <SeedPhraseConfirmation
           seedPhrase={seedPhrase}
           result={proposedSeedPhraseWords}
           setResult={setProposedSeedPhraseWords}
+          indexesToConfirm={indexesToConfirm}
         />
         <View style={styles.separator} />
         <Pressable

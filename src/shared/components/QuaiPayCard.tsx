@@ -1,9 +1,12 @@
 import React from 'react';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import makeBlockie from 'ethereum-blockies-base64';
+
 import { useThemedStyle } from '../hooks/useThemedStyle';
 import { Theme } from '../types';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { styledColors } from '../styles';
 import { QuaiPayText } from './QuaiPayText';
+import { useProfilePicture } from '../hooks';
 
 export enum CardSize {
   Small = 'small',
@@ -29,6 +32,9 @@ export const QuaiPayCard: React.FC<QuaiPayCardProps> = ({
 }) => {
   const styles = useThemedStyle(themedStyle);
   const height = size === CardSize.Small ? 150 : 185;
+  const profilePicture = useProfilePicture();
+
+  const profileImg = profilePicture ?? makeBlockie(address);
 
   return (
     <View style={[styles.wrapper, { height }]}>
@@ -51,12 +57,7 @@ export const QuaiPayCard: React.FC<QuaiPayCardProps> = ({
           </QuaiPayText>
         </View>
       </View>
-      <Image
-        style={styles.image}
-        source={{
-          uri: 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Solid_white.png',
-        }}
-      />
+      <Image style={styles.image} source={{ uri: profileImg }} />
     </View>
   );
 };
@@ -76,6 +77,8 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 70,
       height: 68,
       width: 68,
+      borderColor: styledColors.white,
+      borderWidth: 2,
     },
     textWrapper: {
       alignItems: 'flex-start',

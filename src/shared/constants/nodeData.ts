@@ -40,7 +40,7 @@ export const allNodeData: AllNodeData = {
     name: 'Cyprus-02',
   },
   'zone-0-2': {
-    url: 'wss://rpc.cyprus3.colosseum.quaiscan.',
+    url: 'wss://rpc.cyprus3.colosseum.quaiscan.io',
     provider: 'https://rpc.cyprus3.colosseum.quaiscan.io',
     name: 'Cyprus-03',
   },

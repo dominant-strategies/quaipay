@@ -11,7 +11,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { Theme } from 'src/shared/types';
+import { Theme, Zone } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import UserIcon from 'src/shared/assets/accountDetails.svg';
@@ -51,7 +51,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState<
     string | undefined
   >();
-  const [minAmount, setMinAmount] = useState(0);
+  const [minAmount, setMinAmount] = useState(1);
   const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
   const [shards, setShards] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
@@ -69,71 +69,175 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     activeAddressModalRef.current?.present();
   }, []);
   const [balance, setBalance] = useState('0');
+  const [balances, setBalances] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (!contacts) {
-      return;
-    }
-    setLoading(true);
-    getAccountTransactions(
-      {
-        address: wallet?.address as string,
-        sort: 'desc',
-        page: 1,
-        offset: 100,
-        startTimestamp: 0,
-        endTimestamp: Date.now(),
-        filterBy: selectedTxDirection,
-        minAmount,
-        maxAmount,
-      },
-      zone,
-    )
-      .then(res => {
-        setTransactions(
-          res.result.map(item => {
-            const isUserSender =
-              item.from.toLowerCase() === wallet?.address.toLowerCase();
-            const contact = contacts?.find(
-              c =>
-                c.address.toLowerCase() ===
-                (isUserSender
-                  ? item.to.toLowerCase()
-                  : item.from.toLowerCase()),
-            );
-            const recipient: Recipient = contact
-              ? {
-                  display: contact.username,
-                  profilePicture: contact.profilePicture,
-                }
-              : {
-                  display: isUserSender
-                    ? abbreviateAddress(item.to)
-                    : abbreviateAddress(item.from),
-                };
+    const updateBalances = async () => {
+      const balancePromises = Object.keys(walletObject as object).map(
+        async key => {
+          const address =
+            (walletObject && walletObject[key as Zone].address) || '';
+          try {
+            const res = await getBalance(address, zone);
+            const formattedBalance = Number(
+              quais.utils.formatEther(res),
+            ).toFixed(3);
+            return { address: address, balance: formattedBalance };
+          } catch (error) {
+            return { address: address, balance: 'Error' };
+          }
+        },
+      );
 
-            return {
-              ...item,
-              recipient,
-              fiatAmount:
-                Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
-              quaiAmount: Number(quais.utils.formatEther(item.value)),
-            };
-          }),
+      Promise.allSettled(balancePromises)
+        .then(results => {
+          const updatedBalances: any = {};
+          results.forEach(result => {
+            if (result.status === 'fulfilled') {
+              const { address } = result.value;
+              updatedBalances[address] = result.value.balance;
+            }
+          });
+          setBalances(prevBalances => ({
+            ...prevBalances,
+            ...updatedBalances,
+          }));
+        })
+        .finally(() => setLoading(false));
+    };
+
+    const updateWalletBalance = async () => {
+      if (wallet?.address) {
+        try {
+          const res = await getBalance(wallet.address, zone);
+          const formattedBalance = Number(quais.utils.formatEther(res)).toFixed(
+            3,
+          );
+          setBalance(formattedBalance);
+        } catch (error) {
+          setBalance('Error');
+        }
+      }
+    };
+
+    updateBalances();
+    updateWalletBalance();
+  }, [wallet, zone]);
+
+  useEffect(() => {
+    setLoading(true);
+    const txAllShards: Transaction[] = [];
+    const promises = shards.map(async shard => {
+      const zoneShard = Object.keys(walletObject as object)[shard];
+      console.log('zoneShard', zoneShard);
+      const address =
+        walletObject?.[zoneShard as keyof typeof walletObject]?.address;
+      console.log('wallet', address);
+      try {
+        const res = await getAccountTransactions(
+          {
+            address: address || '',
+            sort: 'desc',
+            page: 1,
+            offset: 100,
+            startTimestamp: 0,
+            endTimestamp: Date.now(),
+            filterBy: selectedTxDirection,
+            minAmount,
+            maxAmount,
+          },
+          zone,
         );
+        const filteredTransactions = res.result.filter(item => {
+          if (minAmount && minAmount > 0) {
+            return item.quaiAmount >= minAmount;
+          }
+          if (maxAmount && maxAmount > 0) {
+            return item.quaiAmount <= maxAmount;
+          }
+          if (selectedTxDirection) {
+            if (selectedTxDirection === 'from') {
+              return item.from.toLowerCase() === wallet?.address?.toLowerCase();
+            }
+            if (selectedTxDirection === 'to') {
+              return item.to.toLowerCase() === wallet?.address?.toLowerCase();
+            }
+          }
+          if (selectedTimeframe) {
+            const currentTime = Date.now();
+            const oneYearAgo = new Date(currentTime);
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+            const sixMonthsAgo = new Date(currentTime);
+            sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+            const ninetyDaysAgo = new Date(currentTime);
+            ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+            const thirtyDaysAgo = new Date(currentTime);
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const sevenDaysAgo = new Date(currentTime);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+            if (selectedTimeframe === 'Past year') {
+              return Number(item.timeStamp) >= oneYearAgo.getTime() / 1000;
+            } else if (selectedTimeframe === 'Past 6 months') {
+              return Number(item.timeStamp) >= sixMonthsAgo.getTime() / 1000;
+            } else if (selectedTimeframe === 'Past 90 days') {
+              return Number(item.timeStamp) >= ninetyDaysAgo.getTime() / 1000;
+            } else if (selectedTimeframe === 'Past 30 days') {
+              return Number(item.timeStamp) >= thirtyDaysAgo.getTime() / 1000;
+            } else if (selectedTimeframe === 'This week') {
+              return Number(item.timeStamp) >= sevenDaysAgo.getTime() / 1000;
+            }
+          }
+          return true;
+        });
+        const mappedTransactions = filteredTransactions.map(item => {
+          console.log('itemssss', item);
+          const isUserSender =
+            item.from.toLowerCase() === wallet?.address.toLowerCase();
+          const contact = contacts?.find(
+            c =>
+              c.address.toLowerCase() ===
+              (isUserSender ? item.to.toLowerCase() : item.from.toLowerCase()),
+          );
+          const recipient: Recipient = contact
+            ? {
+                display: contact.username,
+                profilePicture: contact.profilePicture,
+              }
+            : {
+                display: isUserSender
+                  ? abbreviateAddress(item.to)
+                  : abbreviateAddress(item.from),
+              };
+
+          return {
+            ...item,
+            recipient,
+          };
+        });
+        txAllShards.push(...mappedTransactions);
+        console.log('txAllShards', txAllShards);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    Promise.allSettled(promises)
+      .then(() => {
+        setLoading(false);
+        setTransactions(txAllShards);
       })
       .catch(err => {
         console.log(err);
-      });
-
-    getBalance(wallet?.address as string, zone)
-      .then(res => {
-        setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
-      })
-      .finally(() => {
         setLoading(false);
       });
-  }, [selectedTxDirection, contacts]);
+  }, [
+    zone,
+    shards,
+    selectedTxDirection,
+    selectedTimeframe,
+    minAmount,
+    maxAmount,
+  ]);
 
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
@@ -153,7 +257,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         ref={filterModalRef}
         walletObject={walletObject}
       />
-      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
+      <QuaiPayActiveAddressModal
+        balances={balances}
+        ref={activeAddressModalRef}
+      />
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
@@ -217,6 +324,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         ) : (
           <FlatList
             data={transactions}
+            contentContainerStyle={styles.flatlistContainer}
             renderItem={({ item }) => (
               <QuaiPayListItem
                 date={dateToLocaleString(
@@ -233,7 +341,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                     <UserIcon />
                   )
                 }
-                quaiAmount={item.quaiAmount.toFixed(3)}
+                quaiAmount={parseFloat(item.quaiAmount.toFixed(6)).toString()}
               />
             )}
             keyExtractor={item => item.hash}
@@ -298,6 +406,9 @@ const themedStyle = (theme: Theme) =>
     transactionsWrapper: {
       backgroundColor: theme.surface,
       padding: 16,
+    },
+    flatlistContainer: {
+      paddingBottom: 280,
     },
     searchbarWrapper: {
       marginBottom: 22,

@@ -1,6 +1,7 @@
 import { allNodeData } from '../constants/nodeData';
 import { quais } from 'quais';
 import { Zone } from 'src/shared/types';
+import { EXCHANGE_RATE } from '../constants/exchangeRate';
 
 type TransactionList = {
   message: string;
@@ -75,8 +76,6 @@ export const getAccountTransactions = (
       startTimestamp,
       endTimestamp,
       filterBy,
-      minAmount,
-      maxAmount,
     } = props;
 
     const nodeData = allNodeData[zone];
@@ -106,21 +105,19 @@ export const getAccountTransactions = (
       .then(response => response.text())
       .then(result => {
         const transactions: TransactionList = JSON.parse(result);
-        const filteredTransactions = transactions.result.filter(
-          (transaction: any) => {
-            const transactionValue = Number(transaction.value);
-
-            return (
-              (!minAmount || transactionValue >= minAmount) &&
-              (!maxAmount || transactionValue <= maxAmount)
-            );
-          },
-        );
-
-        transactions.result = filteredTransactions;
+        transactions.result = transactions.result.map(transaction => {
+          return {
+            ...transaction,
+            fiatAmount:
+              Number(quais.utils.formatEther(transaction.value)) *
+              EXCHANGE_RATE,
+            quaiAmount: Number(quais.utils.formatEther(transaction.value)),
+          };
+        });
         resolve(transactions);
       })
       .catch(error => {
+        console.log(error);
         reject(error);
       });
   });

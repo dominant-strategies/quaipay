@@ -16,6 +16,7 @@ import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
+import { KeyChainEntropyCheckModalBody } from './components/KeyChainEntropyCheckModalBody';
 
 export const LoginLandingScreen: React.FC<
   OnboardingStackScreenProps<'LoginLanding'>
@@ -92,10 +93,7 @@ export const LoginLandingScreen: React.FC<
         />
       </QuaiPayContent>
       <QuaiPayBottomSheetModal ref={ref}>
-        <View>
-          <QuaiPayText>Entropy detected from keychain</QuaiPayText>
-          <QuaiPayButton title="Continue with keychain info" />
-        </View>
+        <KeyChainEntropyCheckModalBody />
       </QuaiPayBottomSheetModal>
     </>
   );

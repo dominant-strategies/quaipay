@@ -11,10 +11,16 @@ export const KeyChainEntropyCheckModalBody: React.FC = ({}) => {
 
   return (
     <View style={styles.mainContainer}>
-      <QuaiPayText>{t('title')}</QuaiPayText>
-      <QuaiPayText>{t('description')}</QuaiPayText>
-      <QuaiPayButton outlined type={'secondary'} title={t('dismissButton')} />
-      <QuaiPayButton title={t('continueButton')} />
+      <QuaiPayText type="H2">{t('title')}</QuaiPayText>
+      <View style={styles.separator} />
+      <QuaiPayText type="paragraph" style={styles.description}>
+        {t('description')}
+      </QuaiPayText>
+      <View style={styles.separator} />
+      <View style={styles.buttonsContainer}>
+        <QuaiPayButton outlined type={'secondary'} title={t('dismissButton')} />
+        <QuaiPayButton title={t('continueButton')} />
+      </View>
     </View>
   );
 };
@@ -23,8 +29,17 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginVertical: 32,
     marginHorizontal: 16,
+  },
+  separator: {
+    flex: 1,
+  },
+  description: {
+    textAlign: 'left',
+    marginHorizontal: 12,
+  },
+  buttonsContainer: {
+    gap: 16,
   },
 });

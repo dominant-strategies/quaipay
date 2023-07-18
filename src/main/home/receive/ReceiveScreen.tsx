@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Dimensions,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   useColorScheme,
@@ -8,23 +9,24 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-
-import { RootStackNavigationProps } from 'src/shared/navigation';
-import { buttonStyle } from 'src/shared/styles';
-import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
-
-import ShareControl from '../ShareControl';
 import { useTranslation } from 'react-i18next';
+
+import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import {
   QuaiPayContent,
   QuaiPayLoader,
   QuaiPayQRCode,
   QuaiPayText,
 } from 'src/shared/components';
+import { RootStackNavigationProps } from 'src/shared/navigation';
+import { buttonStyle } from 'src/shared/styles';
+import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
+
+import ShareControl from './ShareControl';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
@@ -67,13 +69,18 @@ export const ReceiveScreen = () => {
         <QuaiPayText type="H2" style={styles.ownerName}>
           {username}
         </QuaiPayText>
-        <QuaiPayText
-          type="paragraph"
-          style={styles.walletAddress}
-          onPress={copyToClipboard}
+        <Pressable
+          onLongPress={copyToClipboard}
+          style={({ pressed }) => [
+            styles.addressContainer,
+            pressed && { opacity: 0.5 },
+          ]}
         >
-          {abbreviateAddress(wallet.address)}
-        </QuaiPayText>
+          <QuaiPayText type="paragraph" themeColor="secondary">
+            {abbreviateAddress(wallet.address)}
+          </QuaiPayText>
+          <CopyOutline />
+        </Pressable>
         <View style={styles.shareControlStyle}>
           <ShareControl share={wallet.address} />
         </View>
@@ -112,8 +119,11 @@ const themedStyle = (theme: Theme) =>
     ownerName: {
       fontSize: 20,
     },
-    walletAddress: {
-      color: theme.secondary,
+    addressContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginLeft: 8, // To compensate the gap and keep address centered
     },
     shareControlStyle: {
       marginTop: 20,

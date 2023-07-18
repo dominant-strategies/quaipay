@@ -22,4 +22,5 @@ export { QuaiPaySnackBar } from './QuaiPaySnackBar';
 export { QuaiPayText } from './QuaiPayText';
 
 export { useQuaiPayCamera } from './QuaiPayCamera/QuaiPayCamera.hooks';
+export { useBottomSheetModal } from './QuaiPayBottomSheetModal/QuaiPayBottomSheetModal.hooks';
 export { ScannerType } from './QuaiPayCamera/QuaiPayCamera.types';

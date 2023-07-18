@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { ForwardRefRenderFunction, forwardRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { QuaiPayBottomSheetModal, QuaiPayText } from 'src/shared/components';
 import { Theme, Zone } from 'src/shared/types';
@@ -9,60 +9,51 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { useWalletContext } from 'src/shared/context/walletContext';
 import { useThemedStyle } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
+import { EXCHANGE_RATE } from '../constants/exchangeRate';
 
 const zones = Object.keys(Zone) as Zone[];
 
-export const QuaiPayActiveAddressModal = forwardRef<BottomSheetModal>(
-  ({}, ref) => {
-    const { zone: selectedZone, setZone, walletObject } = useWalletContext();
-    const styles = useThemedStyle(themedStyle);
+interface QuaiPayActiveAddressModalProps {
+  balances: Record<string, string>;
+}
 
-    return (
-      <QuaiPayBottomSheetModal ref={ref}>
-        <QuaiPayText style={styles.title}>Choose Active Address</QuaiPayText>
-        <ScrollView>
-          <View style={styles.wrapper}>
-            {zones.map((zone: Zone) => {
-              const isSelected = selectedZone === zone;
-              return (
-                <Pressable
-                  key={zone}
-                  onPress={() => {
-                    if (!isSelected) {
-                      setZone(zone);
-                    }
-                  }}
+const Modal: ForwardRefRenderFunction<
+  BottomSheetModal,
+  QuaiPayActiveAddressModalProps
+> = (_, ref) => {
+  const { zone: selectedZone, setZone, walletObject } = useWalletContext();
+  const styles = useThemedStyle(themedStyle);
+
+  return (
+    <QuaiPayBottomSheetModal ref={ref}>
+      <QuaiPayText style={styles.title}>Choose Active Address</QuaiPayText>
+      <ScrollView>
+        <View style={styles.wrapper}>
+          {zones.map((zone: Zone) => {
+            const isSelected = selectedZone === zone;
+            return (
+              <Pressable
+                key={zone}
+                onPress={() => {
+                  if (!isSelected) {
+                    setZone(zone);
+                  }
+                }}
+              >
+                <View
+                  style={
+                    isSelected
+                      ? [styles.card, styles.cardSelected]
+                      : styles.card
+                  }
                 >
-                  <View
-                    style={
-                      isSelected
-                        ? [styles.card, styles.cardSelected]
-                        : styles.card
-                    }
-                  >
-                    <View style={styles.leftColumn}>
-                      {isSelected ? (
-                        <Done width={20} height={20} />
-                      ) : (
-                        <GreyDone width={20} height={20} />
-                      )}
-                      <View style={styles.leftText}>
-                        <QuaiPayText
-                          type="H3"
-                          style={
-                            isSelected
-                              ? [styles.textNotSelected, styles.textSelected]
-                              : styles.textNotSelected
-                          }
-                        >
-                          {allNodeData[zone].name}
-                        </QuaiPayText>
-                        <QuaiPayText themeColor="secondary">
-                          {abbreviateAddress(walletObject![zone].address)}
-                        </QuaiPayText>
-                      </View>
-                    </View>
-                    <View style={styles.rightText}>
+                  <View style={styles.leftColumn}>
+                    {isSelected ? (
+                      <Done width={20} height={20} />
+                    ) : (
+                      <GreyDone width={20} height={20} />
+                    )}
+                    <View style={styles.leftText}>
                       <QuaiPayText
                         type="H3"
                         style={
@@ -71,20 +62,48 @@ export const QuaiPayActiveAddressModal = forwardRef<BottomSheetModal>(
                             : styles.textNotSelected
                         }
                       >
-                        XXXX Quai
+                        {allNodeData[zone].name}
                       </QuaiPayText>
-                      <QuaiPayText themeColor="secondary">$0.00</QuaiPayText>
+                      <QuaiPayText themeColor="secondary">
+                        {abbreviateAddress(walletObject![zone].address)}
+                      </QuaiPayText>
                     </View>
                   </View>
-                </Pressable>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </QuaiPayBottomSheetModal>
-    );
-  },
-);
+                  <View style={styles.rightText}>
+                    <QuaiPayText
+                      type="H3"
+                      style={
+                        isSelected
+                          ? [styles.textNotSelected, styles.textSelected]
+                          : styles.textNotSelected
+                      }
+                    >
+                      {_.balances[walletObject![zone].address] || '0.00'} Quai
+                    </QuaiPayText>
+                    <QuaiPayText themeColor="secondary">
+                      $
+                      {_.balances[walletObject![zone].address]
+                        ? (
+                            Number(_.balances[walletObject![zone].address]) *
+                            EXCHANGE_RATE
+                          ).toFixed(2)
+                        : '0.00'}
+                    </QuaiPayText>
+                  </View>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </QuaiPayBottomSheetModal>
+  );
+};
+
+export const QuaiPayActiveAddressModal = forwardRef<
+  BottomSheetModal,
+  QuaiPayActiveAddressModalProps
+>(Modal);
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({

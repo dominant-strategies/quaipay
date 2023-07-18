@@ -6,9 +6,11 @@ import RightChevron from 'src/shared/assets/rightChevron.svg';
 import EditIcon from 'src/shared/assets/edit.svg';
 import PhoneWithQR from 'src/shared/assets/phoneWithQR.svg';
 import {
+  QuaiPayBottomSheetModal,
   QuaiPayButton,
   QuaiPayContent,
   QuaiPayText,
+  useBottomSheetModal,
 } from 'src/shared/components';
 import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
@@ -23,6 +25,7 @@ export const LoginLandingScreen: React.FC<
   });
   const styles = useThemedStyle(themedStyle);
   const entropy = useEntropy();
+  const { open: openRecoverModal, ref } = useBottomSheetModal();
 
   const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
   const goToSeedPhraseInput = () => navigation.navigate('LoginSeedPhraseInput');
@@ -32,62 +35,69 @@ export const LoginLandingScreen: React.FC<
 
   useEffect(() => {
     if (entropy) {
-      // TODO: replace with modal pop up with action button
-      alert('Entropy detected from keychain');
+      openRecoverModal();
     }
   }, [entropy]);
 
   return (
-    <QuaiPayContent>
-      <View style={styles.textContainer}>
-        <QuaiPayText type="H1" style={styles.title}>
-          {t('title')}
-        </QuaiPayText>
-        <QuaiPayText type="paragraph" themeColor="secondary">
-          {t('description')}
-        </QuaiPayText>
-      </View>
-      <View style={styles.separator} />
-      <Pressable
-        onPress={goToQRCodeScan}
-        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-      >
-        <PhoneWithQR />
-        <View style={styles.cardTextContainer}>
-          <QuaiPayText type="H3" style={styles.cardText}>
-            {t('cards.qr.title')}
+    <>
+      <QuaiPayContent>
+        <View style={styles.textContainer}>
+          <QuaiPayText type="H1" style={styles.title}>
+            {t('title')}
           </QuaiPayText>
-          <QuaiPayText themeColor="secondary" style={styles.cardText}>
-            {t('cards.qr.description')}
+          <QuaiPayText type="paragraph" themeColor="secondary">
+            {t('description')}
           </QuaiPayText>
         </View>
-        <RightChevron />
-      </Pressable>
-      <Pressable
-        onPress={goToSeedPhraseInput}
-        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-      >
-        <EditIcon />
-        <View style={styles.cardTextContainer}>
-          <QuaiPayText type="H3" style={styles.cardText}>
-            {t('cards.phrase.title')}
-          </QuaiPayText>
-          <QuaiPayText themeColor="secondary" style={styles.cardText}>
-            {t('cards.phrase.description')}
-          </QuaiPayText>
+        <View style={styles.separator} />
+        <Pressable
+          onPress={goToQRCodeScan}
+          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+        >
+          <PhoneWithQR />
+          <View style={styles.cardTextContainer}>
+            <QuaiPayText type="H3" style={styles.cardText}>
+              {t('cards.qr.title')}
+            </QuaiPayText>
+            <QuaiPayText themeColor="secondary" style={styles.cardText}>
+              {t('cards.qr.description')}
+            </QuaiPayText>
+          </View>
+          <RightChevron />
+        </Pressable>
+        <Pressable
+          onPress={goToSeedPhraseInput}
+          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+        >
+          <EditIcon />
+          <View style={styles.cardTextContainer}>
+            <QuaiPayText type="H3" style={styles.cardText}>
+              {t('cards.phrase.title')}
+            </QuaiPayText>
+            <QuaiPayText themeColor="secondary" style={styles.cardText}>
+              {t('cards.phrase.description')}
+            </QuaiPayText>
+          </View>
+          <RightChevron />
+        </Pressable>
+        <View style={styles.doubleSeparator} />
+        <QuaiPayButton
+          underline
+          type="secondary"
+          titleType="default"
+          title={t('learnMore')}
+          onPress={goToLearnMoreRecovery}
+          style={styles.learnMore}
+        />
+      </QuaiPayContent>
+      <QuaiPayBottomSheetModal ref={ref}>
+        <View>
+          <QuaiPayText>Entropy detected from keychain</QuaiPayText>
+          <QuaiPayButton title="Continue with keychain info" />
         </View>
-        <RightChevron />
-      </Pressable>
-      <View style={styles.doubleSeparator} />
-      <QuaiPayButton
-        underline
-        type="secondary"
-        titleType="default"
-        title={t('learnMore')}
-        onPress={goToLearnMoreRecovery}
-        style={styles.learnMore}
-      />
-    </QuaiPayContent>
+      </QuaiPayBottomSheetModal>
+    </>
   );
 };
 

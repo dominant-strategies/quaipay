@@ -37,8 +37,8 @@ interface WalletContext extends WalletContextState {
   getZone: () => void;
   setZone: (zone: Zone) => void;
   initFromOnboarding: (info: OnboardingInfo) => void;
-  initWalletFromKeychain: (entropy?: string) => void;
-  initNameAndProfileFromKeychain: () => void;
+  initWalletFromKeychain: (entropy?: string) => Promise<boolean>;
+  initNameAndProfileFromKeychain: () => Promise<boolean>;
 }
 
 const INITIAL_STATE: WalletContextState = {
@@ -158,18 +158,33 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setWalletObject(info.walletObject);
   };
 
-  const initWalletFromKeychain = (entropy?: string) => {
+  const initWalletFromKeychain = async (entropy?: string) => {
+    try {
     if (entropy) {
       setEntropy(entropy);
     } else {
-      getEntropy();
+        await getEntropy();
     }
-    getWallet();
+      await getWallet(false);
+    } catch {
+      return false;
+    } finally {
+      return true;
+    }
   };
 
-  const initNameAndProfileFromKeychain = () => {
-    getProfilePicture();
-    getUsername(false); // Setting showError snackbar as false
+  const initNameAndProfileFromKeychain = async () => {
+    try {
+      const pfpFetchStatus = await getProfilePicture();
+      const usernameFetchStatus = await getUsername(false); // Setting showError snackbar as false
+      if (!pfpFetchStatus || !usernameFetchStatus) {
+        return false;
+      }
+    } catch {
+      return false;
+    } finally {
+      return true;
+    }
   };
 
   return (

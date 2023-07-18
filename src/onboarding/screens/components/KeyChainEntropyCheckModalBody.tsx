@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -22,38 +22,51 @@ export const KeyChainEntropyCheckModalBody: React.FC<
   const { t } = useTranslation('translation', {
     keyPrefix: 'onboarding.login.landing.keychainBottomSheet',
   });
-  const {
-    initNameAndProfileFromKeychain,
-    initWalletFromKeychain,
-    username,
-    profilePicture,
-  } = useWalletContext();
+  const { initNameAndProfileFromKeychain, initWalletFromKeychain } =
+    useWalletContext();
   const [checkingStoredInfo, setCheckingStoredInfo] = useState(false);
   const [checkUserInfo, setCheckUserInfo] = useState(false);
 
   const onContinue = async () => {
     try {
-      dismiss();
       setCheckingStoredInfo(true);
       initWalletFromKeychain(entropy);
       setCheckUserInfo(true);
-      initNameAndProfileFromKeychain();
-      if (profilePicture && username) {
-        navigation.navigate('SetupLocation');
-      } else {
-        navigation.navigate('SetupNameAndPFP');
-      }
     } catch (err) {
       if (err instanceof Error) {
         console.log('failed to fetch keychain data', err.message, err.stack);
       } else {
         console.log('failed to fetch keychain data', err);
       }
-    } finally {
-      setCheckingStoredInfo(false);
-      setCheckUserInfo(false);
     }
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const isSuccessful = await initNameAndProfileFromKeychain();
+        if (isSuccessful) {
+          navigation.navigate('SetupLocation');
+        } else {
+          navigation.navigate('SetupNameAndPFP');
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          console.log('failed to fetch keychain data', err.message, err.stack);
+        } else {
+          console.log('failed to fetch keychain data', err);
+        }
+      } finally {
+        setCheckingStoredInfo(false);
+        setCheckUserInfo(false);
+        dismiss();
+      }
+    };
+
+    if (checkUserInfo) {
+      fetchUserInfo();
+    }
+  }, [checkUserInfo]);
 
   return (
     <View style={styles.mainContainer}>

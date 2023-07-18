@@ -14,7 +14,7 @@ import { EXCHANGE_RATE } from '../constants/exchangeRate';
 const zones = Object.keys(Zone) as Zone[];
 
 interface QuaiPayActiveAddressModalProps {
-  balances: Record<string, string>;
+  balances?: Record<string, string>;
 }
 
 const Modal: ForwardRefRenderFunction<
@@ -78,15 +78,20 @@ const Modal: ForwardRefRenderFunction<
                           : styles.textNotSelected
                       }
                     >
-                      {_.balances[walletObject![zone].address] || '0.00'} Quai
+                      {(_.balances &&
+                        _.balances[walletObject![zone].address]) ||
+                        '0'}{' '}
+                      Quai
                     </QuaiPayText>
                     <QuaiPayText themeColor="secondary">
                       $
-                      {_.balances[walletObject![zone].address]
-                        ? (
-                            Number(_.balances[walletObject![zone].address]) *
-                            EXCHANGE_RATE
-                          ).toFixed(2)
+                      {_.balances
+                        ? _.balances[walletObject![zone].address]
+                          ? (
+                              Number(_.balances[walletObject![zone].address]) *
+                              EXCHANGE_RATE
+                            ).toFixed(2)
+                          : '0.00'
                         : '0.00'}
                     </QuaiPayText>
                   </View>

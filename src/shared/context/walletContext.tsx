@@ -37,6 +37,8 @@ interface WalletContext extends WalletContextState {
   getZone: () => void;
   setZone: (zone: Zone) => void;
   initFromOnboarding: (info: OnboardingInfo) => void;
+  initWalletFromKeychain: (entropy?: string) => void;
+  initNameAndProfileFromKeychain: () => void;
 }
 
 const INITIAL_STATE: WalletContextState = {
@@ -153,6 +155,20 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setWalletObject(info.walletObject);
   };
 
+  const initWalletFromKeychain = (entropy?: string) => {
+    if (entropy) {
+      setEntropy(entropy);
+    } else {
+      getEntropy();
+    }
+    getWallet();
+  };
+
+  const initNameAndProfileFromKeychain = () => {
+    getProfilePicture();
+    getUsername();
+  };
+
   return (
     <WalletContextProvider
       value={{
@@ -169,6 +185,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         getZone,
         setZone,
         initFromOnboarding,
+        initWalletFromKeychain,
+        initNameAndProfileFromKeychain,
       }}
     >
       {children}

@@ -26,7 +26,11 @@ export const LoginLandingScreen: React.FC<
   });
   const styles = useThemedStyle(themedStyle);
   const entropy = useEntropy();
-  const { open: openRecoverModal, ref } = useBottomSheetModal();
+  const {
+    close: closeRecoverModal,
+    open: openRecoverModal,
+    ref,
+  } = useBottomSheetModal();
 
   const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
   const goToSeedPhraseInput = () => navigation.navigate('LoginSeedPhraseInput');
@@ -93,7 +97,11 @@ export const LoginLandingScreen: React.FC<
         />
       </QuaiPayContent>
       <QuaiPayBottomSheetModal ref={ref}>
-        <KeyChainEntropyCheckModalBody />
+        <KeyChainEntropyCheckModalBody
+          entropy={entropy}
+          dismiss={closeRecoverModal}
+          navigation={navigation}
+        />
       </QuaiPayBottomSheetModal>
     </>
   );

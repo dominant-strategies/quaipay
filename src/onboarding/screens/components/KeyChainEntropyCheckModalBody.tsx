@@ -1,26 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import { QuaiPayButton, QuaiPayText } from 'src/shared/components';
+import { OnboardingStackNavigationProp } from 'src/onboarding/OnboardingStack';
+import {
+  QuaiPayButton,
+  QuaiPayLoader,
+  QuaiPayText,
+} from 'src/shared/components';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
-export const KeyChainEntropyCheckModalBody: React.FC = ({}) => {
+interface KeyChainEntropyCheckModalBodyProps {
+  entropy?: string;
+  dismiss: () => void;
+  navigation: OnboardingStackNavigationProp<'LoginLanding'>;
+}
+
+export const KeyChainEntropyCheckModalBody: React.FC<
+  KeyChainEntropyCheckModalBodyProps
+> = ({ entropy, dismiss, navigation }) => {
   const { t } = useTranslation('translation', {
     keyPrefix: 'onboarding.login.landing.keychainBottomSheet',
   });
+  const { initNameAndProfileFromKeychain, initWalletFromKeychain } =
+    useWalletContext();
+  const [checkingStoredInfo, setCheckingStoredInfo] = useState(false);
+  const [checkUserInfo, setCheckUserInfo] = useState(false);
+
+  const onContinue = async () => {
+    try {
+      setCheckingStoredInfo(true);
+      initWalletFromKeychain(entropy);
+      setCheckUserInfo(true);
+      initNameAndProfileFromKeychain();
+      navigation.navigate('SetupLocation');
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log('failed to fetch keychain data', err.message, err.stack);
+      } else {
+        console.log('failed to fetch keychain data', err);
+      }
+    } finally {
+      setCheckingStoredInfo(false);
+      setCheckUserInfo(false);
+    }
+  };
 
   return (
     <View style={styles.mainContainer}>
-      <QuaiPayText type="H2">{t('title')}</QuaiPayText>
-      <View style={styles.separator} />
-      <QuaiPayText type="paragraph" style={styles.description}>
-        {t('description')}
-      </QuaiPayText>
-      <View style={styles.separator} />
-      <View style={styles.buttonsContainer}>
-        <QuaiPayButton outlined type={'secondary'} title={t('dismissButton')} />
-        <QuaiPayButton title={t('continueButton')} />
-      </View>
+      {checkingStoredInfo ? (
+        <QuaiPayLoader
+          text={
+            checkUserInfo
+              ? 'Checking user info'
+              : 'Checking which data is already stored'
+          }
+        />
+      ) : (
+        <>
+          <QuaiPayText type="H2">{t('title')}</QuaiPayText>
+          <View style={styles.separator} />
+          <QuaiPayText type="paragraph" style={styles.description}>
+            {t('description')}
+          </QuaiPayText>
+          <View style={styles.separator} />
+          <View style={styles.buttonsContainer}>
+            <QuaiPayButton
+              onPress={dismiss}
+              outlined
+              type={'secondary'}
+              title={t('dismissButton')}
+            />
+            <QuaiPayButton onPress={onContinue} title={t('continueButton')} />
+          </View>
+        </>
+      )}
     </View>
   );
 };

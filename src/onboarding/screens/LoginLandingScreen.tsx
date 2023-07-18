@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -10,7 +10,7 @@ import {
   QuaiPayContent,
   QuaiPayText,
 } from 'src/shared/components';
-import { useThemedStyle } from 'src/shared/hooks';
+import { useEntropy, useThemedStyle } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 
 import { OnboardingStackScreenProps } from '../OnboardingStack';
@@ -22,12 +22,20 @@ export const LoginLandingScreen: React.FC<
     keyPrefix: 'onboarding.login.landing',
   });
   const styles = useThemedStyle(themedStyle);
+  const entropy = useEntropy();
 
   const goToQRCodeScan = () => navigation.navigate('LoginQRCodeScan');
   const goToSeedPhraseInput = () => navigation.navigate('LoginSeedPhraseInput');
   // TODO: update to use the actual page
   const goToLearnMoreRecovery = () =>
     Linking.openURL('https://docs.quai.network/use-quai/wallets');
+
+  useEffect(() => {
+    if (entropy) {
+      // TODO: replace with modal pop up with action button
+      alert('Entropy detected from keychain');
+    }
+  }, [entropy]);
 
   return (
     <QuaiPayContent>

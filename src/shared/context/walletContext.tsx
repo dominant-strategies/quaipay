@@ -25,13 +25,13 @@ interface WalletContextState {
 // because it holds any other option or fx
 // that handle the state in some way
 interface WalletContext extends WalletContextState {
-  getEntropy: (showError?: boolean) => void;
+  getEntropy: (showError?: boolean) => Promise<void>;
   setEntropy: (entropy: string) => void;
-  getProfilePicture: () => void;
+  getProfilePicture: () => Promise<boolean>;
   setProfilePicture: (profilePicture?: string) => void;
-  getUsername: (showError?: boolean) => void;
+  getUsername: (showError?: boolean) => Promise<boolean>;
   setUsername: (username: string) => void;
-  getWallet: () => void;
+  getWallet: (showError?: boolean) => Promise<boolean>;
   setWallet: (wallet?: Wallet) => void;
   setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
   getZone: () => void;
@@ -61,28 +61,37 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<WalletContextState>(INITIAL_STATE);
   const { showSnackBar } = useSnackBar();
 
-  const getEntropy = (showError = true) => {
+  const getEntropy = async (showError = true) => {
     retrieveEntropy()
       .then(setEntropy)
-      .catch(
-        () =>
-          showError &&
+      .catch(() => {
+        showError &&
           showSnackBar({
             message: t('common.error'),
             moreInfo: t('error.retrieve.entropy') ?? '',
             type: 'error',
-          }),
-      );
+          });
+        return false;
+      })
+      .finally(() => true);
   };
 
   const setEntropy = (entropy: string) => {
     setState(prevState => ({ ...prevState, entropy }));
   };
 
-  const getProfilePicture = () => {
-    retrieveStoredItem(keychainKeys.profilePicture).then(profilePicture => {
-      setProfilePicture(profilePicture ? profilePicture : undefined);
-    });
+  const getProfilePicture = async () => {
+    try {
+      await retrieveStoredItem(keychainKeys.profilePicture).then(
+        profilePicture => {
+          setProfilePicture(profilePicture ? profilePicture : undefined);
+        },
+      );
+    } catch {
+      return false;
+    } finally {
+      return true;
+    }
   };
 
   const setProfilePicture = (profilePicture?: string) => {
@@ -90,16 +99,23 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getUsername = async (showError = true) => {
-    const username = await retrieveStoredItem(keychainKeys.username);
-    if (username) {
-      await setUsername(username);
-    } else {
-      showError &&
-        showSnackBar({
-          message: t('common.error'),
-          moreInfo: t('error.retrieve.username') ?? '',
-          type: 'error',
-        });
+    try {
+      const username = await retrieveStoredItem(keychainKeys.username);
+      if (username) {
+        setUsername(username);
+      } else {
+        showError &&
+          showSnackBar({
+            message: t('common.error'),
+            moreInfo: t('error.retrieve.username') ?? '',
+            type: 'error',
+          });
+        return false;
+      }
+    } catch {
+      return false;
+    } finally {
+      return true;
     }
   };
 
@@ -108,20 +124,28 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setState(prevState => ({ ...prevState, username }));
   };
 
-  const getWallet = () => {
+  const getWallet = async (showError = true) => {
     const { zone } = state;
-    retrieveWallet().then(wallet => {
+    try {
+      const wallet = await retrieveWallet();
       if (wallet) {
         setWallet(wallet[zone as Zone]);
         setWalletObject(wallet);
+        return true;
       } else {
+        return false;
+      }
+    } catch {
+      showError &&
         showSnackBar({
           message: t('common.error'),
           moreInfo: t('error.retrieve.wallet') ?? '',
           type: 'error',
         });
-      }
-    });
+      return false;
+    } finally {
+      return true;
+    }
   };
 
   const setWallet = (wallet?: Wallet) => {
@@ -160,11 +184,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const initWalletFromKeychain = async (entropy?: string) => {
     try {
-    if (entropy) {
-      setEntropy(entropy);
-    } else {
+      if (entropy) {
+        setEntropy(entropy);
+      } else {
         await getEntropy();
-    }
+      }
       await getWallet(false);
     } catch {
       return false;

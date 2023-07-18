@@ -22,18 +22,27 @@ export const KeyChainEntropyCheckModalBody: React.FC<
   const { t } = useTranslation('translation', {
     keyPrefix: 'onboarding.login.landing.keychainBottomSheet',
   });
-  const { initNameAndProfileFromKeychain, initWalletFromKeychain } =
-    useWalletContext();
+  const {
+    initNameAndProfileFromKeychain,
+    initWalletFromKeychain,
+    username,
+    profilePicture,
+  } = useWalletContext();
   const [checkingStoredInfo, setCheckingStoredInfo] = useState(false);
   const [checkUserInfo, setCheckUserInfo] = useState(false);
 
   const onContinue = async () => {
     try {
+      dismiss();
       setCheckingStoredInfo(true);
       initWalletFromKeychain(entropy);
       setCheckUserInfo(true);
       initNameAndProfileFromKeychain();
-      navigation.navigate('SetupLocation');
+      if (profilePicture && username) {
+        navigation.navigate('SetupLocation');
+      } else {
+        navigation.navigate('SetupNameAndPFP');
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.log('failed to fetch keychain data', err.message, err.stack);

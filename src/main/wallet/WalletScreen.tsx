@@ -129,10 +129,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     const txAllShards: Transaction[] = [];
     const promises = shards.map(async shard => {
       const zoneShard = Object.keys(walletObject as object)[shard];
-      console.log('zoneShard', zoneShard);
       const address =
         walletObject?.[zoneShard as keyof typeof walletObject]?.address;
-      console.log('wallet', address);
       try {
         const res = await getAccountTransactions(
           {
@@ -191,7 +189,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           return true;
         });
         const mappedTransactions = filteredTransactions.map(item => {
-          console.log('itemssss', item);
           const isUserSender =
             item.from.toLowerCase() === wallet?.address.toLowerCase();
           const contact = contacts?.find(
@@ -216,7 +213,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           };
         });
         txAllShards.push(...mappedTransactions);
-        console.log('txAllShards', txAllShards);
       } catch (err) {
         console.log(err);
       }

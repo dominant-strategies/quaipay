@@ -59,6 +59,7 @@ export const KeyChainEntropyCheckModalBody: React.FC<
     <View style={styles.mainContainer}>
       {checkingStoredInfo ? (
         <QuaiPayLoader
+          backgroundColor="transparent"
           text={
             checkUserInfo
               ? 'Checking user info'

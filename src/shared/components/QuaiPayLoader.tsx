@@ -11,13 +11,19 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 type LoaderProps = {
   text: string;
+  backgroundColor?: string;
 };
 
-export function QuaiPayLoader({ text }: LoaderProps) {
+export function QuaiPayLoader({ text, backgroundColor }: LoaderProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView style={styles({ isDarkMode }).container}>
+    <SafeAreaView
+      style={[
+        styles({ isDarkMode }).container,
+        !!backgroundColor && { backgroundColor },
+      ]}
+    >
       <View style={styles({ isDarkMode }).indicatorWrapper}>
         <ActivityIndicator size="large" />
         <Text style={styles({ isDarkMode }).indicatorText}>{text}</Text>

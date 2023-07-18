@@ -27,8 +27,8 @@ import { RootNavigator } from 'src/shared/navigation/utils';
 import { Currency, Theme } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
-import { ReceiveStackScreenProps } from '../ReceiveStack';
-import ShareControl from '../ShareControl';
+import { ReceiveStackScreenProps } from 'src/main/home/receive/ReceiveStack';
+import ShareControl from 'src/main/home/receive/ShareControl';
 
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>

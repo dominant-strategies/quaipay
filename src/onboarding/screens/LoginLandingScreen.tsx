@@ -25,7 +25,7 @@ export const LoginLandingScreen: React.FC<
     keyPrefix: 'onboarding.login.landing',
   });
   const styles = useThemedStyle(themedStyle);
-  const entropy = useEntropy();
+  const entropy = useEntropy(false); // Setting showError snackbar as false
   const {
     close: closeRecoverModal,
     open: openRecoverModal,

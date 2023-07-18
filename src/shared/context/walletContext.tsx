@@ -25,11 +25,11 @@ interface WalletContextState {
 // because it holds any other option or fx
 // that handle the state in some way
 interface WalletContext extends WalletContextState {
-  getEntropy: () => void;
+  getEntropy: (showError?: boolean) => void;
   setEntropy: (entropy: string) => void;
   getProfilePicture: () => void;
   setProfilePicture: (profilePicture?: string) => void;
-  getUsername: () => void;
+  getUsername: (showError?: boolean) => void;
   setUsername: (username: string) => void;
   getWallet: () => void;
   setWallet: (wallet?: Wallet) => void;
@@ -61,15 +61,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<WalletContextState>(INITIAL_STATE);
   const { showSnackBar } = useSnackBar();
 
-  const getEntropy = () => {
+  const getEntropy = (showError = true) => {
     retrieveEntropy()
       .then(setEntropy)
-      .catch(() =>
-        showSnackBar({
-          message: t('common.error'),
-          moreInfo: t('error.retrieve.entropy') ?? '',
-          type: 'error',
-        }),
+      .catch(
+        () =>
+          showError &&
+          showSnackBar({
+            message: t('common.error'),
+            moreInfo: t('error.retrieve.entropy') ?? '',
+            type: 'error',
+          }),
       );
   };
 
@@ -87,16 +89,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setState(prevState => ({ ...prevState, profilePicture }));
   };
 
-  const getUsername = async () => {
+  const getUsername = async (showError = true) => {
     const username = await retrieveStoredItem(keychainKeys.username);
     if (username) {
       await setUsername(username);
     } else {
-      showSnackBar({
-        message: t('common.error'),
-        moreInfo: t('error.retrieve.username') ?? '',
-        type: 'error',
-      });
+      showError &&
+        showSnackBar({
+          message: t('common.error'),
+          moreInfo: t('error.retrieve.username') ?? '',
+          type: 'error',
+        });
     }
   };
 
@@ -166,7 +169,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const initNameAndProfileFromKeychain = () => {
     getProfilePicture();
-    getUsername();
+    getUsername(false); // Setting showError snackbar as false
   };
 
   return (

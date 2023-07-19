@@ -66,7 +66,7 @@ export const SetupNameAndPFPScreen: React.FC<
       if (!profilePicture) {
         await storeItem({
           key: keychainKeys.profilePicture,
-          value: walletBlockie,
+          value: indexedZones[currentWalletIndex],
         });
       }
       navigation.navigate('SetupLocation');

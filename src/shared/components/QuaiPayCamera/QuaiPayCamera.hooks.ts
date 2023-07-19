@@ -16,6 +16,8 @@ import {
 } from 'src/shared/utils/seedPhrase';
 
 import { ScannerType } from './QuaiPayCamera.types';
+import { Zone } from 'src/shared/types';
+import makeBlockie from 'ethereum-blockies-base64';
 
 interface HookOutput {
   frameProcessor: (frame: Frame) => void;
@@ -50,7 +52,10 @@ const useSendAmountScannerCamera = () => {
           params: {
             amount: amount || 0,
             receiverAddress: address,
-            receiverPFP: profilePicture,
+            // TODO: replace address to generate blockie with walletObject[zone] when setup
+            receiverPFP: Zone?.[profilePicture as keyof typeof Zone]
+              ? makeBlockie(address)
+              : profilePicture,
             receiverUsername: username,
             sender: sender!,
           },

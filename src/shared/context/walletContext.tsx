@@ -67,10 +67,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (entropy) {
         setEntropy(entropy);
-        return true;
-      } else {
-        return false;
       }
+      return !!entropy;
     } catch {
       showError &&
         showSnackBar({
@@ -92,12 +90,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         keychainKeys.profilePicture,
       );
 
-      if (!profilePicture) {
-        return false;
-      } else {
+      if (profilePicture) {
         setProfilePicture(profilePicture);
-        return true;
       }
+      return !!profilePicture;
     } catch {
       return false;
     }
@@ -112,7 +108,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       const username = await retrieveStoredItem(keychainKeys.username);
       if (username) {
         setUsername(username);
-        return true;
       } else {
         showError &&
           showSnackBar({
@@ -120,8 +115,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
             moreInfo: t('error.retrieve.username') ?? '',
             type: 'error',
           });
-        return false;
       }
+      return !!username;
     } catch {
       return false;
     }
@@ -139,10 +134,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       if (wallet) {
         setWallet(wallet[zone as Zone]);
         setWalletObject(wallet);
-        return true;
-      } else {
-        return false;
       }
+      return !!wallet;
     } catch {
       showError &&
         showSnackBar({
@@ -208,14 +201,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (isPfpSuccessful) {
         const usernameFetchStatus = await getUsername(false);
-        if (usernameFetchStatus) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
+        return usernameFetchStatus;
       }
+      return false;
     } catch {
       return false;
     }

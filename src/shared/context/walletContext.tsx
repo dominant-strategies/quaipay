@@ -25,7 +25,7 @@ interface WalletContextState {
 // because it holds any other option or fx
 // that handle the state in some way
 interface WalletContext extends WalletContextState {
-  getEntropy: (showError?: boolean) => Promise<void>;
+  getEntropy: (showError?: boolean) => Promise<boolean>;
   setEntropy: (entropy: string) => void;
   getProfilePicture: () => Promise<boolean>;
   setProfilePicture: (profilePicture?: string) => void;
@@ -62,18 +62,24 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const { showSnackBar } = useSnackBar();
 
   const getEntropy = async (showError = true) => {
-    retrieveEntropy()
-      .then(setEntropy)
-      .catch(() => {
-        showError &&
-          showSnackBar({
-            message: t('common.error'),
-            moreInfo: t('error.retrieve.entropy') ?? '',
-            type: 'error',
-          });
+    try {
+      const entropy = await retrieveEntropy();
+
+      if (entropy) {
+        setEntropy(entropy);
+        return true;
+      } else {
         return false;
-      })
-      .finally(() => true);
+      }
+    } catch {
+      showError &&
+        showSnackBar({
+          message: t('common.error'),
+          moreInfo: t('error.retrieve.entropy') ?? '',
+          type: 'error',
+        });
+      return false;
+    }
   };
 
   const setEntropy = (entropy: string) => {
@@ -82,15 +88,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getProfilePicture = async () => {
     try {
-      await retrieveStoredItem(keychainKeys.profilePicture).then(
-        profilePicture => {
-          setProfilePicture(profilePicture ? profilePicture : undefined);
-        },
+      const profilePicture = await retrieveStoredItem(
+        keychainKeys.profilePicture,
       );
+
+      if (!profilePicture) {
+        return false;
+      } else {
+        setProfilePicture(profilePicture);
+        return true;
+      }
     } catch {
       return false;
-    } finally {
-      return true;
     }
   };
 
@@ -103,6 +112,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       const username = await retrieveStoredItem(keychainKeys.username);
       if (username) {
         setUsername(username);
+        return true;
       } else {
         showError &&
           showSnackBar({
@@ -114,8 +124,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     } catch {
       return false;
-    } finally {
-      return true;
     }
   };
 
@@ -143,8 +151,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
           type: 'error',
         });
       return false;
-    } finally {
-      return true;
     }
   };
 
@@ -190,24 +196,28 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         await getEntropy();
       }
       await getWallet(false);
+      return true;
     } catch {
       return false;
-    } finally {
-      return true;
     }
   };
 
   const initNameAndProfileFromKeychain = async () => {
     try {
-      const pfpFetchStatus = await getProfilePicture();
-      const usernameFetchStatus = await getUsername(false); // Setting showError snackbar as false
-      if (!pfpFetchStatus || !usernameFetchStatus) {
+      const isPfpSuccessful = await getProfilePicture();
+
+      if (isPfpSuccessful) {
+        const usernameFetchStatus = await getUsername(false);
+        if (usernameFetchStatus) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
         return false;
       }
     } catch {
       return false;
-    } finally {
-      return true;
     }
   };
 

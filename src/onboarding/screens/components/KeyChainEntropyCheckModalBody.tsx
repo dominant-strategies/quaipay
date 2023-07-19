@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -30,39 +30,39 @@ export const KeyChainEntropyCheckModalBody: React.FC<
   const onContinue = async () => {
     try {
       setCheckingStoredInfo(true);
-      initWalletFromKeychain(entropy);
-      setCheckUserInfo(true);
+      await initWalletFromKeychain(entropy);
     } catch (err) {
       if (err instanceof Error) {
         console.log('failed to fetch keychain data', err.message, err.stack);
       } else {
         console.log('failed to fetch keychain data', err);
       }
+    } finally {
+      setCheckUserInfo(true);
     }
   };
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const isSuccessful = await initNameAndProfileFromKeychain();
-        if (isSuccessful) {
-          navigation.navigate('SetupLocation');
-        } else {
-          navigation.navigate('SetupNameAndPFP');
-        }
-      } catch (err) {
+  const fetchUserInfo = useCallback(async () => {
+    initNameAndProfileFromKeychain()
+      .catch(err => {
         if (err instanceof Error) {
           console.log('failed to fetch keychain data', err.message, err.stack);
         } else {
           console.log('failed to fetch keychain data', err);
         }
-      } finally {
+      })
+      .then(_ => {
         setCheckingStoredInfo(false);
         setCheckUserInfo(false);
         dismiss();
-      }
-    };
+        return _;
+      })
+      .then(isSuccessful => {
+        navigation.navigate(isSuccessful ? 'SetupLocation' : 'SetupNameAndPFP');
+      });
+  }, []);
 
+  useEffect(() => {
     if (checkUserInfo) {
       fetchUserInfo();
     }

@@ -15,11 +15,9 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { quais } from 'quais';
 
 import DownChevron from 'src/shared/assets/downChevron.svg';
-import Paste from 'src/shared/assets/paste.svg';
 
 import { RootNavigator } from '../../navigation/utils';
 import { styledColors } from '../../styles';
@@ -31,6 +29,7 @@ import { useFilteredContacts } from './QuaiPayContactBottomSheet.hooks';
 import { QuaiPayListItem } from '../QuaiPayListItem';
 import { QuaiPaySearchbar } from '../QuaiPaySearchbar';
 import { QuaiPayText } from '../QuaiPayText';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 enum BottomSheetIndex {
   INIT = 0, // After init, it's removed to avoid swiping it to the bottom
@@ -51,8 +50,6 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
 
-  const [detectedAddress, setDetectedAddress] = useState<string>('');
-
   // ===== Search =====
   const [searchText, setSearchText] = useState<string>();
 
@@ -70,6 +67,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
   const [currentBottomSheetIndex, setCurrentBottomSheetIndex] = useState(
     BottomSheetIndex.INIT,
   );
+  const { showSnackBar } = useSnackBar();
 
   // ===== Layout =====
   const transition = useSharedValue(0);
@@ -161,37 +159,32 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     }
   });
 
-  useEffect(() => {
-    Clipboard.getString().then(data => {
-      try {
-        const address = data?.match(/0x[a-fA-F0-9]{40}(?![a-fA-F0-9])/g)?.[0];
-        if (quais.utils.isAddress(address || '')) {
-          setDetectedAddress(address || '');
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
-    });
-  }, [detectedAddress]);
-
-  const navigateToAmount = (address: string) => {
-    RootNavigator.navigate('SendStack', {
-      screen: 'SendAmount',
-      params: {
-        receiverAddress: address,
-        amount: 0,
-        sender: sender!,
-      },
+  const navigateToAmount = () => {
+    if (searchText && quais.utils.isAddress(searchText)) {
+      RootNavigator.navigate('SendStack', {
+        screen: 'SendAmount',
+        params: {
+          receiverAddress: searchText,
+          amount: 0,
+          sender: sender!,
+        },
+      });
+    }
+    showSnackBar({
+      message: t('home.send.invalidAddress'),
+      moreInfo: t('home.send.invalidAddressDescription') as string,
+      type: 'error',
     });
   };
 
   // ===============
-  return contacts || detectedAddress ? (
+  return (
     <BottomSheet
       backgroundStyle={styles.backgroundSurface}
       handleIndicatorStyle={{
         backgroundColor: isDarkMode ? styledColors.light : styledColors.gray,
       }}
+      enableHandlePanningGesture={!!contacts}
       ref={sheetRef}
       snapPoints={snapPoints}
       onChange={handleSheetChange}
@@ -201,7 +194,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     >
       <View onLayout={handleLayoutContent}>
         <BottomSheetView style={styles.backgroundSurface}>
-          {filteredContacts.length > 0 && (
+          {filteredContacts.length > 0 && contacts && (
             <Animated.View
               style={[
                 styles.bottomSheetContainer,
@@ -230,7 +223,11 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                 ))}
               <TouchableOpacity onPress={expandBottomSheet}>
                 <View style={styles.contact}>
-                  <DownChevron color={styles.chevron.color} />
+                  <DownChevron
+                    color={styles.chevron.color}
+                    /* @ts-ignore */
+                    style={styles.chevron}
+                  />
                 </View>
                 <QuaiPayText>{t('home.send.viewAll')}</QuaiPayText>
               </TouchableOpacity>
@@ -245,7 +242,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               onSearchChange={setSearchText}
               placeholder={t('home.send.searchByAddress')}
               onPress={expandBottomSheet}
-              onPressPaste={() => navigateToAmount(detectedAddress)}
+              onPressRightIcon={() => navigateToAmount()}
             />
           </TouchableOpacity>
 
@@ -258,22 +255,6 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               }
               contentContainerStyle={styles.marginHorizontal20}
             >
-              {detectedAddress && (
-                <TouchableOpacity
-                  style={styles.detectedAddress}
-                  onPress={() => navigateToAmount(detectedAddress)}
-                >
-                  <Paste />
-                  <View style={styles.column}>
-                    <QuaiPayText type="H3" style={styles.pasteTitle}>
-                      {t('home.send.pasteFromClipboard')}
-                    </QuaiPayText>
-                    <QuaiPayText type="paragraph" style={styles.addressText}>
-                      {detectedAddress}
-                    </QuaiPayText>
-                  </View>
-                </TouchableOpacity>
-              )}
               {filteredContacts.map((contact: Contact, index: number) => (
                 <TouchableOpacity
                   key={index}
@@ -291,7 +272,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
         </BottomSheetView>
       </View>
     </BottomSheet>
-  ) : null;
+  );
 };
 
 const themedStyle = (theme: Theme) =>
@@ -336,26 +317,6 @@ const themedStyle = (theme: Theme) =>
     },
     chevron: {
       color: theme.primary,
-    },
-    detectedAddress: {
-      backgroundColor: theme.normal,
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderRadius: 4,
-      paddingHorizontal: 20,
-      paddingVertical: 8,
-    },
-    column: {
-      padding: 10,
-      flexDirection: 'column',
-    },
-    pasteTitle: {
-      color: styledColors.white,
-      alignSelf: 'flex-start',
-    },
-    addressText: {
-      color: styledColors.white,
-      marginRight: 20,
-      textAlign: 'left',
+      transform: [{ rotate: '180deg' }],
     },
   });

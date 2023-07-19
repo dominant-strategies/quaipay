@@ -37,6 +37,7 @@
     "viewAll": "Alle anzeigen",
     "noInternet": "Keine Internetverbindung",
     "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!",
-    "pasteFromClipboard": "Aus Zwischenablage einfügen",
+    "invalidAddress": "Ungültige Adresse",
+    "invalidAddressDescription": "Bitte gültige Addresse eingeben um fortzufahren."
   }
 }

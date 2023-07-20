@@ -242,7 +242,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               onSearchChange={setSearchText}
               placeholder={t('home.send.searchByAddress')}
               onPress={expandBottomSheet}
-              onPressRightIcon={() => navigateToAmount()}
+              onPressRightIcon={navigateToAmount}
             />
           </TouchableOpacity>
 

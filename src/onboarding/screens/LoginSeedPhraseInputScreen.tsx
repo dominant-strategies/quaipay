@@ -52,7 +52,7 @@ export const LoginSeedPhraseInputScreen: React.FC<
   const [settingUpWallet, setSettingUpWallet] = useState(false);
 
   const changeWordOnPhrase = (value: string, idx: number) => {
-    setSeedPhraseWords(prevState => {
+    const newPhraseCalculator = (prevState: string[]) => {
       const parsedValue = value.split(' ');
       if (parsedValue.length <= 1) {
         // Take element on idx and replace it with value
@@ -68,8 +68,10 @@ export const LoginSeedPhraseInputScreen: React.FC<
           return parsedValue[slicedId] ? parsedValue[slicedId] : word;
         });
       }
-    });
-    setIsPhraseValid(validatePhrase(seedPhraseWords.join(' ')));
+    };
+    const newValue = newPhraseCalculator(seedPhraseWords);
+    setSeedPhraseWords(newValue);
+    setIsPhraseValid(validatePhrase(newValue.join(' ')));
   };
 
   const onSuccessful = async () => {

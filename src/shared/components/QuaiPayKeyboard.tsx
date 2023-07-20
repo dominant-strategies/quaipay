@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Theme } from '../types';
 import DeleteArrow from '../assets/deleteArrow.svg';
-import { useThemedStyle } from '../hooks/useThemedStyle';
+import { useThemedStyle } from 'src/shared/hooks';
 import { QuaiPayText } from './QuaiPayText';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -74,12 +74,14 @@ interface QuaiPayKeyboardProps {
   handleLeftButtonPress: () => void;
   handleRightButtonPress: () => void;
   onInputButtonPress: (input: string) => void;
+  visible?: boolean;
 }
 
 export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({
   handleLeftButtonPress,
   handleRightButtonPress,
   onInputButtonPress,
+  visible = true,
 }) => {
   const styles = useThemedStyle(themedStyle);
 
@@ -91,9 +93,9 @@ export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({
       </KeyboardButton>
     ),
   };
-
+  console.log({ visible });
   return (
-    <View style={styles.keyboardContainer}>
+    <View style={visible ? styles.keyboardContainer : styles.hidden}>
       {buttons.map(btn => (
         <View key={btn} style={styles.buttonContainer}>
           {buttonOptions[btn] || (
@@ -131,5 +133,8 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       height: '90%',
+    },
+    hidden: {
+      display: 'none',
     },
   });

@@ -45,57 +45,55 @@ export const LoginLandingScreen: React.FC<
   }, [entropy]);
 
   return (
-    <>
-      <QuaiPayContent>
-        <View style={styles.textContainer}>
-          <QuaiPayText type="H1" style={styles.title}>
-            {t('title')}
+    <QuaiPayContent>
+      <View style={styles.textContainer}>
+        <QuaiPayText type="H1" style={styles.title}>
+          {t('title')}
+        </QuaiPayText>
+        <QuaiPayText type="paragraph" themeColor="secondary">
+          {t('description')}
+        </QuaiPayText>
+      </View>
+      <View style={styles.separator} />
+      <Pressable
+        onPress={goToQRCodeScan}
+        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+      >
+        <PhoneWithQR />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            {t('cards.qr.title')}
           </QuaiPayText>
-          <QuaiPayText type="paragraph" themeColor="secondary">
-            {t('description')}
+          <QuaiPayText themeColor="secondary" style={styles.cardText}>
+            {t('cards.qr.description')}
           </QuaiPayText>
         </View>
-        <View style={styles.separator} />
-        <Pressable
-          onPress={goToQRCodeScan}
-          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-        >
-          <PhoneWithQR />
-          <View style={styles.cardTextContainer}>
-            <QuaiPayText type="H3" style={styles.cardText}>
-              {t('cards.qr.title')}
-            </QuaiPayText>
-            <QuaiPayText themeColor="secondary" style={styles.cardText}>
-              {t('cards.qr.description')}
-            </QuaiPayText>
-          </View>
-          <RightChevron />
-        </Pressable>
-        <Pressable
-          onPress={goToSeedPhraseInput}
-          style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
-        >
-          <EditIcon />
-          <View style={styles.cardTextContainer}>
-            <QuaiPayText type="H3" style={styles.cardText}>
-              {t('cards.phrase.title')}
-            </QuaiPayText>
-            <QuaiPayText themeColor="secondary" style={styles.cardText}>
-              {t('cards.phrase.description')}
-            </QuaiPayText>
-          </View>
-          <RightChevron />
-        </Pressable>
-        <View style={styles.doubleSeparator} />
-        <QuaiPayButton
-          underline
-          type="secondary"
-          titleType="default"
-          title={t('learnMore')}
-          onPress={goToLearnMoreRecovery}
-          style={styles.learnMore}
-        />
-      </QuaiPayContent>
+        <RightChevron />
+      </Pressable>
+      <Pressable
+        onPress={goToSeedPhraseInput}
+        style={({ pressed }) => [styles.card, pressed && { opacity: 0.5 }]}
+      >
+        <EditIcon />
+        <View style={styles.cardTextContainer}>
+          <QuaiPayText type="H3" style={styles.cardText}>
+            {t('cards.phrase.title')}
+          </QuaiPayText>
+          <QuaiPayText themeColor="secondary" style={styles.cardText}>
+            {t('cards.phrase.description')}
+          </QuaiPayText>
+        </View>
+        <RightChevron />
+      </Pressable>
+      <View style={styles.doubleSeparator} />
+      <QuaiPayButton
+        underline
+        type="secondary"
+        titleType="default"
+        title={t('learnMore')}
+        onPress={goToLearnMoreRecovery}
+        style={styles.learnMore}
+      />
       <QuaiPayBottomSheetModal ref={ref}>
         <KeyChainEntropyCheckModalBody
           entropy={entropy}
@@ -103,7 +101,7 @@ export const LoginLandingScreen: React.FC<
           navigation={navigation}
         />
       </QuaiPayBottomSheetModal>
-    </>
+    </QuaiPayContent>
   );
 };
 

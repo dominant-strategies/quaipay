@@ -1,7 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -16,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   QuaiPayButton,
+  QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
   QuaiPayText,
@@ -50,11 +49,6 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
 
   const shouldDisableContinueButton =
     Number(input.value) === 0 || Number(eqInput.value) === 0;
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    flex: 1,
-  };
 
   const equivalentUnitTextColorStyle = {
     color: isDarkMode ? styledColors.gray : styledColors.black,
@@ -130,11 +124,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   }, [inputRef]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent title={t('home.send.label')}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
@@ -215,7 +205,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           />
         </View>
       )}
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 };
 
@@ -271,6 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 32,
+    marginBottom: 48,
   },
   continueButton: {
     alignSelf: 'center',

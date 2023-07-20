@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,6 +11,7 @@ import {
 } from 'react-native';
 import {
   QuaiPayBanner,
+  QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayText,
 } from 'src/shared/components';
@@ -55,12 +54,6 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
-
   useEffect(() => {
     // TODO: estimate gas before sending
     // estimateGas(address, eqInput.value).then(gas => console.log('gas', gas));
@@ -87,11 +80,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent hasBackgroundVariant={true} title={t('home.send.label')}>
       <View style={styles.mainContainer}>
         <View style={styles.bannerWrapper}>
           <View style={styles.banner}>
@@ -300,7 +289,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
           )}
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 }
 

@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
-  useColorScheme,
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
@@ -19,7 +16,7 @@ import { SendStackParamList } from '../SendStack';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
-import { QuaiPayText } from 'src/shared/components';
+import { QuaiPayContent, QuaiPayText } from 'src/shared/components';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
@@ -28,7 +25,6 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   const { receiverAddress, receiverUsername, input, amountInUSD } =
     route.params;
   const { t } = useTranslation();
-  const isDarkMode = useColorScheme() === 'dark';
 
   const [selectedTip, setSelectedTip] = useState<any>(0);
   const [customTip, setCustomTip] = useState('0');
@@ -159,22 +155,12 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       : `${input.value} ${input.unit} + ${handleCustomTip()}`;
   };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
-
   return (
     <DismissKeyboard>
-      <SafeAreaView style={backgroundStyle}>
+      <QuaiPayContent title={t('home.send.label')}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <StatusBar
-            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            backgroundColor={backgroundStyle.backgroundColor}
-          />
           <View style={styles.mainContainer}>
             <View style={styles.container}>
               <QuaiPayText style={styles.username}>
@@ -333,7 +319,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </QuaiPayContent>
     </DismissKeyboard>
   );
 };

@@ -35,6 +35,7 @@ import { useZone } from 'src/shared/hooks/useZone';
 import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useTheme } from 'src/shared/context/themeContext';
+import { RootNavigator } from 'src/shared/navigation/utils';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
@@ -135,6 +136,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       });
   }, [selectedTxDirection, contacts]);
 
+  const navigateToReferral = useCallback(() => {
+    RootNavigator.navigate('SettingsStack', { screen: 'Referral' });
+  }, []);
+
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
 
@@ -178,6 +183,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           </QuaiPayText>
         </Pressable>
         <Pressable
+          onPress={navigateToReferral}
           style={({ pressed }) => [
             styles.button,
             styles.earnButton,

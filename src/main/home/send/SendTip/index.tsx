@@ -49,13 +49,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       };
     }
 
-    let tipAmount =
-      selectedTip === 'custom'
-        ? Number(customTip)
-        : (Number(input.value) * tipPercentage) / 100;
-
     if (isNaN(tipPercentage)) {
-      tipAmount = parseFloat(customTip);
       tips = {
         customTip,
         message:
@@ -76,7 +70,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
               )}`,
       };
     } else {
-      tipAmount = (Number(input.value) * tipPercentage) / 100;
+      const tipAmount = (Number(input.value) * tipPercentage) / 100;
       tips = {
         tipAmount,
         message:
@@ -108,7 +102,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    let tipInUSD = 0;
+    let tipInUSD: number;
     if (input.unit === Currency.USD) {
       tipInUSD =
         selectedTip === 'custom'

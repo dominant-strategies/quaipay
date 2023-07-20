@@ -25,6 +25,7 @@ import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
+import { useWalletContext } from 'src/shared/context/walletContext';
 
 import ShareControl from './ShareControl';
 
@@ -34,7 +35,8 @@ export const ReceiveScreen = () => {
   const { showSnackBar } = useSnackBar();
   const isDarkMode = useColorScheme() === 'dark';
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
-  const profilePicture = useProfilePicture();
+  const { profilePicture } = useWalletContext(); // get bare profile picture state
+  useProfilePicture(); // fetch profilePicture
   const username = useUsername();
   const wallet = useWallet();
 

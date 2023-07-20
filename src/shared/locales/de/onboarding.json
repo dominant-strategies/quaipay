@@ -37,7 +37,13 @@
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a "
         }
       },
-      "learnMore": "Erfahren Sie mehr über den Wiederherstellungsprozess."
+      "learnMore": "Erfahren Sie mehr über den Wiederherstellungsprozess.",
+      "keychainBottomSheet": {
+        "title": "Found data from previous session on your phone!",
+        "description": "For some reason you were not properly logged out of your account in your device. Thus, information about your account persisted in your phone's secure inner storage.\nIf you agree to it, we can use it to setup your account again.",
+        "continueButton": "Login using phone's secure storage info",
+        "dismissButton": "Dismiss and login with another method"
+      }
     },
     "phraseInput": {
       "title": "Geben Sie Ihre Seed-Phrase ein",

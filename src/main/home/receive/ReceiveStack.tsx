@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/stack';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen';
-import { ReceiveQRScreen } from './ReceiveQRScreen';
+import { ReceiveQRScreen } from 'src/main/home/receive/ReceiveAmountScreen';
 
 export type ReceiveStackParamList = {
   ReceiveAmountInput: undefined;

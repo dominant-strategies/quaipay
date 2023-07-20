@@ -25,18 +25,20 @@ interface WalletContextState {
 // because it holds any other option or fx
 // that handle the state in some way
 interface WalletContext extends WalletContextState {
-  getEntropy: () => void;
+  getEntropy: (showError?: boolean) => Promise<boolean>;
   setEntropy: (entropy: string) => void;
-  getProfilePicture: () => void;
+  getProfilePicture: () => Promise<boolean>;
   setProfilePicture: (profilePicture?: string) => void;
-  getUsername: () => void;
+  getUsername: (showError?: boolean) => Promise<boolean>;
   setUsername: (username: string) => void;
-  getWallet: () => void;
+  getWallet: (showError?: boolean) => Promise<boolean>;
   setWallet: (wallet?: Wallet) => void;
   setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
   getZone: () => void;
   setZone: (zone: Zone) => void;
   initFromOnboarding: (info: OnboardingInfo) => void;
+  initWalletFromKeychain: (entropy?: string) => Promise<boolean>;
+  initNameAndProfileFromKeychain: () => Promise<boolean>;
 }
 
 const INITIAL_STATE: WalletContextState = {
@@ -59,42 +61,64 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<WalletContextState>(INITIAL_STATE);
   const { showSnackBar } = useSnackBar();
 
-  const getEntropy = () => {
-    retrieveEntropy()
-      .then(setEntropy)
-      .catch(() =>
+  const getEntropy = async (showError = true) => {
+    try {
+      const entropy = await retrieveEntropy();
+
+      if (entropy) {
+        setEntropy(entropy);
+      }
+      return !!entropy;
+    } catch {
+      showError &&
         showSnackBar({
           message: t('common.error'),
           moreInfo: t('error.retrieve.entropy') ?? '',
           type: 'error',
-        }),
-      );
+        });
+      return false;
+    }
   };
 
   const setEntropy = (entropy: string) => {
     setState(prevState => ({ ...prevState, entropy }));
   };
 
-  const getProfilePicture = () => {
-    retrieveStoredItem(keychainKeys.profilePicture).then(profilePicture => {
-      setProfilePicture(profilePicture ? profilePicture : undefined);
-    });
+  const getProfilePicture = async () => {
+    try {
+      const profilePicture = await retrieveStoredItem(
+        keychainKeys.profilePicture,
+      );
+
+      if (profilePicture) {
+        setProfilePicture(profilePicture);
+      }
+      return !!profilePicture;
+    } catch {
+      return false;
+    }
   };
 
   const setProfilePicture = (profilePicture?: string) => {
     setState(prevState => ({ ...prevState, profilePicture }));
   };
 
-  const getUsername = async () => {
-    const username = await retrieveStoredItem(keychainKeys.username);
-    if (username) {
-      await setUsername(username);
-    } else {
-      showSnackBar({
-        message: t('common.error'),
-        moreInfo: t('error.retrieve.username') ?? '',
-        type: 'error',
-      });
+  const getUsername = async (showError = true) => {
+    try {
+      const username = await retrieveStoredItem(keychainKeys.username);
+      if (username) {
+        setUsername(username);
+      } else {
+        showError &&
+          showSnackBar({
+            message: t('common.error'),
+            moreInfo: t('error.retrieve.username') ?? '',
+            type: 'error',
+          });
+      }
+      return !!username;
+    } catch {
+      return false;
     }
   };
 
@@ -103,20 +127,24 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setState(prevState => ({ ...prevState, username }));
   };
 
-  const getWallet = () => {
+  const getWallet = async (showError = true) => {
     const { zone } = state;
-    retrieveWallet().then(wallet => {
+    try {
+      const wallet = await retrieveWallet();
       if (wallet) {
         setWallet(wallet[zone as Zone]);
         setWalletObject(wallet);
-      } else {
+      }
+      return !!wallet;
+    } catch {
+      showError &&
         showSnackBar({
           message: t('common.error'),
           moreInfo: t('error.retrieve.wallet') ?? '',
           type: 'error',
         });
-      }
-    });
+      return false;
+    }
   };
 
   const setWallet = (wallet?: Wallet) => {
@@ -153,6 +181,34 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     setWalletObject(info.walletObject);
   };
 
+  const initWalletFromKeychain = async (entropy?: string) => {
+    try {
+      if (entropy) {
+        setEntropy(entropy);
+      } else {
+        await getEntropy();
+      }
+      await getWallet(false);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const initNameAndProfileFromKeychain = async () => {
+    try {
+      const isPfpSuccessful = await getProfilePicture();
+
+      if (isPfpSuccessful) {
+        const usernameFetchStatus = await getUsername(false);
+        return usernameFetchStatus;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
   return (
     <WalletContextProvider
       value={{
@@ -169,6 +225,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         getZone,
         setZone,
         initFromOnboarding,
+        initWalletFromKeychain,
+        initNameAndProfileFromKeychain,
       }}
     >
       {children}

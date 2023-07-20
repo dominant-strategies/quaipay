@@ -68,36 +68,36 @@ export const KeyChainEntropyCheckModalBody: React.FC<
     }
   }, [checkUserInfo]);
 
+  if (checkingStoredInfo) {
+    return (
+      <QuaiPayLoader
+        backgroundColor="transparent"
+        text={
+          checkUserInfo
+            ? 'Checking user info'
+            : 'Checking which data is already stored'
+        }
+      />
+    );
+  }
+
   return (
     <View style={styles.mainContainer}>
-      {checkingStoredInfo ? (
-        <QuaiPayLoader
-          backgroundColor="transparent"
-          text={
-            checkUserInfo
-              ? 'Checking user info'
-              : 'Checking which data is already stored'
-          }
+      <QuaiPayText type="H2">{t('title')}</QuaiPayText>
+      <View style={styles.separator} />
+      <QuaiPayText type="paragraph" style={styles.description}>
+        {t('description')}
+      </QuaiPayText>
+      <View style={styles.separator} />
+      <View style={styles.buttonsContainer}>
+        <QuaiPayButton
+          onPress={dismiss}
+          outlined
+          type={'secondary'}
+          title={t('dismissButton')}
         />
-      ) : (
-        <>
-          <QuaiPayText type="H2">{t('title')}</QuaiPayText>
-          <View style={styles.separator} />
-          <QuaiPayText type="paragraph" style={styles.description}>
-            {t('description')}
-          </QuaiPayText>
-          <View style={styles.separator} />
-          <View style={styles.buttonsContainer}>
-            <QuaiPayButton
-              onPress={dismiss}
-              outlined
-              type={'secondary'}
-              title={t('dismissButton')}
-            />
-            <QuaiPayButton onPress={onContinue} title={t('continueButton')} />
-          </View>
-        </>
-      )}
+        <QuaiPayButton onPress={onContinue} title={t('continueButton')} />
+      </View>
     </View>
   );
 };

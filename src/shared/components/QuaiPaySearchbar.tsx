@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import MagnifyingGlass from '../assets/magnifyingGlass.svg';
-import Paste from 'src/shared/assets/paste_dark.svg';
+import Arrow from 'src/shared/assets/send.svg';
 import { Theme } from '../types';
 import { useThemedStyle } from 'src/shared/hooks';
 
@@ -16,7 +16,7 @@ type QuaiPaySearchbarProps = {
   searchValue?: string;
   onSearchChange: (search: string) => void;
   onPress?: () => void;
-  onPressPaste?: () => void;
+  onPressRightIcon?: () => void;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -25,7 +25,7 @@ export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
   searchValue,
   onSearchChange,
   onPress,
-  onPressPaste,
+  onPressRightIcon,
   style,
 }) => {
   const styles = useThemedStyle(themedStyle);
@@ -44,9 +44,13 @@ export const QuaiPaySearchbar: React.FC<QuaiPaySearchbarProps> = ({
         value={searchValue}
         onChangeText={onSearchChange}
       />
-      {onPressPaste && (
-        <Pressable onPress={onPressPaste}>
-          <Paste style={styles.pasteIcon} />
+      {onPressRightIcon && (
+        <Pressable onPress={onPressRightIcon}>
+          <Arrow
+            width={18}
+            fill={styles.rightIcon.color}
+            style={styles.rightIcon}
+          />
         </Pressable>
       )}
     </Pressable>
@@ -73,8 +77,9 @@ const themedStyle = (theme: Theme) =>
       color: theme.primary,
       flex: 1,
     },
-    pasteIcon: {
-      textAlign: 'center',
+    rightIcon: {
+      color: theme.primary,
       marginRight: 6,
+      textAlign: 'center',
     },
   });

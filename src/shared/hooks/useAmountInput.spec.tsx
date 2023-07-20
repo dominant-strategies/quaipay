@@ -23,6 +23,27 @@ const TestComponent: React.FC<TestComponentProps> = ({ initialAmount }) => {
 
 describe('useAmountInput', () => {
   describe('onSwap', () => {
+    it('swaps input and eqInput', () => {
+      const testRenderer = TestRenderer.create(
+        <TestComponent initialAmount="0.005" />,
+      );
+      const testInstance = testRenderer.root;
+
+      let inputValueBeforePress = testInstance.findByProps({ id: 'inputValue' })
+        .children[0];
+
+      const swapButton = testInstance.findByProps({ id: 'swapButton' });
+      TestRenderer.act(() => {
+        swapButton.props.onPress();
+      });
+
+      let eqInputValueAfterPress = testInstance.findByProps({
+        id: 'eqInputValue',
+      }).children[0];
+
+      expect(inputValueBeforePress).toEqual(eqInputValueAfterPress);
+    });
+
     it('is idempotent', () => {
       const testRenderer = TestRenderer.create(
         <TestComponent initialAmount="0.005" />,

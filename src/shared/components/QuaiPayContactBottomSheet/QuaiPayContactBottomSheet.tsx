@@ -194,7 +194,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
     >
       <View onLayout={handleLayoutContent}>
         <BottomSheetView style={styles.backgroundSurface}>
-          {filteredContacts.length > 0 && !contacts && (
+          {filteredContacts.length > 0 && contacts && (
             <Animated.View
               style={[
                 styles.bottomSheetContainer,
@@ -223,11 +223,12 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                 ))}
               <TouchableOpacity onPress={expandBottomSheet}>
                 <View style={styles.contact}>
-                  <DownChevron
-                    color={styles.chevron.color}
-                    /* @ts-ignore */
-                    style={styles.chevron}
-                  />
+                  <View style={styles.chevronWrapper}>
+                    <DownChevron
+                      color={styles.chevron.color}
+                      style={styles.chevron}
+                    />
+                  </View>
                 </View>
                 <QuaiPayText>{t('home.send.viewAll')}</QuaiPayText>
               </TouchableOpacity>
@@ -242,7 +243,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
               onSearchChange={setSearchText}
               placeholder={t('home.send.searchByAddress')}
               onPress={expandBottomSheet}
-              onPressRightIcon={() => navigateToAmount()}
+              onPressRightIcon={navigateToAmount}
             />
           </TouchableOpacity>
 
@@ -317,6 +318,9 @@ const themedStyle = (theme: Theme) =>
     },
     chevron: {
       color: theme.primary,
+    },
+    chevronWrapper: {
       transform: [{ rotate: '180deg' }],
+      paddingTop: 2,
     },
   });

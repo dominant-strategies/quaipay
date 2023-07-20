@@ -23,8 +23,9 @@ export const SettingsLink: React.FC<SettingsLinksProps> = ({
         <View style={styles.icon}>{icon}</View>
         <QuaiPayText style={styles.text}>{text}</QuaiPayText>
       </View>
-      {/* @ts-ignore */}
-      <Chevron style={styles.chevron} width={16} height={16} />
+      <View style={styles.chevron}>
+        <Chevron width={16} height={16} />
+      </View>
     </TouchableOpacity>
   );
 };

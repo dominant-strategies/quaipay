@@ -108,10 +108,6 @@ export const ReceiveQRScreen: React.FC<
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
-    safeAreaView: {
-      width: '100%',
-      height: '100%',
-    },
     walletCard: {
       borderRadius: 8,
       marginTop: 12,
@@ -123,9 +119,6 @@ const themedStyle = (theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 16,
-    },
-    mainAmount: {
-      ...fontStyle.fontH2,
     },
     userInfo: {
       alignItems: 'center',

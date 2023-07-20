@@ -1,4 +1,7 @@
 import * as Keychain from 'react-native-keychain';
+
+import { keychainKeys } from '../constants/keychainKeys';
+
 const {
   ACCESS_CONTROL,
   ACCESSIBLE,
@@ -67,4 +70,27 @@ export const retrieveStoredItem = async (key: string) => {
     return credentials;
   }
   return credentials.password;
+};
+
+export const resetStoredItem = async (key: string) => {
+  try {
+    await Keychain.resetGenericPassword({ service: key });
+  } catch (e) {
+    console.error(e);
+  } finally {
+    console.log('reset keychain with key ', key);
+  }
+};
+
+export const resetAllItems = async () => {
+  try {
+    const keys = Object.values(keychainKeys);
+    for (let index in keys) {
+      await resetStoredItem(keys[index]);
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    console.log('all keychain items reset');
+  }
 };

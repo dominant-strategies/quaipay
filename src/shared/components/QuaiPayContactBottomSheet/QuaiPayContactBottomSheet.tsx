@@ -223,11 +223,12 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                 ))}
               <TouchableOpacity onPress={expandBottomSheet}>
                 <View style={styles.contact}>
-                  <DownChevron
-                    color={styles.chevron.color}
-                    /* @ts-ignore */
-                    style={styles.chevron}
-                  />
+                  <View style={styles.chevronWrapper}>
+                    <DownChevron
+                      color={styles.chevron.color}
+                      style={styles.chevron}
+                    />
+                  </View>
                 </View>
                 <QuaiPayText>{t('home.send.viewAll')}</QuaiPayText>
               </TouchableOpacity>
@@ -317,6 +318,9 @@ const themedStyle = (theme: Theme) =>
     },
     chevron: {
       color: theme.primary,
+    },
+    chevronWrapper: {
       transform: [{ rotate: '180deg' }],
+      paddingTop: 2,
     },
   });

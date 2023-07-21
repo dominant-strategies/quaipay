@@ -47,7 +47,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
     amountInQUAI,
   } = route.params;
   const wallet = useWallet();
-  const zone = useZone();
+  const { zone } = useZone();
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tipInUSD)}`,
   );

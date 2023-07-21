@@ -43,7 +43,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { isDarkMode } = useTheme();
   const wallet = useWallet();
   const walletObject = useWalletObject();
-  const zone = useZone();
+  const { zone } = useZone();
   const contacts = useContacts();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<

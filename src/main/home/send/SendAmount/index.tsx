@@ -41,7 +41,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
     route.params;
   const { t } = useTranslation();
   const wallet = useWallet();
-  const zone = useZone();
+  const { zone } = useZone();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);

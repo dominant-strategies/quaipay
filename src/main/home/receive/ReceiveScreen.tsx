@@ -27,8 +27,6 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useWalletContext } from 'src/shared/context/walletContext';
 
-import ShareControl from './ShareControl';
-
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
@@ -83,9 +81,6 @@ export const ReceiveScreen = () => {
           </QuaiPayText>
           <CopyOutline />
         </Pressable>
-        <View style={styles.shareControlStyle}>
-          <ShareControl share={wallet.address} />
-        </View>
       </View>
       <View style={styles.buttonAreaInfo}>
         <TouchableOpacity
@@ -126,9 +121,6 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       gap: 8,
       marginLeft: 8, // To compensate the gap and keep address centered
-    },
-    shareControlStyle: {
-      marginTop: 20,
     },
     walletView: {
       height: Dimensions.get('window').height / 2,

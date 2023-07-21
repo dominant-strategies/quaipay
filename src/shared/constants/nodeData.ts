@@ -1,3 +1,4 @@
+import { Region, zoneRegionMap } from '../assets/regions';
 import { Zone } from '../types';
 
 export enum DomainName {
@@ -15,6 +16,22 @@ export enum DomainName {
   HYDRA02 = 'Hydra-02',
   HYDRA03 = 'Hydra-03',
 }
+
+const domainNameUrlMap: Record<DomainName, string> = {
+  [DomainName.PRIME]: 'prime',
+  [DomainName.CYPRUS]: 'cyprus',
+  [DomainName.PAXOS]: 'paxos',
+  [DomainName.HYDRA]: 'hydra',
+  [DomainName.CYPRUS01]: 'cyprus1',
+  [DomainName.CYPRUS02]: 'cyprus2',
+  [DomainName.CYPRUS03]: 'cyprus3',
+  [DomainName.PAXOS01]: 'paxos1',
+  [DomainName.PAXOS02]: 'paxos2',
+  [DomainName.PAXOS03]: 'paxos3',
+  [DomainName.HYDRA01]: 'hydra1',
+  [DomainName.HYDRA02]: 'hydra2',
+  [DomainName.HYDRA03]: 'hydra3',
+};
 
 export const zoneDomainNameMap: Record<Zone, DomainName> = {
   [Zone['zone-0-0']]: DomainName.CYPRUS01,
@@ -38,6 +55,22 @@ export interface AllNodeData {
   [key: string]: NodeData;
 }
 
+const zoneNodeData = (Object.keys(Zone) as Zone[]).reduce(
+  (acc, zone) => ({
+    ...acc,
+    [zoneRegionMap[zone]]: {
+      url: `wss://rpc.${
+        domainNameUrlMap[zoneDomainNameMap[zone]]
+      }.colosseum.quaiscan.io`,
+      provider: `https://rpc.${
+        domainNameUrlMap[zoneDomainNameMap[zone]]
+      }.colosseum.quaiscan.io`,
+      name: zoneDomainNameMap[zone],
+    },
+  }),
+  {} as Record<Region, NodeData>,
+);
+
 export const allNodeData: AllNodeData = {
   prime: {
     url: 'wss://rpc.prime.colosseum.quaiscan.io',
@@ -59,49 +92,5 @@ export const allNodeData: AllNodeData = {
     provider: 'https://rpc.hydra.colosseum.quaiscan.io',
     name: 'Hydra',
   },
-  'zone-0-0': {
-    url: 'wss://rpc.cyprus1.colosseum.quaiscan.io',
-    provider: 'https://rpc.cyprus1.colosseum.quaiscan.io',
-    name: 'Cyprus-01',
-  },
-  'zone-0-1': {
-    url: 'wss://rpc.cyprus2.colosseum.quaiscan.io',
-    provider: 'https://rpc.cyprus2.colosseum.quaiscan.io',
-    name: 'Cyprus-02',
-  },
-  'zone-0-2': {
-    url: 'wss://rpc.cyprus3.colosseum.quaiscan.',
-    provider: 'https://rpc.cyprus3.colosseum.quaiscan.io',
-    name: 'Cyprus-03',
-  },
-  'zone-1-0': {
-    url: 'wss://rpc.paxos1.colosseum.quaiscan.io',
-    provider: 'https://rpc.paxos1.colosseum.quaiscan.io',
-    name: 'Paxos-01',
-  },
-  'zone-1-1': {
-    url: 'wss://rpc.paxos2.colosseum.quaiscan.io',
-    provider: 'https://rpc.paxos2.colosseum.quaiscan.io',
-    name: 'Paxos-02',
-  },
-  'zone-1-2': {
-    url: 'wss://rpc.paxos3.colosseum.quaiscan.io',
-    provider: 'https://rpc.paxos3.colosseum.quaiscan.io',
-    name: 'Paxos-03',
-  },
-  'zone-2-0': {
-    url: 'wss://rpc.hydra1.colosseum.quaiscan.io',
-    provider: 'https://rpc.hydra1.colosseum.quaiscan.io',
-    name: 'Hydra-01',
-  },
-  'zone-2-1': {
-    url: 'wss://rpc.hydra2.colosseum.quaiscan.io',
-    provider: 'https://rpc.hydra2.colosseum.quaiscan.io',
-    name: 'Hydra-02',
-  },
-  'zone-2-2': {
-    url: 'wss://rpc.hydra3.colosseum.quaiscan.io',
-    provider: 'https://rpc.hydra3.colosseum.quaiscan.io',
-    name: 'Hydra-03',
-  },
+  ...zoneNodeData,
 };

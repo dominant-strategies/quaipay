@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from 'react-native';
+import { DomainName } from 'src/shared/constants/nodeData';
 
 import { Zone } from 'src/shared/types';
 
@@ -36,4 +37,16 @@ export const regionImgs: Record<Region, ImageSourcePropType> = {
   [Region.RUSSIA]: require('./Russia.png'),
   [Region.SOUTH_AMERICA]: require('./South_America.png'),
   [Region.WEST_EUROPE]: require('./West_Europe.png'),
+};
+
+export const regionDomainMap: Record<Region, DomainName> = {
+  [Region.EAST_ASIA_AND_SOUTHEAST_ASIA]: DomainName.HYDRA02,
+  [Region.INDIA]: DomainName.HYDRA01,
+  [Region.MIDDLE_EAST]: DomainName.PAXOS03,
+  [Region.NA_EAST]: DomainName.CYPRUS02,
+  [Region.NA_WEST]: DomainName.CYPRUS01,
+  [Region.OCEANIA]: DomainName.HYDRA03,
+  [Region.RUSSIA]: DomainName.PAXOS02,
+  [Region.SOUTH_AMERICA]: DomainName.CYPRUS03,
+  [Region.WEST_EUROPE]: DomainName.PAXOS01,
 };

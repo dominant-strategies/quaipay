@@ -1,3 +1,19 @@
+export enum DomainName {
+  PRIME = 'Prime',
+  CYPRUS = 'Cyprus',
+  PAXOS = 'Paxos',
+  HYDRA = 'Hydra',
+  CYPRUS01 = 'Cyprus-01',
+  CYPRUS02 = 'Cyprus-02',
+  CYPRUS03 = 'Cyprus-03',
+  PAXOS01 = 'Paxos-01',
+  PAXOS02 = 'Paxos-02',
+  PAXOS03 = 'Paxos-03',
+  HYDRA01 = 'Hydra-01',
+  HYDRA02 = 'Hydra-02',
+  HYDRA03 = 'Hydra-03',
+}
+
 export interface NodeData {
   url: string;
   provider: string;

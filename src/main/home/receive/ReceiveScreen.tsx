@@ -14,11 +14,13 @@ import { useTranslation } from 'react-i18next';
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import ChevronMiniUp from 'src/shared/assets/chevronUpMini.svg';
 import {
+  QuaiPayActiveAddressModal,
   QuaiPayButton,
   QuaiPayContent,
   QuaiPayLoader,
   QuaiPayQRCode,
   QuaiPayText,
+  useBottomSheetModal,
 } from 'src/shared/components';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
@@ -41,6 +43,7 @@ export const ReceiveScreen = () => {
   const username = useUsername();
   const wallet = useWallet();
   const { domainName } = useZone();
+  const { ref: activeAddressModalRef } = useBottomSheetModal();
 
   if (!profilePicture || !username || !wallet) {
     return <QuaiPayLoader text={'Loading...'} />;
@@ -53,6 +56,10 @@ export const ReceiveScreen = () => {
       moreInfo: abbreviateAddress(wallet.address),
       type: 'success',
     });
+  };
+
+  const handleOpenActiveAddressModal = () => {
+    activeAddressModalRef.current?.present();
   };
 
   return (
@@ -93,6 +100,7 @@ export const ReceiveScreen = () => {
           containerStyle={styles.activeAddressPillContainer}
           title={domainName ?? ''}
           RightIcon={ChevronMiniUp}
+          onPress={handleOpenActiveAddressModal}
         />
       </View>
       <View style={styles.buttonAreaInfo}>
@@ -115,6 +123,7 @@ export const ReceiveScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.separator} />
+      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
     </QuaiPayContent>
   );
 };

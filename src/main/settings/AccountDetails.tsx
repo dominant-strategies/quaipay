@@ -25,9 +25,8 @@ export const AccountDetails = () => {
   const styles = useThemedStyle(themedStyle);
 
   const username = useUsername();
-  const profilePicture = useProfilePicture();
-  const { setUsername } = useWalletContext();
-  const { setProfilePicture } = useWalletContext();
+  const profilePictureImg = useProfilePicture();
+  const { profilePicture, setUsername, setProfilePicture } = useWalletContext();
 
   const [loading, setLoading] = useState(false);
   const [usernameInput, setUsernameInput] = useState(username);
@@ -46,7 +45,7 @@ export const AccountDetails = () => {
     setLoading(false);
   }, [usernameInput, profilePictureInput]);
 
-  if (!profilePicture || !username || loading) {
+  if (!profilePictureImg || !username || loading) {
     return <QuaiPayLoader text={t('loading')} />;
   }
 
@@ -54,7 +53,7 @@ export const AccountDetails = () => {
     <QuaiPaySettingsContent title={t('accountDetails')}>
       <QuaiPayAvatar
         containerStyle={styles.avatarContainer}
-        profilePicture={profilePicture}
+        profilePicture={profilePictureImg}
       />
       <View style={styles.container}>
         <QuaiPayText type="H3">{t('displayName')}</QuaiPayText>
@@ -65,6 +64,7 @@ export const AccountDetails = () => {
         <View style={styles.iconInput}>
           <Link />
           <TextInput
+            placeholder="Insert profile picture URL"
             style={[styles.input, styles.narrowInput]}
             onChangeText={setProfilePictureInput}
           >

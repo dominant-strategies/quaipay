@@ -1,4 +1,4 @@
-import { Region, zoneRegionMap } from '../assets/regions';
+import { Region } from '../assets/regions';
 import { Zone } from '../types';
 
 export enum DomainName {
@@ -48,49 +48,33 @@ export const zoneDomainNameMap: Record<Zone, DomainName> = {
 export interface NodeData {
   url: string;
   provider: string;
-  name: string;
+  name: DomainName;
 }
 
 export interface AllNodeData {
   [key: string]: NodeData;
 }
 
+const getNodeDataContentFromDomainName = (
+  domainName: DomainName,
+): NodeData => ({
+  url: `wss://rpc.${domainNameUrlMap[domainName]}.colosseum.quaiscan.io`,
+  provider: `https://rpc.${domainNameUrlMap[domainName]}.colosseum.quaiscan.io`,
+  name: domainName,
+});
+
 const zoneNodeData = (Object.keys(Zone) as Zone[]).reduce(
   (acc, zone) => ({
     ...acc,
-    [zoneRegionMap[zone]]: {
-      url: `wss://rpc.${
-        domainNameUrlMap[zoneDomainNameMap[zone]]
-      }.colosseum.quaiscan.io`,
-      provider: `https://rpc.${
-        domainNameUrlMap[zoneDomainNameMap[zone]]
-      }.colosseum.quaiscan.io`,
-      name: zoneDomainNameMap[zone],
-    },
+    [zone]: getNodeDataContentFromDomainName(zoneDomainNameMap[zone]),
   }),
   {} as Record<Region, NodeData>,
 );
 
 export const allNodeData: AllNodeData = {
-  prime: {
-    url: 'wss://rpc.prime.colosseum.quaiscan.io',
-    provider: 'https://rpc.prime.colosseum.quaiscan.io',
-    name: 'Prime',
-  },
-  'region-0': {
-    url: 'wss://rpc.cyprus.colosseum.quaiscan.io',
-    provider: 'https://rpc.cyprus.colosseum.quaiscan.io',
-    name: 'Cyprus',
-  },
-  'region-1': {
-    url: 'wss://rpc.paxos.colosseum.quaiscan.io',
-    provider: 'https://rpc.paxos.colosseum.quaiscan.io',
-    name: 'Paxos',
-  },
-  'region-2': {
-    url: 'wss://rpc.hydra.colosseum.quaiscan.io',
-    provider: 'https://rpc.hydra.colosseum.quaiscan.io',
-    name: 'Hydra',
-  },
+  prime: getNodeDataContentFromDomainName(DomainName.PRIME),
+  'region-0': getNodeDataContentFromDomainName(DomainName.CYPRUS),
+  'region-1': getNodeDataContentFromDomainName(DomainName.PAXOS),
+  'region-2': getNodeDataContentFromDomainName(DomainName.HYDRA),
   ...zoneNodeData,
 };

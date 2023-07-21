@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -38,11 +38,6 @@ export const AccountDetails = () => {
   const [items, setItems] = useState([
     { label: 'USD - United States Dollar', value: 'USD' },
   ]);
-
-  useEffect(() => {
-    setUsernameInput(username);
-    setProfilePictureInput(profilePicture);
-  }, [username, profilePicture]);
 
   const handleSave = useCallback(async () => {
     setLoading(true);

@@ -32,7 +32,11 @@
     "localCurrency": "Local Currency",
     "selectCurrency": "Select native currency to display exchange rates.",
     "save": "Save",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "placeholder": {
+      "username": "Insert new display name",
+      "profilePicture": "Insert new profile picture URL"
+    }
   },
   "referral": {
     "referral": "Referral",

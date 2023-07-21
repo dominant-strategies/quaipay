@@ -57,14 +57,18 @@ export const AccountDetails = () => {
       />
       <View style={styles.container}>
         <QuaiPayText type="H3">{t('displayName')}</QuaiPayText>
-        <TextInput style={styles.input} onChangeText={setUsernameInput}>
+        <TextInput
+          placeholder={t('placeholder.username') ?? ''}
+          style={styles.input}
+          onChangeText={setUsernameInput}
+        >
           {usernameInput}
         </TextInput>
         <QuaiPayText type="H3">{t('linkPFP')}</QuaiPayText>
         <View style={styles.iconInput}>
           <Link />
           <TextInput
-            placeholder="Insert profile picture URL"
+            placeholder={t('placeholder.profilePicture') ?? ''}
             style={[styles.input, styles.narrowInput]}
             onChangeText={setProfilePictureInput}
           >

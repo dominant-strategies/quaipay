@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
 import {
+  QuaiPayButton,
   QuaiPayContent,
   QuaiPayLoader,
   QuaiPayQRCode,
@@ -26,6 +27,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useWalletContext } from 'src/shared/context/walletContext';
+import { useZone } from 'src/shared/hooks/useZone';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
@@ -37,6 +39,7 @@ export const ReceiveScreen = () => {
   useProfilePicture(); // fetch profilePicture
   const username = useUsername();
   const wallet = useWallet();
+  const { domainName } = useZone();
 
   if (!profilePicture || !username || !wallet) {
     return <QuaiPayLoader text={'Loading...'} />;
@@ -81,6 +84,14 @@ export const ReceiveScreen = () => {
           </QuaiPayText>
           <CopyOutline />
         </Pressable>
+        <QuaiPayButton
+          pill
+          outlined
+          type="secondary"
+          style={styles.activeAddressPill}
+          containerStyle={styles.activeAddressPillContainer}
+          title={domainName ?? ''}
+        />
       </View>
       <View style={styles.buttonAreaInfo}>
         <TouchableOpacity
@@ -121,6 +132,14 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
       gap: 8,
       marginLeft: 8, // To compensate the gap and keep address centered
+    },
+    activeAddressPillContainer: {
+      marginTop: 20,
+    },
+    activeAddressPill: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      alignSelf: 'center', // to avoid stretching horizontally
     },
     walletView: {
       height: Dimensions.get('window').height / 2,

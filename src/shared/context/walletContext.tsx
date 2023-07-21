@@ -28,9 +28,9 @@ interface WalletContext extends WalletContextState {
   getEntropy: (showError?: boolean) => Promise<boolean>;
   setEntropy: (entropy: string) => void;
   getProfilePicture: () => Promise<boolean>;
-  setProfilePicture: (profilePicture?: string) => void;
+  setProfilePicture: (profilePicture?: string) => Promise<void>;
   getUsername: (showError?: boolean) => Promise<boolean>;
-  setUsername: (username: string) => void;
+  setUsername: (username: string) => Promise<void>;
   getWallet: (showError?: boolean) => Promise<boolean>;
   setWallet: (wallet?: Wallet) => void;
   setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
@@ -99,7 +99,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const setProfilePicture = (profilePicture?: string) => {
+  const setProfilePicture = async (profilePicture?: string) => {
+    await storeItem({
+      key: keychainKeys.profilePicture,
+      value: profilePicture ?? '',
+    });
     setState(prevState => ({ ...prevState, profilePicture }));
   };
 

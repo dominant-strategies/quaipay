@@ -14,7 +14,7 @@ import {
   useThemedStyle,
   useUsername,
 } from 'src/shared/hooks';
-import { Theme } from 'src/shared/types';
+import { Theme, Zone } from 'src/shared/types';
 import Link from 'src/shared/assets/link.svg';
 import { useWalletContext } from 'src/shared/context/walletContext';
 
@@ -30,8 +30,9 @@ export const AccountDetails = () => {
 
   const [loading, setLoading] = useState(false);
   const [usernameInput, setUsernameInput] = useState(username);
-  const [profilePictureInput, setProfilePictureInput] =
-    useState(profilePicture);
+  const [profilePictureInput, setProfilePictureInput] = useState(
+    Zone[profilePicture as keyof typeof Zone] ? '' : profilePicture, // check if it's blockie or not
+  );
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('USD');
   const [items, setItems] = useState([

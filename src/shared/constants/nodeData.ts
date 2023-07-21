@@ -1,3 +1,5 @@
+import { Zone } from '../types';
+
 export enum DomainName {
   PRIME = 'Prime',
   CYPRUS = 'Cyprus',
@@ -13,6 +15,18 @@ export enum DomainName {
   HYDRA02 = 'Hydra-02',
   HYDRA03 = 'Hydra-03',
 }
+
+export const zoneDomainNameMap: Record<Zone, DomainName> = {
+  [Zone['zone-0-0']]: DomainName.CYPRUS01,
+  [Zone['zone-0-1']]: DomainName.CYPRUS02,
+  [Zone['zone-0-2']]: DomainName.CYPRUS03,
+  [Zone['zone-1-0']]: DomainName.PAXOS01,
+  [Zone['zone-1-1']]: DomainName.PAXOS02,
+  [Zone['zone-1-2']]: DomainName.PAXOS03,
+  [Zone['zone-2-0']]: DomainName.HYDRA01,
+  [Zone['zone-2-1']]: DomainName.HYDRA02,
+  [Zone['zone-2-2']]: DomainName.HYDRA03,
+};
 
 export interface NodeData {
   url: string;

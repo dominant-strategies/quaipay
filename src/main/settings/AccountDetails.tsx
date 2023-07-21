@@ -41,8 +41,10 @@ export const AccountDetails = () => {
 
   const handleSave = useCallback(async () => {
     setLoading(true);
-    await setUsername(usernameInput ?? '');
-    await setProfilePicture(profilePictureInput);
+    await setUsername(usernameInput ? usernameInput : username ?? '');
+    await setProfilePicture(
+      profilePictureInput ? profilePictureInput : 'zone-0-0',
+    );
     setLoading(false);
   }, [usernameInput, profilePictureInput]);
 

@@ -12,6 +12,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
+import ChevronMiniUp from 'src/shared/assets/chevronUpMini.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
@@ -91,6 +92,7 @@ export const ReceiveScreen = () => {
           style={styles.activeAddressPill}
           containerStyle={styles.activeAddressPillContainer}
           title={domainName ?? ''}
+          RightIcon={ChevronMiniUp}
         />
       </View>
       <View style={styles.buttonAreaInfo}>

@@ -10,6 +10,7 @@ import { useWalletContext } from 'src/shared/context/walletContext';
 import { useThemedStyle } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { EXCHANGE_RATE } from '../constants/exchangeRate';
+import { useTranslation } from 'react-i18next';
 
 const zones = Object.keys(Zone) as Zone[];
 
@@ -20,13 +21,15 @@ interface QuaiPayActiveAddressModalProps {
 const Modal: ForwardRefRenderFunction<
   BottomSheetModal,
   QuaiPayActiveAddressModalProps
-> = (_, ref) => {
+> = (params, ref) => {
+  const { balances } = params;
   const { zone: selectedZone, setZone, walletObject } = useWalletContext();
   const styles = useThemedStyle(themedStyle);
+  const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
 
   return (
     <QuaiPayBottomSheetModal ref={ref}>
-      <QuaiPayText style={styles.title}>Choose Active Address</QuaiPayText>
+      <QuaiPayText style={styles.title}>{t('chooseAddress')}</QuaiPayText>
       <ScrollView>
         <View style={styles.wrapper}>
           {zones.map((zone: Zone) => {
@@ -78,17 +81,16 @@ const Modal: ForwardRefRenderFunction<
                           : styles.textNotSelected
                       }
                     >
-                      {(_.balances &&
-                        _.balances[walletObject![zone].address]) ||
+                      {(balances && balances[walletObject![zone].address]) ||
                         '0'}{' '}
                       Quai
                     </QuaiPayText>
                     <QuaiPayText themeColor="secondary">
                       $
-                      {_.balances
-                        ? _.balances[walletObject![zone].address]
+                      {balances
+                        ? balances[walletObject![zone].address]
                           ? (
-                              Number(_.balances[walletObject![zone].address]) *
+                              Number(balances[walletObject![zone].address]) *
                               EXCHANGE_RATE
                             ).toFixed(2)
                           : '0.00'

@@ -26,7 +26,11 @@ import {
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
-import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import {
+  Timeframe,
+  dateToLocaleString,
+  isWithinSelectedTimeframe,
+} from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
@@ -35,9 +39,10 @@ import { useZone } from 'src/shared/hooks/useZone';
 import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useTheme } from 'src/shared/context/themeContext';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
+  const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
   const { isDarkMode } = useTheme();
   const wallet = useWallet();
@@ -49,17 +54,16 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     string | undefined
   >();
   const [selectedTimeframe, setSelectedTimeframe] = useState<
-    string | undefined
+    Timeframe | undefined
   >();
-  const [minAmount, setMinAmount] = useState(1);
-  const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
-  const [shards, setShards] = useState<number[]>([]);
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(1000000000000000000);
+  const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [loading, setLoading] = useState(false);
-  // TODO: remove console.log when we use these values
-  console.log(shards, selectedTimeframe);
-
+  const [balances, setBalances] = useState<Record<string, string>>({});
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
+  const { showSnackBar } = useSnackBar();
 
   const handlePresentFilterModalPress = useCallback(() => {
     filterModalRef.current?.present();
@@ -68,8 +72,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const handlePresentActiveAddressModalPress = useCallback(() => {
     activeAddressModalRef.current?.present();
   }, []);
-  const [balance, setBalance] = useState('0');
-  const [balances, setBalances] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const updateBalances = async () => {
@@ -84,7 +86,12 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             ).toFixed(3);
             return { address: address, balance: formattedBalance };
           } catch (error) {
-            return { address: address, balance: 'Error' };
+            showSnackBar({
+              message: t('common.error'),
+              moreInfo: t('wallet.getBalanceError') || '',
+              type: 'error',
+            });
+            return { address: address, balance: '0.00' };
           }
         },
       );
@@ -106,38 +113,23 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         .finally(() => setLoading(false));
     };
 
-    const updateWalletBalance = async () => {
-      if (wallet?.address) {
-        try {
-          const res = await getBalance(wallet.address, zone);
-          const formattedBalance = Number(quais.utils.formatEther(res)).toFixed(
-            3,
-          );
-          setBalance(formattedBalance);
-        } catch (error) {
-          setBalance('Error');
-        }
-      }
-    };
-
     updateBalances();
-    updateWalletBalance();
   }, [wallet, zone]);
 
   useEffect(() => {
     setLoading(true);
     const txAllShards: Transaction[] = [];
+
     const promises = shards.map(async shard => {
-      const zoneShard = Object.keys(walletObject as object)[shard];
-      const address =
-        walletObject?.[zoneShard as keyof typeof walletObject]?.address;
+      const zoneShard = Object.values(walletObject as object)[shard];
+      const address = zoneShard?.address;
       try {
         const res = await getAccountTransactions(
           {
             address: address || '',
             sort: 'desc',
             page: 1,
-            offset: 100,
+            offset: 30,
             startTimestamp: 0,
             endTimestamp: Date.now(),
             filterBy: selectedTxDirection,
@@ -146,77 +138,66 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           },
           zone,
         );
-        const filteredTransactions = res.result.filter(item => {
-          if (minAmount && minAmount > 0) {
-            return item.quaiAmount >= minAmount;
-          }
-          if (maxAmount && maxAmount > 0) {
-            return item.quaiAmount <= maxAmount;
-          }
-          if (selectedTxDirection) {
-            if (selectedTxDirection === 'from') {
-              return item.from.toLowerCase() === wallet?.address?.toLowerCase();
-            }
-            if (selectedTxDirection === 'to') {
-              return item.to.toLowerCase() === wallet?.address?.toLowerCase();
-            }
-          }
-          if (selectedTimeframe) {
-            const currentTime = Date.now();
-            const oneYearAgo = new Date(currentTime);
-            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-            const sixMonthsAgo = new Date(currentTime);
-            sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-            const ninetyDaysAgo = new Date(currentTime);
-            ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-            const thirtyDaysAgo = new Date(currentTime);
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            const sevenDaysAgo = new Date(currentTime);
-            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-            if (selectedTimeframe === 'Past year') {
-              return Number(item.timeStamp) >= oneYearAgo.getTime() / 1000;
-            } else if (selectedTimeframe === 'Past 6 months') {
-              return Number(item.timeStamp) >= sixMonthsAgo.getTime() / 1000;
-            } else if (selectedTimeframe === 'Past 90 days') {
-              return Number(item.timeStamp) >= ninetyDaysAgo.getTime() / 1000;
-            } else if (selectedTimeframe === 'Past 30 days') {
-              return Number(item.timeStamp) >= thirtyDaysAgo.getTime() / 1000;
-            } else if (selectedTimeframe === 'This week') {
-              return Number(item.timeStamp) >= sevenDaysAgo.getTime() / 1000;
+        const filteredTransactions = res.result
+          .filter(item => {
+            if (minAmount && minAmount > 0) {
+              return item.quaiAmount >= minAmount;
             }
-          }
-          return true;
-        });
-        const mappedTransactions = filteredTransactions.map(item => {
-          const isUserSender =
-            item.from.toLowerCase() === wallet?.address.toLowerCase();
-          const contact = contacts?.find(
-            c =>
-              c.address.toLowerCase() ===
-              (isUserSender ? item.to.toLowerCase() : item.from.toLowerCase()),
-          );
-          const recipient: Recipient = contact
-            ? {
-                display: contact.username,
-                profilePicture: contact.profilePicture,
+            if (maxAmount && maxAmount > 0) {
+              return item.quaiAmount <= maxAmount;
+            }
+            if (selectedTxDirection) {
+              if (selectedTxDirection === 'from') {
+                return (
+                  item.from.toLowerCase() === wallet?.address?.toLowerCase()
+                );
               }
-            : {
-                display: isUserSender
-                  ? abbreviateAddress(item.to)
-                  : abbreviateAddress(item.from),
-              };
+              if (selectedTxDirection === 'to') {
+                return item.to.toLowerCase() === wallet?.address?.toLowerCase();
+              }
+            }
+            if (selectedTimeframe) {
+              return isWithinSelectedTimeframe(
+                item.timeStamp,
+                selectedTimeframe,
+              );
+            }
+            return true;
+          })
+          .map(item => {
+            const isUserSender =
+              item.from.toLowerCase() === wallet?.address.toLowerCase();
+            const contact = contacts?.find(
+              c =>
+                c.address.toLowerCase() ===
+                (isUserSender
+                  ? item.to.toLowerCase()
+                  : item.from.toLowerCase()),
+            );
+            const recipient: Recipient = contact
+              ? {
+                  display: contact.username,
+                  profilePicture: contact.profilePicture,
+                }
+              : {
+                  display: isUserSender
+                    ? abbreviateAddress(item.to)
+                    : abbreviateAddress(item.from),
+                };
 
-          return {
-            ...item,
-            recipient,
-          };
-        });
-        txAllShards.push(...mappedTransactions);
+            return {
+              ...item,
+              recipient,
+            };
+          });
+
+        txAllShards.push(...filteredTransactions);
       } catch (err) {
         console.log(err);
       }
     });
+
     Promise.allSettled(promises)
       .then(() => {
         setLoading(false);
@@ -239,13 +220,15 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const onSearchChange = (text: string) => console.log(text);
 
   if (loading || !wallet || !walletObject) {
-    return <QuaiPayLoader text={t('loading')} />;
+    return <QuaiPayLoader text={t('wallet.loading')} />;
   }
 
   return (
     <QuaiPayContent noNavButton>
       <FilterModal
-        setSelectedTimeframe={setSelectedTimeframe}
+        setSelectedTimeframe={timeframe =>
+          setSelectedTimeframe(timeframe as Timeframe)
+        }
         setSelectedTxDirection={setSelectedTxDirection}
         setMinAmount={setMinAmount}
         setMaxAmount={setMaxAmount}
@@ -260,11 +243,13 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
-          quaiAmount={balance.toString()}
+          quaiAmount={balances[wallet?.address as string]}
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
-          fiatAmount={(Number(balance) * EXCHANGE_RATE).toFixed(3)}
-          title={t('balance')}
+          fiatAmount={(
+            Number(balances[wallet?.address as string]) * EXCHANGE_RATE
+          ).toFixed(3)}
+          title={t('wallet.balance')}
         />
       </View>
       <View style={styles.buttonWrapper}>
@@ -277,7 +262,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           ]}
         >
           <QuaiPayText type="paragraph" style={styles.colorOverwrite}>
-            {t('chooseAddress')}
+            {t('wallet.chooseAddress')}
           </QuaiPayText>
         </Pressable>
         <Pressable
@@ -287,13 +272,13 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="H3">{t('earn')}</QuaiPayText>
+          <QuaiPayText type="H3">{t('wallet.earn')}</QuaiPayText>
         </Pressable>
       </View>
       <View style={styles.transactionsWrapper}>
         <View style={styles.transactionsHeader}>
           <QuaiPayText style={{ color: styledColors.gray }} type="H3">
-            {t('transactionsHistory')}
+            {t('wallet.transactionsHistory')}
           </QuaiPayText>
           <Pressable
             style={({ pressed }) => [
@@ -304,7 +289,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             onPress={handlePresentFilterModalPress}
           >
             <QuaiPayText style={{ color: styledColors.gray }}>
-              {t('filter')}&nbsp;
+              {t('wallet.filter')}&nbsp;
             </QuaiPayText>
             <FilterIcon />
           </Pressable>
@@ -312,15 +297,19 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         <View style={styles.searchbarWrapper}>
           <QuaiPaySearchbar
             onSearchChange={onSearchChange}
-            placeholder={t('searchByTransaction')}
+            placeholder={t('wallet.searchByTransaction')}
           />
         </View>
         {transactions.length === 0 ? (
-          <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>
+          <QuaiPayText type="paragraph">
+            {t('wallet.noTransaction')}
+          </QuaiPayText>
         ) : (
           <FlatList
             data={transactions}
             contentContainerStyle={styles.flatlistContainer}
+            onEndReached={() => console.log('end reached')}
+            onEndReachedThreshold={0.1}
             renderItem={({ item }) => (
               <QuaiPayListItem
                 date={dateToLocaleString(
@@ -340,7 +329,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                 quaiAmount={parseFloat(item.quaiAmount.toFixed(6)).toString()}
               />
             )}
-            keyExtractor={item => item.hash}
+            keyExtractor={item => Math.random().toString()}
           />
         )}
       </View>

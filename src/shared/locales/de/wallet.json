@@ -22,5 +22,6 @@
   "quarter": "Letztes Quartal",
   "semester": "Letztes Semester",
   "year": "Letztes Jahr",
-  "loading": "Laden"
+  "loading": "Laden",
+  "getBalanceError": "Der Kontostand kann derzeit nicht abgerufen werden. Bitte versuche es später erneut."
 }

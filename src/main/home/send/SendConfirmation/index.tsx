@@ -42,7 +42,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
     route.params;
   const contacts = useContacts();
   const wallet = useWallet();
-  const zone = useZone();
+  const { zone } = useZone();
   const { showSnackBar } = useSnackBar();
   const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const [showError, setShowError] = useState(false);

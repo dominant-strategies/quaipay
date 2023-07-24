@@ -12,11 +12,15 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 
 import CopyOutline from 'src/shared/assets/copyOutline.svg';
+import ChevronMiniUp from 'src/shared/assets/chevronUpMini.svg';
 import {
+  QuaiPayActiveAddressModal,
+  QuaiPayButton,
   QuaiPayContent,
   QuaiPayLoader,
   QuaiPayQRCode,
   QuaiPayText,
+  useBottomSheetModal,
 } from 'src/shared/components';
 import { RootStackNavigationProps } from 'src/shared/navigation';
 import { buttonStyle } from 'src/shared/styles';
@@ -26,8 +30,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useWalletContext } from 'src/shared/context/walletContext';
-
-import ShareControl from './ShareControl';
+import { useZone } from 'src/shared/hooks/useZone';
 
 export const ReceiveScreen = () => {
   const { t } = useTranslation();
@@ -39,6 +42,8 @@ export const ReceiveScreen = () => {
   useProfilePicture(); // fetch profilePicture
   const username = useUsername();
   const wallet = useWallet();
+  const { shardName } = useZone();
+  const { ref: activeAddressModalRef } = useBottomSheetModal();
 
   if (!profilePicture || !username || !wallet) {
     return <QuaiPayLoader text={'Loading...'} />;
@@ -51,6 +56,10 @@ export const ReceiveScreen = () => {
       moreInfo: abbreviateAddress(wallet.address),
       type: 'success',
     });
+  };
+
+  const handleOpenActiveAddressModal = () => {
+    activeAddressModalRef.current?.present();
   };
 
   return (
@@ -83,9 +92,16 @@ export const ReceiveScreen = () => {
           </QuaiPayText>
           <CopyOutline />
         </Pressable>
-        <View style={styles.shareControlStyle}>
-          <ShareControl share={wallet.address} />
-        </View>
+        <QuaiPayButton
+          pill
+          outlined
+          type="secondary"
+          style={styles.activeAddressPill}
+          containerStyle={styles.activeAddressPillContainer}
+          title={shardName ?? ''}
+          RightIcon={ChevronMiniUp}
+          onPress={handleOpenActiveAddressModal}
+        />
       </View>
       <View style={styles.buttonAreaInfo}>
         <TouchableOpacity
@@ -107,6 +123,7 @@ export const ReceiveScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.separator} />
+      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
     </QuaiPayContent>
   );
 };
@@ -127,8 +144,13 @@ const themedStyle = (theme: Theme) =>
       gap: 8,
       marginLeft: 8, // To compensate the gap and keep address centered
     },
-    shareControlStyle: {
+    activeAddressPillContainer: {
       marginTop: 20,
+    },
+    activeAddressPill: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      alignSelf: 'center', // to avoid stretching horizontally
     },
     walletView: {
       height: Dimensions.get('window').height / 2,

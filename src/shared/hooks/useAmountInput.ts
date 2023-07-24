@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
 import { Currency } from 'src/shared/types';
-import { useQuaiRate } from './useQuaiRate';
+import { QuaiRate } from './useQuaiRate';
 
 const INITIAL_AMOUNT = '0';
 
-export function useAmountInput(initialAmount: string = INITIAL_AMOUNT) {
-  const quaiRate = useQuaiRate();
+export function useAmountInput(
+  initialAmount: string = INITIAL_AMOUNT,
+  quaiRate?: QuaiRate,
+) {
   const [amount, setAmount] = useState(initialAmount);
   const [unit, setUnit] = useState(Currency.USD);
   const [eqValue, setEqValue] = useState(

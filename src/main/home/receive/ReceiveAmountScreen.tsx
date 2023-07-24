@@ -29,6 +29,7 @@ import { abbreviateAddress } from 'src/shared/services/quais';
 
 import { ReceiveStackScreenProps } from 'src/main/home/receive/ReceiveStack';
 import ShareControl from 'src/main/home/receive/ShareControl';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
@@ -39,8 +40,12 @@ export const ReceiveQRScreen: React.FC<
   const { t } = useTranslation();
   const username = useUsername();
   const wallet = useWallet();
+  const quaiRate = useQuaiRate();
 
-  const { input, eqInput, onSwap } = useAmountInput(amount.toString());
+  const { input, eqInput, onSwap } = useAmountInput(
+    amount.toString(),
+    quaiRate,
+  );
   const share = () => console.log('Share triggered');
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
   const styles = useThemedStyle(themedStyle);

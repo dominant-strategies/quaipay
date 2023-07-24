@@ -51,13 +51,14 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   } = route.params;
   const wallet = useWallet();
   const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tipInUSD)}`,
+    quaiRate,
   );
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const quaiRate = useQuaiRate();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? styledColors.black : styledColors.light,

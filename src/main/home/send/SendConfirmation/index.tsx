@@ -29,6 +29,7 @@ import { allNodeData } from 'src/shared/constants/nodeData';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useZone } from 'src/shared/hooks/useZone';
 import { addContact, useContacts } from 'src/shared/hooks/useContacts';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 type SendConfirmationScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -43,6 +44,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
   const contacts = useContacts();
   const wallet = useWallet();
   const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const { showSnackBar } = useSnackBar();
   const [connectionStatus, setConnectionStatus] = useState<NetInfoState>();
   const [showError, setShowError] = useState(false);
@@ -62,6 +64,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
           : route.params.eqInput.value,
       ) + Number(tip)
     }`,
+    quaiRate,
   );
 
   const backgroundStyle = {

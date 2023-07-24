@@ -48,7 +48,10 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
-  const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
+  const { eqInput, input, keyboard, onSwap } = useAmountInput(
+    `${amount}`,
+    quaiRate,
+  );
 
   const shouldDisableContinueButton =
     Number(input.value) === 0 || Number(eqInput.value) === 0;

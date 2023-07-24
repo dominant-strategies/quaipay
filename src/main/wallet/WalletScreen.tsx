@@ -25,7 +25,6 @@ import {
   Recipient,
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
@@ -36,6 +35,7 @@ import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useTheme } from 'src/shared/context/themeContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
@@ -45,6 +45,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const walletObject = useWalletObject();
   const { zone } = useZone();
   const contacts = useContacts();
+  const quaiRate = useQuaiRate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
     string | undefined
@@ -72,7 +73,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [balance, setBalance] = useState('0');
 
   useEffect(() => {
-    if (!contacts) {
+    if (!contacts || !quaiRate) {
       return;
     }
     setLoading(true);
@@ -117,7 +118,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
               ...item,
               recipient,
               fiatAmount:
-                Number(quais.utils.formatEther(item.value)) * EXCHANGE_RATE,
+                Number(quais.utils.formatEther(item.value)) * quaiRate?.base,
               quaiAmount: Number(quais.utils.formatEther(item.value)),
             };
           }),
@@ -143,7 +144,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
 
-  if (loading || !wallet || !walletObject) {
+  if (loading || !wallet || !walletObject || !quaiRate) {
     return <QuaiPayLoader text={t('loading')} />;
   }
 
@@ -165,7 +166,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           quaiAmount={balance.toString()}
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
-          fiatAmount={(Number(balance) * EXCHANGE_RATE).toFixed(3)}
+          fiatAmount={(Number(balance) * quaiRate?.base).toFixed(3)}
           title={t('balance')}
         />
       </View>

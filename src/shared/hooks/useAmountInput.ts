@@ -1,16 +1,17 @@
 import { useState } from 'react';
 
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency } from 'src/shared/types';
+import { useQuaiRate } from './useQuaiRate';
 
 const INITIAL_AMOUNT = '0';
 
 export function useAmountInput(initialAmount: string = INITIAL_AMOUNT) {
+  const quaiRate = useQuaiRate();
   const [amount, setAmount] = useState(initialAmount);
   const [unit, setUnit] = useState(Currency.USD);
   const [eqValue, setEqValue] = useState(
     parseFloat(
-      (Number(initialAmount) / EXCHANGE_RATE).toFixed(6).toString(),
+      (Number(initialAmount) * (quaiRate?.quote ?? 0)).toFixed(6).toString(),
     ).toString(),
   );
 
@@ -25,20 +26,22 @@ export function useAmountInput(initialAmount: string = INITIAL_AMOUNT) {
   };
 
   function updateInputs(value: string) {
-    if (unit === Currency.USD) {
-      setAmount(value);
-      setEqValue(
-        parseFloat(
-          (Number(value) / EXCHANGE_RATE).toFixed(6).toString(),
-        ).toString(),
-      );
-    } else {
-      setAmount(value);
-      setEqValue(
-        parseFloat(
-          (Number(value) * EXCHANGE_RATE).toFixed(6).toString(),
-        ).toString(),
-      );
+    if (quaiRate) {
+      if (unit === Currency.USD) {
+        setAmount(value);
+        setEqValue(
+          parseFloat(
+            (Number(value) * quaiRate?.quote).toFixed(6).toString(),
+          ).toString(),
+        );
+      } else {
+        setAmount(value);
+        setEqValue(
+          parseFloat(
+            (Number(value) * quaiRate?.base).toFixed(6).toString(),
+          ).toString(),
+        );
+      }
     }
   }
 

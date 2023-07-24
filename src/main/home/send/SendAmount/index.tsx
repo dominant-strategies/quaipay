@@ -27,9 +27,10 @@ import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
+import { useZone } from 'src/shared/hooks/useZone';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 import { SendStackParamList } from '../SendStack';
-import { useZone } from 'src/shared/hooks/useZone';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -42,6 +43,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   const { t } = useTranslation();
   const wallet = useWallet();
   const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
@@ -116,8 +118,8 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   };
 
   useEffect(() => {
-    if (wallet) {
-      getBalance(wallet.address, zone).then(balance =>
+    if (wallet && quaiRate) {
+      getBalance(wallet.address, zone, quaiRate.base).then(balance =>
         setQuaiBalance(balance.balanceInQuai),
       );
     }

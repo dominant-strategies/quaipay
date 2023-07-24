@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -14,7 +14,7 @@ import {
   useThemedStyle,
   useUsername,
 } from 'src/shared/hooks';
-import { Theme } from 'src/shared/types';
+import { Theme, Zone } from 'src/shared/types';
 import Link from 'src/shared/assets/link.svg';
 import { useWalletContext } from 'src/shared/context/walletContext';
 
@@ -25,33 +25,30 @@ export const AccountDetails = () => {
   const styles = useThemedStyle(themedStyle);
 
   const username = useUsername();
-  const profilePicture = useProfilePicture();
-  const { setUsername } = useWalletContext();
-  const { setProfilePicture } = useWalletContext();
+  const profilePictureImg = useProfilePicture();
+  const { profilePicture, setUsername, setProfilePicture } = useWalletContext();
 
   const [loading, setLoading] = useState(false);
   const [usernameInput, setUsernameInput] = useState(username);
-  const [profilePictureInput, setProfilePictureInput] =
-    useState(profilePicture);
+  const [profilePictureInput, setProfilePictureInput] = useState(
+    Zone[profilePicture as keyof typeof Zone] ? '' : profilePicture, // check if it's blockie or not
+  );
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('USD');
   const [items, setItems] = useState([
     { label: 'USD - United States Dollar', value: 'USD' },
   ]);
 
-  useEffect(() => {
-    setUsernameInput(username);
-    setProfilePictureInput(profilePicture);
-  }, [username, profilePicture]);
-
   const handleSave = useCallback(async () => {
     setLoading(true);
-    await setUsername(usernameInput ?? '');
-    await setProfilePicture(profilePictureInput);
+    await setUsername(usernameInput ? usernameInput : username ?? '');
+    await setProfilePicture(
+      profilePictureInput ? profilePictureInput : 'zone-0-0',
+    );
     setLoading(false);
   }, [usernameInput, profilePictureInput]);
 
-  if (!profilePicture || !username || loading) {
+  if (!profilePictureImg || !username || loading) {
     return <QuaiPayLoader text={t('loading')} />;
   }
 
@@ -59,17 +56,22 @@ export const AccountDetails = () => {
     <QuaiPaySettingsContent title={t('accountDetails')}>
       <QuaiPayAvatar
         containerStyle={styles.avatarContainer}
-        profilePicture={profilePicture}
+        profilePicture={profilePictureImg}
       />
       <View style={styles.container}>
         <QuaiPayText type="H3">{t('displayName')}</QuaiPayText>
-        <TextInput style={styles.input} onChangeText={setUsernameInput}>
+        <TextInput
+          placeholder={t('placeholder.username') ?? ''}
+          style={styles.input}
+          onChangeText={setUsernameInput}
+        >
           {usernameInput}
         </TextInput>
         <QuaiPayText type="H3">{t('linkPFP')}</QuaiPayText>
         <View style={styles.iconInput}>
           <Link />
           <TextInput
+            placeholder={t('placeholder.profilePicture') ?? ''}
             style={[styles.input, styles.narrowInput]}
             onChangeText={setProfilePictureInput}
           >

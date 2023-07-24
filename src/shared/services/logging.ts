@@ -6,6 +6,9 @@ import {
 import RNFS from 'react-native-fs';
 import { InteractionManager } from 'react-native';
 
+const logDirectory = RNFS.DocumentDirectoryPath;
+const logRetentionPeriodInDays = 7;
+
 const today = new Date();
 const date = today.getDate();
 const month = today.getMonth() + 1;
@@ -44,7 +47,7 @@ export const log = logger.createLogger({
 
 export const retrieveLogs = () => {
   return RNFS.readFile(
-    `${RNFS.DocumentDirectoryPath}/log_${date}_${month}_${year}.log`,
+    `${logDirectory}/log_${date}_${month}_${year}.log`,
     'utf8',
   )
     .then(contents => {
@@ -53,4 +56,24 @@ export const retrieveLogs = () => {
     .catch(err => {
       console.log(err);
     });
+};
+
+export const deleteOldLogFiles = async (): Promise<void> => {
+  try {
+    const files = await RNFS.readDir(logDirectory);
+    const now = Date.now();
+    const thresholdDate = now - logRetentionPeriodInDays * 24 * 60 * 60 * 1000;
+
+    for (const file of files) {
+      if (file.isFile() && file.name.endsWith('.log')) {
+        const fileCreationTime = new Date(file.ctime ?? 0).getTime();
+        if (fileCreationTime < thresholdDate) {
+          await RNFS.unlink(file.path);
+          console.log(`Deleted log file: ${file.name}`);
+        }
+      }
+    }
+  } catch (error) {
+    console.log('Error deleting log files:', error);
+  }
 };

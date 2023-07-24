@@ -42,7 +42,7 @@ export const ReceiveScreen = () => {
   useProfilePicture(); // fetch profilePicture
   const username = useUsername();
   const wallet = useWallet();
-  const { domainName } = useZone();
+  const { shardName } = useZone();
   const { ref: activeAddressModalRef } = useBottomSheetModal();
 
   if (!profilePicture || !username || !wallet) {
@@ -98,7 +98,7 @@ export const ReceiveScreen = () => {
           type="secondary"
           style={styles.activeAddressPill}
           containerStyle={styles.activeAddressPillContainer}
-          title={domainName ?? ''}
+          title={shardName ?? ''}
           RightIcon={ChevronMiniUp}
           onPress={handleOpenActiveAddressModal}
         />

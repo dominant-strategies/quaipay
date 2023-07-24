@@ -1,7 +1,7 @@
 import { Region } from '../assets/regions';
 import { Zone } from '../types';
 
-export enum DomainName {
+export enum ShardName {
   PRIME = 'Prime',
   CYPRUS = 'Cyprus',
   PAXOS = 'Paxos',
@@ -17,64 +17,62 @@ export enum DomainName {
   HYDRA03 = 'Hydra-03',
 }
 
-const domainNameUrlMap: Record<DomainName, string> = {
-  [DomainName.PRIME]: 'prime',
-  [DomainName.CYPRUS]: 'cyprus',
-  [DomainName.PAXOS]: 'paxos',
-  [DomainName.HYDRA]: 'hydra',
-  [DomainName.CYPRUS01]: 'cyprus1',
-  [DomainName.CYPRUS02]: 'cyprus2',
-  [DomainName.CYPRUS03]: 'cyprus3',
-  [DomainName.PAXOS01]: 'paxos1',
-  [DomainName.PAXOS02]: 'paxos2',
-  [DomainName.PAXOS03]: 'paxos3',
-  [DomainName.HYDRA01]: 'hydra1',
-  [DomainName.HYDRA02]: 'hydra2',
-  [DomainName.HYDRA03]: 'hydra3',
+const shardNameUrlMap: Record<ShardName, string> = {
+  [ShardName.PRIME]: 'prime',
+  [ShardName.CYPRUS]: 'cyprus',
+  [ShardName.PAXOS]: 'paxos',
+  [ShardName.HYDRA]: 'hydra',
+  [ShardName.CYPRUS01]: 'cyprus1',
+  [ShardName.CYPRUS02]: 'cyprus2',
+  [ShardName.CYPRUS03]: 'cyprus3',
+  [ShardName.PAXOS01]: 'paxos1',
+  [ShardName.PAXOS02]: 'paxos2',
+  [ShardName.PAXOS03]: 'paxos3',
+  [ShardName.HYDRA01]: 'hydra1',
+  [ShardName.HYDRA02]: 'hydra2',
+  [ShardName.HYDRA03]: 'hydra3',
 };
 
-export const zoneDomainNameMap: Record<Zone, DomainName> = {
-  [Zone['zone-0-0']]: DomainName.CYPRUS01,
-  [Zone['zone-0-1']]: DomainName.CYPRUS02,
-  [Zone['zone-0-2']]: DomainName.CYPRUS03,
-  [Zone['zone-1-0']]: DomainName.PAXOS01,
-  [Zone['zone-1-1']]: DomainName.PAXOS02,
-  [Zone['zone-1-2']]: DomainName.PAXOS03,
-  [Zone['zone-2-0']]: DomainName.HYDRA01,
-  [Zone['zone-2-1']]: DomainName.HYDRA02,
-  [Zone['zone-2-2']]: DomainName.HYDRA03,
+export const zoneShardNameMap: Record<Zone, ShardName> = {
+  [Zone['zone-0-0']]: ShardName.CYPRUS01,
+  [Zone['zone-0-1']]: ShardName.CYPRUS02,
+  [Zone['zone-0-2']]: ShardName.CYPRUS03,
+  [Zone['zone-1-0']]: ShardName.PAXOS01,
+  [Zone['zone-1-1']]: ShardName.PAXOS02,
+  [Zone['zone-1-2']]: ShardName.PAXOS03,
+  [Zone['zone-2-0']]: ShardName.HYDRA01,
+  [Zone['zone-2-1']]: ShardName.HYDRA02,
+  [Zone['zone-2-2']]: ShardName.HYDRA03,
 };
 
 export interface NodeData {
   url: string;
   provider: string;
-  name: DomainName;
+  name: ShardName;
 }
 
 export interface AllNodeData {
   [key: string]: NodeData;
 }
 
-const getNodeDataContentFromDomainName = (
-  domainName: DomainName,
-): NodeData => ({
-  url: `wss://rpc.${domainNameUrlMap[domainName]}.colosseum.quaiscan.io`,
-  provider: `https://rpc.${domainNameUrlMap[domainName]}.colosseum.quaiscan.io`,
-  name: domainName,
+const getNodeDataContentFromShardName = (shardName: ShardName): NodeData => ({
+  url: `wss://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
+  provider: `https://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
+  name: shardName,
 });
 
 const zoneNodeData = (Object.keys(Zone) as Zone[]).reduce(
   (acc, zone) => ({
     ...acc,
-    [zone]: getNodeDataContentFromDomainName(zoneDomainNameMap[zone]),
+    [zone]: getNodeDataContentFromShardName(zoneShardNameMap[zone]),
   }),
   {} as Record<Region, NodeData>,
 );
 
 export const allNodeData: AllNodeData = {
-  prime: getNodeDataContentFromDomainName(DomainName.PRIME),
-  'region-0': getNodeDataContentFromDomainName(DomainName.CYPRUS),
-  'region-1': getNodeDataContentFromDomainName(DomainName.PAXOS),
-  'region-2': getNodeDataContentFromDomainName(DomainName.HYDRA),
+  prime: getNodeDataContentFromShardName(ShardName.PRIME),
+  'region-0': getNodeDataContentFromShardName(ShardName.CYPRUS),
+  'region-1': getNodeDataContentFromShardName(ShardName.PAXOS),
+  'region-2': getNodeDataContentFromShardName(ShardName.HYDRA),
   ...zoneNodeData,
 };

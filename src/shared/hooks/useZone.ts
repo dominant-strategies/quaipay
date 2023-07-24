@@ -3,12 +3,12 @@ import { useWalletContext } from '../context/walletContext';
 import { Zone } from 'src/shared/types';
 
 import { Region, zoneRegionMap } from '../assets/regions';
-import { DomainName, zoneDomainNameMap } from '../constants/nodeData';
+import { ShardName, zoneShardNameMap } from '../constants/nodeData';
 
 export const useZone = (): {
   zone: Zone;
   region?: Region;
-  domainName?: DomainName;
+  shardName?: ShardName;
 } => {
   const { zone, getZone } = useWalletContext();
   useEffect(() => {
@@ -19,6 +19,6 @@ export const useZone = (): {
   return {
     zone,
     region: zone ? zoneRegionMap[zone] : undefined,
-    domainName: zone ? zoneDomainNameMap[zone] : undefined,
+    shardName: zone ? zoneShardNameMap[zone] : undefined,
   };
 };

@@ -1,14 +1,16 @@
 import React, { forwardRef } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { QuaiPayBottomSheetModal, QuaiPayText } from 'src/shared/components';
-import { Theme, Zone } from 'src/shared/types';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+
+import { Theme, Zone } from 'src/shared/types';
 import Done from 'src/shared/assets/done.svg';
 import GreyDone from 'src/shared/assets/greyDone.svg';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useWalletContext } from 'src/shared/context/walletContext';
 import { useThemedStyle } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
+
+import { QuaiPayBottomSheetModal, QuaiPayText } from '../components';
 
 const zones = Object.keys(Zone) as Zone[];
 

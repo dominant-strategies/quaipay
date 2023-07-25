@@ -24,7 +24,6 @@ import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 import { ReceiveStackScreenProps } from './ReceiveStack';
 
-// TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveAmountInput'>
 > = ({ navigation }) => {

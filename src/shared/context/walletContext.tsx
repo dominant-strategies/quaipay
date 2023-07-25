@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-
-import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
-import { retrieveWallet } from '../services/retrieveWallet';
-
-import { createCtx } from '.';
-import { useSnackBar } from './snackBarContext';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { retrieveEntropy } from 'src/onboarding/services/retrieveEntropy';
+import { retrieveWallet } from 'src/shared/services/retrieveWallet';
 import { Wallet, Zone } from 'src/shared/types';
 import { retrieveStoredItem, storeItem } from 'src/shared/services/keychain';
 import { keychainKeys } from 'src/shared/constants/keychainKeys';
+import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { fetchBTCRate } from 'src/shared/services/coingecko';
+
+import { createCtx } from '.';
+import { useSnackBar } from './snackBarContext';
 
 // State variables only
 interface WalletContextState {
   entropy?: string;
   profilePicture?: string;
+  quaiRate?: QuaiRate;
   username?: string;
   wallet?: Wallet;
   walletObject?: Record<Zone, Wallet>;
@@ -28,9 +31,10 @@ interface WalletContext extends WalletContextState {
   getEntropy: (showError?: boolean) => Promise<boolean>;
   setEntropy: (entropy: string) => void;
   getProfilePicture: () => Promise<boolean>;
-  setProfilePicture: (profilePicture?: string) => void;
+  setProfilePicture: (profilePicture?: string) => Promise<void>;
+  getQuaiRate: () => Promise<boolean>;
   getUsername: (showError?: boolean) => Promise<boolean>;
-  setUsername: (username: string) => void;
+  setUsername: (username: string) => Promise<void>;
   getWallet: (showError?: boolean) => Promise<boolean>;
   setWallet: (wallet?: Wallet) => void;
   setWalletObject: (walletObject: Record<Zone, Wallet>) => void;
@@ -99,8 +103,32 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const setProfilePicture = (profilePicture?: string) => {
+  const setProfilePicture = async (profilePicture?: string) => {
+    await storeItem({
+      key: keychainKeys.profilePicture,
+      value: profilePicture ?? '',
+    });
     setState(prevState => ({ ...prevState, profilePicture }));
+  };
+
+  const getQuaiRate = async () => {
+    try {
+      // Mock using 1/BTC rate
+      // TODO: replace with actual value
+      const btcRate = await fetchBTCRate();
+      const mockedRateValue = 1 / (btcRate ?? 0.0000000000001);
+
+      setState(prevState => ({
+        ...prevState,
+        quaiRate: {
+          base: mockedRateValue,
+          quote: 1 / mockedRateValue,
+        },
+      }));
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const getUsername = async (showError = true) => {
@@ -219,6 +247,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         setWallet,
         getProfilePicture,
         setProfilePicture,
+        getQuaiRate,
         getUsername,
         setUsername,
         setWalletObject,

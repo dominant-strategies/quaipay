@@ -8,7 +8,14 @@ type TestComponentProps = {
 };
 
 const TestComponent: React.FC<TestComponentProps> = ({ initialAmount }) => {
-  const { eqInput, input, onSwap } = useAmountInput(initialAmount);
+  const mockedQuaiRate = {
+    base: 0.005,
+    quote: 200,
+  };
+  const { eqInput, input, onSwap } = useAmountInput(
+    initialAmount,
+    mockedQuaiRate,
+  );
 
   return (
     <div>

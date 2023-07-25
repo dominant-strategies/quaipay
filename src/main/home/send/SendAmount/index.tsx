@@ -26,9 +26,10 @@ import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
+import { useZone } from 'src/shared/hooks/useZone';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 import { SendStackParamList } from '../SendStack';
-import { useZone } from 'src/shared/hooks/useZone';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -40,12 +41,16 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
     route.params;
   const { t } = useTranslation();
   const wallet = useWallet();
-  const zone = useZone();
+  const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
-  const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
+  const { eqInput, input, keyboard, onSwap } = useAmountInput(
+    `${amount}`,
+    quaiRate,
+  );
 
   const shouldDisableContinueButton =
     Number(input.value) === 0 || Number(eqInput.value) === 0;
@@ -110,8 +115,8 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   };
 
   useEffect(() => {
-    if (wallet) {
-      getBalance(wallet.address, zone).then(balance =>
+    if (wallet && quaiRate) {
+      getBalance(wallet.address, zone, quaiRate.base).then(balance =>
         setQuaiBalance(balance.balanceInQuai),
       );
     }

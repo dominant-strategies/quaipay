@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { SendStackParamList } from '../SendStack';
+
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
@@ -16,7 +16,9 @@ import {
   QuaiPayKeyboard,
   QuaiPayText,
 } from 'src/shared/components';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+
+import { SendStackParamList } from '../SendStack';
 import { useAmountInput } from 'src/shared/hooks';
 import { TipButton } from 'src/main/home/send/SendTip/TipButton';
 
@@ -26,6 +28,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   const { receiverAddress, receiverUsername, input, amountInUSD } =
     route.params;
   const { t } = useTranslation();
+  const quaiRate = useQuaiRate();
 
   const [selectedTip, setSelectedTip] = useState<any>(0);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -95,35 +98,37 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
 
   const navigateToOverview = () => {
     let tipInUSD: number;
-    if (input.unit === Currency.USD) {
-      tipInUSD =
-        selectedTip === 'custom'
-          ? Number(tipInput.value) * EXCHANGE_RATE
-          : ((Number(amountInUSD) * selectedTip) / 100) * EXCHANGE_RATE;
-    } else {
-      tipInUSD =
-        selectedTip === 'custom'
-          ? Number(tipInput.value) * EXCHANGE_RATE
-          : (Number(selectedTip) / 100) * EXCHANGE_RATE;
+    if (quaiRate) {
+      if (input.unit === Currency.USD) {
+        tipInUSD =
+          selectedTip === 'custom'
+            ? Number(tipInput.value) * quaiRate?.base
+            : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
+      } else {
+        tipInUSD =
+          selectedTip === 'custom'
+            ? Number(tipInput.value) * quaiRate?.base
+            : (Number(selectedTip) / 100) * quaiRate?.base;
+      }
+      navigation.navigate('SendOverview', {
+        ...route.params,
+        totalAmount:
+          selectedTip === 'custom'
+            ? calculateTipAmount(
+                Number(input.value),
+                Number(tipInput.value),
+              ).total.toString()
+            : calculateTipAmount(
+                Number(input.value),
+                Number(selectedTip),
+              ).total.toString(),
+        tip:
+          selectedTip === 'custom'
+            ? parseFloat(Number(tipInput.value).toFixed(6))
+            : parseFloat((Number(amountInUSD) * selectedTip).toFixed(6)) / 100,
+        tipInUSD: parseFloat(tipInUSD.toFixed(6)).toString(),
+      });
     }
-    navigation.navigate('SendOverview', {
-      ...route.params,
-      totalAmount:
-        selectedTip === 'custom'
-          ? calculateTipAmount(
-              Number(input.value),
-              Number(tipInput.value),
-            ).total.toString()
-          : calculateTipAmount(
-              Number(input.value),
-              Number(selectedTip),
-            ).total.toString(),
-      tip:
-        selectedTip === 'custom'
-          ? parseFloat(Number(tipInput.value).toFixed(6))
-          : parseFloat((Number(amountInUSD) * selectedTip).toFixed(6)) / 100,
-      tipInUSD: parseFloat(tipInUSD.toFixed(6)).toString(),
-    });
   };
 
   const handleCustomTip = () => {
@@ -214,7 +219,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
             />
           </View>
           <TouchableOpacity
-            onPress={navigateToOverview}
+            disabled={!quaiRate}onPress={navigateToOverview}
             style={[
               styles.button,
               styles.selectedButton,

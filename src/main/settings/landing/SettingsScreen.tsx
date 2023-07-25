@@ -1,11 +1,15 @@
 import React, { useCallback, useRef } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { MainTabStackScreenProps } from 'src/main/MainStack';
 import { Theme } from 'src/shared/types';
-import AvatarPlaceHolder from 'src/shared/assets/avatarPlaceholder.svg';
-import { useThemedStyle, useUsername, useWallet } from 'src/shared/hooks';
+import {
+  useProfilePicture,
+  useThemedStyle,
+  useUsername,
+  useWallet,
+} from 'src/shared/hooks';
 import { fontStyle, styledColors } from 'src/shared/styles';
 import {
   QuaiPayButton,
@@ -28,6 +32,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
 
   const username = useUsername();
   const wallet = useWallet();
+  const profilePicture = useProfilePicture();
 
   const handlePresentActiveAddressModalPress = useCallback(() => {
     activeAddressModalRef.current?.present();
@@ -41,7 +46,7 @@ const SettingsScreen: React.FC<MainTabStackScreenProps<'Settings'>> = () => {
     <View>
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
       <View style={styles.top}>
-        <AvatarPlaceHolder style={styles.avatar} width={96} height={96} />
+        <Image style={styles.image} source={{ uri: profilePicture }} />
       </View>
       <View style={styles.middle}>
         <QuaiPayText style={styles.username}>{username}</QuaiPayText>
@@ -87,14 +92,6 @@ const themedStyle = (theme: Theme) =>
       borderBottomColor: theme.border,
       borderBottomWidth: 1,
     },
-    avatar: {
-      borderColor: theme.surface,
-      borderWidth: 6,
-      borderRadius: 48,
-      bottom: -30,
-      left: Dimensions.get('window').width / 2 - 48,
-      position: 'absolute',
-    },
     username: {
       ...fontStyle.fontH2,
       fontSize: 20,
@@ -116,6 +113,16 @@ const themedStyle = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginVertical: 24,
+    },
+    image: {
+      bottom: -30,
+      position: 'absolute',
+      borderRadius: 70,
+      alignSelf: 'center',
+      height: 68,
+      width: 68,
+      borderColor: theme.normal,
+      borderWidth: 4,
     },
   });
 

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import UploadIcon from 'src/shared/assets/upload.svg';
@@ -99,9 +93,15 @@ export const ReceiveQRScreen: React.FC<
             title={t('common.share')}
             RightIcon={<UploadIcon color={styledColors.white} />}
           />
-          <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
-            <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
-          </TouchableOpacity>
+        <QuaiPayButton
+          underline
+          type="secondary"
+          titleType="default"
+          titleColor="gray"
+          style={styles.learnMore}
+          title="Learn more about QuaiPay"
+          onPress={goToQuaiPayInfo}
+        />
         </View>
         <QuaiPayButton
           bgColor="gray"
@@ -146,13 +146,7 @@ const themedStyle = (theme: Theme) =>
       marginHorizontal: 16,
     },
     learnMore: {
-      marginTop: 12,
-      marginBottom: 20,
-    },
-    learnMoreText: {
-      ...fontStyle.fontSmallText,
-      color: styledColors.gray,
-      textDecorationLine: 'underline',
+      paddingVertical: 16,
     },
     completeButton: {
       marginHorizontal: 30,

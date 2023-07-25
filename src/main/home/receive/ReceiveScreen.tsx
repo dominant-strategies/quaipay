@@ -4,7 +4,6 @@ import {
   Pressable,
   StyleSheet,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +22,6 @@ import {
   useBottomSheetModal,
 } from 'src/shared/components';
 import { RootStackNavigationProps } from 'src/shared/navigation';
-import { buttonStyle } from 'src/shared/styles';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
@@ -36,7 +34,6 @@ export const ReceiveScreen = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
   const { showSnackBar } = useSnackBar();
-  const isDarkMode = useColorScheme() === 'dark';
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
   const { profilePicture } = useWalletContext(); // get bare profile picture state
   useProfilePicture(); // fetch profilePicture
@@ -103,18 +100,16 @@ export const ReceiveScreen = () => {
           onPress={handleOpenActiveAddressModal}
         />
       </View>
-      <View style={styles.buttonAreaInfo}>
-        <TouchableOpacity
-          style={isDarkMode ? buttonStyle.dark : buttonStyle.white}
-          onPress={() => {
-            navigation.navigate('ReceiveStack', {
-              screen: 'ReceiveAmountInput',
-            });
-          }}
-        >
-          <QuaiPayText type="H3">{t('common.request')}</QuaiPayText>
-        </TouchableOpacity>
-      </View>
+      <QuaiPayButton
+        style={styles.requestButton}
+        type="secondary"
+        title={t('common.request')}
+        onPress={() => {
+          navigation.navigate('ReceiveStack', {
+            screen: 'ReceiveAmountInput',
+          });
+        }}
+      />
       <View style={styles.learnMoreAreaInfo}>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText style={styles.learnMoreText}>
@@ -164,8 +159,9 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.surface,
       borderColor: theme.border,
     },
-    buttonAreaInfo: {
+    requestButton: {
       marginTop: 15,
+      backgroundColor: theme.surface,
     },
     learnMoreAreaInfo: {
       marginTop: 15,

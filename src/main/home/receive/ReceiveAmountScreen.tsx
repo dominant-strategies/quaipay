@@ -5,11 +5,11 @@ import {
   Text,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
+  QuaiPayButton,
   QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayQRCode,
@@ -35,8 +35,6 @@ export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
 > = ({ route }) => {
   const { amount } = route.params;
-
-  const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
   const username = useUsername();
   const wallet = useWallet();
@@ -64,12 +62,17 @@ export const ReceiveQRScreen: React.FC<
               suffix={` ${input.unit}`}
               value={input.value}
             />
-            <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
-              <QuaiPayText>{eqInput.unit}</QuaiPayText>
-              <ExchangeIcon
-                color={isDarkMode ? styledColors.white : styledColors.black}
-              />
-            </TouchableOpacity>
+            <QuaiPayButton
+              pill
+              outlined
+              type="secondary"
+              titleType="default"
+              title={input.unit}
+              onPress={onSwap}
+              style={styles.swapButton}
+              containerStyle={styles.swapButtonContainer}
+              RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
+            />
           </View>
           <QuaiPayQRCode
             value={JSON.stringify({
@@ -162,17 +165,13 @@ const themedStyle = (theme: Theme) =>
       borderRadius: 8,
       paddingVertical: 16,
     },
-    exchangeUnit: {
-      width: 90,
-      height: 24,
-      borderRadius: 42,
-      borderWidth: 1,
-      borderColor: styledColors.border,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 3,
-      marginLeft: 8,
-      marginTop: 10,
+    swapButton: {
+      paddingVertical: 6,
+    },
+    swapButtonContainer: {
+      width: 75,
+    },
+    swapIcon: {
+      color: theme.primary,
     },
   });

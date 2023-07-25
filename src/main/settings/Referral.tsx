@@ -43,7 +43,7 @@ export const Referral = () => {
           {t('thirdStepDescription')}
         </QuaiPayText>
       </View>
-      <QuaiPayButton RightIcon={Upload} title={t('buttonText')} outlined />
+      <QuaiPayButton RightIcon={<Upload />} title={t('buttonText')} outlined />
     </QuaiPaySettingsContent>
   );
 };

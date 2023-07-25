@@ -85,7 +85,7 @@ export const ReceiveScreen = () => {
           onLongPress={copyToClipboard}
           style={styles.addressContainer}
           title={abbreviateAddress(wallet.address)}
-          RightIcon={CopyOutline}
+          RightIcon={<CopyOutline />}
         />
         <QuaiPayButton
           pill
@@ -94,7 +94,7 @@ export const ReceiveScreen = () => {
           style={styles.activeAddressPill}
           containerStyle={styles.activeAddressPillContainer}
           title={shardName ?? ''}
-          RightIcon={ChevronMiniUp}
+          RightIcon={<ChevronMiniUp />}
           onPress={handleOpenActiveAddressModal}
         />
       </View>

@@ -48,10 +48,16 @@ export const ReceiveScreen = () => {
       type: 'success',
     });
   };
-
   const handleOpenActiveAddressModal = () => {
     activeAddressModalRef.current?.present();
   };
+  const goToInputScreen = () => {
+    navigation.navigate('ReceiveStack', {
+      screen: 'ReceiveAmountInput',
+    });
+  };
+  // TODO: add proper action and link
+  const goToLearnMore = () => {};
 
   return (
     <QuaiPayContent
@@ -96,18 +102,14 @@ export const ReceiveScreen = () => {
         style={styles.requestButton}
         type="secondary"
         title={t('common.request')}
-        onPress={() => {
-          navigation.navigate('ReceiveStack', {
-            screen: 'ReceiveAmountInput',
-          });
-        }}
+        onPress={goToInputScreen}
       />
       <QuaiPayButton
         underline
         type="secondary"
         titleType="default"
         titleColor="gray"
-        onPress={() => {}}
+        onPress={goToLearnMore}
         title={t('common.learnMore')}
       />
       <View style={styles.separator} />

@@ -13,6 +13,7 @@ import { useThemedStyle } from 'src/shared/hooks';
 
 type QuaiPayAvatarProps = {
   containerStyle?: StyleProp<ViewStyle>;
+  iconSize?: number;
   profilePicture: string;
   bottomRightIcon?: React.ReactNode;
   onBottomRightIconPress?: () => void;
@@ -20,6 +21,7 @@ type QuaiPayAvatarProps = {
 
 export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
   containerStyle,
+  iconSize = 80,
   profilePicture,
   bottomRightIcon,
   onBottomRightIconPress,
@@ -44,7 +46,7 @@ export const QuaiPayAvatar: React.FC<QuaiPayAvatarProps> = ({
             source={{
               uri: profilePicture,
             }}
-            style={styles.image}
+            style={[styles.image, { height: iconSize, width: iconSize }]}
           />
         </View>
         {bottomRightIcon && (
@@ -74,8 +76,6 @@ const themedStyle = (theme: Theme) =>
       marginBottom: 16,
     },
     image: {
-      width: 80,
-      height: 80,
       borderRadius: 40,
     },
     imageSurfaceBorder: {

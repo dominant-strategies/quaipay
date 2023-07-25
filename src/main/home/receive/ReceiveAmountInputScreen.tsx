@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, useColorScheme, Image } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { fontStyle, styledColors } from 'src/shared/styles';
+import { styledColors } from 'src/shared/styles';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import { useAmountInput } from 'src/shared/hooks/useAmountInput';
 import {
+  QuaiPayAvatar,
   QuaiPayButton,
   QuaiPayContent,
   QuaiPayInputDisplay,
@@ -34,10 +35,6 @@ export const ReceiveAmountInputScreen: React.FC<
     quaiRate,
   );
 
-  const textColor = {
-    color: isDarkMode ? styledColors.white : styledColors.black,
-  };
-
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
       amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
@@ -47,12 +44,16 @@ export const ReceiveAmountInputScreen: React.FC<
     <QuaiPayContent title={t('common.request')}>
       <View style={styles.separator} />
       <View style={styles.walletCardStyle}>
-        <View style={styles.container}>
-          <Image style={styles.image} source={{ uri: profilePicture }} />
-          <Text style={[textColor, styles.username]}>{username}</Text>
-          <Text style={[textColor, styles.wallet]}>
-            {wallet && abbreviateAddress(wallet.address)}
-          </Text>
+        <View style={styles.nameAndPFPContainer}>
+          <QuaiPayAvatar
+            containerStyle={styles.image}
+            iconSize={60}
+            profilePicture={profilePicture ?? ''}
+          />
+          <QuaiPayText type="H3" style={styles.username}>
+            {username}
+          </QuaiPayText>
+          <QuaiPayText>{abbreviateAddress(wallet?.address)}</QuaiPayText>
         </View>
         <View style={styles.inputDisplayContainer}>
           <QuaiPayInputDisplay
@@ -129,20 +130,13 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   image: {
-    borderRadius: 70,
-    height: 60,
-    width: 60,
+    marginBottom: 0,
   },
-  container: {
+  nameAndPFPContainer: {
     alignItems: 'center',
   },
   username: {
-    ...fontStyle.fontH3,
     marginTop: 8,
-    fontSize: 14,
-  },
-  wallet: {
-    ...fontStyle.fontSmallText,
   },
   separator: {
     flex: 1,

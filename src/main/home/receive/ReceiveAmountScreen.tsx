@@ -103,14 +103,12 @@ export const ReceiveQRScreen: React.FC<
             <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
+        <QuaiPayButton
+          bgColor="gray"
+          title={t('receive.qrScreen.complete')}
           style={styles.completeButton}
           onPress={RootNavigator.goHome}
-        >
-          <Text style={{ color: styledColors.white }}>
-            {t('receive.qrScreen.complete')}
-          </Text>
-        </TouchableOpacity>
+        />
       </ScrollView>
     </QuaiPayContent>
   );
@@ -157,11 +155,7 @@ const themedStyle = (theme: Theme) =>
       textDecorationLine: 'underline',
     },
     completeButton: {
-      alignItems: 'center',
-      backgroundColor: styledColors.gray,
       marginHorizontal: 30,
-      borderRadius: 8,
-      paddingVertical: 16,
     },
     swapButton: {
       paddingVertical: 6,

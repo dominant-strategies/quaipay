@@ -54,7 +54,7 @@ export const retrieveLogs = () => {
       return contents;
     })
     .catch(err => {
-      console.log(err);
+      log.error(err);
     });
 };
 
@@ -69,11 +69,11 @@ export const deleteOldLogFiles = async (): Promise<void> => {
         const fileCreationTime = new Date(file.ctime ?? 0).getTime();
         if (fileCreationTime < thresholdDate) {
           await RNFS.unlink(file.path);
-          console.log(`Deleted log file: ${file.name}`);
+          log.info(`Deleted log file: ${file.name}`);
         }
       }
     }
   } catch (error) {
-    console.log('Error deleting log files:', error);
+    log.error`Error deleting log files: ${error}`;
   }
 };

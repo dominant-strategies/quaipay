@@ -114,6 +114,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const getQuaiRate = async () => {
     try {
       // Mock using 1/BTC rate
+      // TODO: replace with actual value
       const btcRate = await fetchBTCRate();
       const mockedRateValue = 1 / (btcRate ?? 0.0000000000001);
 

@@ -118,7 +118,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
               ...item,
               recipient,
               fiatAmount:
-                Number(quais.utils.formatEther(item.value)) * quaiRate?.base,
+                Number(quais.utils.formatEther(item.value)) * quaiRate.base,
               quaiAmount: Number(quais.utils.formatEther(item.value)),
             };
           }),
@@ -166,7 +166,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           quaiAmount={balance.toString()}
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
-          fiatAmount={(Number(balance) * quaiRate?.base).toFixed(3)}
+          fiatAmount={(Number(balance) * quaiRate.base).toFixed(3)}
           title={t('balance')}
         />
       </View>

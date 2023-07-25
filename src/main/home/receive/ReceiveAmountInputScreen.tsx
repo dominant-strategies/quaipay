@@ -20,9 +20,9 @@ import {
 } from 'src/shared/components';
 import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
-
-import { ReceiveStackScreenProps } from '../ReceiveStack';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+
+import { ReceiveStackScreenProps } from './ReceiveStack';
 
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<

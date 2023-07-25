@@ -22,6 +22,7 @@ import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
 import { ReceiveStackScreenProps } from '../ReceiveStack';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 // TODO: improve L&F by using flex
 export const ReceiveAmountInputScreen: React.FC<
@@ -32,7 +33,11 @@ export const ReceiveAmountInputScreen: React.FC<
   const profilePicture = useProfilePicture();
   const username = useUsername();
   const wallet = useWallet();
-  const { eqInput, input, keyboard, onSwap } = useAmountInput();
+  const quaiRate = useQuaiRate();
+  const { eqInput, input, keyboard, onSwap } = useAmountInput(
+    undefined,
+    quaiRate,
+  );
 
   const textColor = {
     color: isDarkMode ? styledColors.white : styledColors.black,

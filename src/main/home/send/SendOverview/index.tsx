@@ -11,23 +11,26 @@ import {
   useColorScheme,
   Image,
 } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
+
 import {
   QuaiPayBanner,
   QuaiPayInputDisplay,
+  QuaiPayLoader,
   QuaiPayText,
 } from 'src/shared/components';
 import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { buttonStyle, fontStyle, styledColors } from 'src/shared/styles';
 import { useAmountInput, useWallet } from 'src/shared/hooks';
-import { useTranslation } from 'react-i18next';
 import { transferFunds } from 'src/shared/services/transferFunds';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { Currency, Transaction } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { SendStackParamList } from '../SendStack';
 import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { useZone } from 'src/shared/hooks/useZone';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+
+import { SendStackParamList } from '../SendStack';
 
 type SendOverviewProps = NativeStackScreenProps<
   SendStackParamList,
@@ -48,8 +51,10 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   } = route.params;
   const wallet = useWallet();
   const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const { eqInput, input, onSwap } = useAmountInput(
     `${Number(amountInUSD) + Number(tipInUSD)}`,
+    quaiRate,
   );
   const [gasFee, setGasFee] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -85,6 +90,10 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
           err.reason.includes('insufficient funds') && setShowError(true);
         });
   };
+
+  if (!quaiRate) {
+    return <QuaiPayLoader text="Getting updated rate" />;
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -210,13 +219,13 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                             Currency.USD
                           }`
                         : `${
-                            parseFloat(Number(tip).toFixed(6)) / EXCHANGE_RATE
+                            parseFloat(Number(tip).toFixed(6)) * quaiRate.quote
                           } ${Currency.QUAI}`}
                     </Text>
                     <Text style={styles.unitUSD}>
                       {input.value === Currency.USD
                         ? `${
-                            parseFloat(Number(tip).toFixed(6)) / EXCHANGE_RATE
+                            parseFloat(Number(tip).toFixed(6)) * quaiRate.quote
                           } ${Currency.QUAI}`
                         : `$${parseFloat(Number(tip).toFixed(6))} ${
                             Currency.USD
@@ -236,7 +245,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                     {gasFee.toFixed(5)} {eqInput.unit}
                   </Text>
                   <Text style={styles.unitUSD}>
-                    {(gasFee * EXCHANGE_RATE).toFixed(2)} {input.unit}
+                    {(gasFee * quaiRate.base).toFixed(2)} {input.unit}
                   </Text>
                 </View>
               </View>

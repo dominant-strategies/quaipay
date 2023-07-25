@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +68,7 @@ export const ReceiveScreen = () => {
             profilePicture,
           })}
         />
-        <QuaiPayText type="H2" style={styles.ownerName}>
+        <QuaiPayText type="H2" style={styles.username}>
           {username}
         </QuaiPayText>
         <QuaiPayButton
@@ -123,12 +123,13 @@ const themedStyle = (theme: Theme) =>
       paddingHorizontal: 16,
       paddingTop: 80,
     },
-    ownerName: {
+    username: {
       fontSize: 20,
     },
     addressContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      alignSelf: 'center',
       padding: 0,
       gap: 8,
       marginLeft: 8, // To compensate the gap and keep address centered
@@ -143,11 +144,8 @@ const themedStyle = (theme: Theme) =>
     },
     walletView: {
       height: Dimensions.get('window').height / 2,
-      width: '100%',
       paddingVertical: 40,
       justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
       borderRadius: 8,
       borderWidth: 1,
       backgroundColor: theme.surface,

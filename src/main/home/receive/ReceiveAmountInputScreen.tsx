@@ -83,6 +83,7 @@ export const ReceiveAmountInputScreen: React.FC<
         />
       </View>
       <QuaiPayButton
+        disabled={Number(input.value) === 0}
         onPress={goToGeneratedQR}
         style={styles.continueButton}
         title={t('common.continue')}

@@ -93,7 +93,7 @@ export const QuaiPayKeyboard: React.FC<QuaiPayKeyboardProps> = ({
       </KeyboardButton>
     ),
   };
-  console.log({ visible });
+
   return (
     <View style={visible ? styles.keyboardContainer : styles.hidden}>
       {buttons.map(btn => (

@@ -71,18 +71,16 @@ export const ReceiveScreen = () => {
         <QuaiPayText type="H2" style={styles.ownerName}>
           {username}
         </QuaiPayText>
-        <Pressable
+        <QuaiPayButton
+          type="secondary"
+          titleColor="gray"
+          titleType="paragraph"
+          onPress={copyToClipboard}
           onLongPress={copyToClipboard}
-          style={({ pressed }) => [
-            styles.addressContainer,
-            pressed && { opacity: 0.5 },
-          ]}
-        >
-          <QuaiPayText type="paragraph" themeColor="secondary">
-            {abbreviateAddress(wallet.address)}
-          </QuaiPayText>
-          <CopyOutline />
-        </Pressable>
+          style={styles.addressContainer}
+          title={abbreviateAddress(wallet.address)}
+          RightIcon={CopyOutline}
+        />
         <QuaiPayButton
           pill
           outlined
@@ -131,6 +129,7 @@ const themedStyle = (theme: Theme) =>
     addressContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      padding: 0,
       gap: 8,
       marginLeft: 8, // To compensate the gap and keep address centered
     },

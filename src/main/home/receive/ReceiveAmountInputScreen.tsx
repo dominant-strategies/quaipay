@@ -14,6 +14,7 @@ import ExchangeIcon from 'src/shared/assets/exchange.svg';
 import { useProfilePicture, useUsername, useWallet } from 'src/shared/hooks';
 import { useAmountInput } from 'src/shared/hooks/useAmountInput';
 import {
+  QuaiPayButton,
   QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
@@ -83,11 +84,11 @@ export const ReceiveAmountInputScreen: React.FC<
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity onPress={goToGeneratedQR} style={styles.continueButton}>
-        <Text style={{ color: styledColors.white }}>
-          {t('common.continue')}
-        </Text>
-      </TouchableOpacity>
+      <QuaiPayButton
+        onPress={goToGeneratedQR}
+        style={styles.continueButton}
+        title={t('common.continue')}
+      />
       <View style={styles.separator} />
       <QuaiPayKeyboard
         handleLeftButtonPress={keyboard.onDecimalButtonPress}
@@ -130,13 +131,8 @@ const styles = StyleSheet.create({
     color: styledColors.black,
   },
   continueButton: {
-    borderRadius: 8,
-    backgroundColor: styledColors.normal,
     marginTop: 44,
-    alignSelf: 'center',
     marginHorizontal: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 132,
   },
   inputDisplayContainer: {
     marginTop: 16,

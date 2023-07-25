@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import UploadIcon from 'src/shared/assets/upload.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
@@ -92,11 +93,12 @@ export const ReceiveQRScreen: React.FC<
           </View>
         </View>
         <View>
-          <TouchableOpacity onPress={share} style={styles.shareButton}>
-            <Text style={{ color: styledColors.white }}>
-              {t('common.share')}
-            </Text>
-          </TouchableOpacity>
+          <QuaiPayButton
+            onPress={share}
+            style={styles.shareButton}
+            title={t('common.share')}
+            RightIcon={<UploadIcon color={styledColors.white} />}
+          />
           <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
             <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
           </TouchableOpacity>
@@ -142,12 +144,8 @@ const themedStyle = (theme: Theme) =>
       alignItems: 'center',
     },
     shareButton: {
-      borderRadius: 8,
-      backgroundColor: styledColors.normal,
       marginTop: 16,
-      alignSelf: 'center',
-      paddingVertical: 16,
-      paddingHorizontal: 140,
+      marginHorizontal: 16,
     },
     learnMore: {
       marginTop: 12,

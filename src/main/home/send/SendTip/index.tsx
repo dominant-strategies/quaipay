@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -19,6 +18,7 @@ import {
 } from 'src/shared/components';
 import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import { useAmountInput } from 'src/shared/hooks';
+import { TipButton } from 'src/main/home/send/SendTip/TipButton';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
@@ -32,7 +32,11 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   const { keyboard, input: tipInput } = useAmountInput(`${amountInUSD}`);
 
   const handleTipPress = (tipPercentage: any) => {
-    setKeyboardVisible(true);
+    if (tipPercentage === 'custom') {
+      setKeyboardVisible(true);
+    } else {
+      setKeyboardVisible(false);
+    }
     if (tipPercentage === 'custom') {
       setSelectedTip(selectedTip === 'custom' ? null : 'custom');
     } else {
@@ -186,97 +190,44 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
             </QuaiPayText>
           </View>
           <View style={styles.container}>
-            {/* TODO: Create a reusable component for the buttons */}
-            <TouchableOpacity
-              style={[
-                styles.button,
-                isButtonSelected(0) && styles.selectedButton,
-              ]}
-              onPress={() => handleTipPress(0)}
-            >
-              <Text
-                style={{
-                  color: isButtonSelected(0)
-                    ? styledColors.white
-                    : styledColors.black,
-                }}
-              >
-                {t('home.send.noTip')}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.button,
-                isButtonSelected(15) && styles.selectedButton,
-              ]}
-              onPress={() => handleTipPress(15)}
-            >
-              <Text
-                style={{
-                  color: isButtonSelected(15)
-                    ? styledColors.white
-                    : styledColors.black,
-                }}
-              >
-                15% ({calculateTipAmount(Number(input.value), 15).message})
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.button,
-                isButtonSelected(20) && styles.selectedButton,
-              ]}
-              onPress={() => handleTipPress(20)}
-            >
-              <Text
-                style={{
-                  color: isButtonSelected(20)
-                    ? styledColors.white
-                    : styledColors.black,
-                }}
-              >
-                20% ({calculateTipAmount(Number(input.value), 20).message})
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.button,
-                isButtonSelected(25) && styles.selectedButton,
-              ]}
-              onPress={() => handleTipPress(25)}
-            >
-              <Text
-                style={{
-                  color: isButtonSelected(25)
-                    ? styledColors.white
-                    : styledColors.black,
-                }}
-              >
-                25% ({calculateTipAmount(Number(input.value), 25).message})
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.button,
-                isButtonSelected('custom') && styles.selectedButton,
-                isButtonSelected('custom') && styles.customButton,
-              ]}
-              onPress={() => handleTipPress('custom')}
-            >
-              <Text
-                style={{
-                  color: isButtonSelected('custom')
-                    ? styledColors.white
-                    : styledColors.black,
-                }}
-              >
-                {t('home.send.customTip')}
-              </Text>
-            </TouchableOpacity>
+            <TipButton
+              isButtonSelected={isButtonSelected(0)}
+              handleTipPress={() => handleTipPress(0)}
+              buttonText={t('home.send.noTip')}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(10)}
+              handleTipPress={() => handleTipPress(10)}
+              buttonText={`10% ${
+                calculateTipAmount(Number(input.value), 10).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(15)}
+              handleTipPress={() => handleTipPress(15)}
+              buttonText={`15% ${
+                calculateTipAmount(Number(input.value), 15).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(20)}
+              handleTipPress={() => handleTipPress(20)}
+              buttonText={`20% ${
+                calculateTipAmount(Number(input.value), 20).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(25)}
+              handleTipPress={() => handleTipPress(25)}
+              buttonText={`25% ${
+                calculateTipAmount(Number(input.value), 25).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected('custom')}
+              handleTipPress={() => handleTipPress('custom')}
+              buttonText={t('home.send.customTip')}
+            />
           </View>
           <TouchableOpacity
             onPress={navigateToOverview}
@@ -348,10 +299,6 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: '#0066FF',
     alignSelf: 'center',
-  },
-  customButton: {
-    padding: 0,
-    paddingVertical: 0,
   },
   continueButton: {
     marginBottom: 20,

@@ -77,9 +77,9 @@ export const ReceiveQRScreen: React.FC<
           })}
         />
         <View style={styles.userInfo}>
-          <QuaiPayText>{username}</QuaiPayText>
-          <QuaiPayText style={[fontStyle.fontParagraph]}>
-            {wallet && abbreviateAddress(wallet.address)}
+          <QuaiPayText type="H2">{username}</QuaiPayText>
+          <QuaiPayText type="paragraph" themeColor="secondary">
+            {abbreviateAddress(wallet?.address)}
           </QuaiPayText>
         </View>
         <View style={styles.shareControl}>
@@ -105,7 +105,7 @@ export const ReceiveQRScreen: React.FC<
         />
       </View>
       <QuaiPayButton
-        bgColor="gray"
+        type="secondary"
         title={t('receive.qrScreen.complete')}
         style={styles.completeButton}
         onPress={RootNavigator.goHome}
@@ -117,6 +117,8 @@ export const ReceiveQRScreen: React.FC<
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     walletCard: {
+      borderWidth: 1,
+      borderColor: theme.border,
       borderRadius: 8,
       marginHorizontal: 16,
       paddingVertical: 36,
@@ -155,6 +157,7 @@ const themedStyle = (theme: Theme) =>
     completeButton: {
       marginHorizontal: 30,
       marginBottom: 20,
+      backgroundColor: theme.surface,
     },
     swapButton: {
       paddingVertical: 6,

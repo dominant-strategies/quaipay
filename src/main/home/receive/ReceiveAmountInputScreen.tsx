@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { StyleSheet, Text, View, useColorScheme, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -18,6 +11,7 @@ import {
   QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
+  QuaiPayText,
 } from 'src/shared/components';
 import { Currency } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
@@ -44,10 +38,6 @@ export const ReceiveAmountInputScreen: React.FC<
     color: isDarkMode ? styledColors.white : styledColors.black,
   };
 
-  const equivalentUnitTextColorStyle = {
-    color: isDarkMode ? styledColors.gray : styledColors.black,
-  };
-
   const goToGeneratedQR = () =>
     navigation.navigate('ReceiveQR', {
       amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
@@ -64,7 +54,7 @@ export const ReceiveAmountInputScreen: React.FC<
             {wallet && abbreviateAddress(wallet.address)}
           </Text>
         </View>
-        <View style={[styles.row, styles.inputDisplayContainer]}>
+        <View style={styles.inputDisplayContainer}>
           <QuaiPayInputDisplay
             prefix={input.unit === 'USD' ? '$' : undefined}
             suffix={` ${input.unit}`}
@@ -72,16 +62,25 @@ export const ReceiveAmountInputScreen: React.FC<
           />
         </View>
         <View style={styles.row}>
-          <Text style={[styles.amountUnit, equivalentUnitTextColorStyle]}>
+          <QuaiPayText>
             {eqInput.unit === 'USD' && '$'}
             {eqInput.value} {eqInput.unit}
-          </Text>
-          <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-            <Text style={textColor}>{input.unit}</Text>
-            <ExchangeIcon
-              color={isDarkMode ? styledColors.white : styledColors.black}
-            />
-          </TouchableOpacity>
+          </QuaiPayText>
+          <QuaiPayButton
+            pill
+            outlined
+            type="secondary"
+            titleType="default"
+            title={input.unit}
+            onPress={onSwap}
+            style={styles.swapButton}
+            containerStyle={styles.swapButtonContainer}
+            RightIcon={
+              <ExchangeIcon
+                color={isDarkMode ? styledColors.white : styledColors.black}
+              />
+            }
+          />
         </View>
       </View>
       <QuaiPayButton
@@ -107,22 +106,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  exchangeUnit: {
-    width: 90,
-    height: 24,
-    borderRadius: 42,
-    borderWidth: 1,
-    borderColor: styledColors.border,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 3,
-    marginLeft: 8,
+    gap: 8,
     marginTop: 10,
   },
-  amountUnit: {
-    marginTop: 10,
+  swapButton: {
+    paddingVertical: 6,
+  },
+  swapButtonContainer: {
+    width: 75,
   },
   xUnit: {
     textAlign: 'center',

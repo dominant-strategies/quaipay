@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
@@ -110,13 +104,14 @@ export const ReceiveScreen = () => {
           });
         }}
       />
-      <View style={styles.learnMoreAreaInfo}>
-        <TouchableOpacity onPress={() => {}}>
-          <QuaiPayText style={styles.learnMoreText}>
-            {t('common.learnMore')}
-          </QuaiPayText>
-        </TouchableOpacity>
-      </View>
+      <QuaiPayButton
+        underline
+        type="secondary"
+        titleType="default"
+        titleColor="gray"
+        onPress={() => {}}
+        title={t('common.learnMore')}
+      />
       <View style={styles.separator} />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
     </QuaiPayContent>
@@ -162,13 +157,6 @@ const themedStyle = (theme: Theme) =>
     requestButton: {
       marginTop: 15,
       backgroundColor: theme.surface,
-    },
-    learnMoreAreaInfo: {
-      marginTop: 15,
-    },
-    learnMoreText: {
-      color: theme.secondary,
-      textDecorationLine: 'underline',
     },
     separator: {
       flex: 1,

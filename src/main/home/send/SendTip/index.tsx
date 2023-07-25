@@ -51,7 +51,6 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       return {
         tipAmount: 0,
         message: t('home.send.noTip'),
-        totalAmount: `${input.value}`,
         total: Number(input.value),
       };
     }
@@ -69,14 +68,6 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           input.unit === Currency.USD
             ? (Number(input.value) + parseFloat(tipInput.value)).toFixed(2)
             : Number(input.value) + parseFloat(tipInput.value),
-        totalAmount:
-          input.unit === Currency.USD
-            ? `$${parseFloat(
-                (Number(input.value) + parseFloat(tipInput.value)).toFixed(6),
-              )}`
-            : `${parseFloat(
-                Number(input.value) + parseFloat(tipInput.value).toFixed(6),
-              )}`,
       };
     } else {
       const tipAmount = (Number(input.value) * tipPercentage) / 100;
@@ -92,14 +83,6 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           input.unit === Currency.USD
             ? (Number(input.value) + Number(tipAmount)).toFixed(2)
             : Number(input.value) + Number(tipAmount),
-        totalAmount:
-          input.unit === Currency.USD
-            ? `$${parseFloat(
-                (Number(input.value) + Number(tipAmount)).toFixed(6),
-              )}`
-            : `${parseFloat(
-                Number(input.value) + Number(tipAmount).toFixed(6),
-              )}`,
       };
     }
 
@@ -176,10 +159,11 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           <View style={styles.amountContainer}>
             <View style={styles.balanceContainer}>
               <QuaiPayText style={fontStyle.fontH1}>
-                {
-                  calculateTipAmount(Number(input.value), Number(selectedTip))
-                    .totalAmount
-                }
+                $
+                {calculateTipAmount(
+                  Number(input.value),
+                  Number(selectedTip),
+                ).total.toString()}
               </QuaiPayText>
               <QuaiPayText type="H1" themeColor="secondary">
                 {` ${input.unit}`}

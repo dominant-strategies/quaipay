@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import UploadIcon from 'src/shared/assets/upload.svg';
@@ -45,54 +45,55 @@ export const ReceiveQRScreen: React.FC<
 
   return (
     <QuaiPayContent hasBackgroundVariant title={t('common.request')}>
-      <ScrollView>
-        <View style={styles.walletCard}>
-          <View style={styles.requestedAmount}>
-            <QuaiPayText themeColor="secondary">
-              {eqInput.unit === Currency.USD && '$'}
-              {eqInput.value} {eqInput.unit}
-            </QuaiPayText>
-            <QuaiPayInputDisplay
-              prefix={input.unit === 'USD' ? '$' : undefined}
-              suffix={` ${input.unit}`}
-              value={input.value}
-            />
-            <QuaiPayButton
-              pill
-              outlined
-              type="secondary"
-              titleType="default"
-              title={input.unit}
-              onPress={onSwap}
-              style={styles.swapButton}
-              containerStyle={styles.swapButtonContainer}
-              RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
-            />
-          </View>
-          <QuaiPayQRCode
-            value={JSON.stringify({
-              address: wallet?.address,
-              username,
-              amount,
-            })}
+      <View style={styles.walletCard}>
+        <View style={styles.separator} />
+        <View style={styles.requestedAmount}>
+          <QuaiPayText themeColor="secondary">
+            {eqInput.unit === Currency.USD && '$'}
+            {eqInput.value} {eqInput.unit}
+          </QuaiPayText>
+          <QuaiPayInputDisplay
+            prefix={input.unit === 'USD' ? '$' : undefined}
+            suffix={` ${input.unit}`}
+            value={input.value}
           />
-          <View style={styles.userInfo}>
-            <QuaiPayText>{username}</QuaiPayText>
-            <QuaiPayText style={[fontStyle.fontParagraph]}>
-              {wallet && abbreviateAddress(wallet.address)}
-            </QuaiPayText>
-          </View>
-          <View style={styles.shareControl}>
-            <ShareControl share={wallet?.address ?? ''} />
-          </View>
-        </View>
-        <View>
           <QuaiPayButton
-            onPress={share}
-            style={styles.shareButton}
-            title={t('common.share')}
-            RightIcon={<UploadIcon color={styledColors.white} />}
+            pill
+            outlined
+            type="secondary"
+            titleType="default"
+            title={input.unit}
+            onPress={onSwap}
+            style={styles.swapButton}
+            containerStyle={styles.swapButtonContainer}
+            RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
           />
+        </View>
+        <QuaiPayQRCode
+          value={JSON.stringify({
+            address: wallet?.address,
+            username,
+            amount,
+          })}
+        />
+        <View style={styles.userInfo}>
+          <QuaiPayText>{username}</QuaiPayText>
+          <QuaiPayText style={[fontStyle.fontParagraph]}>
+            {wallet && abbreviateAddress(wallet.address)}
+          </QuaiPayText>
+        </View>
+        <View style={styles.shareControl}>
+          <ShareControl share={wallet?.address ?? ''} />
+        </View>
+        <View style={styles.separator} />
+      </View>
+      <View>
+        <QuaiPayButton
+          onPress={share}
+          style={styles.shareButton}
+          title={t('common.share')}
+          RightIcon={<UploadIcon color={styledColors.white} />}
+        />
         <QuaiPayButton
           underline
           type="secondary"
@@ -102,14 +103,13 @@ export const ReceiveQRScreen: React.FC<
           title="Learn more about QuaiPay"
           onPress={goToQuaiPayInfo}
         />
-        </View>
-        <QuaiPayButton
-          bgColor="gray"
-          title={t('receive.qrScreen.complete')}
-          style={styles.completeButton}
-          onPress={RootNavigator.goHome}
-        />
-      </ScrollView>
+      </View>
+      <QuaiPayButton
+        bgColor="gray"
+        title={t('receive.qrScreen.complete')}
+        style={styles.completeButton}
+        onPress={RootNavigator.goHome}
+      />
     </QuaiPayContent>
   );
 };
@@ -118,10 +118,13 @@ const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     walletCard: {
       borderRadius: 8,
-      marginTop: 12,
       marginHorizontal: 16,
       paddingVertical: 36,
       backgroundColor: theme.surface,
+      flex: 1,
+      height: '100%',
+      justifyContent: 'center',
+      minHeight: 420,
     },
     requestedAmount: {
       justifyContent: 'center',
@@ -138,7 +141,8 @@ const themedStyle = (theme: Theme) =>
       fontSize: 20,
     },
     shareControl: {
-      marginTop: 20,
+      marginTop: 12,
+      marginBottom: 16,
       alignItems: 'center',
     },
     shareButton: {
@@ -150,6 +154,7 @@ const themedStyle = (theme: Theme) =>
     },
     completeButton: {
       marginHorizontal: 30,
+      marginBottom: 20,
     },
     swapButton: {
       paddingVertical: 6,
@@ -159,5 +164,8 @@ const themedStyle = (theme: Theme) =>
     },
     swapIcon: {
       color: theme.primary,
+    },
+    separator: {
+      flex: 1,
     },
   });

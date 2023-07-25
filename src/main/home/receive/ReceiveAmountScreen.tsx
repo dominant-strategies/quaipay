@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import UploadIcon from 'src/shared/assets/upload.svg';
@@ -39,7 +39,12 @@ export const ReceiveQRScreen: React.FC<
     amount.toString(),
     quaiRate,
   );
-  const share = () => console.log('Share triggered');
+  const share = () => {
+    Share.share({
+      title: t('receive.shareYourAddress') ?? '',
+      message: wallet?.address ?? '',
+    });
+  };
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
   const styles = useThemedStyle(themedStyle);
 

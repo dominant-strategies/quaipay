@@ -89,7 +89,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
   }
 
   return (
-    <QuaiPayContent hasBackgroundVariant={true} title={t('home.send.label')}>
+    <QuaiPayContent hasBackgroundVariant title={t('home.send.label')}>
       <View style={styles.mainContainer}>
         <View style={styles.bannerWrapper}>
           <View style={styles.banner}>

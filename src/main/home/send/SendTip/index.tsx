@@ -32,7 +32,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
 
   const [selectedTip, setSelectedTip] = useState<any>(0);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const { keyboard, input: tipInput } = useAmountInput(`${amountInUSD}`);
+  const { keyboard, input: tipInput } = useAmountInput(undefined, quaiRate);
 
   const handleTipPress = (tipPercentage: any) => {
     if (tipPercentage === 'custom') {
@@ -102,13 +102,13 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       if (input.unit === Currency.USD) {
         tipInUSD =
           selectedTip === 'custom'
-            ? Number(tipInput.value) * quaiRate?.base
+            ? Number(tipInput.value)
             : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
       } else {
         tipInUSD =
           selectedTip === 'custom'
             ? Number(tipInput.value) * quaiRate?.base
-            : (Number(selectedTip) / 100) * quaiRate?.base;
+            : ((Number(input.value) * selectedTip) / 100) * quaiRate?.base;
       }
       navigation.navigate('SendOverview', {
         ...route.params,
@@ -219,7 +219,8 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
             />
           </View>
           <TouchableOpacity
-            disabled={!quaiRate}onPress={navigateToOverview}
+            disabled={!quaiRate}
+            onPress={navigateToOverview}
             style={[
               styles.button,
               styles.selectedButton,

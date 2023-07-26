@@ -122,7 +122,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         ...prevState,
         quaiRate: {
           base: mockedRateValue,
-          quote: 1 / mockedRateValue,
+          quote: parseFloat((1 / mockedRateValue).toFixed(6)),
         },
       }));
       return true;

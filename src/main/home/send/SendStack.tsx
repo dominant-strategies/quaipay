@@ -95,7 +95,10 @@ const SendStack = () => {
   );
 
   return (
-    <Stack.Navigator initialRouteName="SendScan">
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="SendScan"
+    >
       <Stack.Screen
         component={SendScanScreen}
         options={{

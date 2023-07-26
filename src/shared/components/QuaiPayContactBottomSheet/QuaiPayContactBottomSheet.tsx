@@ -124,6 +124,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       params: {
         receiverAddress: contact.address,
         receiverUsername: contact.username,
+        receiverPFP: contact.profilePicture,
         amount: 0,
         sender: sender!,
       },

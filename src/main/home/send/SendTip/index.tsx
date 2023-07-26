@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -146,9 +146,17 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       : `${input.value} ${input.unit} + ${handleCustomTip()}`;
   };
 
+  const showKeyboard = useCallback(() => {
+    setKeyboardVisible(true);
+  }, []);
+
+  const hideKeyboard = useCallback(() => {
+    setKeyboardVisible(false);
+  }, []);
+
   return (
     <QuaiPayContent title={t('home.send.label')}>
-      <TouchableWithoutFeedback onPress={() => setKeyboardVisible(false)}>
+      <TouchableWithoutFeedback onPress={hideKeyboard}>
         <View style={styles.mainContainer}>
           <View style={styles.container}>
             <QuaiPayText style={styles.username}>
@@ -237,7 +245,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
             </QuaiPayText>
           </TouchableOpacity>
           <View style={styles.keyboardContainer}>
-            <TouchableWithoutFeedback onPress={() => setKeyboardVisible(true)}>
+            <TouchableWithoutFeedback onPress={showKeyboard}>
               <QuaiPayKeyboard
                 handleLeftButtonPress={keyboard.onDecimalButtonPress}
                 handleRightButtonPress={keyboard.onDeleteButtonPress}

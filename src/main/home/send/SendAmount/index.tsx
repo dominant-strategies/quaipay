@@ -182,18 +182,14 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           </TouchableOpacity>
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity
+          <QuaiPayButton
             disabled={shouldDisableContinueButtons}
             onPress={goToTip}
-            style={[
-              styles.tipButton,
-              {
-                borderColor: styledColors.gray,
-              },
-            ]}
-          >
-            <QuaiPayText>{t('home.send.includeTip')}</QuaiPayText>
-          </TouchableOpacity>
+            outlined
+            style={styles.continueButton}
+            title={t('home.send.includeTip')}
+            type="secondary"
+          />
           <QuaiPayButton
             onPress={goToOverview}
             style={styles.continueButton}
@@ -264,10 +260,11 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 32,
     marginBottom: 48,
+    height: 145,
   },
   continueButton: {
     alignSelf: 'center',

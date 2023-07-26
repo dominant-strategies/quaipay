@@ -1,5 +1,5 @@
 import React from 'react';
-import { Share, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import UploadIcon from 'src/shared/assets/upload.svg';
@@ -26,6 +26,9 @@ import { ReceiveStackScreenProps } from 'src/main/home/receive/ReceiveStack';
 import ShareControl from 'src/main/home/receive/ShareControl';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
+const isWindowSmallerThanScreen =
+  Dimensions.get('window').height < Dimensions.get('screen').height;
+
 export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
 > = ({ route }) => {
@@ -50,71 +53,76 @@ export const ReceiveQRScreen: React.FC<
 
   return (
     <QuaiPayContent hasBackgroundVariant title={t('common.request')}>
-      <View style={styles.walletCard}>
-        <View style={styles.separator} />
-        <View style={styles.requestedAmount}>
-          <QuaiPayText themeColor="secondary">
-            {eqInput.unit === Currency.USD && '$'}
-            {eqInput.value} {eqInput.unit}
-          </QuaiPayText>
-          <QuaiPayInputDisplay
-            prefix={input.unit === 'USD' ? '$' : undefined}
-            suffix={` ${input.unit}`}
-            value={input.value}
+      <ScrollView
+        alwaysBounceVertical={isWindowSmallerThanScreen}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.walletCard}>
+          <View style={styles.separator} />
+          <View style={styles.requestedAmount}>
+            <QuaiPayText themeColor="secondary">
+              {eqInput.unit === Currency.USD && '$'}
+              {eqInput.value} {eqInput.unit}
+            </QuaiPayText>
+            <QuaiPayInputDisplay
+              prefix={input.unit === 'USD' ? '$' : undefined}
+              suffix={` ${input.unit}`}
+              value={input.value}
+            />
+            <QuaiPayButton
+              pill
+              outlined
+              type="secondary"
+              titleType="default"
+              title={input.unit}
+              onPress={onSwap}
+              style={styles.swapButton}
+              containerStyle={styles.swapButtonContainer}
+              RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
+            />
+          </View>
+          <QuaiPayQRCode
+            value={JSON.stringify({
+              address: wallet?.address,
+              username,
+              amount,
+            })}
+          />
+          <View style={styles.userInfo}>
+            <QuaiPayText type="H2">{username}</QuaiPayText>
+            <QuaiPayText type="paragraph" themeColor="secondary">
+              {abbreviateAddress(wallet?.address)}
+            </QuaiPayText>
+          </View>
+          <View style={styles.shareControl}>
+            <ShareControl share={wallet?.address ?? ''} />
+          </View>
+          <View style={styles.separator} />
+        </View>
+        <View>
+          <QuaiPayButton
+            onPress={share}
+            style={styles.shareButton}
+            title={t('common.share')}
+            RightIcon={<UploadIcon color={styledColors.white} />}
           />
           <QuaiPayButton
-            pill
-            outlined
+            underline
             type="secondary"
             titleType="default"
-            title={input.unit}
-            onPress={onSwap}
-            style={styles.swapButton}
-            containerStyle={styles.swapButtonContainer}
-            RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
+            titleColor="gray"
+            style={styles.learnMore}
+            title="Learn more about QuaiPay"
+            onPress={goToQuaiPayInfo}
           />
         </View>
-        <QuaiPayQRCode
-          value={JSON.stringify({
-            address: wallet?.address,
-            username,
-            amount,
-          })}
-        />
-        <View style={styles.userInfo}>
-          <QuaiPayText type="H2">{username}</QuaiPayText>
-          <QuaiPayText type="paragraph" themeColor="secondary">
-            {abbreviateAddress(wallet?.address)}
-          </QuaiPayText>
-        </View>
-        <View style={styles.shareControl}>
-          <ShareControl share={wallet?.address ?? ''} />
-        </View>
-        <View style={styles.separator} />
-      </View>
-      <View>
         <QuaiPayButton
-          onPress={share}
-          style={styles.shareButton}
-          title={t('common.share')}
-          RightIcon={<UploadIcon color={styledColors.white} />}
-        />
-        <QuaiPayButton
-          underline
           type="secondary"
-          titleType="default"
-          titleColor="gray"
-          style={styles.learnMore}
-          title="Learn more about QuaiPay"
-          onPress={goToQuaiPayInfo}
+          title={t('receive.qrScreen.complete')}
+          style={styles.completeButton}
+          onPress={RootNavigator.goHome}
         />
-      </View>
-      <QuaiPayButton
-        type="secondary"
-        title={t('receive.qrScreen.complete')}
-        style={styles.completeButton}
-        onPress={RootNavigator.goHome}
-      />
+      </ScrollView>
     </QuaiPayContent>
   );
 };

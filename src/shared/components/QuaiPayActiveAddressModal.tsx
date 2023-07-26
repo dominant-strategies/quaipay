@@ -10,7 +10,8 @@ import { useWalletContext } from 'src/shared/context/walletContext';
 import { useThemedStyle } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 
-import { QuaiPayBottomSheetModal, QuaiPayText } from '../components';
+import { QuaiPayBottomSheetModal } from '../components/QuaiPayBottomSheetModal/QuaiPayBottomSheetModal';
+import { QuaiPayText } from '../components/QuaiPayText';
 
 const zones = Object.keys(Zone) as Zone[];
 

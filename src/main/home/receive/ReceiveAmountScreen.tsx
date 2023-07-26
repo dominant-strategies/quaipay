@@ -173,6 +173,7 @@ const themedStyle = (theme: Theme) =>
       backgroundColor: theme.surface,
     },
     swapButton: {
+      borderColor: theme.border,
       paddingVertical: 6,
     },
     swapButtonContainer: {

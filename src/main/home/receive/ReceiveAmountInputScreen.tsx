@@ -107,6 +107,7 @@ const themedStyle = (theme: Theme) =>
       marginTop: 10,
     },
     swapButton: {
+      borderColor: theme.border,
       paddingVertical: 6,
     },
     swapButtonContainer: {

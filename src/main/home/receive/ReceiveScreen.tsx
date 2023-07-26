@@ -94,6 +94,7 @@ export const ReceiveScreen = () => {
           style={styles.activeAddressPill}
           containerStyle={styles.activeAddressPillContainer}
           title={shardName ?? ''}
+          titleColor="gray"
           RightIcon={<ChevronMiniUp />}
           onPress={handleOpenActiveAddressModal}
         />
@@ -140,6 +141,7 @@ const themedStyle = (theme: Theme) =>
       marginTop: 20,
     },
     activeAddressPill: {
+      borderColor: theme.border,
       paddingVertical: 8,
       paddingHorizontal: 16,
       alignSelf: 'center', // to avoid stretching horizontally

@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  useColorScheme,
-} from 'react-native';
+import { Share, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import UploadIcon from 'src/shared/assets/upload.svg';
 import {
+  QuaiPayButton,
   QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayQRCode,
@@ -35,8 +30,6 @@ export const ReceiveQRScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveQR'>
 > = ({ route }) => {
   const { amount } = route.params;
-
-  const isDarkMode = useColorScheme() === 'dark';
   const { t } = useTranslation();
   const username = useUsername();
   const wallet = useWallet();
@@ -46,67 +39,82 @@ export const ReceiveQRScreen: React.FC<
     amount.toString(),
     quaiRate,
   );
-  const share = () => console.log('Share triggered');
+  const share = () => {
+    Share.share({
+      title: t('receive.shareYourAddress') ?? '',
+      message: wallet?.address ?? '',
+    });
+  };
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
   const styles = useThemedStyle(themedStyle);
 
   return (
     <QuaiPayContent hasBackgroundVariant title={t('common.request')}>
-      <ScrollView>
-        <View style={styles.walletCard}>
-          <View style={styles.requestedAmount}>
-            <QuaiPayText themeColor="secondary">
-              {eqInput.unit === Currency.USD && '$'}
-              {eqInput.value} {eqInput.unit}
-            </QuaiPayText>
-            <QuaiPayInputDisplay
-              prefix={input.unit === 'USD' ? '$' : undefined}
-              suffix={` ${input.unit}`}
-              value={input.value}
-            />
-            <TouchableOpacity onPress={onSwap} style={styles.exchangeUnit}>
-              <QuaiPayText>{eqInput.unit}</QuaiPayText>
-              <ExchangeIcon
-                color={isDarkMode ? styledColors.white : styledColors.black}
-              />
-            </TouchableOpacity>
-          </View>
-          <QuaiPayQRCode
-            value={JSON.stringify({
-              address: wallet?.address,
-              username,
-              amount,
-            })}
+      <View style={styles.walletCard}>
+        <View style={styles.separator} />
+        <View style={styles.requestedAmount}>
+          <QuaiPayText themeColor="secondary">
+            {eqInput.unit === Currency.USD && '$'}
+            {eqInput.value} {eqInput.unit}
+          </QuaiPayText>
+          <QuaiPayInputDisplay
+            prefix={input.unit === 'USD' ? '$' : undefined}
+            suffix={` ${input.unit}`}
+            value={input.value}
           />
-          <View style={styles.userInfo}>
-            <QuaiPayText>{username}</QuaiPayText>
-            <QuaiPayText style={[fontStyle.fontParagraph]}>
-              {wallet && abbreviateAddress(wallet.address)}
-            </QuaiPayText>
-          </View>
-          <View style={styles.shareControl}>
-            <ShareControl share={wallet?.address ?? ''} />
-          </View>
+          <QuaiPayButton
+            pill
+            outlined
+            type="secondary"
+            titleType="default"
+            title={input.unit}
+            onPress={onSwap}
+            style={styles.swapButton}
+            containerStyle={styles.swapButtonContainer}
+            RightIcon={<ExchangeIcon color={styles.swapIcon.color} />}
+          />
         </View>
-        <View>
-          <TouchableOpacity onPress={share} style={styles.shareButton}>
-            <Text style={{ color: styledColors.white }}>
-              {t('common.share')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.learnMore} onPress={goToQuaiPayInfo}>
-            <Text style={styles.learnMoreText}>Learn more about QuaiPay</Text>
-          </TouchableOpacity>
+        <QuaiPayQRCode
+          value={JSON.stringify({
+            address: wallet?.address,
+            username,
+            amount,
+          })}
+        />
+        <View style={styles.userInfo}>
+          <QuaiPayText type="H2">{username}</QuaiPayText>
+          <QuaiPayText type="paragraph" themeColor="secondary">
+            {abbreviateAddress(wallet?.address)}
+          </QuaiPayText>
         </View>
-        <TouchableOpacity
-          style={styles.completeButton}
-          onPress={RootNavigator.goHome}
-        >
-          <Text style={{ color: styledColors.white }}>
-            {t('receive.qrScreen.complete')}
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+        <View style={styles.shareControl}>
+          <ShareControl share={wallet?.address ?? ''} />
+        </View>
+        <View style={styles.separator} />
+      </View>
+      <View>
+        <QuaiPayButton
+          onPress={share}
+          style={styles.shareButton}
+          title={t('common.share')}
+          RightIcon={<UploadIcon color={styledColors.white} />}
+        />
+        <QuaiPayButton
+          underline
+          type="secondary"
+          titleType="default"
+          titleColor="gray"
+          style={styles.learnMore}
+          title="Learn more about QuaiPay"
+          onPress={goToQuaiPayInfo}
+        />
+      </View>
+      <QuaiPayButton
+        type="secondary"
+        title={t('receive.qrScreen.complete')}
+        style={styles.completeButton}
+        onPress={RootNavigator.goHome}
+      />
     </QuaiPayContent>
   );
 };
@@ -114,11 +122,16 @@ export const ReceiveQRScreen: React.FC<
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({
     walletCard: {
+      borderWidth: 1,
+      borderColor: theme.border,
       borderRadius: 8,
-      marginTop: 12,
       marginHorizontal: 16,
       paddingVertical: 36,
       backgroundColor: theme.surface,
+      flex: 1,
+      height: '100%',
+      justifyContent: 'center',
+      minHeight: 420,
     },
     requestedAmount: {
       justifyContent: 'center',
@@ -135,44 +148,32 @@ const themedStyle = (theme: Theme) =>
       fontSize: 20,
     },
     shareControl: {
-      marginTop: 20,
+      marginTop: 12,
+      marginBottom: 16,
       alignItems: 'center',
     },
     shareButton: {
-      borderRadius: 8,
-      backgroundColor: styledColors.normal,
       marginTop: 16,
-      alignSelf: 'center',
-      paddingVertical: 16,
-      paddingHorizontal: 140,
+      marginHorizontal: 16,
     },
     learnMore: {
-      marginTop: 12,
-      marginBottom: 20,
-    },
-    learnMoreText: {
-      ...fontStyle.fontSmallText,
-      color: styledColors.gray,
-      textDecorationLine: 'underline',
-    },
-    completeButton: {
-      alignItems: 'center',
-      backgroundColor: styledColors.gray,
-      marginHorizontal: 30,
-      borderRadius: 8,
       paddingVertical: 16,
     },
-    exchangeUnit: {
-      width: 90,
-      height: 24,
-      borderRadius: 42,
-      borderWidth: 1,
-      borderColor: styledColors.border,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 3,
-      marginLeft: 8,
-      marginTop: 10,
+    completeButton: {
+      marginHorizontal: 30,
+      marginBottom: 20,
+      backgroundColor: theme.surface,
+    },
+    swapButton: {
+      paddingVertical: 6,
+    },
+    swapButtonContainer: {
+      width: 75,
+    },
+    swapIcon: {
+      color: theme.primary,
+    },
+    separator: {
+      flex: 1,
     },
   });

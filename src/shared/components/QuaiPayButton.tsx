@@ -38,7 +38,7 @@ interface QuaiPayButtonProps extends Omit<PressableProps, 'style'> {
   /*
    * SVG icon to be rendered alongside the title
    */
-  RightIcon?: React.FC<React.SVGAttributes<SVGElement>>;
+  RightIcon?: React.ReactNode;
   /*
    * Custom style props to overwrite any style that is applied to button's component
    */
@@ -93,7 +93,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
         {...props}
         style={({ pressed }) => [
           styles.button,
-          RightIcon && styles.row,
+          RightIcon ? styles.row : {},
           pill && styles.pill,
           outlined && styles.outlinedButton,
           titleColor && outlined && { borderColor: styledColors[titleColor] },
@@ -113,7 +113,7 @@ export const QuaiPayButton: React.FC<QuaiPayButtonProps> = ({
         >
           {title}
         </QuaiPayText>
-        {RightIcon && <RightIcon />}
+        {RightIcon ? RightIcon : null}
       </Pressable>
     </View>
   );

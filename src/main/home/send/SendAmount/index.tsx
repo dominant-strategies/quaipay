@@ -52,7 +52,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
     quaiRate,
   );
 
-  const shouldDisableContinueButton =
+  const shouldDisableContinueButtons =
     Number(input.value) === 0 || Number(eqInput.value) === 0;
 
   const equivalentUnitTextColorStyle = {
@@ -183,6 +183,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
         </View>
         <View style={styles.buttons}>
           <TouchableOpacity
+            disabled={shouldDisableContinueButtons}
             onPress={goToTip}
             style={[
               styles.tipButton,
@@ -196,7 +197,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           <QuaiPayButton
             onPress={goToOverview}
             style={styles.continueButton}
-            disabled={shouldDisableContinueButton}
+            disabled={shouldDisableContinueButtons}
             title={t('common.continue')}
           />
         </View>

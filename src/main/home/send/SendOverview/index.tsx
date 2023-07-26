@@ -135,7 +135,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                     color: isDarkMode ? styledColors.white : styledColors.black,
                   }}
                 >
-                  {input.unit}
+                  {eqInput.unit}
                 </Text>
                 <ExchangeIcon
                   color={isDarkMode ? styledColors.white : styledColors.black}

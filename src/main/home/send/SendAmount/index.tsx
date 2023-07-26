@@ -175,7 +175,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
             {eqInput.value} {eqInput.unit}
           </Text>
           <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-            <QuaiPayText>{input.unit}</QuaiPayText>
+            <QuaiPayText>{eqInput.unit}</QuaiPayText>
             <ExchangeIcon
               color={isDarkMode ? styledColors.white : styledColors.black}
             />

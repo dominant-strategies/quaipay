@@ -37,6 +37,7 @@ import { useTheme } from 'src/shared/context/themeContext';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { filterByAmountAndTxDirection } from './utils/filterByAmountAndTxDirection';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -111,7 +112,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   }, [wallet, walletObject, zone]);
 
   useEffect(() => {
-    if (!quaiRate) {
+    if (!quaiRate || !wallet) {
       return;
     }
     setLoading(true);
@@ -137,28 +138,18 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         );
 
         const filteredTransactions = res.result
-          .filter(item => {
-            if (minAmount && minAmount > 0) {
-              return item.quaiAmount >= minAmount;
-            }
-            if (maxAmount && maxAmount > 0) {
-              return item.quaiAmount <= maxAmount;
-            }
-            if (selectedTxDirection) {
-              if (selectedTxDirection === 'from') {
-                return (
-                  item.from.toLowerCase() === wallet?.address?.toLowerCase()
-                );
-              }
-              if (selectedTxDirection === 'to') {
-                return item.to.toLowerCase() === wallet?.address?.toLowerCase();
-              }
-            }
-            return true;
-          })
+          .filter((tx: Transaction) =>
+            filterByAmountAndTxDirection(
+              tx,
+              minAmount,
+              maxAmount,
+              wallet,
+              selectedTxDirection,
+            ),
+          )
           .map(item => {
             const isUserSender =
-              item.from.toLowerCase() === wallet?.address.toLowerCase();
+              item.from.toLowerCase() === wallet.address.toLowerCase();
             const contact = contacts?.find(
               c =>
                 c.address.toLowerCase() ===
@@ -206,6 +197,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     minAmount,
     maxAmount,
     quaiRate,
+    wallet,
   ]);
 
   const navigateToReferral = useCallback(() => {

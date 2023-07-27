@@ -325,7 +325,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                 quaiAmount={parseFloat(item.quaiAmount.toFixed(6)).toString()}
               />
             )}
-            keyExtractor={item => Math.random().toString()}
+            keyExtractor={tx => tx.hash}
           />
         )}
       </View>

@@ -305,7 +305,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           <FlatList
             data={transactions}
             contentContainerStyle={styles.flatlistContainer}
-            onEndReached={() => console.log('end reached')}
             onEndReachedThreshold={0.1}
             renderItem={({ item }) => (
               <QuaiPayListItem

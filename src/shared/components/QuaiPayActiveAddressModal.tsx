@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 
 import { QuaiPayBottomSheetModal } from '../components/QuaiPayBottomSheetModal/QuaiPayBottomSheetModal';
 import { QuaiPayText } from '../components/QuaiPayText';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { QuaiPayLoader } from 'src/shared/components/QuaiPayLoader';
 
 const zones = Object.keys(Zone) as Zone[];
 
@@ -25,9 +27,14 @@ const Modal: ForwardRefRenderFunction<
   QuaiPayActiveAddressModalProps
 > = (params, ref) => {
   const { balances } = params;
+  const quaiRate = useQuaiRate();
   const { zone: selectedZone, setZone, walletObject } = useWalletContext();
   const styles = useThemedStyle(themedStyle);
   const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
+
+  if (!quaiRate) {
+    return <QuaiPayLoader text={t('wallet.loading')} />;
+  }
 
   return (
     <QuaiPayBottomSheetModal ref={ref}>
@@ -93,7 +100,7 @@ const Modal: ForwardRefRenderFunction<
                         ? balances[walletObject![zone].address]
                           ? (
                               Number(balances[walletObject![zone].address]) *
-                              EXCHANGE_RATE
+                              quaiRate.quote
                             ).toFixed(2)
                           : '0.00'
                         : '0.00'}

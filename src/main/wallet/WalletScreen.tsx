@@ -48,12 +48,8 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const contacts = useContacts();
   const quaiRate = useQuaiRate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [selectedTxDirection, setSelectedTxDirection] = useState<
-    string | undefined
-  >();
-  const [selectedTimeframe, setSelectedTimeframe] = useState<
-    Timeframe | undefined
-  >();
+  const [selectedTxDirection, setSelectedTxDirection] = useState<string>();
+  const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>();
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(1e18);
   const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);

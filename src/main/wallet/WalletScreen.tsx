@@ -115,6 +115,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   }, [wallet, zone]);
 
   useEffect(() => {
+    if (!quaiRate) {
+      return;
+    }
     setLoading(true);
     const txAllShards: Transaction[] = [];
 
@@ -134,6 +137,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             maxAmount,
           },
           zone,
+          quaiRate,
         );
 
         const filteredTransactions = res.result
@@ -205,6 +209,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     selectedTimeframe,
     minAmount,
     maxAmount,
+    quaiRate,
   ]);
 
   const navigateToReferral = useCallback(() => {

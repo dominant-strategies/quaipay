@@ -44,6 +44,7 @@ describe('getAccountTransactions', () => {
         address: '0x2f7662cD8E784750E116E44a536278d2b429167E',
       },
       Zone['zone-0-0'],
+      { base: 1, quote: 1 },
     );
     const regex = new RegExp(/^[01]$/);
     expect(regex.test(transactions.status)).toBe(true);
@@ -63,6 +64,7 @@ describe('getAccountTransactions', () => {
         maxAmount: 1e18,
       },
       Zone['zone-0-0'],
+      { base: 1, quote: 1 },
     );
     const regex = new RegExp(/^[01]$/);
     expect(regex.test(transactions.status)).toBe(true);

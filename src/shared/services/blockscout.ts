@@ -66,6 +66,7 @@ type GetAccountTransactionsProps = {
 export const getAccountTransactions = (
   props: GetAccountTransactionsProps,
   zone: Zone,
+  quaiRate: QuaiRate,
 ): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
     const { address, sort, page, offset, selectedTimeframe, filterBy } = props;
@@ -103,7 +104,7 @@ export const getAccountTransactions = (
             ...transaction,
             fiatAmount:
               Number(quais.utils.formatEther(transaction.value)) *
-              EXCHANGE_RATE,
+              quaiRate.quote,
             quaiAmount: Number(quais.utils.formatEther(transaction.value)),
           };
         });

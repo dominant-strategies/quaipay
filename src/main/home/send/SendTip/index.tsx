@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
-  Text,
   View,
-  useColorScheme,
   TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { SendStackParamList } from '../SendStack';
+
 import { fontStyle, styledColors } from 'src/shared/styles';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
-import { QuaiPayText } from 'src/shared/components';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
+import {
+  QuaiPayContent,
+  QuaiPayKeyboard,
+  QuaiPayText,
+} from 'src/shared/components';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+
+import { SendStackParamList } from '../SendStack';
+import { useAmountInput } from 'src/shared/hooks';
+import { TipButton } from 'src/main/home/send/SendTip/TipButton';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
@@ -28,12 +28,18 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   const { receiverAddress, receiverUsername, input, amountInUSD } =
     route.params;
   const { t } = useTranslation();
-  const isDarkMode = useColorScheme() === 'dark';
+  const quaiRate = useQuaiRate();
 
   const [selectedTip, setSelectedTip] = useState<any>(0);
-  const [customTip, setCustomTip] = useState('0');
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const { keyboard, input: tipInput } = useAmountInput(undefined, quaiRate);
 
   const handleTipPress = (tipPercentage: any) => {
+    if (tipPercentage === 'custom') {
+      setKeyboardVisible(true);
+    } else {
+      setKeyboardVisible(false);
+    }
     if (tipPercentage === 'custom') {
       setSelectedTip(selectedTip === 'custom' ? null : 'custom');
     } else {
@@ -48,39 +54,26 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       return {
         tipAmount: 0,
         message: t('home.send.noTip'),
-        totalAmount: `${input.value}`,
         total: Number(input.value),
       };
     }
 
-    let tipAmount =
-      selectedTip === 'custom'
-        ? Number(customTip)
-        : (Number(input.value) * tipPercentage) / 100;
-
     if (isNaN(tipPercentage)) {
-      tipAmount = parseFloat(customTip);
       tips = {
-        customTip,
+        customTip: tipInput,
         message:
           input.unit === Currency.USD
-            ? `$${parseFloat(customTip).toFixed(2)} ${t('home.send.tip')}`
-            : `${parseFloat(customTip)} ${input.unit} ${t('home.send.tip')}`,
+            ? `$${parseFloat(tipInput.value).toFixed(2)} ${t('home.send.tip')}`
+            : `${parseFloat(tipInput.value)} ${input.unit} ${t(
+                'home.send.tip',
+              )}`,
         total:
           input.unit === Currency.USD
-            ? (Number(input.value) + parseFloat(customTip)).toFixed(2)
-            : Number(input.value) + parseFloat(customTip),
-        totalAmount:
-          input.unit === Currency.USD
-            ? `$${parseFloat(
-                (Number(input.value) + parseFloat(customTip)).toFixed(6),
-              )}`
-            : `${parseFloat(
-                Number(input.value) + parseFloat(customTip).toFixed(6),
-              )}`,
+            ? (Number(input.value) + parseFloat(tipInput.value)).toFixed(2)
+            : Number(input.value) + parseFloat(tipInput.value),
       };
     } else {
-      tipAmount = (Number(input.value) * tipPercentage) / 100;
+      const tipAmount = (Number(input.value) * tipPercentage) / 100;
       tips = {
         tipAmount,
         message:
@@ -93,14 +86,6 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           input.unit === Currency.USD
             ? (Number(input.value) + Number(tipAmount)).toFixed(2)
             : Number(input.value) + Number(tipAmount),
-        totalAmount:
-          input.unit === Currency.USD
-            ? `$${parseFloat(
-                (Number(input.value) + Number(tipAmount)).toFixed(6),
-              )}`
-            : `${parseFloat(
-                Number(input.value) + Number(tipAmount).toFixed(6),
-              )}`,
       };
     }
 
@@ -112,41 +97,43 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    let tipInUSD = 0;
-    if (input.unit === Currency.USD) {
-      tipInUSD =
-        selectedTip === 'custom'
-          ? Number(customTip) * EXCHANGE_RATE
-          : ((Number(amountInUSD) * selectedTip) / 100) * EXCHANGE_RATE;
-    } else {
-      tipInUSD =
-        selectedTip === 'custom'
-          ? Number(customTip) * EXCHANGE_RATE
-          : (Number(selectedTip) / 100) * EXCHANGE_RATE;
+    let tipInUSD: number;
+    if (quaiRate) {
+      if (input.unit === Currency.USD) {
+        tipInUSD =
+          selectedTip === 'custom'
+            ? Number(tipInput.value)
+            : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
+      } else {
+        tipInUSD =
+          selectedTip === 'custom'
+            ? Number(tipInput.value) * quaiRate?.base
+            : ((Number(input.value) * selectedTip) / 100) * quaiRate?.base;
+      }
+      navigation.navigate('SendOverview', {
+        ...route.params,
+        totalAmount:
+          selectedTip === 'custom'
+            ? calculateTipAmount(
+                Number(input.value),
+                Number(tipInput.value),
+              ).total.toString()
+            : calculateTipAmount(
+                Number(input.value),
+                Number(selectedTip),
+              ).total.toString(),
+        tip:
+          selectedTip === 'custom'
+            ? parseFloat(Number(tipInput.value).toFixed(6))
+            : parseFloat((Number(amountInUSD) * selectedTip).toFixed(6)) / 100,
+        tipInUSD: parseFloat(tipInUSD.toFixed(6)).toString(),
+      });
     }
-    navigation.navigate('SendOverview', {
-      ...route.params,
-      totalAmount:
-        selectedTip === 'custom'
-          ? calculateTipAmount(
-              Number(input.value),
-              Number(customTip),
-            ).total.toString()
-          : calculateTipAmount(
-              Number(input.value),
-              Number(selectedTip),
-            ).total.toString(),
-      tip:
-        selectedTip === 'custom'
-          ? parseFloat(Number(customTip).toFixed(6))
-          : parseFloat((Number(amountInUSD) * selectedTip).toFixed(6)) / 100,
-      tipInUSD: parseFloat(tipInUSD.toFixed(6)).toString(),
-    });
   };
 
   const handleCustomTip = () => {
     if (selectedTip === 'custom') {
-      return `${Number(customTip)} ${input.unit} ${t('home.send.tip')}`;
+      return `${Number(tipInput.value)} ${input.unit} ${t('home.send.tip')}`;
     } else {
       return calculateTipAmount(Number(input.value), Number(selectedTip))
         .message;
@@ -159,190 +146,119 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
       : `${input.value} ${input.unit} + ${handleCustomTip()}`;
   };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    width: '100%',
-    height: '100%',
-  };
+  const showKeyboard = useCallback(() => {
+    setKeyboardVisible(true);
+  }, []);
+
+  const hideKeyboard = useCallback(() => {
+    setKeyboardVisible(false);
+  }, []);
 
   return (
-    <DismissKeyboard>
-      <SafeAreaView style={backgroundStyle}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <StatusBar
-            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            backgroundColor={backgroundStyle.backgroundColor}
-          />
-          <View style={styles.mainContainer}>
-            <View style={styles.container}>
-              <QuaiPayText style={styles.username}>
-                {t('common:to')} {receiverUsername}
-              </QuaiPayText>
-              <QuaiPayText themeColor="secondary">
-                {abbreviateAddress(receiverAddress)}
-              </QuaiPayText>
-            </View>
-            <QuaiPayText style={styles.tipText}>
-              {t('home.send.includeTip')}
+    <QuaiPayContent title={t('home.send.label')}>
+      <TouchableWithoutFeedback onPress={hideKeyboard}>
+        <View style={styles.mainContainer}>
+          <View style={styles.container}>
+            <QuaiPayText style={styles.username}>
+              {t('common:to')} {receiverUsername}
             </QuaiPayText>
-            <View style={styles.amountContainer}>
-              <View style={styles.balanceContainer}>
-                <QuaiPayText style={fontStyle.fontH1}>
-                  {
-                    calculateTipAmount(Number(input.value), Number(selectedTip))
-                      .totalAmount
-                  }
-                </QuaiPayText>
-                <QuaiPayText type="H1" themeColor="secondary">
-                  {` ${input.unit}`}
-                </QuaiPayText>
-              </View>
-              <QuaiPayText type="paragraph">
-                {renderEquivalentAmount()}
-              </QuaiPayText>
-            </View>
-            <View style={styles.container}>
-              {/* TODO: Create a reusable component for the buttons */}
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  isButtonSelected(0) && styles.selectedButton,
-                ]}
-                onPress={() => handleTipPress(0)}
-              >
-                <Text
-                  style={{
-                    color: isButtonSelected(0)
-                      ? styledColors.white
-                      : styledColors.black,
-                  }}
-                >
-                  {t('home.send.noTip')}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  isButtonSelected(15) && styles.selectedButton,
-                ]}
-                onPress={() => handleTipPress(15)}
-              >
-                <Text
-                  style={{
-                    color: isButtonSelected(15)
-                      ? styledColors.white
-                      : styledColors.black,
-                  }}
-                >
-                  15% ({calculateTipAmount(Number(input.value), 15).message})
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  isButtonSelected(20) && styles.selectedButton,
-                ]}
-                onPress={() => handleTipPress(20)}
-              >
-                <Text
-                  style={{
-                    color: isButtonSelected(20)
-                      ? styledColors.white
-                      : styledColors.black,
-                  }}
-                >
-                  20% ({calculateTipAmount(Number(input.value), 20).message})
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  isButtonSelected(25) && styles.selectedButton,
-                ]}
-                onPress={() => handleTipPress(25)}
-              >
-                <Text
-                  style={{
-                    color: isButtonSelected(25)
-                      ? styledColors.white
-                      : styledColors.black,
-                  }}
-                >
-                  25% ({calculateTipAmount(Number(input.value), 25).message})
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  isButtonSelected('custom') && styles.selectedButton,
-                  isButtonSelected('custom') && styles.customButton,
-                ]}
-                onPress={() => handleTipPress('custom')}
-              >
-                {selectedTip === 'custom' ? (
-                  <TextInput
-                    style={[
-                      styles.input,
-                      {
-                        color: isButtonSelected('custom')
-                          ? styledColors.white
-                          : styledColors.gray,
-                      },
-                    ]}
-                    placeholder={t('home.send.tipPlaceholder') as string}
-                    placeholderTextColor={styledColors.white}
-                    value={customTip}
-                    onChangeText={text => setCustomTip(text.replace(',', '.'))}
-                    keyboardType="numeric"
-                  />
-                ) : (
-                  <Text
-                    style={{
-                      color: isButtonSelected('custom')
-                        ? styledColors.white
-                        : styledColors.black,
-                    }}
-                  >
-                    {t('home.send.customTip')}
-                  </Text>
-                )}
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              onPress={navigateToOverview}
-              style={[
-                styles.button,
-                styles.selectedButton,
-                styles.continueButton,
-              ]}
-            >
-              <QuaiPayText
-                type="H3"
-                style={{
-                  color: styledColors.white,
-                }}
-              >
-                {t('common.continue')}
-              </QuaiPayText>
-            </TouchableOpacity>
+            <QuaiPayText themeColor="secondary">
+              {abbreviateAddress(receiverAddress)}
+            </QuaiPayText>
           </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </DismissKeyboard>
+          <QuaiPayText style={styles.tipText}>
+            {t('home.send.includeTip')}
+          </QuaiPayText>
+          <View style={styles.amountContainer}>
+            <View style={styles.balanceContainer}>
+              <QuaiPayText type='H1'>
+                $
+                {calculateTipAmount(
+                  Number(input.value),
+                  Number(selectedTip),
+                ).total.toString()}
+              </QuaiPayText>
+              <QuaiPayText type="H1" themeColor="secondary">
+                {` ${input.unit}`}
+              </QuaiPayText>
+            </View>
+            <QuaiPayText type="paragraph">
+              {renderEquivalentAmount()}
+            </QuaiPayText>
+          </View>
+          <View style={styles.container}>
+            <TipButton
+              isButtonSelected={isButtonSelected(0)}
+              handleTipPress={() => handleTipPress(0)}
+              buttonText={t('home.send.noTip')}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(10)}
+              handleTipPress={() => handleTipPress(10)}
+              buttonText={`10% ${
+                calculateTipAmount(Number(input.value), 10).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(15)}
+              handleTipPress={() => handleTipPress(15)}
+              buttonText={`15% ${
+                calculateTipAmount(Number(input.value), 15).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(20)}
+              handleTipPress={() => handleTipPress(20)}
+              buttonText={`20% ${
+                calculateTipAmount(Number(input.value), 20).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected(25)}
+              handleTipPress={() => handleTipPress(25)}
+              buttonText={`25% ${
+                calculateTipAmount(Number(input.value), 25).message
+              }`}
+            />
+            <TipButton
+              isButtonSelected={isButtonSelected('custom')}
+              handleTipPress={() => handleTipPress('custom')}
+              buttonText={t('home.send.customTip')}
+            />
+          </View>
+          <TouchableOpacity
+            disabled={!quaiRate}
+            onPress={navigateToOverview}
+            style={[
+              styles.button,
+              styles.selectedButton,
+              styles.continueButton,
+            ]}
+          >
+            <QuaiPayText
+              type="H3"
+              style={{
+                color: styledColors.white,
+              }}
+            >
+              {t('common.continue')}
+            </QuaiPayText>
+          </TouchableOpacity>
+          <View style={styles.keyboardContainer}>
+            <TouchableWithoutFeedback onPress={showKeyboard}>
+              <QuaiPayKeyboard
+                handleLeftButtonPress={keyboard.onDecimalButtonPress}
+                handleRightButtonPress={keyboard.onDeleteButtonPress}
+                onInputButtonPress={keyboard.onInputButtonPress}
+                visible={keyboardVisible}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </QuaiPayContent>
   );
 };
-
-const DismissKeyboard = ({ children }: any) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -382,10 +298,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0066FF',
     alignSelf: 'center',
   },
-  customButton: {
-    padding: 0,
-    paddingVertical: 0,
-  },
   continueButton: {
     marginBottom: 20,
   },
@@ -399,6 +311,10 @@ const styles = StyleSheet.create({
     ...fontStyle.fontH3,
     marginTop: 16,
     fontSize: 14,
+  },
+  keyboardContainer: {
+    bottom: 0,
+    position: 'absolute',
   },
 });
 

@@ -32,7 +32,11 @@
     "localCurrency": "Lokale Währung",
     "selectCurrency": "Wählen Sie die Landeswährung aus, um die Wechselkurse anzuzeigen",
     "save": "Speichern",
-    "loading": "Wird geladen..."
+    "loading": "Wird geladen...",
+    "placeholder": {
+      "username": "Insert new display name",
+      "profilePicture": "Insert new profile picture URL"
+    }
   },
   "referral": {
     "referral": "Empfehlungsprogramm",

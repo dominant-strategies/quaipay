@@ -1,7 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import {
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -16,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   QuaiPayButton,
+  QuaiPayContent,
   QuaiPayInputDisplay,
   QuaiPayKeyboard,
   QuaiPayText,
@@ -27,9 +26,10 @@ import { useAmountInput, useWallet } from 'src/shared/hooks';
 import { abbreviateAddress, getBalance } from 'src/shared/services/quais';
 import { Currency } from 'src/shared/types';
 import { fontStyle, styledColors } from 'src/shared/styles';
+import { useZone } from 'src/shared/hooks/useZone';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 import { SendStackParamList } from '../SendStack';
-import { useZone } from 'src/shared/hooks/useZone';
 
 type SendAmountScreenProps = NativeStackScreenProps<
   SendStackParamList,
@@ -41,20 +41,19 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
     route.params;
   const { t } = useTranslation();
   const wallet = useWallet();
-  const zone = useZone();
+  const { zone } = useZone();
+  const quaiRate = useQuaiRate();
   const isDarkMode = useColorScheme() === 'dark';
   const [quaiBalance, setQuaiBalance] = React.useState(0);
   const [hideBalance, setHideBalance] = React.useState(false);
   const inputRef = useRef<TextInput>(null);
-  const { eqInput, input, keyboard, onSwap } = useAmountInput(`${amount}`);
+  const { eqInput, input, keyboard, onSwap } = useAmountInput(
+    `${amount}`,
+    quaiRate,
+  );
 
-  const shouldDisableContinueButton =
+  const shouldDisableContinueButtons =
     Number(input.value) === 0 || Number(eqInput.value) === 0;
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? styledColors.black : styledColors.light,
-    flex: 1,
-  };
 
   const equivalentUnitTextColorStyle = {
     color: isDarkMode ? styledColors.gray : styledColors.black,
@@ -116,8 +115,8 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   };
 
   useEffect(() => {
-    if (wallet) {
-      getBalance(wallet.address, zone).then(balance =>
+    if (wallet && quaiRate) {
+      getBalance(wallet.address, zone, quaiRate.base).then(balance =>
         setQuaiBalance(balance.balanceInQuai),
       );
     }
@@ -130,11 +129,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
   }, [inputRef]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <QuaiPayContent title={t('home.send.label')}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
@@ -180,28 +175,25 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
             {eqInput.value} {eqInput.unit}
           </Text>
           <TouchableOpacity onPress={onSwap} style={[styles.exchangeUnit]}>
-            <QuaiPayText>{input.unit}</QuaiPayText>
+            <QuaiPayText>{eqInput.unit}</QuaiPayText>
             <ExchangeIcon
               color={isDarkMode ? styledColors.white : styledColors.black}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity
+          <QuaiPayButton
+            disabled={shouldDisableContinueButtons}
             onPress={goToTip}
-            style={[
-              styles.tipButton,
-              {
-                borderColor: styledColors.gray,
-              },
-            ]}
-          >
-            <QuaiPayText>{t('home.send.includeTip')}</QuaiPayText>
-          </TouchableOpacity>
+            outlined
+            style={styles.continueButton}
+            title={t('home.send.includeTip')}
+            type="secondary"
+          />
           <QuaiPayButton
             onPress={goToOverview}
             style={styles.continueButton}
-            disabled={shouldDisableContinueButton}
+            disabled={shouldDisableContinueButtons}
             title={t('common.continue')}
           />
         </View>
@@ -215,7 +207,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
           />
         </View>
       )}
-    </SafeAreaView>
+    </QuaiPayContent>
   );
 };
 
@@ -268,9 +260,11 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 32,
+    marginBottom: 48,
+    height: 145,
   },
   continueButton: {
     alignSelf: 'center',

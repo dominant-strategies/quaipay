@@ -25,7 +25,6 @@ import {
   Recipient,
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 import {
   Timeframe,
   dateToLocaleString,
@@ -40,6 +39,8 @@ import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useTheme } from 'src/shared/context/themeContext';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
+import { RootNavigator } from 'src/shared/navigation/utils';
+import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -47,8 +48,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { isDarkMode } = useTheme();
   const wallet = useWallet();
   const walletObject = useWalletObject();
-  const zone = useZone();
+  const { zone } = useZone();
   const contacts = useContacts();
+  const quaiRate = useQuaiRate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTxDirection, setSelectedTxDirection] = useState<
     string | undefined
@@ -216,10 +218,14 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     maxAmount,
   ]);
 
+  const navigateToReferral = useCallback(() => {
+    RootNavigator.navigate('SettingsStack', { screen: 'Referral' });
+  }, []);
+
   // TODO: implement actual search logic
   const onSearchChange = (text: string) => console.log(text);
 
-  if (loading || !wallet || !walletObject) {
+  if (loading || !wallet || !walletObject || !quaiRate) {
     return <QuaiPayLoader text={t('wallet.loading')} />;
   }
 
@@ -247,7 +253,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
           fiatAmount={(
-            Number(balances[wallet?.address as string]) * EXCHANGE_RATE
+            Number(balances[wallet?.address as string]) * quaiRate.base
           ).toFixed(3)}
           title={t('wallet.balance')}
         />
@@ -266,6 +272,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           </QuaiPayText>
         </Pressable>
         <Pressable
+          onPress={navigateToReferral}
           style={({ pressed }) => [
             styles.button,
             styles.earnButton,

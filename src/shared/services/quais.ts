@@ -1,7 +1,6 @@
 import { quais } from 'quais';
 
 import { allNodeData } from 'src/shared/constants/nodeData';
-import { EXCHANGE_RATE } from 'src/shared/constants/exchangeRate';
 
 import { CONFIRMATIONS_REQUIRED } from '../constants/quais';
 import { Zone } from 'src/shared/types';
@@ -16,7 +15,11 @@ export const getWebSocketsProvider = (zone: Zone) => {
   return new quais.providers.WebSocketProvider(nodeData.url);
 };
 
-export const getBalance = async (address: string, zone: Zone) => {
+export const getBalance = async (
+  address: string,
+  zone: Zone,
+  baseRate: number,
+) => {
   const provider = getProvider(zone);
   await provider.ready;
 
@@ -25,7 +28,7 @@ export const getBalance = async (address: string, zone: Zone) => {
 
   return {
     balanceInQuai: Number(balanceInQuai),
-    balanceInUsd: Number(balanceInQuai) * EXCHANGE_RATE,
+    balanceInUsd: Number(balanceInQuai) * baseRate,
   };
 };
 

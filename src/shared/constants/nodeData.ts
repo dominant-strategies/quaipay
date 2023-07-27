@@ -1,77 +1,78 @@
+import { Region } from '../assets/regions';
+import { Zone } from '../types';
+
+export enum ShardName {
+  PRIME = 'Prime',
+  CYPRUS = 'Cyprus',
+  PAXOS = 'Paxos',
+  HYDRA = 'Hydra',
+  CYPRUS01 = 'Cyprus-01',
+  CYPRUS02 = 'Cyprus-02',
+  CYPRUS03 = 'Cyprus-03',
+  PAXOS01 = 'Paxos-01',
+  PAXOS02 = 'Paxos-02',
+  PAXOS03 = 'Paxos-03',
+  HYDRA01 = 'Hydra-01',
+  HYDRA02 = 'Hydra-02',
+  HYDRA03 = 'Hydra-03',
+}
+
+const shardNameUrlMap: Record<ShardName, string> = {
+  [ShardName.PRIME]: 'prime',
+  [ShardName.CYPRUS]: 'cyprus',
+  [ShardName.PAXOS]: 'paxos',
+  [ShardName.HYDRA]: 'hydra',
+  [ShardName.CYPRUS01]: 'cyprus1',
+  [ShardName.CYPRUS02]: 'cyprus2',
+  [ShardName.CYPRUS03]: 'cyprus3',
+  [ShardName.PAXOS01]: 'paxos1',
+  [ShardName.PAXOS02]: 'paxos2',
+  [ShardName.PAXOS03]: 'paxos3',
+  [ShardName.HYDRA01]: 'hydra1',
+  [ShardName.HYDRA02]: 'hydra2',
+  [ShardName.HYDRA03]: 'hydra3',
+};
+
+export const zoneShardNameMap: Record<Zone, ShardName> = {
+  [Zone['zone-0-0']]: ShardName.CYPRUS01,
+  [Zone['zone-0-1']]: ShardName.CYPRUS02,
+  [Zone['zone-0-2']]: ShardName.CYPRUS03,
+  [Zone['zone-1-0']]: ShardName.PAXOS01,
+  [Zone['zone-1-1']]: ShardName.PAXOS02,
+  [Zone['zone-1-2']]: ShardName.PAXOS03,
+  [Zone['zone-2-0']]: ShardName.HYDRA01,
+  [Zone['zone-2-1']]: ShardName.HYDRA02,
+  [Zone['zone-2-2']]: ShardName.HYDRA03,
+};
+
 export interface NodeData {
   url: string;
   provider: string;
-  name: string;
+  name: ShardName;
 }
 
 export interface AllNodeData {
   [key: string]: NodeData;
 }
 
+const getNodeDataContentFromShardName = (shardName: ShardName): NodeData => ({
+  url: `wss://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
+  provider: `https://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
+  name: shardName,
+});
+
+const zoneNodeData = (Object.keys(Zone) as Zone[]).reduce(
+  (acc, zone) => ({
+    ...acc,
+    [zone]: getNodeDataContentFromShardName(zoneShardNameMap[zone]),
+  }),
+  {} as Record<Region, NodeData>,
+);
+
 export const allNodeData: AllNodeData = {
-  prime: {
-    url: 'wss://rpc.prime.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.prime.colosseum.quaiscan.io',
-    name: 'Prime',
-  },
-  'region-0': {
-    url: 'wss://rpc.cyprus.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.cyprus.colosseum.quaiscan.io',
-    name: 'Cyprus',
-  },
-  'region-1': {
-    url: 'wss://rpc.paxos.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.paxos.colosseum.quaiscan.io',
-    name: 'Paxos',
-  },
-  'region-2': {
-    url: 'wss://rpc.hydra.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.hydra.colosseum.quaiscan.io',
-    name: 'Hydra',
-  },
-  'zone-0-0': {
-    url: 'wss://rpc.cyprus1.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.cyprus1.colosseum.quaiscan.io',
-    name: 'Cyprus-01',
-  },
-  'zone-0-1': {
-    url: 'wss://rpc.cyprus2.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.cyprus2.colosseum.quaiscan.io',
-    name: 'Cyprus-02',
-  },
-  'zone-0-2': {
-    url: 'wss://rpc.cyprus3.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.cyprus3.colosseum.quaiscan.io',
-    name: 'Cyprus-03',
-  },
-  'zone-1-0': {
-    url: 'wss://rpc.paxos1.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.paxos1.colosseum.quaiscan.io',
-    name: 'Paxos-01',
-  },
-  'zone-1-1': {
-    url: 'wss://rpc.paxos2.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.paxos2.colosseum.quaiscan.io',
-    name: 'Paxos-02',
-  },
-  'zone-1-2': {
-    url: 'wss://rpc.paxos3.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.paxos3.colosseum.quaiscan.io',
-    name: 'Paxos-03',
-  },
-  'zone-2-0': {
-    url: 'wss://rpc.hydra1.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.hydra1.colosseum.quaiscan.io',
-    name: 'Hydra-01',
-  },
-  'zone-2-1': {
-    url: 'wss://rpc.hydra2.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.hydra2.colosseum.quaiscan.io',
-    name: 'Hydra-02',
-  },
-  'zone-2-2': {
-    url: 'wss://rpc.hydra3.colosseum.quaiscan.io/ws',
-    provider: 'https://rpc.hydra3.colosseum.quaiscan.io',
-    name: 'Hydra-03',
-  },
+  prime: getNodeDataContentFromShardName(ShardName.PRIME),
+  'region-0': getNodeDataContentFromShardName(ShardName.CYPRUS),
+  'region-1': getNodeDataContentFromShardName(ShardName.PAXOS),
+  'region-2': getNodeDataContentFromShardName(ShardName.HYDRA),
+  ...zoneNodeData,
 };

@@ -1,6 +1,7 @@
+export { QuaiPayActiveAddressModal } from './QuaiPayActiveAddressModal';
 export { QuaiPayAvatar } from './QuaiPayAvatar';
 export { QuaiPayBanner } from './QuaiPayBanner';
-export { QuaiPayBottomSheetModal } from './QuaiPayBottomSheetModal';
+export { QuaiPayBottomSheetModal } from './QuaiPayBottomSheetModal/QuaiPayBottomSheetModal';
 export { QuaiPayButton } from './QuaiPayButton';
 export { QuaiPayCamera, squareHoleSize } from './QuaiPayCamera/QuaiPayCamera';
 export { QuaiPayCard, CardSize } from './QuaiPayCard';
@@ -22,4 +23,5 @@ export { QuaiPaySnackBar } from './QuaiPaySnackBar';
 export { QuaiPayText } from './QuaiPayText';
 
 export { useQuaiPayCamera } from './QuaiPayCamera/QuaiPayCamera.hooks';
+export { useBottomSheetModal } from './QuaiPayBottomSheetModal/QuaiPayBottomSheetModal.hooks';
 export { ScannerType } from './QuaiPayCamera/QuaiPayCamera.types';

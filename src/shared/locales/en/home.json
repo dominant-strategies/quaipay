@@ -12,10 +12,10 @@
     "amount": "Amount",
     "address": "Address",
     "yourBalance": "Your balance: ",
-    "searchByAddress": "Search by address",
+    "searchByAddress": "Search by contact or paste address",
     "tip": "Tip",
     "noTip": "No tip",
-    "includeTip": "Include a tip?",
+    "includeTip": "Include a Tip?",
     "includedTip": "Included Tip",
     "customTip": "Custom tip",
     "tipPlaceholder": "Enter a tip amount",
@@ -28,7 +28,7 @@
     "paymentFailed": "Transaction Failed.",
     "paymentPending": "Transaction Pending...",
     "retry": "Retry",
-    "saveToContacts": "Save Receipent to Contacts",
+    "saveToContacts": "Save Recipient to Contacts",
     "savedToContacts": "Saved to Contacts",
     "alreadySavedToContacts": "Already Saved to Contacts",
     "complete": "Complete",
@@ -37,6 +37,7 @@
     "viewAll": "View All",
     "noInternet": "No Internet Connection",
     "noInternetMessage": "Please check your internet connection",
-    "pasteFromClipboard": "Paste from Clipboard"
+    "invalidAddress": "Invalid Address",
+    "invalidAddressDescription": "Please enter a valid address to proceed"
   }
 }

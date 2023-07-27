@@ -12,9 +12,9 @@ import { WalletProvider } from 'src/shared/context/walletContext';
 import { Navigation } from 'src/shared/navigation';
 import { QuaiPayLoader } from 'src/shared/components';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { deleteOldLogFiles } from './shared/services/logging';
 
 function App() {
-  // TODO: use redux persist instead of AsyncStorage
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -23,6 +23,10 @@ function App() {
       setOnboarded(retrievedOnboarded === 'true');
       setLoading(false);
     })();
+  }, []);
+
+  useEffect(() => {
+    deleteOldLogFiles();
   }, []);
 
   if (onboarded === null || loading) {

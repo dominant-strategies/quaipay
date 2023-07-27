@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import {
   QuaiPayButton,
   QuaiPaySettingsContent,
   QuaiPayText,
 } from 'src/shared/components';
-import { useTranslation } from 'react-i18next';
 import Upload from 'src/shared/assets/upload.svg';
+import { styledColors } from 'src/shared/styles';
 
 export const Referral = () => {
   const { t } = useTranslation('translation', {
@@ -43,7 +45,11 @@ export const Referral = () => {
           {t('thirdStepDescription')}
         </QuaiPayText>
       </View>
-      <QuaiPayButton RightIcon={Upload} title={t('buttonText')} outlined />
+      <QuaiPayButton
+        RightIcon={<Upload color={styledColors.normal} />}
+        title={t('buttonText')}
+        outlined
+      />
     </QuaiPaySettingsContent>
   );
 };

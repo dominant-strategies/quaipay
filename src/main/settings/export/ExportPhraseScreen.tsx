@@ -86,7 +86,7 @@ export const ExportPhraseScreen: React.FC<
           }
           type="secondary"
           titleColor="gray"
-          RightIcon={isSeedPhraseHidden ? EyeOutline : HideIcon}
+          RightIcon={isSeedPhraseHidden ? <EyeOutline /> : <HideIcon />}
           onPress={toggleShowSeedPhrase}
           style={styles.revealButton}
         />
@@ -103,7 +103,7 @@ export const ExportPhraseScreen: React.FC<
           titleColor="gray"
           titleType="bold"
           outlined
-          RightIcon={CopyOutline}
+          RightIcon={<CopyOutline />}
           onPress={copyToClipboard}
           style={styles.copyToClipboardButton}
         />

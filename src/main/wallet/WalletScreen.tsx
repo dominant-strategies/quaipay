@@ -72,27 +72,27 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   }, []);
 
   useEffect(() => {
+    if (!walletObject) {
+      return;
+    }
     const updateBalances = async () => {
-      const balancePromises = Object.keys(walletObject as object).map(
-        async key => {
-          const address =
-            (walletObject && walletObject[key as Zone].address) || '';
-          try {
-            const res = await getBalance(address, zone);
-            const formattedBalance = Number(
-              quais.utils.formatEther(res),
-            ).toFixed(3);
-            return { address: address, balance: formattedBalance };
-          } catch (error) {
-            showSnackBar({
-              message: t('common.error'),
-              moreInfo: t('wallet.getBalanceError') || '',
-              type: 'error',
-            });
-            return { address: address, balance: '0.00' };
-          }
-        },
-      );
+      const balancePromises = Object.keys(walletObject).map(async key => {
+        const address = walletObject[key as Zone].address;
+        try {
+          const res = await getBalance(address, zone);
+          const formattedBalance = Number(quais.utils.formatEther(res)).toFixed(
+            3,
+          );
+          return { address: address, balance: formattedBalance };
+        } catch (error) {
+          showSnackBar({
+            message: t('common.error'),
+            moreInfo: t('wallet.getBalanceError') || '',
+            type: 'error',
+          });
+          return { address: address, balance: '0.00' };
+        }
+      });
 
       Promise.allSettled(balancePromises)
         .then(results => {
@@ -112,7 +112,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     };
 
     updateBalances();
-  }, [wallet, zone]);
+  }, [wallet, walletObject, zone]);
 
   useEffect(() => {
     if (!quaiRate) {

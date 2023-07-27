@@ -60,8 +60,8 @@ describe('getAccountTransactions', () => {
         startTimestamp: 1620000000,
         endTimestamp: Date.now(),
         filterBy: 'to',
-        minAmount: 50000000000000000,
-        maxAmount: 1000000000000000000,
+        minAmount: 5e17,
+        maxAmount: 1e18,
       },
       Zone['zone-0-0'],
     );

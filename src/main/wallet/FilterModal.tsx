@@ -90,7 +90,7 @@ export const FilterModal = forwardRef<BottomSheetModal, FilterModalProps>(
       setTimeframeIndex(undefined);
       setMinAmount(0);
       setMinAmountIn('');
-      setMaxAmount(1000000000000000000);
+      setMaxAmount(1e18);
       setMaxAmountIn('');
       setShards([0, 1, 2, 3, 4, 5, 6, 7, 8]);
       setShardIndices([0, 1, 2, 3, 4, 5, 6, 7, 8]);

@@ -59,7 +59,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     Timeframe | undefined
   >();
   const [minAmount, setMinAmount] = useState(0);
-  const [maxAmount, setMaxAmount] = useState(1000000000000000000);
+  const [maxAmount, setMaxAmount] = useState(1e18);
   const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState<Record<string, string>>({});

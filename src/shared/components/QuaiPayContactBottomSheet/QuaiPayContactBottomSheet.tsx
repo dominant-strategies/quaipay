@@ -170,12 +170,13 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
           sender: sender!,
         },
       });
+    } else {
+      showSnackBar({
+        message: t('home.send.invalidAddress'),
+        moreInfo: t('home.send.invalidAddressDescription') as string,
+        type: 'error',
+      });
     }
-    showSnackBar({
-      message: t('home.send.invalidAddress'),
-      moreInfo: t('home.send.invalidAddressDescription') as string,
-      type: 'error',
-    });
   };
 
   // ===============

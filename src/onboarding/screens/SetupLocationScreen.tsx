@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { Picker } from '@react-native-picker/picker';
@@ -20,6 +20,9 @@ import { OnboardingStackScreenProps } from '../OnboardingStack';
 
 const INITIAL_ZONE = Zone['zone-0-0'];
 
+const isWindowSmallerThanScreen =
+  Dimensions.get('window').height < Dimensions.get('screen').height;
+
 export const SetupLocationScreen: React.FC<
   OnboardingStackScreenProps<'SetupLocation'>
 > = () => {
@@ -39,38 +42,43 @@ export const SetupLocationScreen: React.FC<
 
   return (
     <QuaiPayContent hasBackgroundVariant containerStyle={styles.mainContainer}>
-      <QuaiPayText type="H1">{t('title')}</QuaiPayText>
-      <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
-      <View style={styles.separator} />
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={regionImgs[zoneRegionMap[selectedZone]]}
-        />
-      </View>
-      <Picker
-        mode="dropdown"
-        selectedValue={selectedZone}
-        itemStyle={{ ...styles.pickerItem, color: theme.primary }}
-        onValueChange={item => setSelectedZone(item)}
+      <ScrollView
+        alwaysBounceVertical={isWindowSmallerThanScreen}
+        showsVerticalScrollIndicator={false}
       >
-        {Object.values(Zone).map((item, idx) => (
-          <Picker.Item
-            key={idx}
-            label={zoneRegionMap[item]}
-            value={item}
-            color={item === selectedZone ? theme.normal : theme.primary}
-            style={styles.pickerItem}
+        <QuaiPayText type="H1">{t('title')}</QuaiPayText>
+        <QuaiPayText style={styles.description}>{t('description')}</QuaiPayText>
+        <View style={styles.separator} />
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={regionImgs[zoneRegionMap[selectedZone]]}
           />
-        ))}
-      </Picker>
-      <View style={styles.separator} />
-      <QuaiPayButton
-        title={tCommon('continue')}
-        onPress={setupLocation}
-        style={styles.continueButton}
-      />
-      <View style={styles.separator} />
+        </View>
+        <Picker
+          mode="dropdown"
+          selectedValue={selectedZone}
+          itemStyle={{ ...styles.pickerItem, color: theme.primary }}
+          onValueChange={item => setSelectedZone(item)}
+        >
+          {Object.values(Zone).map((item, idx) => (
+            <Picker.Item
+              key={idx}
+              label={zoneRegionMap[item]}
+              value={item}
+              color={item === selectedZone ? theme.normal : theme.primary}
+              style={styles.pickerItem}
+            />
+          ))}
+        </Picker>
+        <View style={styles.separator} />
+        <QuaiPayButton
+          title={tCommon('continue')}
+          onPress={setupLocation}
+          style={styles.continueButton}
+        />
+        <View style={styles.separator} />
+      </ScrollView>
     </QuaiPayContent>
   );
 };

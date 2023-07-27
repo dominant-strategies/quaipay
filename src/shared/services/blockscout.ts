@@ -123,42 +123,47 @@ export const getAccountTransactions = (
   });
 };
 
-// TODO: rewrite
 export const getBalance = async (address: string, zone: Zone): Promise<any> => {
-  const nodeData = allNodeData[zone];
-
-  // Get the URL for the API
-  const url = `${nodeData.provider.replace(
-    'rpc.',
-    '',
-  )}/api?module=account&action=eth_get_balance&address=${address}`;
-  console.log(url);
-  var myHeaders = new Headers();
-  myHeaders.append('accept', 'application/json');
-
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-  };
-
   let resJson;
   try {
-    const res = await fetch(url, requestOptions);
-    const resString = await res.text();
-    resJson = JSON.parse(resString);
+    resJson = await getBalanceFromBlockscout(address, zone);
     if (resJson.error === 'Balance not found') {
-      const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
-      await provider.ready;
-
-      return await provider.getBalance(address as string);
+      return getBalanceFromNode(address, zone);
     } else {
       return resJson.result;
     }
   } catch (err) {
     console.log(err);
-    const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
-    await provider.ready;
-
-    return await provider.getBalance(address as string);
+    return getBalanceFromNode(address, zone);
   }
 };
+
+async function getBalanceFromBlockscout(address: string, zone: Zone) {
+  const nodeData = allNodeData[zone];
+
+  const url = `${nodeData.provider.replace(
+    'rpc.',
+    '',
+  )}/api?module=account&action=eth_get_balance&address=${address}`;
+
+  const myHeaders = new Headers();
+  myHeaders.append('accept', 'application/json');
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  const res = await fetch(url, requestOptions);
+  const resString = await res.text();
+  return JSON.parse(resString);
+}
+
+async function getBalanceFromNode(address: string, zone: Zone) {
+  const nodeData = allNodeData[zone];
+
+  const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
+  await provider.ready;
+
+  return await provider.getBalance(address as string);
+}

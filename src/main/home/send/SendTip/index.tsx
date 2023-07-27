@@ -171,7 +171,7 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           </QuaiPayText>
           <View style={styles.amountContainer}>
             <View style={styles.balanceContainer}>
-              <QuaiPayText type='H1'>
+              <QuaiPayText type="H1">
                 $
                 {calculateTipAmount(
                   Number(input.value),

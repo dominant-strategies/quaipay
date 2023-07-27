@@ -25,11 +25,7 @@ import {
   Recipient,
 } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
-import {
-  Timeframe,
-  dateToLocaleString,
-  isWithinSelectedTimeframe,
-} from 'src/shared/services/dateUtil';
+import { Timeframe, dateToLocaleString } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
@@ -132,8 +128,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             sort: 'desc',
             page: 1,
             offset: 30,
-            startTimestamp: 0,
-            endTimestamp: Date.now(),
+            selectedTimeframe,
             filterBy: selectedTxDirection,
             minAmount,
             maxAmount,
@@ -158,12 +153,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
               if (selectedTxDirection === 'to') {
                 return item.to.toLowerCase() === wallet?.address?.toLowerCase();
               }
-            }
-            if (selectedTimeframe) {
-              return isWithinSelectedTimeframe(
-                item.timeStamp,
-                selectedTimeframe,
-              );
             }
             return true;
           })

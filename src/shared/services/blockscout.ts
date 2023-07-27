@@ -1,7 +1,8 @@
 import { allNodeData } from '../constants/nodeData';
 import { quais } from 'quais';
 import { Zone } from 'src/shared/types';
-import { EXCHANGE_RATE } from '../constants/exchangeRate';
+import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { getStartTimestamp, Timeframe } from 'src/shared/services/dateUtil';
 
 type TransactionList = {
   message: string;
@@ -43,8 +44,7 @@ type GetAccountTransactionsProps = {
   sort?: string;
   page?: number;
   offset?: number;
-  startTimestamp?: number;
-  endTimestamp?: number;
+  selectedTimeframe?: Timeframe;
   filterBy?: string;
   minAmount?: number;
   maxAmount?: number;
@@ -68,17 +68,11 @@ export const getAccountTransactions = (
   zone: Zone,
 ): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
-    const {
-      address,
-      sort,
-      page,
-      offset,
-      startTimestamp,
-      endTimestamp,
-      filterBy,
-    } = props;
+    const { address, sort, page, offset, selectedTimeframe, filterBy } = props;
 
     const nodeData = allNodeData[zone];
+    const startTimestamp =
+      selectedTimeframe && getStartTimestamp(selectedTimeframe);
 
     // Get the URL for the API
     const url =
@@ -90,7 +84,6 @@ export const getAccountTransactions = (
       `${page ? `&page=${page}` : ''}` +
       `${offset ? `&offset=${offset}` : ''}` +
       `${startTimestamp ? `&start_timestamp=${startTimestamp}` : ''}` +
-      `${endTimestamp ? `&end_timestamp=${endTimestamp}` : ''}` +
       `${filterBy ? `&filter_by=${filterBy}` : ''}`;
 
     var myHeaders = new Headers();

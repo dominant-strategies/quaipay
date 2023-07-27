@@ -8,8 +8,7 @@ export const dateToLocaleString = (date: Date) => {
     hour12: true,
   };
 
-  const formattedDate: string = date.toLocaleString('en-US', options);
-  return formattedDate;
+  return date.toLocaleString('en-US', options);
 };
 
 export const getTimeframeDate = (offset: number): number => {
@@ -26,10 +25,7 @@ export type Timeframe =
   | 'Past 30 days'
   | 'This week';
 
-export const isWithinSelectedTimeframe = (
-  timeStamp: string,
-  selectedTimeframe: Timeframe,
-): boolean => {
+export const getStartTimestamp = (selectedTimeframe: Timeframe): number => {
   const timeframes: Record<Timeframe, number> = {
     'Past year': getTimeframeDate(365),
     'Past 6 months': getTimeframeDate(6 * 30),
@@ -38,11 +34,5 @@ export const isWithinSelectedTimeframe = (
     'This week': getTimeframeDate(7),
   };
 
-  const selectedTimestamp = timeframes[selectedTimeframe];
-
-  if (selectedTimestamp === undefined) {
-    throw new Error('Invalid timeframe selected.');
-  }
-
-  return Number(timeStamp) >= selectedTimestamp;
+  return timeframes[selectedTimeframe];
 };

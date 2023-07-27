@@ -50,19 +50,6 @@ type GetAccountTransactionsProps = {
   maxAmount?: number;
 };
 
-/**
- * Retrieves a list of transactions for a given address.
- * @param props.address The address to retrieve transactions for.
- * @param props.sort Optional. The field to sort the transactions by. Can be 'asc' or 'desc'. Defaults to 'desc'.
- * @param props.page Optional. The page number to retrieve.
- * @param props.offset Optional. The number of transactions to retrieve per page.
- * @param props.startTimestamp Optional. The start timestamp to filter transactions by.
- * @param props.endTimestamp Optional. The end timestamp to filter transactions by.
- * @param props.filterBy Optional. The field to filter the transactions by. Can be 'from' or 'to'. If not provided, all transactions are returned.
- * @param props.minAmount Optional. The minimum amount to filter transactions by. The amount is in wei.
- * @param props.maxAmount Optional. The maximum amount to filter transactions by. The amount is in wei.
- * @returns A Promise that resolves with the list of transactions.
- */
 export const getAccountTransactions = (
   props: GetAccountTransactionsProps,
   zone: Zone,

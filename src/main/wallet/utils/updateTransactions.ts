@@ -24,13 +24,11 @@ export function updateTransactions(
   setTransactions: (
     value: ((prevState: Transaction[]) => Transaction[]) | Transaction[],
   ) => void,
-  transactions: Transaction[],
   setLoading: (value: ((prevState: boolean) => boolean) | boolean) => void,
   selectedTimeframe?: Timeframe,
   selectedTxDirection?: string,
   contacts?: Contact[],
 ) {
-  setLoading(true);
   const txAllShards: Transaction[] = [];
 
   const promises = shards.map(async shard => {
@@ -95,7 +93,7 @@ export function updateTransactions(
 
   Promise.allSettled(promises)
     .then(() => {
-      setTransactions([...transactions, ...txAllShards]);
+      setTransactions(prevState => [...prevState, ...txAllShards]);
     })
     .catch(err => {
       console.log(err);

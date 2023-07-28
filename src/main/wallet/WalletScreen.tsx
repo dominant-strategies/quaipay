@@ -55,8 +55,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
   const { showSnackBar } = useSnackBar();
   // TODO: Handle the pagination
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filters, setFilters] = useState({ page: 1, offset: 30 });
+  const [filters, _] = useState({ page: 1, offset: 30 });
 
   const handlePresentFilterModalPress = useCallback(() => {
     filterModalRef.current?.present();
@@ -95,7 +94,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       quaiRate,
       wallet,
       setTransactions,
-      transactions,
       setLoading,
       selectedTimeframe,
       selectedTxDirection,

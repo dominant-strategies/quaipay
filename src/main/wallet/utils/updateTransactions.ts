@@ -1,13 +1,13 @@
 import {
   getAccountTransactions,
-  Recipient,
   Transaction,
 } from 'src/shared/services/blockscout';
 import { filterByAmountAndTxDirection } from 'src/main/wallet/utils/filterByAmountAndTxDirection';
-import { abbreviateAddress } from 'src/shared/services/quais';
 import { Contact, Wallet, Zone } from 'src/shared/types';
 import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { Timeframe } from 'src/shared/services/dateUtil';
+
+import { appendRecipientToTx } from './appendRecipientToTx';
 
 export function updateTransactions(
   shards: number[],
@@ -60,30 +60,7 @@ export function updateTransactions(
             selectedTxDirection,
           ),
         )
-        .map(item => {
-          const isUserSender =
-            item.from.toLowerCase() === wallet.address.toLowerCase();
-          const contact = contacts?.find(
-            c =>
-              c.address.toLowerCase() ===
-              (isUserSender ? item.to.toLowerCase() : item.from.toLowerCase()),
-          );
-          const recipient: Recipient = contact
-            ? {
-                display: contact.username,
-                profilePicture: contact.profilePicture,
-              }
-            : {
-                display: isUserSender
-                  ? abbreviateAddress(item.to)
-                  : abbreviateAddress(item.from),
-              };
-
-          return {
-            ...item,
-            recipient,
-          };
-        });
+        .map(tx => appendRecipientToTx(tx, wallet, contacts));
 
       txAllShards.push(...filteredTransactions);
     } catch (err) {

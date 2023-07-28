@@ -78,8 +78,7 @@ export const waitForTransaction = async (
   txHash: string,
   zone: Zone,
 ): Promise<quais.providers.TransactionReceipt> => {
-  // TODO: diagnose the issue with the websocket provider
-  const provider = getProvider(zone);
+  const provider = getWebSocketsProvider(zone);
   await provider.ready;
 
   const txReceipt = await provider.waitForTransaction(

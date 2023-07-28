@@ -56,7 +56,7 @@ export interface AllNodeData {
 }
 
 const getNodeDataContentFromShardName = (shardName: ShardName): NodeData => ({
-  url: `wss://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
+  url: `wss://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io/ws`,
   provider: `https://rpc.${shardNameUrlMap[shardName]}.colosseum.quaiscan.io`,
   name: shardName,
 });

@@ -1,6 +1,8 @@
 import { allNodeData } from '../constants/nodeData';
 import { quais } from 'quais';
 import { Zone } from 'src/shared/types';
+import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { getStartTimestamp, Timeframe } from 'src/shared/services/dateUtil';
 
 type TransactionList = {
   message: string;
@@ -42,44 +44,23 @@ type GetAccountTransactionsProps = {
   sort?: string;
   page?: number;
   offset?: number;
-  startTimestamp?: number;
-  endTimestamp?: number;
+  selectedTimeframe?: Timeframe;
   filterBy?: string;
   minAmount?: number;
   maxAmount?: number;
 };
 
-/**
- * Retrieves a list of transactions for a given address.
- * @param props.address The address to retrieve transactions for.
- * @param props.sort Optional. The field to sort the transactions by. Can be 'asc' or 'desc'. Defaults to 'desc'.
- * @param props.page Optional. The page number to retrieve.
- * @param props.offset Optional. The number of transactions to retrieve per page.
- * @param props.startTimestamp Optional. The start timestamp to filter transactions by.
- * @param props.endTimestamp Optional. The end timestamp to filter transactions by.
- * @param props.filterBy Optional. The field to filter the transactions by. Can be 'from' or 'to'. If not provided, all transactions are returned.
- * @param props.minAmount Optional. The minimum amount to filter transactions by. The amount is in wei.
- * @param props.maxAmount Optional. The maximum amount to filter transactions by. The amount is in wei.
- * @returns A Promise that resolves with the list of transactions.
- */
 export const getAccountTransactions = (
   props: GetAccountTransactionsProps,
   zone: Zone,
+  quaiRate: QuaiRate,
 ): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
-    const {
-      address,
-      sort,
-      page,
-      offset,
-      startTimestamp,
-      endTimestamp,
-      filterBy,
-      minAmount,
-      maxAmount,
-    } = props;
+    const { address, sort, page, offset, selectedTimeframe, filterBy } = props;
 
     const nodeData = allNodeData[zone];
+    const startTimestamp =
+      selectedTimeframe && getStartTimestamp(selectedTimeframe);
 
     // Get the URL for the API
     const url =
@@ -91,7 +72,6 @@ export const getAccountTransactions = (
       `${page ? `&page=${page}` : ''}` +
       `${offset ? `&offset=${offset}` : ''}` +
       `${startTimestamp ? `&start_timestamp=${startTimestamp}` : ''}` +
-      `${endTimestamp ? `&end_timestamp=${endTimestamp}` : ''}` +
       `${filterBy ? `&filter_by=${filterBy}` : ''}`;
 
     var myHeaders = new Headers();
@@ -106,62 +86,65 @@ export const getAccountTransactions = (
       .then(response => response.text())
       .then(result => {
         const transactions: TransactionList = JSON.parse(result);
-        const filteredTransactions = transactions.result.filter(
-          (transaction: any) => {
-            const transactionValue = Number(transaction.value);
-
-            return (
-              (!minAmount || transactionValue >= minAmount) &&
-              (!maxAmount || transactionValue <= maxAmount)
-            );
-          },
-        );
-
-        transactions.result = filteredTransactions;
+        transactions.result = transactions.result.map(transaction => {
+          return {
+            ...transaction,
+            fiatAmount:
+              Number(quais.utils.formatEther(transaction.value)) *
+              quaiRate.quote,
+            quaiAmount: Number(quais.utils.formatEther(transaction.value)),
+          };
+        });
         resolve(transactions);
       })
       .catch(error => {
+        console.log(error);
         reject(error);
       });
   });
 };
 
-// TODO: rewrite
 export const getBalance = async (address: string, zone: Zone): Promise<any> => {
-  const nodeData = allNodeData[zone];
-
-  // Get the URL for the API
-  const url = `${nodeData.provider.replace(
-    'rpc.',
-    '',
-  )}/api?module=account&action=eth_get_balance&address=${address}`;
-  console.log(url);
-  var myHeaders = new Headers();
-  myHeaders.append('accept', 'application/json');
-
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-  };
-
   let resJson;
   try {
-    const res = await fetch(url, requestOptions);
-    const resString = await res.text();
-    resJson = JSON.parse(resString);
+    resJson = await getBalanceFromBlockscout(address, zone);
     if (resJson.error === 'Balance not found') {
-      const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
-      await provider.ready;
-
-      return await provider.getBalance(address as string);
+      return getBalanceFromNode(address, zone);
     } else {
       return resJson.result;
     }
   } catch (err) {
     console.log(err);
-    const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
-    await provider.ready;
-
-    return await provider.getBalance(address as string);
+    return getBalanceFromNode(address, zone);
   }
 };
+
+async function getBalanceFromBlockscout(address: string, zone: Zone) {
+  const nodeData = allNodeData[zone];
+
+  const url = `${nodeData.provider.replace(
+    'rpc.',
+    '',
+  )}/api?module=account&action=eth_get_balance&address=${address}`;
+
+  const myHeaders = new Headers();
+  myHeaders.append('accept', 'application/json');
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  const res = await fetch(url, requestOptions);
+  const resString = await res.text();
+  return JSON.parse(resString);
+}
+
+async function getBalanceFromNode(address: string, zone: Zone) {
+  const nodeData = allNodeData[zone];
+
+  const provider = new quais.providers.JsonRpcProvider(nodeData.provider);
+  await provider.ready;
+
+  return await provider.getBalance(address as string);
+}

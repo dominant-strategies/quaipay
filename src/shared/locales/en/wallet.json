@@ -22,5 +22,6 @@
   "quarter": "Past 90 days",
   "semester": "Past 6 months",
   "year": "Past year",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "getBalanceError": "Unable to fetch your balance right now. Please try again later."
 }

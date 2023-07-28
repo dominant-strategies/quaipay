@@ -44,6 +44,7 @@ describe('getAccountTransactions', () => {
         address: '0x2f7662cD8E784750E116E44a536278d2b429167E',
       },
       Zone['zone-0-0'],
+      { base: 1, quote: 1 },
     );
     const regex = new RegExp(/^[01]$/);
     expect(regex.test(transactions.status)).toBe(true);
@@ -57,13 +58,13 @@ describe('getAccountTransactions', () => {
         sort: 'desc',
         page: 1,
         offset: 10,
-        startTimestamp: 1620000000,
-        endTimestamp: Date.now(),
+        selectedTimeframe: 'Past year',
         filterBy: 'to',
-        minAmount: 50000000000000000,
-        maxAmount: 1000000000000000000,
+        minAmount: 5e17,
+        maxAmount: 1e18,
       },
       Zone['zone-0-0'],
+      { base: 1, quote: 1 },
     );
     const regex = new RegExp(/^[01]$/);
     expect(regex.test(transactions.status)).toBe(true);

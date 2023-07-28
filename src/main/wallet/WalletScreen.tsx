@@ -18,14 +18,8 @@ import UserIcon from 'src/shared/assets/accountDetails.svg';
 import UserIconWhite from 'src/shared/assets/accountDetailsWhite.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
-import {
-  Transaction,
-  getAccountTransactions,
-  getBalance,
-  Recipient,
-} from 'src/shared/services/blockscout';
-import { quais } from 'quais';
-import { dateToLocaleString } from 'src/shared/services/dateUtil';
+import { Transaction } from 'src/shared/services/blockscout';
+import { dateToLocaleString, Timeframe } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
@@ -34,11 +28,14 @@ import { useZone } from 'src/shared/hooks/useZone';
 import { useContacts, useWallet, useWalletObject } from 'src/shared/hooks';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useTheme } from 'src/shared/context/themeContext';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
+import { updateBalances } from 'src/main/wallet/utils/updateBalances';
+import { updateTransactions } from 'src/main/wallet/utils/updateTransactions';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'wallet' });
+  const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
   const { isDarkMode } = useTheme();
   const wallet = useWallet();
@@ -47,21 +44,19 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const contacts = useContacts();
   const quaiRate = useQuaiRate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [selectedTxDirection, setSelectedTxDirection] = useState<
-    string | undefined
-  >();
-  const [selectedTimeframe, setSelectedTimeframe] = useState<
-    string | undefined
-  >();
+  const [selectedTxDirection, setSelectedTxDirection] = useState<string>();
+  const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>();
   const [minAmount, setMinAmount] = useState(0);
-  const [maxAmount, setMaxAmount] = useState(1000000000000000000000000);
-  const [shards, setShards] = useState<number[]>([]);
+  const [maxAmount, setMaxAmount] = useState(1e18);
+  const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [loading, setLoading] = useState(false);
-  // TODO: remove console.log when we use these values
-  console.log(shards, selectedTimeframe);
-
+  const [balances, setBalances] = useState<Record<string, string>>({});
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
+  const { showSnackBar } = useSnackBar();
+  // TODO: Handle the pagination
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [filters, setFilters] = useState({ page: 1, offset: 30 });
 
   const handlePresentFilterModalPress = useCallback(() => {
     filterModalRef.current?.present();
@@ -70,72 +65,52 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const handlePresentActiveAddressModalPress = useCallback(() => {
     activeAddressModalRef.current?.present();
   }, []);
-  const [balance, setBalance] = useState('0');
 
   useEffect(() => {
-    if (!contacts || !quaiRate) {
+    if (!walletObject) {
+      return;
+    }
+    updateBalances(
+      walletObject,
+      zone,
+      showSnackBar,
+      t,
+      setBalances,
+      setLoading,
+    );
+  }, [wallet, walletObject, zone]);
+
+  useEffect(() => {
+    if (!quaiRate || !wallet) {
       return;
     }
     setLoading(true);
-    getAccountTransactions(
-      {
-        address: wallet?.address as string,
-        sort: 'desc',
-        page: 1,
-        offset: 100,
-        startTimestamp: 0,
-        endTimestamp: Date.now(),
-        filterBy: selectedTxDirection,
-        minAmount,
-        maxAmount,
-      },
+    updateTransactions(
+      shards,
+      walletObject,
+      filters,
+      minAmount,
+      maxAmount,
       zone,
-    )
-      .then(res => {
-        setTransactions(
-          res.result.map(item => {
-            const isUserSender =
-              item.from.toLowerCase() === wallet?.address.toLowerCase();
-            const contact = contacts?.find(
-              c =>
-                c.address.toLowerCase() ===
-                (isUserSender
-                  ? item.to.toLowerCase()
-                  : item.from.toLowerCase()),
-            );
-            const recipient: Recipient = contact
-              ? {
-                  display: contact.username,
-                  profilePicture: contact.profilePicture,
-                }
-              : {
-                  display: isUserSender
-                    ? abbreviateAddress(item.to)
-                    : abbreviateAddress(item.from),
-                };
-
-            return {
-              ...item,
-              recipient,
-              fiatAmount:
-                Number(quais.utils.formatEther(item.value)) * quaiRate.base,
-              quaiAmount: Number(quais.utils.formatEther(item.value)),
-            };
-          }),
-        );
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    getBalance(wallet?.address as string, zone)
-      .then(res => {
-        setBalance(Number(quais.utils.formatEther(res)).toFixed(3));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [selectedTxDirection, contacts]);
+      quaiRate,
+      wallet,
+      setTransactions,
+      transactions,
+      setLoading,
+      selectedTimeframe,
+      selectedTxDirection,
+      contacts,
+    );
+  }, [
+    zone,
+    shards,
+    selectedTxDirection,
+    selectedTimeframe,
+    minAmount,
+    maxAmount,
+    quaiRate,
+    wallet,
+  ]);
 
   const navigateToReferral = useCallback(() => {
     RootNavigator.navigate('SettingsStack', { screen: 'Referral' });
@@ -145,13 +120,15 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const onSearchChange = (text: string) => console.log(text);
 
   if (loading || !wallet || !walletObject || !quaiRate) {
-    return <QuaiPayLoader text={t('loading')} />;
+    return <QuaiPayLoader text={t('wallet.loading')} />;
   }
 
   return (
     <QuaiPayContent noNavButton>
       <FilterModal
-        setSelectedTimeframe={setSelectedTimeframe}
+        setSelectedTimeframe={timeframe =>
+          setSelectedTimeframe(timeframe as Timeframe)
+        }
         setSelectedTxDirection={setSelectedTxDirection}
         setMinAmount={setMinAmount}
         setMaxAmount={setMaxAmount}
@@ -159,15 +136,20 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         ref={filterModalRef}
         walletObject={walletObject}
       />
-      <QuaiPayActiveAddressModal ref={activeAddressModalRef} />
+      <QuaiPayActiveAddressModal
+        balances={balances}
+        ref={activeAddressModalRef}
+      />
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
-          quaiAmount={balance.toString()}
+          quaiAmount={balances[wallet?.address as string]}
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
-          fiatAmount={(Number(balance) * quaiRate.base).toFixed(3)}
-          title={t('balance')}
+          fiatAmount={(
+            Number(balances[wallet?.address as string]) * quaiRate.base
+          ).toFixed(3)}
+          title={t('wallet.balance')}
         />
       </View>
       <View style={styles.buttonWrapper}>
@@ -180,7 +162,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           ]}
         >
           <QuaiPayText type="paragraph" style={styles.colorOverwrite}>
-            {t('chooseAddress')}
+            {t('wallet.chooseAddress')}
           </QuaiPayText>
         </Pressable>
         <Pressable
@@ -191,13 +173,13 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             pressed && { opacity: 0.5 },
           ]}
         >
-          <QuaiPayText type="H3">{t('earn')}</QuaiPayText>
+          <QuaiPayText type="H3">{t('wallet.earn')}</QuaiPayText>
         </Pressable>
       </View>
       <View style={styles.transactionsWrapper}>
         <View style={styles.transactionsHeader}>
           <QuaiPayText style={{ color: styledColors.gray }} type="H3">
-            {t('transactionsHistory')}
+            {t('wallet.transactionsHistory')}
           </QuaiPayText>
           <Pressable
             style={({ pressed }) => [
@@ -208,7 +190,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
             onPress={handlePresentFilterModalPress}
           >
             <QuaiPayText style={{ color: styledColors.gray }}>
-              {t('filter')}&nbsp;
+              {t('wallet.filter')}&nbsp;
             </QuaiPayText>
             <FilterIcon />
           </Pressable>
@@ -216,14 +198,18 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
         <View style={styles.searchbarWrapper}>
           <QuaiPaySearchbar
             onSearchChange={onSearchChange}
-            placeholder={t('searchByTransaction')}
+            placeholder={t('wallet.searchByTransaction')}
           />
         </View>
         {transactions.length === 0 ? (
-          <QuaiPayText type="paragraph">{t('noTransaction')}</QuaiPayText>
+          <QuaiPayText type="paragraph">
+            {t('wallet.noTransaction')}
+          </QuaiPayText>
         ) : (
           <FlatList
             data={transactions}
+            contentContainerStyle={styles.flatlistContainer}
+            onEndReachedThreshold={0.1}
             renderItem={({ item }) => (
               <QuaiPayListItem
                 date={dateToLocaleString(
@@ -240,10 +226,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
                     <UserIcon />
                   )
                 }
-                quaiAmount={item.quaiAmount.toFixed(3)}
+                quaiAmount={parseFloat(item.quaiAmount.toFixed(6)).toString()}
               />
             )}
-            keyExtractor={item => item.hash}
+            keyExtractor={tx => tx.hash}
           />
         )}
       </View>
@@ -305,6 +291,10 @@ const themedStyle = (theme: Theme) =>
     transactionsWrapper: {
       backgroundColor: theme.surface,
       padding: 16,
+    },
+    flatlistContainer: {
+      // TODO: use flex
+      paddingBottom: 280,
     },
     searchbarWrapper: {
       marginBottom: 22,

@@ -25,7 +25,9 @@ import { useWalletContext } from 'src/shared/context/walletContext';
 import { useZone } from 'src/shared/hooks/useZone';
 
 export const ReceiveScreen = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.receive.ReceiveScreen',
+  });
   const styles = useThemedStyle(themedStyle);
   const { showSnackBar } = useSnackBar();
   const navigation = useNavigation<RootStackNavigationProps<'Main'>>();
@@ -37,13 +39,13 @@ export const ReceiveScreen = () => {
   const { ref: activeAddressModalRef } = useBottomSheetModal();
 
   if (!profilePicture || !username || !wallet) {
-    return <QuaiPayLoader text={'Loading...'} />;
+    return <QuaiPayLoader text={t('loading')} />;
   }
 
   const copyToClipboard = () => {
     Clipboard.setString(wallet.address);
     showSnackBar({
-      message: t('home.receive.copiedToClipboard'),
+      message: t('copiedToClipboard'),
       moreInfo: abbreviateAddress(wallet.address),
       type: 'success',
     });
@@ -102,7 +104,7 @@ export const ReceiveScreen = () => {
       <QuaiPayButton
         style={styles.requestButton}
         type="secondary"
-        title={t('common.request')}
+        title={t('request')}
         onPress={goToInputScreen}
       />
       <QuaiPayButton
@@ -111,7 +113,7 @@ export const ReceiveScreen = () => {
         titleType="default"
         titleColor="gray"
         onPress={goToLearnMore}
-        title={t('common.learnMore')}
+        title={t('learnMore')}
       />
       <View style={styles.separator} />
       <QuaiPayActiveAddressModal ref={activeAddressModalRef} />

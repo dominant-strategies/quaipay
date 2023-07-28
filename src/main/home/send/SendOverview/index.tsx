@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import {
   QuaiPayBanner,
   QuaiPayContent,
-  QuaiPayInputDisplay,
+  QuaiPayAmountDisplay,
   QuaiPayLoader,
   QuaiPayText,
 } from 'src/shared/components';
@@ -128,7 +128,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
                 )}{' '}
                 {eqInput.unit}
               </QuaiPayText>
-              <QuaiPayInputDisplay
+              <QuaiPayAmountDisplay
                 value={Number(input.value).toFixed(
                   input.unit === Currency.USD ? 6 : 0,
                 )}

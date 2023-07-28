@@ -32,7 +32,9 @@ import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { updateBalances } from 'src/main/wallet/utils/updateBalances';
-import { updateTransactions } from 'src/main/wallet/utils/updateTransactions';
+import { log } from 'src/shared/services/logging';
+
+import { updateTransaction } from './utils/updateTransaction';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -77,7 +79,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       setBalances,
       setLoading,
     );
-  }, [wallet, walletObject, zone]);
+  }, [walletObject, zone]);
 
   useEffect(() => {
     if (!quaiRate || !wallet) {
@@ -85,17 +87,24 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     }
 
     setLoading(true);
-    const promises = updateTransactions(
-      shards,
-      walletObject,
-      filters,
-      minAmount,
-      maxAmount,
-      zone,
-      quaiRate,
-      selectedTimeframe,
-      selectedTxDirection,
-      contacts,
+    const promises = shards.map(async shardNumber =>
+      updateTransaction({
+        shardNumber,
+        walletObject,
+        filters,
+        selectedTimeframe,
+        selectedTxDirection,
+        amountBounds: {
+          min: minAmount,
+          max: maxAmount,
+        },
+        zone,
+        quaiRate,
+        contacts,
+      }).catch(err => {
+        log.error(err);
+        throw err;
+      }),
     );
 
     Promise.allSettled(promises)
@@ -109,13 +118,16 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
           }
         });
       })
-      .catch(() =>
+      .catch(err => {
+        log.error(
+          `Error while updating transactions. Showing snack bar with error\n${err}`,
+        );
         showSnackBar({
           message: 'Error while trying to update transactions',
           moreInfo: 'Try again later',
           type: 'error',
-        }),
-      )
+        });
+      })
       .finally(() => setLoading(false));
   }, [
     zone,

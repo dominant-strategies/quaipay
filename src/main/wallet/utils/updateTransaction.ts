@@ -10,17 +10,7 @@ import { filterByAmountAndTxDirection } from './filterByAmountAndTxDirection';
 import { appendRecipientToTx } from './appendRecipientToTx';
 import { log } from 'src/shared/services/logging';
 
-export async function updateTransaction({
-  shardNumber,
-  walletObject,
-  filters,
-  selectedTimeframe,
-  selectedTxDirection,
-  amountBounds,
-  zone,
-  quaiRate,
-  contacts,
-}: {
+type UpdateTransactionProps = {
   shardNumber: number;
   walletObject?: Record<Zone, Wallet>;
   filters: {
@@ -36,7 +26,19 @@ export async function updateTransaction({
   zone: Zone;
   quaiRate: QuaiRate;
   contacts?: Contact[];
-}): Promise<Transaction[] | undefined> {
+};
+
+export async function updateTransaction({
+  shardNumber,
+  walletObject,
+  filters,
+  selectedTimeframe,
+  selectedTxDirection,
+  amountBounds,
+  zone,
+  quaiRate,
+  contacts,
+}: UpdateTransactionProps): Promise<Transaction[] | undefined> {
   const wallet = walletObject?.[zone];
   const zoneShard = Object.values(walletObject as object)[shardNumber];
   const address = zoneShard?.address;

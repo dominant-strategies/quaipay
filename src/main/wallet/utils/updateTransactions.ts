@@ -1,13 +1,10 @@
-import {
-  getAccountTransactions,
-  Transaction,
-} from 'src/shared/services/blockscout';
-import { filterByAmountAndTxDirection } from 'src/main/wallet/utils/filterByAmountAndTxDirection';
+import { Transaction } from 'src/shared/services/blockscout';
 import { Contact, Wallet, Zone } from 'src/shared/types';
 import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { Timeframe } from 'src/shared/services/dateUtil';
+import { log } from 'src/shared/services/logging';
 
-import { appendRecipientToTx } from './appendRecipientToTx';
+import { updateTransaction } from './updateTransaction';
 
 export function updateTransactions(
   shards: number[],
@@ -20,7 +17,6 @@ export function updateTransactions(
   maxAmount: number,
   zone: Zone,
   quaiRate: QuaiRate,
-  wallet: Wallet,
   setTransactions: (
     value: ((prevState: Transaction[]) => Transaction[]) | Transaction[],
   ) => void,
@@ -31,49 +27,32 @@ export function updateTransactions(
 ) {
   const txAllShards: Transaction[] = [];
 
-  const promises = shards.map(async shard => {
-    const zoneShard = Object.values(walletObject as object)[shard];
-    const address = zoneShard?.address;
-    try {
-      const res = await getAccountTransactions(
-        {
-          address: address || '',
-          sort: 'desc',
-          page: filters.page,
-          offset: filters.offset,
-          selectedTimeframe,
-          filterBy: selectedTxDirection,
-          minAmount,
-          maxAmount,
-        },
-        zone,
-        quaiRate,
-      );
-
-      const filteredTransactions = res.result
-        .filter((tx: Transaction) =>
-          filterByAmountAndTxDirection(
-            tx,
-            minAmount,
-            maxAmount,
-            wallet,
-            selectedTxDirection,
-          ),
-        )
-        .map(tx => appendRecipientToTx(tx, wallet, contacts));
-
-      txAllShards.push(...filteredTransactions);
-    } catch (err) {
-      console.log(err);
-    }
-  });
+  const promises = shards.map(async shardNumber =>
+    updateTransaction({
+      shardNumber,
+      walletObject,
+      filters,
+      selectedTimeframe,
+      selectedTxDirection,
+      amountBounds: {
+        min: minAmount,
+        max: maxAmount,
+      },
+      zone,
+      quaiRate,
+      contacts,
+    }).catch(e => {
+      log.error(e);
+      return undefined;
+    }),
+  );
 
   Promise.allSettled(promises)
     .then(() => {
       setTransactions(prevState => [...prevState, ...txAllShards]);
     })
     .catch(err => {
-      console.log(err);
+      log.error(err);
     })
     .finally(() => setLoading(false));
 }

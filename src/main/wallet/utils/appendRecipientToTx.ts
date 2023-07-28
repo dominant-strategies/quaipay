@@ -6,7 +6,7 @@ export const appendRecipientToTx = (
   tx: Transaction,
   wallet: Wallet,
   contacts?: Contact[],
-) => {
+): Transaction => {
   const isUserSender = tx.from.toLowerCase() === wallet.address.toLowerCase();
   const contact = contacts?.find(
     c =>

@@ -92,7 +92,6 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       maxAmount,
       zone,
       quaiRate,
-      wallet,
       setTransactions,
       setLoading,
       selectedTimeframe,

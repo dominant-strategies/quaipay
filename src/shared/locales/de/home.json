@@ -5,7 +5,12 @@
     "address": "Adresse",
     "quaipayAddress": "QuaiPay Adresse",
     "shareYourAddress": "Teilen Sie Ihre QuaiPay Adresse",
-    "copiedToClipboard": "In die Zwischenablage kopiert"
+    "ReceiveScreen": {
+      "loading": "$t(common.loading)...",
+      "copiedToClipboard": "In die Zwischenablage kopiert!",
+      "request": "$t(common.request)",
+      "learnMore": "$t(common.learnMore)"
+    }
   },
   "send": {
     "label": "Senden",

@@ -18,9 +18,9 @@ import {
 } from 'src/shared/components';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-import { SendStackParamList } from '../SendStack';
+import { SendStackParamList } from './SendStack';
 import { useAmountInput } from 'src/shared/hooks';
-import { TipButton } from 'src/main/home/send/SendTip/TipButton';
+import { TipButton } from 'src/main/home/send/components/TipButton';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 

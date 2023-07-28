@@ -71,6 +71,6 @@ export async function updateTransaction({
     return filteredTransaction;
   } catch (err) {
     log.error(err);
+    throw err;
   }
-  return undefined;
 }

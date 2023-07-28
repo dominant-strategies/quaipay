@@ -83,8 +83,9 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     if (!quaiRate || !wallet) {
       return;
     }
+
     setLoading(true);
-    updateTransactions(
+    const promises = updateTransactions(
       shards,
       walletObject,
       filters,
@@ -92,12 +93,30 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       maxAmount,
       zone,
       quaiRate,
-      setTransactions,
-      setLoading,
       selectedTimeframe,
       selectedTxDirection,
       contacts,
     );
+
+    Promise.allSettled(promises)
+      .then(txs => {
+        txs.forEach(tx => {
+          if (tx.status === 'fulfilled') {
+            setTransactions(prevState => [
+              ...prevState,
+              ...(tx.value ? tx.value : []),
+            ]);
+          }
+        });
+      })
+      .catch(() =>
+        showSnackBar({
+          message: 'Error while trying to update transactions',
+          moreInfo: 'Try again later',
+          type: 'error',
+        }),
+      )
+      .finally(() => setLoading(false));
   }, [
     zone,
     shards,

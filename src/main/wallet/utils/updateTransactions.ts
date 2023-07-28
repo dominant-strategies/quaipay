@@ -1,4 +1,3 @@
-import { Transaction } from 'src/shared/services/blockscout';
 import { Contact, Wallet, Zone } from 'src/shared/types';
 import { QuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { Timeframe } from 'src/shared/services/dateUtil';
@@ -17,16 +16,10 @@ export function updateTransactions(
   maxAmount: number,
   zone: Zone,
   quaiRate: QuaiRate,
-  setTransactions: (
-    value: ((prevState: Transaction[]) => Transaction[]) | Transaction[],
-  ) => void,
-  setLoading: (value: ((prevState: boolean) => boolean) | boolean) => void,
   selectedTimeframe?: Timeframe,
   selectedTxDirection?: string,
   contacts?: Contact[],
 ) {
-  const txAllShards: Transaction[] = [];
-
   const promises = shards.map(async shardNumber =>
     updateTransaction({
       shardNumber,
@@ -43,16 +36,9 @@ export function updateTransactions(
       contacts,
     }).catch(e => {
       log.error(e);
-      return undefined;
+      throw e;
     }),
   );
 
-  Promise.allSettled(promises)
-    .then(() => {
-      setTransactions(prevState => [...prevState, ...txAllShards]);
-    })
-    .catch(err => {
-      log.error(err);
-    })
-    .finally(() => setLoading(false));
+  return promises;
 }

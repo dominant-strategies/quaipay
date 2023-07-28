@@ -61,7 +61,7 @@ export async function updateTransaction({
               tx,
               amountBounds.min,
               amountBounds.max,
-              wallet,
+              wallet?.address,
               selectedTxDirection,
             ),
           )

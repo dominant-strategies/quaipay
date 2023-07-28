@@ -39,28 +39,29 @@ export type Transaction = {
   quaiAmount: number;
 };
 
-type GetAccountTransactionsProps = {
-  address: string;
+type TransactionConfig = {
   sort?: string;
   page?: number;
   offset?: number;
   selectedTimeframe?: Timeframe;
   filterBy?: string;
-  minAmount?: number;
-  maxAmount?: number;
 };
 
-export const getAccountTransactions = (
-  props: GetAccountTransactionsProps,
-  zone: Zone,
-  quaiRate: QuaiRate,
-): Promise<TransactionList> => {
+export const getAccountTransactions = ({
+  address,
+  config,
+  quaiRate,
+  zone,
+}: {
+  address: string;
+  config?: TransactionConfig;
+  quaiRate: QuaiRate;
+  zone: Zone;
+}): Promise<TransactionList> => {
   return new Promise(async (resolve, reject) => {
-    const { address, sort, page, offset, selectedTimeframe, filterBy } = props;
-
     const nodeData = allNodeData[zone];
     const startTimestamp =
-      selectedTimeframe && getStartTimestamp(selectedTimeframe);
+      config?.selectedTimeframe && getStartTimestamp(config.selectedTimeframe);
 
     // Get the URL for the API
     const url =
@@ -68,11 +69,11 @@ export const getAccountTransactions = (
         'rpc.',
         '',
       )}/api?module=account&action=txlist&address=${address}` +
-      `${sort ? `&sort=${sort}` : ''}` +
-      `${page ? `&page=${page}` : ''}` +
-      `${offset ? `&offset=${offset}` : ''}` +
+      `${config?.sort ? `&sort=${config.sort}` : ''}` +
+      `${config?.page ? `&page=${config.page}` : ''}` +
+      `${config?.offset ? `&offset=${config.offset}` : ''}` +
       `${startTimestamp ? `&start_timestamp=${startTimestamp}` : ''}` +
-      `${filterBy ? `&filter_by=${filterBy}` : ''}`;
+      `${config?.filterBy ? `&filter_by=${config.filterBy}` : ''}`;
 
     var myHeaders = new Headers();
     myHeaders.append('accept', 'application/json');

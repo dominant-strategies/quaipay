@@ -41,20 +41,18 @@ export async function updateTransaction({
   const zoneShard = Object.values(walletObject as object)[shardNumber];
   const address = zoneShard?.address;
   try {
-    const res = await getAccountTransactions(
-      {
-        address: address || '',
+    const res = await getAccountTransactions({
+      address: address || '',
+      config: {
         sort: 'desc',
         page: filters.page,
         offset: filters.offset,
         selectedTimeframe,
         filterBy: selectedTxDirection,
-        minAmount: amountBounds.min,
-        maxAmount: amountBounds.max,
       },
       zone,
       quaiRate,
-    );
+    });
 
     const filteredTransaction = wallet
       ? res.result

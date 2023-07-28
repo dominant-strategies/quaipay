@@ -25,8 +25,7 @@ interface QuaiPayActiveAddressModalProps {
 const Modal: ForwardRefRenderFunction<
   BottomSheetModal,
   QuaiPayActiveAddressModalProps
-> = (params, ref) => {
-  const { balances } = params;
+> = ({ balances }, ref) => {
   const quaiRate = useQuaiRate();
   const { zone: selectedZone, setZone, walletObject } = useWalletContext();
   const styles = useThemedStyle(themedStyle);

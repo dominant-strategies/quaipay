@@ -18,11 +18,7 @@ import UserIcon from 'src/shared/assets/accountDetails.svg';
 import UserIconWhite from 'src/shared/assets/accountDetailsWhite.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
-import {
-  getAccountTransactions,
-  Recipient,
-  Transaction,
-} from 'src/shared/services/blockscout';
+import { Transaction } from 'src/shared/services/blockscout';
 import { dateToLocaleString, Timeframe } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
@@ -35,8 +31,8 @@ import { useTheme } from 'src/shared/context/themeContext';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
-import { filterByAmountAndTxDirection } from './utils/filterByAmountAndTxDirection';
 import { updateBalances } from 'src/main/wallet/utils/updateBalances';
+import { updateTransactions } from 'src/main/wallet/utils/updateTransactions';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -89,79 +85,22 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       return;
     }
     setLoading(true);
-    const txAllShards: Transaction[] = [];
-
-    const promises = shards.map(async shard => {
-      const zoneShard = Object.values(walletObject as object)[shard];
-      const address = zoneShard?.address;
-      try {
-        const res = await getAccountTransactions(
-          {
-            address: address || '',
-            sort: 'desc',
-            page: filters.page,
-            offset: filters.offset,
-            selectedTimeframe,
-            filterBy: selectedTxDirection,
-            minAmount,
-            maxAmount,
-          },
-          zone,
-          quaiRate,
-        );
-
-        const filteredTransactions = res.result
-          .filter((tx: Transaction) =>
-            filterByAmountAndTxDirection(
-              tx,
-              minAmount,
-              maxAmount,
-              wallet,
-              selectedTxDirection,
-            ),
-          )
-          .map(item => {
-            const isUserSender =
-              item.from.toLowerCase() === wallet.address.toLowerCase();
-            const contact = contacts?.find(
-              c =>
-                c.address.toLowerCase() ===
-                (isUserSender
-                  ? item.to.toLowerCase()
-                  : item.from.toLowerCase()),
-            );
-            const recipient: Recipient = contact
-              ? {
-                  display: contact.username,
-                  profilePicture: contact.profilePicture,
-                }
-              : {
-                  display: isUserSender
-                    ? abbreviateAddress(item.to)
-                    : abbreviateAddress(item.from),
-                };
-
-            return {
-              ...item,
-              recipient,
-            };
-          });
-
-        txAllShards.push(...filteredTransactions);
-      } catch (err) {
-        console.log(err);
-      }
-    });
-
-    Promise.allSettled(promises)
-      .then(() => {
-        setLoading(false);
-        setTransactions([...transactions, ...txAllShards]);
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
+    updateTransactions(
+      shards,
+      walletObject,
+      filters,
+      minAmount,
+      maxAmount,
+      zone,
+      quaiRate,
+      wallet,
+      setTransactions,
+      transactions,
+      setLoading,
+      selectedTimeframe,
+      selectedTxDirection,
+      contacts,
+    );
   }, [
     zone,
     shards,

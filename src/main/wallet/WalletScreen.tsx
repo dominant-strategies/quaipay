@@ -11,7 +11,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { Theme, Zone } from 'src/shared/types';
+import { Theme } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import UserIcon from 'src/shared/assets/accountDetails.svg';
@@ -19,13 +19,11 @@ import UserIconWhite from 'src/shared/assets/accountDetailsWhite.svg';
 import { useTranslation } from 'react-i18next';
 import { styledColors } from 'src/shared/styles';
 import {
-  Transaction,
   getAccountTransactions,
-  getBalance,
   Recipient,
+  Transaction,
 } from 'src/shared/services/blockscout';
-import { quais } from 'quais';
-import { Timeframe, dateToLocaleString } from 'src/shared/services/dateUtil';
+import { dateToLocaleString, Timeframe } from 'src/shared/services/dateUtil';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FilterModal } from 'src/main/wallet/FilterModal';
 import { QuaiPayActiveAddressModal } from 'src/shared/components/QuaiPayActiveAddressModal';
@@ -38,6 +36,7 @@ import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { filterByAmountAndTxDirection } from './utils/filterByAmountAndTxDirection';
+import { updateBalances } from 'src/main/wallet/utils/updateBalances';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -75,43 +74,14 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     if (!walletObject) {
       return;
     }
-    const updateBalances = async () => {
-      const balancePromises = Object.keys(walletObject).map(async key => {
-        const address = walletObject[key as Zone].address;
-        try {
-          const res = await getBalance(address, zone);
-          const formattedBalance = Number(quais.utils.formatEther(res)).toFixed(
-            3,
-          );
-          return { address: address, balance: formattedBalance };
-        } catch (error) {
-          showSnackBar({
-            message: t('common.error'),
-            moreInfo: t('wallet.getBalanceError') || '',
-            type: 'error',
-          });
-          return { address: address, balance: '0.00' };
-        }
-      });
-
-      Promise.allSettled(balancePromises)
-        .then(results => {
-          const updatedBalances: any = {};
-          results.forEach(result => {
-            if (result.status === 'fulfilled') {
-              const { address } = result.value;
-              updatedBalances[address] = result.value.balance;
-            }
-          });
-          setBalances(prevBalances => ({
-            ...prevBalances,
-            ...updatedBalances,
-          }));
-        })
-        .finally(() => setLoading(false));
-    };
-
-    updateBalances();
+    updateBalances(
+      walletObject,
+      zone,
+      showSnackBar,
+      t,
+      setBalances,
+      setLoading,
+    );
   }, [wallet, walletObject, zone]);
 
   useEffect(() => {
@@ -384,6 +354,7 @@ const themedStyle = (theme: Theme) =>
       padding: 16,
     },
     flatlistContainer: {
+      // TODO: use flex
       paddingBottom: 280,
     },
     searchbarWrapper: {

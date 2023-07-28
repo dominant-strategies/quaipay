@@ -106,16 +106,10 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
 
       navigation.navigate('SendOverview', {
         ...route.params,
-        totalAmount:
-          selectedTip === 'custom'
-            ? calculateTipAmount(
-                Number(input.value),
-                Number(tipInput.value),
-              ).total.toString()
-            : calculateTipAmount(
-                Number(input.value),
-                Number(selectedTip),
-              ).total.toString(),
+        totalAmount: calculateTipAmount(
+          Number(input.value),
+          Number(selectedTip === 'custom' ? tipInput.value : selectedTip),
+        ).total.toString(),
         tip: parseFloat(tipInQuai.toFixed(6)),
         tipInUSD,
       });

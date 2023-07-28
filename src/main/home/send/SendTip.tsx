@@ -97,19 +97,12 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    let tipInUSD: number;
     if (quaiRate) {
-      if (input.unit === Currency.USD) {
-        tipInUSD =
-          selectedTip === 'custom'
-            ? Number(tipInput.value)
-            : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
-      } else {
-        tipInUSD =
-          selectedTip === 'custom'
-            ? Number(tipInput.value) * quaiRate?.base
-            : ((Number(input.value) * selectedTip) / 100) * quaiRate?.base;
-      }
+      const tipInUSD =
+        selectedTip === 'custom'
+          ? Number(tipInput.value) * quaiRate?.base
+          : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
+
       navigation.navigate('SendOverview', {
         ...route.params,
         totalAmount:

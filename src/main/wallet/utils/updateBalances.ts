@@ -10,7 +10,6 @@ export async function updateBalances(
       | ((prevState: Record<string, string>) => Record<string, string>)
       | Record<string, string>,
   ) => void,
-  setLoading: (value: ((prevState: boolean) => boolean) | boolean) => void,
 ) {
   const balancePromises = Object.keys(walletObject).map(async key => {
     const address = walletObject[key as Zone].address;
@@ -41,6 +40,5 @@ export async function updateBalances(
     })
     .catch(err => {
       throw err;
-    })
-    .finally(() => setLoading(false));
+    });
 }

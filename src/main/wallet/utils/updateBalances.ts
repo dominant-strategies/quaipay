@@ -1,14 +1,10 @@
 import { Wallet, Zone } from 'src/shared/types';
-import { SnackBarInfo } from 'src/shared/context/snackBarContext';
-import { TFunction } from 'i18next';
 import { getBalance } from 'src/shared/services/blockscout';
 import { quais } from 'quais';
 
 export async function updateBalances(
   walletObject: Record<Zone, Wallet>,
   zone: Zone,
-  showSnackBar: (info: SnackBarInfo) => void,
-  t: TFunction<'translation', undefined>,
   setBalances: (
     value:
       | ((prevState: Record<string, string>) => Record<string, string>)
@@ -23,12 +19,9 @@ export async function updateBalances(
       const formattedBalance = Number(quais.utils.formatEther(res)).toFixed(3);
       return { address: address, balance: formattedBalance };
     } catch (error) {
-      showSnackBar({
-        message: t('common.error'),
-        moreInfo: t('wallet.getBalanceError') || '',
-        type: 'error',
-      });
-      return { address: address, balance: '0.00' };
+      throw new Error(
+        `Could not get balance for address:${address} and zone: ${zone}`,
+      );
     }
   });
 
@@ -45,6 +38,9 @@ export async function updateBalances(
         ...prevBalances,
         ...updatedBalances,
       }));
+    })
+    .catch(err => {
+      throw err;
     })
     .finally(() => setLoading(false));
 }

@@ -71,14 +71,14 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     if (!walletObject) {
       return;
     }
-    updateBalances(
-      walletObject,
-      zone,
-      showSnackBar,
-      t,
-      setBalances,
-      setLoading,
-    );
+    updateBalances(walletObject, zone, setBalances, setLoading).catch(err => {
+      log.error(err);
+      showSnackBar({
+        message: t('common.error'),
+        moreInfo: t('wallet.getBalanceError') || '',
+        type: 'error',
+      });
+    });
   }, [walletObject, zone]);
 
   useEffect(() => {

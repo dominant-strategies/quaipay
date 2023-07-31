@@ -11,7 +11,7 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { Theme } from 'src/shared/types';
+import { Theme, Zone } from 'src/shared/types';
 import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import FilterIcon from 'src/shared/assets/filter.svg';
 import UserIcon from 'src/shared/assets/accountDetails.svg';
@@ -36,6 +36,8 @@ import { log } from 'src/shared/services/logging';
 
 import { updateTransaction } from './utils/updateTransaction';
 
+export type Balances = Partial<Record<Zone, string>>;
+
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
   const styles = useThemedStyle(themedStyle);
@@ -52,7 +54,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const [maxAmount, setMaxAmount] = useState(1e18);
   const [shards, setShards] = useState<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [loading, setLoading] = useState(false);
-  const [balances, setBalances] = useState<Record<string, string>>({});
+  const [balances, setBalances] = useState<Balances>();
   const filterModalRef = useRef<BottomSheetModal>(null);
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
   const { showSnackBar } = useSnackBar();
@@ -67,11 +69,14 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
     activeAddressModalRef.current?.present();
   }, []);
 
+  const handleBalanceUpdate = (b: typeof balances) =>
+    setBalances(prevState => ({ ...prevState, ...b }));
+
   useEffect(() => {
     if (!walletObject) {
       return;
     }
-    updateBalances(walletObject, zone, setBalances)
+    updateBalances(walletObject, zone, handleBalanceUpdate)
       .catch(err => {
         log.error(err);
         showSnackBar({
@@ -173,12 +178,10 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       <View style={styles.cardWrapper}>
         <QuaiPayCard
           size={CardSize.Small}
-          quaiAmount={balances[wallet?.address as string]}
+          quaiAmount={balances?.[zone] ?? ''}
           address={abbreviateAddress(wallet?.address as string)}
           zone={allNodeData[zone].name}
-          fiatAmount={(
-            Number(balances[wallet?.address as string]) * quaiRate.base
-          ).toFixed(3)}
+          fiatAmount={(Number(balances?.[zone]) * quaiRate.base).toFixed(3)}
           title={t('wallet.balance')}
         />
       </View>

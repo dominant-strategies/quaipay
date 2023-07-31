@@ -32,7 +32,9 @@ import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 import { updateBalances } from 'src/main/wallet/utils/updateBalances';
-import { updateTransactions } from 'src/main/wallet/utils/updateTransactions';
+import { log } from 'src/shared/services/logging';
+
+import { updateTransaction } from './utils/updateTransaction';
 
 const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const { t } = useTranslation();
@@ -55,8 +57,7 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
   const activeAddressModalRef = useRef<BottomSheetModal>(null);
   const { showSnackBar } = useSnackBar();
   // TODO: Handle the pagination
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filters, setFilters] = useState({ page: 1, offset: 30 });
+  const [filters, _] = useState({ page: 1, offset: 30 });
 
   const handlePresentFilterModalPress = useCallback(() => {
     filterModalRef.current?.present();
@@ -78,29 +79,56 @@ const WalletScreen: React.FC<MainTabStackScreenProps<'Wallet'>> = () => {
       setBalances,
       setLoading,
     );
-  }, [wallet, walletObject, zone]);
+  }, [walletObject, zone]);
 
   useEffect(() => {
     if (!quaiRate || !wallet) {
       return;
     }
+
     setLoading(true);
-    updateTransactions(
-      shards,
-      walletObject,
-      filters,
-      minAmount,
-      maxAmount,
-      zone,
-      quaiRate,
-      wallet,
-      setTransactions,
-      transactions,
-      setLoading,
-      selectedTimeframe,
-      selectedTxDirection,
-      contacts,
+    const promises = shards.map(async shardNumber =>
+      updateTransaction({
+        shardNumber,
+        walletObject,
+        filters,
+        selectedTimeframe,
+        selectedTxDirection,
+        amountBounds: {
+          min: minAmount,
+          max: maxAmount,
+        },
+        zone,
+        quaiRate,
+        contacts,
+      }).catch(err => {
+        log.error(err);
+        throw err;
+      }),
     );
+
+    Promise.allSettled(promises)
+      .then(txs => {
+        txs.forEach(tx => {
+          if (tx.status === 'fulfilled') {
+            setTransactions(prevState => [
+              ...prevState,
+              ...(tx.value ? tx.value : []),
+            ]);
+          }
+        });
+      })
+      .catch(err => {
+        log.error(
+          `Error while updating transactions. Showing snack bar with error\n${err}`,
+        );
+        showSnackBar({
+          message: 'Error while trying to update transactions',
+          moreInfo: 'Try again later',
+          type: 'error',
+        });
+      })
+      .finally(() => setLoading(false));
   }, [
     zone,
     shards,

@@ -9,5 +9,6 @@
   "error": "Fehler",
   "success": "Erfolg",
   "loading": "Laden",
-  "copiedToClipboard": "In die Zwischenablage kopiert!"
+  "copiedToClipboard": "In die Zwischenablage kopiert!",
+  "shareYourAddress": "Teilen Sie Ihre QuaiPay Adresse"
 }

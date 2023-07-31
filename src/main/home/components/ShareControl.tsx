@@ -29,13 +29,14 @@ type ShareControlProps = {
 };
 
 export const ShareControl: React.FC<ShareControlProps> = ({ share }) => {
-  const { t } = useTranslation('translation', { keyPrefix: 'home' });
+  const { t } = useTranslation('translation', { keyPrefix: 'common' });
   const isDarkMode = useColorScheme() === 'dark';
   const { showSnackBar } = useSnackBar();
 
   const shareAddress = () => {
     Share.share({
-      title: t('receive.shareYourAddress') ?? '',
+      // TODO: refactor to def as composition of others instead of a hardcoded one
+      title: t('shareYourAddress') ?? '',
       message: share,
     });
   };
@@ -43,7 +44,7 @@ export const ShareControl: React.FC<ShareControlProps> = ({ share }) => {
   const copyToClipboard = () => {
     Clipboard.setString(share);
     showSnackBar({
-      message: t('receive.copiedToClipboard'),
+      message: t('copiedToClipboard'),
       moreInfo: abbreviateAddress(share),
       type: 'success',
     });

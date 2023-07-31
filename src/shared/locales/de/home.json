@@ -4,7 +4,6 @@
     "amount": "Betrag",
     "address": "Adresse",
     "quaipayAddress": "QuaiPay Adresse",
-    "shareYourAddress": "Teilen Sie Ihre QuaiPay Adresse",
     "ReceiveScreen": {
       "loading": "$t(common.loading)...",
       "copiedToClipboard": "$t(common.copiedToClipboard)",

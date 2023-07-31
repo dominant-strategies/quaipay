@@ -44,7 +44,7 @@ export const ReceiveQRScreen: React.FC<
   );
   const share = () => {
     Share.share({
-      title: t('receive.shareYourAddress') ?? '',
+      title: t('receive.shareYourAddress') ?? '', // TODO: update string indexing
       message: wallet?.address ?? '',
     });
   };

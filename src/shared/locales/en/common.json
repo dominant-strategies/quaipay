@@ -9,5 +9,6 @@
   "error": "Error",
   "success": "Success",
   "loading": "Loading",
-  "copiedToClipboard": "Copied to clipboard!"
+  "copiedToClipboard": "Copied to clipboard!",
+  "shareYourAddress": "Share your QuaiPay address"
 }

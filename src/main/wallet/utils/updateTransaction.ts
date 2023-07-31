@@ -40,11 +40,13 @@ export async function updateTransaction({
   contacts,
 }: UpdateTransactionProps): Promise<Transaction[] | undefined> {
   const wallet = walletObject?.[zone];
-  const zoneShard = Object.values(walletObject as object)[shardNumber];
-  const address = zoneShard?.address;
+  const zoneShard = Object.values(walletObject as object)[
+    shardNumber
+  ] as Wallet;
+  const address = zoneShard.address;
   try {
     const res = await getAccountTransactions({
-      address: address || '',
+      address,
       config: {
         sort: 'desc',
         page: filters.page,
@@ -63,7 +65,7 @@ export async function updateTransaction({
               tx,
               amountBounds.min,
               amountBounds.max,
-              wallet?.address,
+              wallet.address,
               selectedTxDirection,
             ),
           )

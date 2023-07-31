@@ -86,7 +86,7 @@ export const useBackgroundTimer = () => {
       BackgroundTimer.start();
     }
 
-    BackgroundTimer.runBackgroundTimer(checkForNewTransaction, 5000);
+    BackgroundTimer.runBackgroundTimer(checkForNewTransaction, 300000);
   };
 
   const stopTimer = () => {

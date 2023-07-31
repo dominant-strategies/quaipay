@@ -23,7 +23,7 @@ import { Currency, Theme } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 
 import { ReceiveStackScreenProps } from 'src/main/home/receive/ReceiveStack';
-import ShareControl from 'src/main/home/receive/ShareControl';
+import { ShareControl } from 'src/main/home/components/ShareControl';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
 const isWindowSmallerThanScreen =

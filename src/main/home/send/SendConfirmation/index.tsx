@@ -20,7 +20,7 @@ import {
   abbreviateAddress,
   waitForTransaction,
 } from 'src/shared/services/quais';
-import ShareControl from 'src/main/home/receive/ShareControl';
+import { ShareControl } from 'src/main/home/components/ShareControl';
 import { Currency } from 'src/shared/types';
 import { SendStackParamList } from '../SendStack';
 import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';

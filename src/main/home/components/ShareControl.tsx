@@ -12,6 +12,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 
 import { styledColors } from 'src/shared/styles';
+import { abbreviateAddress } from 'src/shared/services/quais';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 import ChatIcon from '../../../../assets/icons/chat.svg';
 import UploadIcon from '../../../../assets/icons/upload.svg';
@@ -21,14 +23,12 @@ import ChatWhiteIcon from '../../../../assets/icons/chat_white.svg';
 import UploadWhiteIcon from '../../../../assets/icons/upload_white.svg';
 import EmailWhiteIcon from '../../../../assets/icons/email_white.svg';
 import PrinterWhiteIcon from '../../../../assets/icons/printer_white.svg';
-import { useSnackBar } from 'src/shared/context/snackBarContext';
-import { abbreviateAddress } from 'src/shared/services/quais';
 
 type ShareControlProps = {
   share: string;
 };
 
-export default function ShareControl({ share }: ShareControlProps) {
+export const ShareControl: React.FC<ShareControlProps> = ({ share }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'home' });
   const isDarkMode = useColorScheme() === 'dark';
   const { showSnackBar } = useSnackBar();
@@ -97,7 +97,7 @@ export default function ShareControl({ share }: ShareControlProps) {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

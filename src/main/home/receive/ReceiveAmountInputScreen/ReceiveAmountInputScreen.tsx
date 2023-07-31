@@ -22,12 +22,14 @@ import { Currency, Theme } from 'src/shared/types';
 import { abbreviateAddress } from 'src/shared/services/quais';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-import { ReceiveStackScreenProps } from './ReceiveStack';
+import { ReceiveStackScreenProps } from '../ReceiveStack';
 
 export const ReceiveAmountInputScreen: React.FC<
   ReceiveStackScreenProps<'ReceiveAmountInput'>
 > = ({ navigation }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.receive.ReceiveAmountInputScreen',
+  });
   const styles = useThemedStyle(themedStyle);
   const profilePicture = useProfilePicture();
   const username = useUsername();
@@ -44,7 +46,7 @@ export const ReceiveAmountInputScreen: React.FC<
     });
 
   return (
-    <QuaiPayContent title={t('common.request')}>
+    <QuaiPayContent title={t('request')}>
       <View style={styles.separator} />
       <View style={styles.nameAndPFPContainer}>
         <QuaiPayAvatar
@@ -85,7 +87,7 @@ export const ReceiveAmountInputScreen: React.FC<
         disabled={Number(input.value) === 0}
         onPress={goToGeneratedQR}
         style={styles.continueButton}
-        title={t('common.continue')}
+        title={t('continue')}
       />
       <View style={styles.separator} />
       <QuaiPayKeyboard

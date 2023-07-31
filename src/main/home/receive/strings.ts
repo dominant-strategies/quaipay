@@ -1,3 +1,4 @@
+import { ReceiveAmountInputScreenStrings } from './ReceiveAmountInputScreen/ReceiveAmountInputScreen.strings';
 import { ReceiveScreenStrings } from './ReceiveScreen/ReceiveScreen.strings';
 
 export const receive = {
@@ -7,4 +8,5 @@ export const receive = {
   quaipayAddress: 'QuaiPay Address',
   request: 'Request',
   ReceiveScreen: ReceiveScreenStrings,
+  ReceiveAmountInputScreen: ReceiveAmountInputScreenStrings,
 };

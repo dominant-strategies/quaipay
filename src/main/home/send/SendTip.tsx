@@ -98,11 +98,15 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
 
   const navigateToOverview = () => {
     if (quaiRate) {
-      const tipInQuai =
+      const customTipInUSD =
+        input.unit === Currency.USD
+          ? tipInput.value
+          : (Number(tipInput.value) * quaiRate?.base).toString();
+      const tipInUSD =
         selectedTip === 'custom'
-          ? Number(tipInput.value)
+          ? Number(customTipInUSD)
           : (Number(amountInUSD) * selectedTip) / 100;
-      const tipInUSD = (tipInQuai * quaiRate?.base).toFixed(6);
+      const tipInQuai = tipInUSD * quaiRate?.quote;
 
       navigation.navigate('SendOverview', {
         ...route.params,
@@ -110,8 +114,8 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
           Number(input.value),
           Number(selectedTip === 'custom' ? tipInput.value : selectedTip),
         ).total.toString(),
-        tip: parseFloat(tipInQuai.toFixed(6)),
-        tipInUSD,
+        tip: tipInQuai,
+        tipInUSD: tipInUSD.toFixed(6),
       });
     }
   };

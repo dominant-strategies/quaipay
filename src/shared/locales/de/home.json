@@ -7,7 +7,7 @@
     "shareYourAddress": "Teilen Sie Ihre QuaiPay Adresse",
     "ReceiveScreen": {
       "loading": "$t(common.loading)...",
-      "copiedToClipboard": "In die Zwischenablage kopiert!",
+      "copiedToClipboard": "$t(common.copiedToClipboard)",
       "request": "$t(common.request)",
       "learnMore": "$t(common.learnMore)"
     }

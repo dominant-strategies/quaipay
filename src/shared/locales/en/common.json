@@ -8,5 +8,6 @@
   "learnMore": "Learn more about QuaiPay",
   "error": "Error",
   "success": "Success",
-  "loading": "Loading"
+  "loading": "Loading",
+  "copiedToClipboard": "Copied to clipboard!"
 }

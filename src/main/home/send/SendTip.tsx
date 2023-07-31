@@ -18,9 +18,9 @@ import {
 } from 'src/shared/components';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-import { SendStackParamList } from '../SendStack';
+import { SendStackParamList } from './SendStack';
 import { useAmountInput } from 'src/shared/hooks';
-import { TipButton } from 'src/main/home/send/SendTip/TipButton';
+import { TipButton } from 'src/main/home/send/components/TipButton';
 
 type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
 
@@ -97,36 +97,25 @@ const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
   };
 
   const navigateToOverview = () => {
-    let tipInUSD: number;
     if (quaiRate) {
-      if (input.unit === Currency.USD) {
-        tipInUSD =
-          selectedTip === 'custom'
-            ? Number(tipInput.value)
-            : ((Number(amountInUSD) * selectedTip) / 100) * quaiRate?.base;
-      } else {
-        tipInUSD =
-          selectedTip === 'custom'
-            ? Number(tipInput.value) * quaiRate?.base
-            : ((Number(input.value) * selectedTip) / 100) * quaiRate?.base;
-      }
+      const customTipInUSD =
+        input.unit === Currency.USD
+          ? tipInput.value
+          : (Number(tipInput.value) * quaiRate?.base).toString();
+      const tipInUSD =
+        selectedTip === 'custom'
+          ? Number(customTipInUSD)
+          : (Number(amountInUSD) * selectedTip) / 100;
+      const tipInQuai = tipInUSD * quaiRate?.quote;
+
       navigation.navigate('SendOverview', {
         ...route.params,
-        totalAmount:
-          selectedTip === 'custom'
-            ? calculateTipAmount(
-                Number(input.value),
-                Number(tipInput.value),
-              ).total.toString()
-            : calculateTipAmount(
-                Number(input.value),
-                Number(selectedTip),
-              ).total.toString(),
-        tip:
-          selectedTip === 'custom'
-            ? parseFloat(Number(tipInput.value).toFixed(6))
-            : parseFloat((Number(amountInUSD) * selectedTip).toFixed(6)) / 100,
-        tipInUSD: parseFloat(tipInUSD.toFixed(6)).toString(),
+        totalAmount: calculateTipAmount(
+          Number(input.value),
+          Number(selectedTip === 'custom' ? tipInput.value : selectedTip),
+        ).total.toString(),
+        tip: tipInQuai,
+        tipInUSD: tipInUSD.toFixed(6),
       });
     }
   };

@@ -8,7 +8,7 @@ export { QuaiPayCard, CardSize } from './QuaiPayCard';
 export { QuaiPayContactBottomSheet } from './QuaiPayContactBottomSheet/QuaiPayContactBottomSheet';
 export { QuaiPayContent } from './QuaiPayContent';
 export { QuaiPaySettingsContent } from './QuaiPaySettingsContent';
-export { QuaiPayInputDisplay } from './QuaiPayInputDisplay';
+export { QuaiPayAmountDisplay } from './QuaiPayAmountDisplay';
 export { QuaiPayKeyboard } from './QuaiPayKeyboard';
 export { QuaiPayListItem } from './QuaiPayListItem';
 export { QuaiPayLoader } from './QuaiPayLoader';

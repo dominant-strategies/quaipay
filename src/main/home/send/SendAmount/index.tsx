@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import {
   QuaiPayButton,
   QuaiPayContent,
-  QuaiPayInputDisplay,
+  QuaiPayAmountDisplay,
   QuaiPayKeyboard,
   QuaiPayText,
 } from 'src/shared/components';
@@ -161,7 +161,7 @@ const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
             </TouchableOpacity>
           </View>
           <View style={[styles.row, styles.marginTop16]}>
-            <QuaiPayInputDisplay
+            <QuaiPayAmountDisplay
               prefix={input.unit === Currency.USD ? '$' : undefined}
               value={input.value}
               suffix={` ${input.unit}`}

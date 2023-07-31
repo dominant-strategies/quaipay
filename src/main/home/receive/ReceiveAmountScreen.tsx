@@ -6,7 +6,7 @@ import UploadIcon from 'src/shared/assets/upload.svg';
 import {
   QuaiPayButton,
   QuaiPayContent,
-  QuaiPayInputDisplay,
+  QuaiPayAmountDisplay,
   QuaiPayQRCode,
   QuaiPayText,
 } from 'src/shared/components';
@@ -64,7 +64,7 @@ export const ReceiveQRScreen: React.FC<
               {eqInput.unit === Currency.USD && '$'}
               {eqInput.value} {eqInput.unit}
             </QuaiPayText>
-            <QuaiPayInputDisplay
+            <QuaiPayAmountDisplay
               prefix={input.unit === 'USD' ? '$' : undefined}
               suffix={` ${input.unit}`}
               value={input.value}

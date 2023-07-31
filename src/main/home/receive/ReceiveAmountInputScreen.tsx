@@ -14,7 +14,7 @@ import {
   QuaiPayAvatar,
   QuaiPayButton,
   QuaiPayContent,
-  QuaiPayInputDisplay,
+  QuaiPayAmountDisplay,
   QuaiPayKeyboard,
   QuaiPayText,
 } from 'src/shared/components';
@@ -58,7 +58,7 @@ export const ReceiveAmountInputScreen: React.FC<
         <QuaiPayText>{abbreviateAddress(wallet?.address)}</QuaiPayText>
       </View>
       <View style={styles.inputDisplayContainer}>
-        <QuaiPayInputDisplay
+        <QuaiPayAmountDisplay
           prefix={input.unit === 'USD' ? '$' : undefined}
           suffix={` ${input.unit}`}
           value={input.value}

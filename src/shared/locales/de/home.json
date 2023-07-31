@@ -4,10 +4,11 @@
     "amount": "Betrag",
     "address": "Adresse",
     "quaipayAddress": "QuaiPay Adresse",
+    "request": "Anfrage",
     "ReceiveScreen": {
       "loading": "$t(common.loading)...",
       "copiedToClipboard": "$t(common.copiedToClipboard)",
-      "request": "$t(common.request)",
+      "request": "$t(home.receive.request)",
       "learnMore": "$t(common.learnMore)"
     }
   },

@@ -5,5 +5,6 @@ export const receive = {
   amount: 'Amount',
   address: 'Address',
   quaipayAddress: 'QuaiPay Address',
+  request: 'Request',
   ReceiveScreen: ReceiveScreenStrings,
 };

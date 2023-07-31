@@ -1,4 +1,4 @@
-import React, { ForwardRefRenderFunction, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
@@ -22,10 +22,10 @@ interface QuaiPayActiveAddressModalProps {
   balances?: Record<string, string>;
 }
 
-const Modal: ForwardRefRenderFunction<
+export const QuaiPayActiveAddressModal = forwardRef<
   BottomSheetModal,
   QuaiPayActiveAddressModalProps
-> = ({ balances }, ref) => {
+>(({ balances }, ref) => {
   const quaiRate = useQuaiRate();
   const { zone: selectedZone, setZone, walletObject } = useWalletContext();
   const styles = useThemedStyle(themedStyle);
@@ -113,12 +113,7 @@ const Modal: ForwardRefRenderFunction<
       </ScrollView>
     </QuaiPayBottomSheetModal>
   );
-};
-
-export const QuaiPayActiveAddressModal = forwardRef<
-  BottomSheetModal,
-  QuaiPayActiveAddressModalProps
->(Modal);
+});
 
 const themedStyle = (theme: Theme) =>
   StyleSheet.create({

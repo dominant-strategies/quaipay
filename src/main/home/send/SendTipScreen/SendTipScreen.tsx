@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import { fontStyle, styledColors } from 'src/shared/styles';
@@ -17,14 +16,15 @@ import {
   QuaiPayText,
 } from 'src/shared/components';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
-
-import { SendStackParamList } from './SendStack';
 import { useAmountInput } from 'src/shared/hooks';
-import { TipButton } from 'src/main/home/send/components/TipButton';
 
-type SendTipScreenProps = NativeStackScreenProps<SendStackParamList, 'SendTip'>;
+import { TipButton } from './components/TipButton';
+import { SendStackScreenProps } from '../SendStack';
 
-const SendTipScreen = ({ route, navigation }: SendTipScreenProps) => {
+const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
+  route,
+  navigation,
+}) => {
   const { receiverAddress, receiverUsername, input, amountInUSD } =
     route.params;
   const { t } = useTranslation();

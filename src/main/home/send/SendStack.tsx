@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styledColors } from 'src/shared/styles';
 import { Currency, Transaction } from 'src/shared/types';
 
-import SendScanScreen from './SendScan';
+import { SendScanScreen } from './SendScan/SendScanScreen';
 import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
@@ -16,7 +16,7 @@ import SendConfirmationScreen from './SendConfirmation';
 import Left from 'src/shared/assets/leftChevron.svg';
 
 export type SendStackParamList = {
-  SendScan: { address: string; amount: number; username: string };
+  SendScan: undefined;
   SendAmount: {
     amount: number;
     receiverAddress: string;

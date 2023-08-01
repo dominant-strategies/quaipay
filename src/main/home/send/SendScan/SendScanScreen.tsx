@@ -9,7 +9,7 @@ import {
 
 import { QuaiPayContactBottomSheet } from './QuaiPayContactBottomSheet/QuaiPayContactBottomSheet';
 
-const SendScanScreen: React.FC = () => {
+export const SendScanScreen: React.FC = () => {
   const { frameProcessor } = useQuaiPayCamera(ScannerType.SEND_AMOUNT);
 
   return (
@@ -19,5 +19,3 @@ const SendScanScreen: React.FC = () => {
     </QuaiPayContent>
   );
 };
-
-export default SendScanScreen;

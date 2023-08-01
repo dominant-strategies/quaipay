@@ -1,8 +1,3 @@
-import Done from 'src/shared/assets/done.svg';
-import RedExclamationBig from 'src/shared/assets/redExclamationBig.svg';
-import LoaderCircle from 'src/shared/assets/loaderCircle.svg';
-import LoaderDots from 'src/shared/assets/loaderDots.svg';
-import { QuaiPayText } from 'src/shared/components';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -13,6 +8,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+
+import Done from 'src/shared/assets/done.svg';
+import RedExclamationBig from 'src/shared/assets/redExclamationBig.svg';
+import LoaderCircle from 'src/shared/assets/loaderCircle.svg';
+import LoaderDots from 'src/shared/assets/loaderDots.svg';
+import { QuaiPayText } from 'src/shared/components';
 import { styledColors } from 'src/shared/styles';
 
 export enum TxStatus {

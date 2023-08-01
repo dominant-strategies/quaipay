@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { QuaiPayBanner, QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
@@ -22,21 +21,19 @@ import {
 } from 'src/shared/services/quais';
 import { ShareControl } from 'src/main/home/components/ShareControl';
 import { Currency } from 'src/shared/types';
-import { SendStackParamList } from '../SendStack';
-import { TxStatus, TxStatusIndicator } from './TxStatusIndicator';
-import { BottomButton } from 'src/main/home/send/SendConfirmation/BottomButton';
 import { allNodeData } from 'src/shared/constants/nodeData';
 import { useSnackBar } from 'src/shared/context/snackBarContext';
 import { useZone } from 'src/shared/hooks/useZone';
 import { addContact, useContacts } from 'src/shared/hooks/useContacts';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-type SendConfirmationScreenProps = NativeStackScreenProps<
-  SendStackParamList,
-  'SendConfirmation'
->;
+import { SendStackScreenProps } from '../SendStack';
+import { BottomButton } from './components/BottomButton';
+import { TxStatus, TxStatusIndicator } from './components/TxStatusIndicator';
 
-function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
+export const SendConfirmationScreen: React.FC<
+  SendStackScreenProps<'SendConfirmation'>
+> = ({ route }) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const { sender, receiverAddress, receiverPFP, receiverUsername, tip } =
@@ -218,7 +215,7 @@ function SendConfirmationScreen({ route }: SendConfirmationScreenProps) {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   unit: {
@@ -292,5 +289,3 @@ const styles = StyleSheet.create({
     maxHeight: 50,
   },
 });
-
-export default SendConfirmationScreen;

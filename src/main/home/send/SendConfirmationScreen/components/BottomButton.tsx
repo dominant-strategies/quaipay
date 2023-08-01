@@ -1,10 +1,12 @@
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { QuaiPayText } from 'src/shared/components';
 import { buttonStyle, styledColors } from 'src/shared/styles';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { TxStatus } from 'src/main/home/send/SendConfirmation/TxStatusIndicator';
+
+import { TxStatus } from '../components/TxStatusIndicator';
 
 type BottomButtonProps = {
   txStatus: TxStatus;

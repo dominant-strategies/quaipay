@@ -16,7 +16,7 @@ import { SendScanScreen } from './SendScanScreen/SendScanScreen';
 import { SendAmountScreen } from './SendAmountScreen/SendAmountScreen';
 import { SendOverviewScreen } from './SendOverviewScreen/SendOverviewScreen';
 import SendTipScreen from './SendTip';
-import SendConfirmationScreen from './SendConfirmation';
+import { SendConfirmationScreen } from './SendConfirmationScreen/SendConfirmationScreen';
 import Left from 'src/shared/assets/leftChevron.svg';
 
 export type SendStackParamList = {

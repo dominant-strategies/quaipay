@@ -23,16 +23,10 @@
     "label": "Senden",
     "amount": "Betrag",
     "address": "Adresse",
-    "includedTip": "Trinkgeld einbezogen",
     "tipPlaceholder": "Trinkgeld",
-    "pay": "Bezahlen",
-    "sending": "Senden",
-    "gasFee": "Gasgebühr",
     "totalCost": "Gesamtkosten",
     "alreadySavedToContacts": "Empfänger bereits zu Kontakten hinzugefügt",
     "complete": "Fertig",
-    "noInternet": "Keine Internetverbindung",
-    "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!",
     "SendScanScreen": {
       "QuaiPayContactBottomSheet": {
         "error": {
@@ -61,6 +55,10 @@
         "message": "$(common.success)",
         "moreInfo": "Empfänger zu Kontakten hinzugefügt"
       },
+      "noInternetSnackBar": {
+        "message": "Keine Internetverbindung",
+        "moreInfo": "Bitte überprüfen Sie Ihre Internetverbindung!"
+      },
       "txStatusIndicator": {
         "paymentConfirmed": "Zahlung bestätigt",
         "paymentFailed": "Zahlung fehlgeschlagen.",
@@ -82,6 +80,20 @@
       "noTip": "Kein Tip",
       "includeTip": "Trinkgeld einbeziehen?",
       "customTip": "Benutzerdefiniertes Trinkgeld"
+    },
+    "SendOverviewScreen": {
+      "title": "$(home.send.label)",
+      "to": "$(common.to) {{ receiver }}",
+      "learnMore": "$(common.learnMore)",
+      "sending": "Senden",
+      "includedTip": "Trinkgeld einbezogen",
+      "gasFee": "Gasgebühr",
+      "totalCost": "Total Cost",
+      "pay": "Bezahlen ${{ amount }}",
+      "noFundsBanner": {
+        "title": "Unzureichende Mittel.",
+        "description": "Du brauchst mehr QUAI."
+      }
     }
   }
 }

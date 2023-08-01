@@ -97,8 +97,8 @@ export const SendConfirmationScreen: React.FC<
       subscribeToTransaction();
     } else {
       showSnackBar({
-        message: t('home.send.noInternet'),
-        moreInfo: t('home.send.noInternetMessage') as string,
+        message: t('noInternetSnackBar.message'),
+        moreInfo: t('noInternetSnackBar.moreInfo') as string,
         type: 'error',
       });
     }

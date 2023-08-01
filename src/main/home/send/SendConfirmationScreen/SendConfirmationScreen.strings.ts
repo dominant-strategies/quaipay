@@ -7,6 +7,10 @@ export const SendConfirmationScreenStrings = {
     message: '$(common.success)',
     moreInfo: 'Saved to Contacts',
   },
+  noInternetSnackBar: {
+    message: 'No Internet Connection',
+    moreInfo: 'Please check your internet connection',
+  },
   txStatusIndicator: {
     paymentConfirmed: 'Payment Confirmed!',
     paymentFailed: 'Transaction Failed.',

@@ -33,7 +33,9 @@ import { SendStackScreenProps } from '../SendStack';
 export const SendOverviewScreen: React.FC<
   SendStackScreenProps<'SendOverview'>
 > = ({ route, navigation }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.send.SendOverviewScreen',
+  });
   const isDarkMode = useColorScheme() === 'dark';
   const {
     receiverAddress,
@@ -85,14 +87,14 @@ export const SendOverviewScreen: React.FC<
   }
 
   return (
-    <QuaiPayContent hasBackgroundVariant title={t('home.send.label')}>
+    <QuaiPayContent hasBackgroundVariant title={t('title')}>
       <View style={styles.mainContainer}>
         <View style={styles.bannerWrapper}>
           <View style={styles.banner}>
             <QuaiPayBanner
-              boldText="Insufficient Funds."
+              boldText={t('noFundsBanner.title')}
               showError={showError}
-              text="You need more QUAI."
+              text={t('noFundsBanner.description')}
             />
           </View>
         </View>
@@ -157,7 +159,7 @@ export const SendOverviewScreen: React.FC<
             <Image style={styles.image} source={{ uri: receiverPFP }} />
             <View style={styles.receiver}>
               <QuaiPayText style={styles.username} type="paragraph">
-                {t('common:to')} {receiverUsername}
+                {t('to', { receiver: receiverUsername })}
               </QuaiPayText>
               <QuaiPayText themeColor="secondary" style={styles.wallet}>
                 {abbreviateAddress(receiverAddress)}
@@ -176,9 +178,7 @@ export const SendOverviewScreen: React.FC<
             <View style={styles.detailsContainer}>
               <View style={styles.details}>
                 <View style={styles.detailLabel}>
-                  <QuaiPayText type="paragraph">
-                    {t('home.send.sending')}
-                  </QuaiPayText>
+                  <QuaiPayText type="paragraph">{t('sending')}</QuaiPayText>
                 </View>
                 <View>
                   <Text style={styles.unit}>
@@ -199,7 +199,7 @@ export const SendOverviewScreen: React.FC<
                 <View style={styles.details}>
                   <View style={styles.detailLabel}>
                     <QuaiPayText type="paragraph">
-                      {t('home.send.includedTip')}
+                      {t('includedTip')}
                     </QuaiPayText>
                   </View>
                   <View>
@@ -218,9 +218,7 @@ export const SendOverviewScreen: React.FC<
               ) : null}
               <View style={styles.details}>
                 <View style={styles.detailLabel}>
-                  <QuaiPayText type="paragraph">
-                    {t('home.send.gasFee')}
-                  </QuaiPayText>
+                  <QuaiPayText type="paragraph">{t('gasFee')}</QuaiPayText>
                 </View>
                 <View>
                   <Text style={styles.unit}>
@@ -250,9 +248,7 @@ export const SendOverviewScreen: React.FC<
             />
             <View style={styles.total}>
               <View style={styles.detailLabel}>
-                <QuaiPayText type="paragraph">
-                  {t('home.send.totalCost')}
-                </QuaiPayText>
+                <QuaiPayText type="paragraph">{t('totalCost')}</QuaiPayText>
               </View>
               <View>
                 <Text style={styles.unit}>
@@ -271,7 +267,7 @@ export const SendOverviewScreen: React.FC<
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText style={styles.learnMoreText}>
-            {t('common.learnMore')}
+            {t('learnMore')}
           </QuaiPayText>
         </TouchableOpacity>
         <TouchableOpacity
@@ -288,9 +284,9 @@ export const SendOverviewScreen: React.FC<
                 color: styledColors.white,
               }}
             >
-              {`${t('home.send.pay')} $(${(
-                Number(amountInUSD) + Number(tipInUSD)
-              ).toFixed(2)})`}
+              {`${t('pay', {
+                amount: (Number(amountInUSD) + Number(tipInUSD)).toFixed(2),
+              })}`}
             </QuaiPayText>
           )}
         </TouchableOpacity>

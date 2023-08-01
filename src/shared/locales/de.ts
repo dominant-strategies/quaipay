@@ -1,6 +1,6 @@
 import common_de from './de/common.json';
 import error_de from './de/errors.json';
-import home_de from './de/home.json';
+import { homeDe as home } from './de/home';
 import onboarding_de from './de/onboarding.json';
 import export_de from './de/export.json';
 import wallet_de from './de/wallet.json';
@@ -10,7 +10,7 @@ export const de = {
   translation: {
     common: common_de,
     error: error_de,
-    home: home_de,
+    home,
     onboarding: onboarding_de,
     export: export_de,
     wallet: wallet_de,

@@ -48,7 +48,9 @@ const EXPAND_DIFF = 475;
 export const QuaiPayContactBottomSheet: React.FC = () => {
   const sender = useUsername();
   const { isDarkMode } = useTheme();
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.send.SendScanScreen.QuaiPayContactBottomSheet',
+  });
   const styles = useThemedStyle(themedStyle);
 
   // ===== Search =====
@@ -173,8 +175,8 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
       });
     } else {
       showSnackBar({
-        message: t('home.send.invalidAddress'),
-        moreInfo: t('home.send.invalidAddressDescription') as string,
+        message: t('error.invalidAddress.message'),
+        moreInfo: t('error.invalidAddress.moreInfo') as string,
         type: 'error',
       });
     }
@@ -233,7 +235,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
                     />
                   </View>
                 </View>
-                <QuaiPayText>{t('home.send.viewAll')}</QuaiPayText>
+                <QuaiPayText>{t('viewAll')}</QuaiPayText>
               </TouchableOpacity>
             </Animated.View>
           )}
@@ -244,7 +246,7 @@ export const QuaiPayContactBottomSheet: React.FC = () => {
             <QuaiPaySearchbar
               searchValue={searchText}
               onSearchChange={setSearchText}
-              placeholder={t('home.send.searchByAddress')}
+              placeholder={t('searchByAddress')}
               onPress={expandBottomSheet}
               onPressRightIcon={navigateToAmount}
             />

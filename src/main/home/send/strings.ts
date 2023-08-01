@@ -1,9 +1,10 @@
+import { SendScanScreenStrings } from './SendScan/SendScanScreen.strings';
+
 export const send = {
   label: 'Send',
   amount: 'Amount',
   address: 'Address',
   yourBalance: 'Your balance: ',
-  searchByAddress: 'Search by contact or paste address',
   tip: 'Tip',
   noTip: 'No tip',
   includeTip: 'Include a Tip?',
@@ -25,9 +26,7 @@ export const send = {
   complete: 'Complete',
   somethingWrong: 'Something went wrong.',
   retryTransaction: 'Please retry the transaction.',
-  viewAll: 'View All',
   noInternet: 'No Internet Connection',
   noInternetMessage: 'Please check your internet connection',
-  invalidAddress: 'Invalid Address',
-  invalidAddressDescription: 'Please enter a valid address to proceed',
+  SendScanScreen: SendScanScreenStrings,
 };

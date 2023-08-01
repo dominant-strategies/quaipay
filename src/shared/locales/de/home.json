@@ -24,7 +24,6 @@
     "amount": "Betrag",
     "address": "Adresse",
     "yourBalance": "Ihr Guthaben: ",
-    "searchByAddress": "Nach Adresse suchen",
     "tip": "Tip",
     "noTip": "Kein Tip",
     "includeTip": "Trinkgeld einbeziehen?",
@@ -46,10 +45,19 @@
     "complete": "Fertig",
     "somethingWrong": "Etwas ist schief gelaufen.",
     "retryTransaction": "Bitte noch einmal versuchen.",
-    "viewAll": "Alle anzeigen",
     "noInternet": "Keine Internetverbindung",
     "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!",
-    "invalidAddress": "Ungültige Adresse",
-    "invalidAddressDescription": "Bitte gültige Addresse eingeben um fortzufahren."
+    "SendScanScreen": {
+      "QuaiPayContactBottomSheet": {
+        "error": {
+          "invalidAddress": {
+            "message": "Ungültige Adresse",
+            "moreInfo": "Bitte gültige Addresse eingeben um fortzufahren."
+          }
+        },
+        "viewAll": "Alle anzeigen",
+        "searchByAddress": "Nach Adresse suchen"
+      }
+    }
   }
 }

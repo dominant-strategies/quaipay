@@ -18,18 +18,19 @@ import { useTranslation } from 'react-i18next';
 import { quais } from 'quais';
 
 import DownChevron from 'src/shared/assets/downChevron.svg';
-
-import { RootNavigator } from '../../navigation/utils';
-import { styledColors } from '../../styles';
-import { Contact, Theme } from '../../types';
-import { useThemedStyle, useUsername } from '../../hooks';
-import { useTheme } from '../../context/themeContext';
+import { RootNavigator } from 'src/shared/navigation/utils';
+import { styledColors } from 'src/shared/styles';
+import { Contact, Theme } from 'src/shared/types';
+import { useThemedStyle, useUsername } from 'src/shared/hooks';
+import {
+  QuaiPayListItem,
+  QuaiPaySearchbar,
+  QuaiPayText,
+} from 'src/shared/components';
+import { useTheme } from 'src/shared/context/themeContext';
+import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 import { useFilteredContacts } from './QuaiPayContactBottomSheet.hooks';
-import { QuaiPayListItem } from '../QuaiPayListItem';
-import { QuaiPaySearchbar } from '../QuaiPaySearchbar';
-import { QuaiPayText } from '../QuaiPayText';
-import { useSnackBar } from 'src/shared/context/snackBarContext';
 
 enum BottomSheetIndex {
   INIT = 0, // After init, it's removed to avoid swiping it to the bottom

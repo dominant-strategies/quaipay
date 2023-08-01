@@ -3,10 +3,11 @@ import React from 'react';
 import {
   useQuaiPayCamera,
   QuaiPayCamera,
-  QuaiPayContactBottomSheet,
   QuaiPayContent,
   ScannerType,
 } from 'src/shared/components';
+
+import { QuaiPayContactBottomSheet } from './QuaiPayContactBottomSheet/QuaiPayContactBottomSheet';
 
 const SendScanScreen: React.FC = () => {
   const { frameProcessor } = useQuaiPayCamera(ScannerType.SEND_AMOUNT);

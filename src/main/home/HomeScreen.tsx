@@ -12,7 +12,7 @@ import { useThemedStyle } from 'src/shared/hooks/useThemedStyle';
 import { styledColors, typography } from 'src/shared/styles';
 
 import { ReceiveScreen } from './receive/ReceiveScreen/ReceiveScreen';
-import { SendScanScreen } from './send/SendScan/SendScanScreen';
+import { SendScanScreen } from './send/SendScanScreen/SendScanScreen';
 import { MainTabStackScreenProps } from '../MainStack';
 
 const TopBar = createMaterialTopTabNavigator();

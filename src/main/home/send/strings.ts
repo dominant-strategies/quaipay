@@ -1,4 +1,4 @@
-import { SendScanScreenStrings } from './SendScan/SendScanScreen.strings';
+import { SendScanScreenStrings } from './SendScanScreen/SendScanScreen.strings';
 
 export const send = {
   label: 'Send',

@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styledColors } from 'src/shared/styles';
 import { Currency, Transaction } from 'src/shared/types';
 
-import { SendScanScreen } from './SendScan/SendScanScreen';
+import { SendScanScreen } from './SendScanScreen/SendScanScreen';
 import SendAmountScreen from './SendAmount';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';

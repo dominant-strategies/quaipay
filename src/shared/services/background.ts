@@ -8,6 +8,7 @@ import { getAccountTransactions, Transaction } from './blockscout';
 import { useWalletContext } from '../context/walletContext';
 import { Zone } from '../types';
 
+// TODO: remove this hook and use walletContext instead
 export const useTransaction = () => {
   const getTransaction = async (): Promise<Transaction | undefined> => {
     try {

@@ -387,6 +387,8 @@ PODS:
   - React-jsinspector (0.71.7)
   - React-logger (0.71.7):
     - glog
+  - react-native-background-timer (2.4.1):
+    - React-Core
   - react-native-netinfo (9.3.10):
     - React-Core
   - react-native-pager-view (6.2.0):
@@ -488,6 +490,8 @@ PODS:
     - React-jsi (= 0.71.7)
     - React-logger (= 0.71.7)
     - React-perflogger (= 0.71.7)
+  - RNBackgroundFetch (4.1.10):
+    - React-Core
   - RNCAsyncStorage (1.18.2):
     - React-Core
   - RNCClipboard (1.11.2):
@@ -503,6 +507,11 @@ PODS:
   - RNKeychain (8.1.1):
     - React-Core
   - RNLocalize (3.0.1):
+    - React-Core
+  - RNNotifee (7.8.0):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 7.8.0)
+  - RNNotifee/NotifeeCore (7.8.0):
     - React-Core
   - RNPermissions (3.8.1):
     - React-Core
@@ -601,6 +610,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
@@ -619,6 +629,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -627,6 +638,7 @@ DEPENDENCIES:
   - RNHoleView (from `../node_modules/react-native-hole-view`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -711,6 +723,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-background-timer:
+    :path: "../node_modules/react-native-background-timer"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -747,6 +761,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -763,6 +779,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -828,6 +846,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: eaa5f71eb8f6861cf0e57f1a0f52aeb020d9e18e
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
+  react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-netinfo: ccbe1085dffd16592791d550189772e13bf479e2
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-quick-base64: 62290829c619fbabca4c41cfec75ae759d08fc1c
@@ -846,6 +865,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 08f132cad9896458776f37c112e71d60aef1c6ae
   React-runtimeexecutor: c5c89f8f543842dd864b63ded1b0bbb9c9445328
   ReactCommon: dbfbe2f7f3c5ce4ce44f43f2fd0d5950d1eb67c5
+  RNBackgroundFetch: 9fcdeee8aa00e1e1b3895ff9bbaaf10275288a87
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
@@ -854,6 +874,7 @@ SPEC CHECKSUMS:
   RNHoleView: 2a1929191141775058fc0a9fd79836edc200640a
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNLocalize: 6dd9226886fa61bf0cefc7644e3f9620770b1a31
+  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
   RNPermissions: b471c990fd2bc1c5550af807d9f4e0313ee0b081
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3

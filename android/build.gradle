@@ -20,3 +20,11 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
+
+allprojects {
+    repositories {
+        maven {
+            url("${project(':react-native-background-fetch').projectDir}/libs")
+        }        
+    }
+}

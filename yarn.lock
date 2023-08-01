@@ -1670,6 +1670,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@notifee/react-native@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-7.8.0.tgz#2990883753990f3585aa0cb5becc5cbdbcd87a43"
+  integrity sha512-sx8h62U4FrR4pqlbN1rkgPsdamDt9Tad0zgfO6VtP6rNJq/78k8nxUnh0xIX3WPDcCV8KAzdYCE7+UNvhF1CpQ==
+
 "@quais/abi@0.1.0", "@quais/abi@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@quais/abi/-/abi-0.1.0.tgz#539e04e5c5af358f10542fba61b0adf334a31ebd"
@@ -2741,6 +2746,11 @@
   version "15.7.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
+
+"@types/react-native-background-timer@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-background-timer/-/react-native-background-timer-2.0.0.tgz#c44c57f8fbca9d9d5521fdd72a8f55232b79381e"
+  integrity sha512-y5VW82dL/ESOLg+5QQHyBdsFVA4ZklENxmOyxv8o06T+3HBG2JOSuz/CIPz1vKdB7dmWDGPZNuPosdtnp+xv2A==
 
 "@types/react-native@^0.71.6":
   version "0.71.8"
@@ -7883,6 +7893,16 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-native-background-fetch@^4.1.10:
+  version "4.1.10"
+  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.1.10.tgz#12c7e85140af67fb05edb7cd9960e4f09a457797"
+  integrity sha512-Ug54vTctZuD/c06ZLk/VyvFdhw/hCVVOHYR5heyMqc6FlT/m9fVhFWyl4uH3JmPCzmWDVR3fO28CzrGpKOrusw==
+
+react-native-background-timer@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.4.1.tgz#a3bc1cafa8c1e3aeefd0611de120298b67978a0f"
+  integrity sha512-TE4Kiy7jUyv+hugxDxitzu38sW1NqjCk4uE5IgU2WevLv7sZacaBc6PZKOShNRPGirLl1NWkaG3LDEkdb9Um5g==
 
 react-native-codegen@^0.71.5:
   version "0.71.5"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import {
   NavigationContainer,
@@ -27,6 +27,8 @@ import SettingsStack, {
 import { useTheme } from '../context/themeContext';
 import { RootNavigator } from './utils';
 import { QuaiPaySnackBar } from '../components';
+import { useWalletContext } from '../context/walletContext';
+import { useBackgroundTimer } from '../services/background';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -52,6 +54,19 @@ interface NavigationProps {
 
 export const Navigation = ({ onboarded }: NavigationProps) => {
   const { isDarkMode } = useTheme();
+  const { wallet } = useWalletContext();
+  const timer = useBackgroundTimer();
+
+  useEffect(() => {
+    if (wallet) {
+      timer.startTimer();
+    }
+
+    return () => {
+      timer.stopTimer();
+    };
+  }, [wallet]);
+
   return (
     <NavigationContainer ref={RootNavigator.ref}>
       <StatusBar

@@ -18,7 +18,7 @@ import { MainTabStackScreenProps } from '../MainStack';
 const TopBar = createMaterialTopTabNavigator();
 
 const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'home.HomeScreen' });
   const { isDarkMode } = useTheme();
   const topTabBarScreenOptions = useThemedStyle(
     topTabBarScreenOptionsGenerator(isDarkMode),
@@ -44,7 +44,7 @@ const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
         name="Receive"
         component={ReceiveScreen}
         options={{
-          title: t('home.receive.label') ?? '',
+          title: t('receiveLabel') ?? '',
           lazyPlaceholder: LazyPlaceholder,
         }}
       />
@@ -52,7 +52,7 @@ const HomeScreen: React.FC<MainTabStackScreenProps<'Home'>> = () => {
         name="Send"
         component={SendScanScreen}
         options={{
-          title: t('home.send.label') ?? '',
+          title: t('sendLabel') ?? '',
           lazyPlaceholder: LazyPlaceholder,
         }}
       />

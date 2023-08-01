@@ -1,5 +1,4 @@
-import { receive } from 'src/main/home/receive/strings';
-import { send } from 'src/main/home/send/strings';
+import { home } from 'src/main/home/strings';
 
 import common_en from './en/common.json';
 import error_en from './en/errors.json';
@@ -12,10 +11,7 @@ export const en = {
   translation: {
     common: common_en,
     error: error_en,
-    home: {
-      receive,
-      send,
-    },
+    home,
     onboarding: onboarding_en,
     export: export_en,
     wallet: wallet_en,

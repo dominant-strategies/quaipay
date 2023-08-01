@@ -95,5 +95,9 @@
         "description": "Du brauchst mehr QUAI."
       }
     }
+  },
+  "HomeScreen": {
+    "receiveLabel": "$(home.receive.label)",
+    "sendLabel": "$(home.send.label)"
   }
 }

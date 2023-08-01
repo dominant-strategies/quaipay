@@ -13,7 +13,7 @@ import { styledColors } from 'src/shared/styles';
 import { Currency, Transaction } from 'src/shared/types';
 
 import { SendScanScreen } from './SendScanScreen/SendScanScreen';
-import { SendAmountScreen } from './SendAmount/SendAmountScreen';
+import { SendAmountScreen } from './SendAmountScreen/SendAmountScreen';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';

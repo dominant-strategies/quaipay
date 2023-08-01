@@ -1,5 +1,5 @@
 import { SendScanScreenStrings } from './SendScanScreen/SendScanScreen.strings';
-import { SendAmountScreenStrings } from './SendAmount/SendAmountScreen.strings';
+import { SendAmountScreenStrings } from './SendAmountScreen/SendAmountScreen.strings';
 
 export const send = {
   label: 'Send',

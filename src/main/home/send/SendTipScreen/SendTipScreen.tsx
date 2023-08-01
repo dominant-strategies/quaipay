@@ -27,7 +27,9 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
 }) => {
   const { receiverAddress, receiverUsername, input, amountInUSD } =
     route.params;
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.send.SendTipScreen',
+  });
   const quaiRate = useQuaiRate();
 
   const [selectedTip, setSelectedTip] = useState<any>(0);
@@ -53,7 +55,7 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
     if (tipPercentage === 0) {
       return {
         tipAmount: 0,
-        message: t('home.send.noTip'),
+        message: t('noTip'),
         total: Number(input.value),
       };
     }
@@ -63,10 +65,8 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
         customTip: tipInput,
         message:
           input.unit === Currency.USD
-            ? `$${parseFloat(tipInput.value).toFixed(2)} ${t('home.send.tip')}`
-            : `${parseFloat(tipInput.value)} ${input.unit} ${t(
-                'home.send.tip',
-              )}`,
+            ? `$${parseFloat(tipInput.value).toFixed(2)} ${t('tip')}`
+            : `${parseFloat(tipInput.value)} ${input.unit} ${t('tip')}`,
         total:
           input.unit === Currency.USD
             ? (Number(input.value) + parseFloat(tipInput.value)).toFixed(2)
@@ -78,9 +78,9 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
         tipAmount,
         message:
           input.unit === Currency.USD
-            ? `$${Number(tipAmount).toFixed(2)} ${t('home.send.tip')}`
+            ? `$${Number(tipAmount).toFixed(2)} ${t('tip')}`
             : `${parseFloat(Number(tipAmount).toFixed(6))} ${input.unit} ${t(
-                'home.send.tip',
+                'tip',
               )}`,
         total:
           input.unit === Currency.USD
@@ -122,7 +122,7 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
 
   const handleCustomTip = () => {
     if (selectedTip === 'custom') {
-      return `${Number(tipInput.value)} ${input.unit} ${t('home.send.tip')}`;
+      return `${Number(tipInput.value)} ${input.unit} ${t('tip')}`;
     } else {
       return calculateTipAmount(Number(input.value), Number(selectedTip))
         .message;
@@ -149,15 +149,13 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
         <View style={styles.mainContainer}>
           <View style={styles.container}>
             <QuaiPayText style={styles.username}>
-              {t('common:to')} {receiverUsername}
+              {t('to')} {receiverUsername}
             </QuaiPayText>
             <QuaiPayText themeColor="secondary">
               {abbreviateAddress(receiverAddress)}
             </QuaiPayText>
           </View>
-          <QuaiPayText style={styles.tipText}>
-            {t('home.send.includeTip')}
-          </QuaiPayText>
+          <QuaiPayText style={styles.tipText}>{t('includeTip')}</QuaiPayText>
           <View style={styles.amountContainer}>
             <View style={styles.balanceContainer}>
               <QuaiPayText type="H1">
@@ -179,7 +177,7 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
             <TipButton
               isButtonSelected={isButtonSelected(0)}
               handleTipPress={() => handleTipPress(0)}
-              buttonText={t('home.send.noTip')}
+              buttonText={t('noTip')}
             />
             <TipButton
               isButtonSelected={isButtonSelected(10)}
@@ -212,7 +210,7 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
             <TipButton
               isButtonSelected={isButtonSelected('custom')}
               handleTipPress={() => handleTipPress('custom')}
-              buttonText={t('home.send.customTip')}
+              buttonText={t('customTip')}
             />
           </View>
           <TouchableOpacity
@@ -230,7 +228,7 @@ const SendTipScreen: React.FC<SendStackScreenProps<'SendTip'>> = ({
                 color: styledColors.white,
               }}
             >
-              {t('common.continue')}
+              {t('continue')}
             </QuaiPayText>
           </TouchableOpacity>
           <View style={styles.keyboardContainer}>

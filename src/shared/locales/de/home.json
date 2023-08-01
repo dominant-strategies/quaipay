@@ -23,11 +23,7 @@
     "label": "Senden",
     "amount": "Betrag",
     "address": "Adresse",
-    "tip": "Tip",
-    "noTip": "Kein Tip",
-    "includeTip": "Trinkgeld einbeziehen?",
     "includedTip": "Trinkgeld einbezogen",
-    "customTip": "Benutzerdefiniertes Trinkgeld",
     "tipPlaceholder": "Trinkgeld",
     "pay": "Bezahlen",
     "sending": "Senden",
@@ -78,6 +74,14 @@
         "somethingWrong": "Etwas ist schief gelaufen.",
         "retryTransaction": "Bitte noch einmal versuchen."
       }
+    },
+    "SendTipScreen": {
+      "to": "$(common.to)",
+      "continue": "$(common.continue)",
+      "tip": "Tip",
+      "noTip": "Kein Tip",
+      "includeTip": "Trinkgeld einbeziehen?",
+      "customTip": "Benutzerdefiniertes Trinkgeld"
     }
   }
 }

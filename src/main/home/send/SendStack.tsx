@@ -2,14 +2,18 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, useColorScheme } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+  StackScreenProps,
+} from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { styledColors } from 'src/shared/styles';
 import { Currency, Transaction } from 'src/shared/types';
 
 import { SendScanScreen } from './SendScanScreen/SendScanScreen';
-import SendAmountScreen from './SendAmount';
+import { SendAmountScreen } from './SendAmount/SendAmountScreen';
 import SendTipScreen from './SendTip';
 import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
@@ -77,7 +81,13 @@ export type SendStackParamList = {
   };
 };
 
-const Stack = createNativeStackNavigator<SendStackParamList>();
+export type SendStackScreenProps<Route extends keyof SendStackParamList> =
+  StackScreenProps<SendStackParamList, Route>;
+
+export type SendStackNavigationProps<Route extends keyof SendStackParamList> =
+  StackNavigationProp<SendStackParamList, Route>;
+
+const Stack = createStackNavigator<SendStackParamList>();
 const SendStack = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();

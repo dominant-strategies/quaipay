@@ -9,7 +9,6 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -29,14 +28,12 @@ import { fontStyle, styledColors } from 'src/shared/styles';
 import { useZone } from 'src/shared/hooks/useZone';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-import { SendStackParamList } from '../SendStack';
+import { SendStackScreenProps } from '../SendStack';
 
-type SendAmountScreenProps = NativeStackScreenProps<
-  SendStackParamList,
-  'SendAmount'
->;
-
-const SendAmountScreen = ({ route, navigation }: SendAmountScreenProps) => {
+export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
+  route,
+  navigation,
+}) => {
   const { amount, receiverAddress, receiverUsername, receiverPFP, sender } =
     route.params;
   const { t } = useTranslation();
@@ -301,5 +298,3 @@ const styles = StyleSheet.create({
     ...fontStyle.fontSmallText,
   },
 });
-
-export default SendAmountScreen;

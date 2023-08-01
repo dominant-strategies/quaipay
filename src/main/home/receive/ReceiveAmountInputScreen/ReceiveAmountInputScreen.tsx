@@ -41,7 +41,7 @@ export const ReceiveAmountInputScreen: React.FC<
   );
 
   const goToGeneratedQR = () =>
-    navigation.navigate('ReceiveQR', {
+    navigation.navigate('ReceiveAmount', {
       amount: Number(input.unit === Currency.USD ? input.value : eqInput.value),
     });
 

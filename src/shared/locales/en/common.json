@@ -10,5 +10,6 @@
   "success": "Success",
   "loading": "Loading",
   "copiedToClipboard": "Copied to clipboard!",
-  "shareYourAddress": "Share your QuaiPay address"
+  "shareYourAddress": "Share your QuaiPay address",
+  "complete": "Complete"
 }

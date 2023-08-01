@@ -29,11 +29,13 @@ import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 const isWindowSmallerThanScreen =
   Dimensions.get('window').height < Dimensions.get('screen').height;
 
-export const ReceiveQRScreen: React.FC<
-  ReceiveStackScreenProps<'ReceiveQR'>
+export const ReceiveAmountScreen: React.FC<
+  ReceiveStackScreenProps<'ReceiveAmount'>
 > = ({ route }) => {
   const { amount } = route.params;
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.receive.ReceiveAmountScreen',
+  });
   const username = useUsername();
   const wallet = useWallet();
   const quaiRate = useQuaiRate();
@@ -44,15 +46,16 @@ export const ReceiveQRScreen: React.FC<
   );
   const share = () => {
     Share.share({
-      title: t('receive.shareYourAddress') ?? '', // TODO: update string indexing
+      title: t('shareYourAddress') ?? '',
       message: wallet?.address ?? '',
     });
   };
+  // TODO: implement go to quai pay info
   const goToQuaiPayInfo = () => console.log('Go to QuaiPay Info');
   const styles = useThemedStyle(themedStyle);
 
   return (
-    <QuaiPayContent hasBackgroundVariant title={t('common.request')}>
+    <QuaiPayContent hasBackgroundVariant title={t('request')}>
       <ScrollView
         alwaysBounceVertical={isWindowSmallerThanScreen}
         showsVerticalScrollIndicator={false}
@@ -103,7 +106,7 @@ export const ReceiveQRScreen: React.FC<
           <QuaiPayButton
             onPress={share}
             style={styles.shareButton}
-            title={t('common.share')}
+            title={t('share')}
             RightIcon={<UploadIcon color={styledColors.white} />}
           />
           <QuaiPayButton
@@ -118,7 +121,7 @@ export const ReceiveQRScreen: React.FC<
         </View>
         <QuaiPayButton
           type="secondary"
-          title={t('receive.qrScreen.complete')}
+          title={t('complete')}
           style={styles.completeButton}
           onPress={RootNavigator.goHome}
         />

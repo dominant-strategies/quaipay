@@ -6,11 +6,11 @@ import {
 } from '@react-navigation/stack';
 
 import { ReceiveAmountInputScreen } from './ReceiveAmountInputScreen/ReceiveAmountInputScreen';
-import { ReceiveQRScreen } from 'src/main/home/receive/ReceiveAmountScreen';
+import { ReceiveAmountScreen } from 'src/main/home/receive/ReceiveAmountScreen/ReceiveAmountScreen';
 
 export type ReceiveStackParamList = {
   ReceiveAmountInput: undefined;
-  ReceiveQR: {
+  ReceiveAmount: {
     amount: number;
   };
 };
@@ -31,7 +31,7 @@ const ReceiveStack = () => {
         name="ReceiveAmountInput"
         component={ReceiveAmountInputScreen}
       />
-      <Stack.Screen name="ReceiveQR" component={ReceiveQRScreen} />
+      <Stack.Screen name="ReceiveAmount" component={ReceiveAmountScreen} />
     </Stack.Navigator>
   );
 };

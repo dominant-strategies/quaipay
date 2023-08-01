@@ -1,9 +1,6 @@
 {
   "receive": {
     "label": "Erhalten",
-    "amount": "Betrag",
-    "address": "Adresse",
-    "quaipayAddress": "QuaiPay Adresse",
     "request": "Anfrage",
     "ReceiveScreen": {
       "loading": "$t(common.loading)...",

@@ -129,6 +129,12 @@ export const SendConfirmationScreen: React.FC<
     });
   };
 
+  const txStatusIndicatorTitle: Record<TxStatus, string> = {
+    [TxStatus.failed]: t('home.send.paymentFailed'),
+    [TxStatus.pending]: t('home.send.paymentPending'),
+    [TxStatus.success]: t('home.send.paymentConfirmed'),
+  };
+
   const bottomButtonTitle: Record<TxStatus, string> = {
     [TxStatus.failed]: t('home.send.retry'),
     [TxStatus.pending]: t('home.send.complete'),
@@ -160,7 +166,10 @@ export const SendConfirmationScreen: React.FC<
             },
           ]}
         >
-          <TxStatusIndicator txStatus={txStatus} />
+          <TxStatusIndicator
+            txStatus={txStatus}
+            title={txStatusIndicatorTitle[txStatus]}
+          />
           <QuaiPayText style={styles.unit}>
             {eqInput.value} {eqInput.unit}
           </QuaiPayText>

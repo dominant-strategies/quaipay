@@ -7,14 +7,12 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { useTranslation } from 'react-i18next';
 
 import Done from 'src/shared/assets/done.svg';
 import RedExclamationBig from 'src/shared/assets/redExclamationBig.svg';
 import LoaderCircle from 'src/shared/assets/loaderCircle.svg';
 import LoaderDots from 'src/shared/assets/loaderDots.svg';
 import { QuaiPayText } from 'src/shared/components';
-import { styledColors } from 'src/shared/styles';
 
 export enum TxStatus {
   pending = 'pending',
@@ -24,13 +22,16 @@ export enum TxStatus {
 
 type TxStatusIndicatorProps = {
   txStatus: TxStatus;
+  title: string;
 };
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
-  const { t } = useTranslation();
-
+// TODO: refactor to improve implementation by defining it as a logo + text layout
+export const TxStatusIndicator = ({
+  txStatus,
+  title,
+}: TxStatusIndicatorProps) => {
   const rotation = useSharedValue(0);
   useEffect(() => {
     rotation.value = withRepeat(
@@ -53,7 +54,7 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
         <View style={styles.wrapper}>
           <Done />
           <QuaiPayText type="H1" style={styles.text}>
-            {t('home.send.paymentConfirmed')}
+            {title}
           </QuaiPayText>
         </View>
       );
@@ -62,7 +63,7 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
         <View style={styles.wrapper}>
           <RedExclamationBig />
           <QuaiPayText type="H1" style={styles.text}>
-            {t('home.send.paymentFailed')}
+            {title}
           </QuaiPayText>
         </View>
       );
@@ -77,11 +78,8 @@ export const TxStatusIndicator = ({ txStatus }: TxStatusIndicatorProps) => {
               <LoaderDots />
             </View>
           </View>
-          <QuaiPayText
-            type="H1"
-            style={[styles.text, { color: styledColors.gray }]}
-          >
-            {t('home.send.paymentPending')}
+          <QuaiPayText type="H1" themeColor="secondary" style={styles.text}>
+            {title}
           </QuaiPayText>
         </View>
       );

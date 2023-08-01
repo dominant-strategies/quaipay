@@ -29,21 +29,12 @@
     "includedTip": "Trinkgeld einbezogen",
     "customTip": "Benutzerdefiniertes Trinkgeld",
     "tipPlaceholder": "Trinkgeld",
-    "viewOnExplorer": "Transaktion auf QuaiSnap.com anzeigen",
     "pay": "Bezahlen",
     "sending": "Senden",
     "gasFee": "Gasgebühr",
     "totalCost": "Gesamtkosten",
-    "paymentConfirmed": "Zahlung bestätigt",
-    "paymentFailed": "Zahlung fehlgeschlagen.",
-    "paymentPending": "Zahlung ausstehend...",
-    "retry": "Wiederholen",
-    "saveToContacts": "Empfänger zu Kontakten hinzufügen",
-    "savedToContacts": "Empfänger zu Kontakten hinzugefügt",
     "alreadySavedToContacts": "Empfänger bereits zu Kontakten hinzugefügt",
     "complete": "Fertig",
-    "somethingWrong": "Etwas ist schief gelaufen.",
-    "retryTransaction": "Bitte noch einmal versuchen.",
     "noInternet": "Keine Internetverbindung",
     "noInternetMessage": "Bitte überprüfen Sie Ihre Internetverbindung!",
     "SendScanScreen": {
@@ -64,6 +55,29 @@
       "yourBalance": "Ihr Guthaben: {{ balance }} {{ unit }}",
       "includeTip": "$(home.send.includeTip)",
       "continue": "$(common.continue)"
+    },
+    "SendConfirmationScreen": {
+      "from": "$(common.from)",
+      "sentTo": "Gesendet an",
+      "saveToContacts": "Empfänger zu Kontakten hinzufügen",
+      "viewOnExplorer": "Transaktion auf QuaiSnap.com anzeigen",
+      "savedContactsSnackBar": {
+        "message": "$(common.success)",
+        "moreInfo": "Empfänger zu Kontakten hinzugefügt"
+      },
+      "txStatusIndicator": {
+        "paymentConfirmed": "Zahlung bestätigt",
+        "paymentFailed": "Zahlung fehlgeschlagen.",
+        "paymentPending": "Zahlung ausstehend..."
+      },
+      "bottomButton": {
+        "retry": "Wiederholen",
+        "complete": "$(common.complete)"
+      },
+      "banner": {
+        "somethingWrong": "Etwas ist schief gelaufen.",
+        "retryTransaction": "Bitte noch einmal versuchen."
+      }
     }
   }
 }

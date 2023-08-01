@@ -1,5 +1,6 @@
 import { SendScanScreenStrings } from './SendScanScreen/SendScanScreen.strings';
 import { SendAmountScreenStrings } from './SendAmountScreen/SendAmountScreen.strings';
+import { SendConfirmationScreenStrings } from './SendConfirmationScreen/SendConfirmationScreen.strings';
 
 export const send = {
   label: 'Send',
@@ -11,23 +12,15 @@ export const send = {
   includedTip: 'Included Tip',
   customTip: 'Custom tip',
   tipPlaceholder: 'Enter a tip amount',
-  viewOnExplorer: 'View Transaction on QuaiSnap.com',
   pay: 'Pay',
   sending: 'Sending',
   gasFee: 'Gas Fee',
   totalCost: 'Total Cost',
-  paymentConfirmed: 'Payment Confirmed!',
-  paymentFailed: 'Transaction Failed.',
-  paymentPending: 'Transaction Pending...',
-  retry: 'Retry',
-  saveToContacts: 'Save Recipient to Contacts',
-  savedToContacts: 'Saved to Contacts',
   alreadySavedToContacts: 'Already Saved to Contacts',
   complete: 'Complete',
-  somethingWrong: 'Something went wrong.',
-  retryTransaction: 'Please retry the transaction.',
   noInternet: 'No Internet Connection',
   noInternetMessage: 'Please check your internet connection',
   SendScanScreen: SendScanScreenStrings,
   SendAmountScreen: SendAmountScreenStrings,
+  SendConfirmationScreen: SendConfirmationScreenStrings,
 };

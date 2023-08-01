@@ -34,7 +34,9 @@ import { TxStatus, TxStatusIndicator } from './components/TxStatusIndicator';
 export const SendConfirmationScreen: React.FC<
   SendStackScreenProps<'SendConfirmation'>
 > = ({ route }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.send.SendConfirmationScreen',
+  });
   const isDarkMode = useColorScheme() === 'dark';
   const { sender, receiverAddress, receiverPFP, receiverUsername, tip } =
     route.params;
@@ -122,25 +124,26 @@ export const SendConfirmationScreen: React.FC<
     }).then(() => {
       setContactSaved(true);
       showSnackBar({
-        message: t('common.success'),
-        moreInfo: t('home.send.savedToContacts') || '',
+        message: t('savedContactsSnackBar.message'),
+        moreInfo: t('savedContactsSnackBar.moreInfo') || '',
         type: 'success',
       });
     });
   };
 
   const txStatusIndicatorTitle: Record<TxStatus, string> = {
-    [TxStatus.failed]: t('home.send.paymentFailed'),
-    [TxStatus.pending]: t('home.send.paymentPending'),
-    [TxStatus.success]: t('home.send.paymentConfirmed'),
+    [TxStatus.failed]: t('txStatusIndicator.paymentFailed'),
+    [TxStatus.pending]: t('txStatusIndicator.paymentPending'),
+    [TxStatus.success]: t('txStatusIndicator.paymentConfirmed'),
   };
 
   const bottomButtonTitle: Record<TxStatus, string> = {
-    [TxStatus.failed]: t('home.send.retry'),
-    [TxStatus.pending]: t('home.send.complete'),
-    [TxStatus.success]: t('home.send.complete'),
+    [TxStatus.failed]: t('bottomButton.retry'),
+    [TxStatus.pending]: t('bottomButton.complete'),
+    [TxStatus.success]: t('bottomButton.complete'),
   };
 
+  // TODO: use quai pay container here
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -149,9 +152,9 @@ export const SendConfirmationScreen: React.FC<
       />
       <View style={styles.container}>
         <QuaiPayBanner
-          boldText={t('home.send.somethingWrong')}
+          boldText={t('banner.somethingWrong')}
           showError={showError}
-          text={t('home.send.retryTransaction')}
+          text={t('banner.retryTransaction')}
         />
         <ScrollView
           contentContainerStyle={[
@@ -177,7 +180,7 @@ export const SendConfirmationScreen: React.FC<
             {input.value} {input.unit}
           </QuaiPayText>
           <QuaiPayText style={styles.ends} type="bold">
-            {t('common.from')}
+            {t('from')}
           </QuaiPayText>
           <QuaiPayText type="bold" style={styles.username}>
             {sender}
@@ -190,7 +193,7 @@ export const SendConfirmationScreen: React.FC<
             {abbreviateAddress(wallet?.address)}
           </QuaiPayText>
           <QuaiPayText style={styles.ends} type="bold">
-            {t('common.sentTo')}
+            {t('sentTo')}
           </QuaiPayText>
           <QuaiPayText style={styles.username} type="bold">
             {receiverUsername}
@@ -212,9 +215,7 @@ export const SendConfirmationScreen: React.FC<
               disabled={contactSaved}
               onPress={saveToContacts}
             >
-              <QuaiPayText type="H3">
-                {t('home.send.saveToContacts')}
-              </QuaiPayText>
+              <QuaiPayText type="H3">{t('saveToContacts')}</QuaiPayText>
             </TouchableOpacity>
           ) : null}
           <BottomButton
@@ -227,7 +228,7 @@ export const SendConfirmationScreen: React.FC<
             onPress={() => Linking.openURL(transactionUrl)}
             style={styles.quaiSnap}
           >
-            {t('home.send.viewOnExplorer')}
+            {t('viewOnExplorer')}
           </QuaiPayText>
         </TouchableOpacity>
       </View>

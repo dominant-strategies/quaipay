@@ -129,6 +129,12 @@ export const SendConfirmationScreen: React.FC<
     });
   };
 
+  const bottomButtonTitle: Record<TxStatus, string> = {
+    [TxStatus.failed]: t('home.send.retry'),
+    [TxStatus.pending]: t('home.send.complete'),
+    [TxStatus.success]: t('home.send.complete'),
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -202,7 +208,10 @@ export const SendConfirmationScreen: React.FC<
               </QuaiPayText>
             </TouchableOpacity>
           ) : null}
-          <BottomButton txStatus={txStatus} />
+          <BottomButton
+            txStatus={txStatus}
+            title={bottomButtonTitle[txStatus]}
+          />
         </ScrollView>
         <TouchableOpacity onPress={() => {}}>
           <QuaiPayText

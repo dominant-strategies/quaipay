@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
 import { RootNavigator } from 'src/shared/navigation/utils';
 import { QuaiPayText } from 'src/shared/components';
@@ -10,17 +9,17 @@ import { TxStatus } from '../components/TxStatusIndicator';
 
 type BottomButtonProps = {
   txStatus: TxStatus;
+  title: string;
 };
 
-export const BottomButton = ({ txStatus }: BottomButtonProps) => {
-  const { t } = useTranslation();
-
+// TODO: refactor to improve implementation
+export const BottomButton = ({ txStatus, title }: BottomButtonProps) => {
   switch (txStatus) {
     case TxStatus.success:
       return (
         <TouchableOpacity onPress={RootNavigator.goHome} style={styles.button}>
           <QuaiPayText style={{ color: styledColors.white }} type="H3">
-            {t('home.send.complete')}
+            {title}
           </QuaiPayText>
         </TouchableOpacity>
       );
@@ -31,7 +30,7 @@ export const BottomButton = ({ txStatus }: BottomButtonProps) => {
           style={styles.retryButton}
         >
           <QuaiPayText style={{ color: styledColors.normal }} type="H3">
-            {t('home.send.retry')}
+            {title}
           </QuaiPayText>
         </TouchableOpacity>
       );
@@ -43,7 +42,7 @@ export const BottomButton = ({ txStatus }: BottomButtonProps) => {
           style={styles.disabledButton}
         >
           <QuaiPayText style={{ color: styledColors.gray }} type="H3">
-            {t('home.send.complete')}
+            {title}
           </QuaiPayText>
         </TouchableOpacity>
       );

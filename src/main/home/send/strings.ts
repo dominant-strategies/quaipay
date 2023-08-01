@@ -1,10 +1,10 @@
 import { SendScanScreenStrings } from './SendScanScreen/SendScanScreen.strings';
+import { SendAmountScreenStrings } from './SendAmount/SendAmountScreen.strings';
 
 export const send = {
   label: 'Send',
   amount: 'Amount',
   address: 'Address',
-  yourBalance: 'Your balance: ',
   tip: 'Tip',
   noTip: 'No tip',
   includeTip: 'Include a Tip?',
@@ -29,4 +29,5 @@ export const send = {
   noInternet: 'No Internet Connection',
   noInternetMessage: 'Please check your internet connection',
   SendScanScreen: SendScanScreenStrings,
+  SendAmountScreen: SendAmountScreenStrings,
 };

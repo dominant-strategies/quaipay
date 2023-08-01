@@ -36,7 +36,9 @@ export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
 }) => {
   const { amount, receiverAddress, receiverUsername, receiverPFP, sender } =
     route.params;
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', {
+    keyPrefix: 'home.send.SendAmountScreen',
+  });
   const wallet = useWallet();
   const { zone } = useZone();
   const quaiRate = useQuaiRate();
@@ -126,7 +128,7 @@ export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
   }, [inputRef]);
 
   return (
-    <QuaiPayContent title={t('home.send.label')}>
+    <QuaiPayContent title={t('title')}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
@@ -134,7 +136,7 @@ export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
         <View style={styles.container}>
           <Image style={styles.image} source={{ uri: receiverPFP }} />
           <QuaiPayText type="H3" style={styles.receiver}>
-            {t('common.to')} {receiverUsername}
+            {t('to')} {receiverUsername}
           </QuaiPayText>
           <QuaiPayText style={styles.wallet}>
             {abbreviateAddress(receiverAddress)}
@@ -147,8 +149,10 @@ export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
                 color: styledColors.gray,
               }}
             >
-              {t('home.send.yourBalance')}
-              {hideBalance ? 'X.XX' : quaiBalance.toFixed(5)} QUAI
+              {t('yourBalance', {
+                balance: hideBalance ? 'X.XX' : quaiBalance.toFixed(5),
+                unit: Currency.QUAI,
+              })}
             </Text>
             <TouchableOpacity
               onPress={() => setHideBalance(!hideBalance)}
@@ -184,14 +188,14 @@ export const SendAmountScreen: React.FC<SendStackScreenProps<'SendAmount'>> = ({
             onPress={goToTip}
             outlined
             style={styles.continueButton}
-            title={t('home.send.includeTip')}
+            title={t('includeTip')}
             type="secondary"
           />
           <QuaiPayButton
             onPress={goToOverview}
             style={styles.continueButton}
             disabled={shouldDisableContinueButtons}
-            title={t('common.continue')}
+            title={t('continue')}
           />
         </View>
       </ScrollView>

@@ -23,7 +23,6 @@
     "label": "Senden",
     "amount": "Betrag",
     "address": "Adresse",
-    "yourBalance": "Ihr Guthaben: ",
     "tip": "Tip",
     "noTip": "Kein Tip",
     "includeTip": "Trinkgeld einbeziehen?",
@@ -58,6 +57,13 @@
         "viewAll": "Alle anzeigen",
         "searchByAddress": "Nach Adresse suchen"
       }
+    },
+    "SendAmountScreen": {
+      "title": "$(home.send.label)",
+      "to": "$(common.to)",
+      "yourBalance": "Ihr Guthaben: {{ balance }} {{ unit }}",
+      "includeTip": "$(home.send.includeTip)",
+      "continue": "$(common.continue)"
     }
   }
 }

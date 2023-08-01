@@ -6,11 +6,6 @@ import { SendOverviewScreenStrings } from './SendOverviewScreen/SendOverviewScre
 
 export const send = {
   label: 'Send',
-  amount: 'Amount',
-  address: 'Address',
-  tipPlaceholder: 'Enter a tip amount',
-  alreadySavedToContacts: 'Already Saved to Contacts',
-  complete: 'Complete',
   SendScanScreen: SendScanScreenStrings,
   SendAmountScreen: SendAmountScreenStrings,
   SendConfirmationScreen: SendConfirmationScreenStrings,

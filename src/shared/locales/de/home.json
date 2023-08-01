@@ -21,12 +21,6 @@
   },
   "send": {
     "label": "Senden",
-    "amount": "Betrag",
-    "address": "Adresse",
-    "tipPlaceholder": "Trinkgeld",
-    "totalCost": "Gesamtkosten",
-    "alreadySavedToContacts": "Empfänger bereits zu Kontakten hinzugefügt",
-    "complete": "Fertig",
     "SendScanScreen": {
       "QuaiPayContactBottomSheet": {
         "error": {

@@ -9,7 +9,6 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -29,14 +28,11 @@ import { dateToLocaleString } from 'src/shared/services/dateUtil';
 import { useZone } from 'src/shared/hooks/useZone';
 import { useQuaiRate } from 'src/shared/hooks/useQuaiRate';
 
-import { SendStackParamList } from '../SendStack';
+import { SendStackScreenProps } from '../SendStack';
 
-type SendOverviewProps = NativeStackScreenProps<
-  SendStackParamList,
-  'SendOverview'
->;
-
-function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
+export const SendOverviewScreen: React.FC<
+  SendStackScreenProps<'SendOverview'>
+> = ({ route, navigation }) => {
   const { t } = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const {
@@ -301,7 +297,7 @@ function SendOverviewScreen({ route, navigation }: SendOverviewProps) {
       </View>
     </QuaiPayContent>
   );
-}
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -430,5 +426,3 @@ const styles = StyleSheet.create({
     width: 60,
   },
 });
-
-export default SendOverviewScreen;

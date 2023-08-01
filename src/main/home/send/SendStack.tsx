@@ -14,8 +14,8 @@ import { Currency, Transaction } from 'src/shared/types';
 
 import { SendScanScreen } from './SendScanScreen/SendScanScreen';
 import { SendAmountScreen } from './SendAmountScreen/SendAmountScreen';
+import { SendOverviewScreen } from './SendOverviewScreen/SendOverviewScreen';
 import SendTipScreen from './SendTip';
-import SendOverviewScreen from './SendOverview';
 import SendConfirmationScreen from './SendConfirmation';
 import Left from 'src/shared/assets/leftChevron.svg';
 
